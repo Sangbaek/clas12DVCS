@@ -15,62 +15,9 @@ pbeam = np.sqrt(ebeam * ebeam - me * me)
 beam = [0, 0, pbeam]
 target = [0, 0, 0]
 
-class epgFromData:
-	def __init__(self, fname, entry_stop = None):
-		self.fname = fname
-		self.readEPG(entry_stop)
-
-	def readFile(self):
-		self.file = uproot.open(self.fname)
-		self.tree = self.file["T"]
-
-	def closeFile(self):
-		self.file = None
-		self.tree = None
-
-	def readEPG(self, entry_stop = None):
-
-		self.readFile()
-
-		df_electron = pd.DataFrame()
-		df_proton = pd.DataFrame()
-		df_gamma = pd.DataFrame()
-
-		for key in ["Epx", "Epy", "Epz", "Evz", "Esector"]:
-			df_electron[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
-
-		for key in ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "PorigIndx", "Psector"]:
-			df_proton[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
-
-		for key in ["Gpx", "Gpy", "Gpz", "Gstat", "GorigIndx", "Gsector"]:
-			df_gamma[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
-
-		self.closeFile()
-
-		df_electron = df_electron.astype({"Epx": float, "Epy": float, "Epz": float})
-		df_proton = df_proton.astype({"Ppx": float, "Ppy": float, "Ppz": float})
-		df_gamma = df_gamma.astype({"Gpx": float, "Gpy": float, "Gpz": float})
-
-		df_electron['event'] = df_electron.index.get_level_values('entry')
-		df_proton['event'] = df_proton.index.get_level_values('entry')
-		df_gamma['event'] = df_gamma.index.get_level_values('entry')
-
-		df_gg = pd.merge(df_gamma, df_gamma,
-		                 how='outer', on='event', suffixes=("", "2"))
-		df_gg = df_gg[df_gg["GorigIndx"] < df_gg["GorigIndx2"]]
-		df_ep = pd.merge(df_electron, df_proton, how='outer', on='event')
-		df_epg = pd.merge(df_ep, df_gamma, how='outer', on='event')
-		df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
-		df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
-
-		df_epg = df_epg[np.abs(df_epg["Evz"] - df_epg["Pvz"]) < 2.5 +
-		                2.5 / mag([df_epg["Epx"], df_epg["Epy"], df_epg["Epz"]])]
-		df_epgg = df_epgg[np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 +
-		                  2.5 / mag([df_epgg["Epx"], df_epgg["Epy"], df_epgg["Epz"]])]
-
-		self.df_epg = df_epg
-		self.df_epgg = df_epgg
-
+class epg:
+	def __init(self):
+		pass
 
 	def setDVCSvars(self):
 		#useful objects
@@ -240,3 +187,56 @@ class epgFromData:
 		df_dvcs = df_dvcs[~pi0to2gammas]
 		self.df_dvcs = df_dvcs
 		return self.df_dvcs
+
+class epgFromData(epg):
+	def __init__(self, fname, entry_stop = None):
+		self.fname = fname
+		self.readEPG(entry_stop)
+
+	def readFile(self):
+		self.file = uproot.open(self.fname)
+		self.tree = self.file["T"]
+
+	def closeFile(self):
+		self.file = None
+		self.tree = None
+
+	def readEPG(self, entry_stop = None):
+
+		self.readFile()
+
+		df_electron = pd.DataFrame()
+		df_proton = pd.DataFrame()
+		df_gamma = pd.DataFrame()
+
+		for key in ["Epx", "Epy", "Epz", "Evz", "Esector"]:
+			df_electron[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+
+		for key in ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "PorigIndx", "Psector"]:
+			df_proton[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+
+		for key in ["Gpx", "Gpy", "Gpz", "Gstat", "GorigIndx", "Gsector"]:
+			df_gamma[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+
+		self.closeFile()
+
+		df_electron = df_electron.astype({"Epx": float, "Epy": float, "Epz": float})
+		df_proton = df_proton.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+		df_gamma = df_gamma.astype({"Gpx": float, "Gpy": float, "Gpz": float})
+
+		df_electron['event'] = df_electron.index.get_level_values('entry')
+		df_proton['event'] = df_proton.index.get_level_values('entry')
+		df_gamma['event'] = df_gamma.index.get_level_values('entry')
+
+		df_gg = pd.merge(df_gamma, df_gamma,
+		                 how='outer', on='event', suffixes=("", "2"))
+		df_gg = df_gg[df_gg["GorigIndx"] < df_gg["GorigIndx2"]]
+		df_ep = pd.merge(df_electron, df_proton, how='outer', on='event')
+		df_epg = pd.merge(df_ep, df_gamma, how='outer', on='event')
+		df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
+		df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
+
+		self.df_epg = df_epg
+		self.df_epgg = df_epgg
+
+
