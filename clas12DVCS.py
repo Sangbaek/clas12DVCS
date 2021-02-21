@@ -1,8 +1,9 @@
-from excl.epg import epgFromData
+from utils.epg import *
 import icecream as ic
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+from copy import copy
 
 # initial settings
 pgf_with_latex = {
@@ -23,16 +24,14 @@ matplotlib.rcParams.update(pgf_with_latex)
 
 
 fname = "~/Dropbox (MIT)/data/dvcs_inb.root"
-epg = epgFromData(fname)
+epg = epgFromROOT(fname)
 dvpi0 = epg.getDVpi0()
-dvcs = epg.getDVCS()
-dvcs = epg.pi02gSubtraction()
+dvcs = epg.getDVCS(sub2g=True)
 
 fname_mc = "~/Dropbox (MIT)/data/dvcs_mc_inb.root"
-epg_mc = epgFromData(fname_mc)
+epg_mc = epgFromROOT(fname_mc)
 dvpi0_mc = epg_mc.getDVpi0()
-dvcs_mc = epg_mc.getDVCS()
-dvcs_mc = epg_mc.pi02gSubtraction()
+dvcs_mc = epg_mc.getDVCS(sub2g=True)
 
 varstoplot = ["nu", "W", "Q2", "xB", "t2", "phi2", "MM2_ep", "MM2_epg", "ME_epg"]
 title = [r"$\nu$", r"$W$", r"$Q^{2}$", r"$x_{B}$", r"$-t$", r"$\phi$", "MM"+r"${}^{2}_{ep}$", "MM"+r"${}^{2}_{epg}$", "ME"+r"${}_{epg}$"]
