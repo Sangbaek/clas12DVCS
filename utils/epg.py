@@ -1,27 +1,29 @@
+#!/usr/bin/env python3
+"""
+Modules set up pandas DataFrame for epg business, DVCS and DVpi0P.
+"""
+
 import uproot
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-#from lmfit import Model, Parameter, report_fit
 from scipy.optimize import curve_fit
-from copy import copy
+from utils.const import *
 from utils.physics import *
-import icecream as ic
-
-M = 0.938272081
-me = 0.5109989461 * 0.001
-ebeam = 10.604
-pbeam = np.sqrt(ebeam * ebeam - me * me)
-beam = [0, 0, pbeam]
-target = [0, 0, 0]
 
 class epg:
+	"""
+	Parent class setting up dvcs and dvpi0p
+	"""
 	def __init(self):
 		pass
 
 	def setDVCSvars(self):
-		#useful objects
+		#set up dvcs variables
 		df_epg = self.df_epg
+		if ('Evz' in df_epg.index):
+			df_epg = df_epg[np.abs(df_epg["Evz"] - df_epg["Pvz"]) < 2.5 +
+			                2.5 / mag([df_epg["Ppx"], df_epg["Ppy"], df_epg["Ppz"]])]
 		df_epg['Ee'] = np.sqrt(me**2 + df_epg["Epx"]**2 +
 		                       df_epg["Epy"]**2 + df_epg["Epz"]**2)
 		df_epg['Pe'] = np.sqrt(M**2 + df_epg["Ppx"]**2 +
@@ -50,7 +52,7 @@ class epg:
 		df_epg['t1'] = 2 * M * (df_epg['Pe'] - M)
 		df_epg['t2'] = (M * df_epg['Q2'] + 2 * M * df_epg['nu'] * (df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta))\
 		/ (M + df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta)
-		df_epg['W'] = np.sqrt((ebeam + M - df_epg['Ee'])**2 - mag2(VGS))
+		df_epg['W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epg['Ee'])**2 - mag2(VGS)))
 
 		# trento angles
 		df_epg['phi1'] = angle(v3l, v3h)
@@ -66,7 +68,6 @@ class epg:
 		df_epg['ME_epg'] = (M + ebeam - df_epg["Ee"] - df_epg["Pe"] - df_epg["Ge"])
 		df_epg['MM2_ep'] = (-M - ebeam + df_epg["Ee"] + df_epg["Pe"])**2 - mag2(VmissG)
 		df_epg['MM2_eg'] = (-M - ebeam + df_epg["Ee"] + df_epg["Ge"])**2 - mag2(VmissP)
-		df_epg = df_epg[df_epg["MM2_eg"] > 0]  # mmeg
 		df_epg['MPt'] = np.sqrt((df_epg["Epx"] + df_epg["Ppx"] + df_epg["Gpx"])**2 +
 		                        (df_epg["Epy"] + df_epg["Ppy"] + df_epg["Gpy"])**2)
 		df_epg['coneAngle'] = angle(ele, gam)
@@ -75,7 +76,10 @@ class epg:
 		self.df_epg = df_epg
 
 	def makeDVCS(self):
+		#make dvcs pairs
 		df_dvcs = self.df_epg
+		df_dvcs = df_dvcs[df_dvcs["MM2_eg"] > 0]  # mmeg
+
 		cut_xBupper = df_dvcs["xB"] < 1  # xB
 		cut_xBlower = df_dvcs["xB"] > 0  # xB
 		cut_Q2 = df_dvcs["Q2"] > 1  # Q2
@@ -105,7 +109,11 @@ class epg:
 		# cut_gFT = df_dvcs["Gstat"] < 2000  # FT
 
 	def setDVpi0vars(self):
+		#set up pi0 variables
 		df_epgg = self.df_epgg
+		if ('Evz' in df_epgg.index):
+			df_epgg = df_epgg[np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 +
+			                  2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])]
 		df_epgg['Ee'] = np.sqrt(me**2 + df_epgg["Epx"]**2 + df_epgg["Epy"]**2 + df_epgg["Epz"]**2)
 		df_epgg['Pe'] = np.sqrt(M**2 + df_epgg["Ppx"]**2 + df_epgg["Ppy"]**2 + df_epgg["Ppz"]**2)
 		df_epgg['Ge'] = np.sqrt(df_epgg["Gpx"]**2 + df_epgg["Gpy"]**2 + df_epgg["Gpz"]**2)
@@ -142,6 +150,7 @@ class epg:
 		self.df_epgg = df_epgg
 
 	def makeDVpi0(self):
+		#make dvpi0 pairs
 		df_epgg = self.df_epgg
 		cut_xBupper = df_epgg["xB"] < 1  # xB
 		cut_xBlower = df_epgg["xB"] > 0  # xB
@@ -160,6 +169,7 @@ class epg:
 		df_dvpi0 = df_epgg[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg &
 		                   cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector]
 		self.df_dvpi0 = df_dvpi0
+
 		# #cut by detector status
 		# cut_pFD = df_dvpi0["Pstat"] < 4000  # FD
 		# cut_pCD = df_dvpi0["Pstat"] > 4000  # CD
@@ -171,38 +181,55 @@ class epg:
 		# cut_FDFT = (cut_gFD & cut_g2FD) | (cut_gFT & cut_g2FT)
 		# cut_FDFD = cut_gFD & cut_g2FD
 
+	def getEPGG(self):
+		#returning pd.DataFrame of epgg
+		self.setDVpi0vars()
+		return self.df_epgg
+
+	def getDVCS(self, sub2g = None):
+		#returning pd.DataFrame of epg
+		self.setDVCSvars()
+		return self.df_epg
+
 	def getDVpi0(self):
+		#returning pd.DataFrame of dvpi0
 		self.setDVpi0vars()
 		self.makeDVpi0()
 		return self.df_dvpi0
 
-	def getDVCS(self):
+	def getDVCS(self, sub2g = None):
+		#returning pd.DataFrame of dvcs
 		self.setDVCSvars()
 		self.makeDVCS()
+		if(sub2g):
+			self.pi02gSubtraction()
 		return self.df_dvcs
 
 	def pi02gSubtraction(self):
+		#exclude dvpi0 from dvcs. use only when both set up.
 		df_dvcs = self.df_dvcs
 		pi0to2gammas = df_dvcs["event"].isin(self.df_dvpi0["event"])
 		df_dvcs = df_dvcs[~pi0to2gammas]
 		self.df_dvcs = df_dvcs
-		return self.df_dvcs
 
-class epgFromData(epg):
+class epgFromROOT(epg):
+	#class to read root to make epg pairs, inherited from epg
 	def __init__(self, fname, entry_stop = None):
 		self.fname = fname
 		self.readEPG(entry_stop)
 
 	def readFile(self):
+		#read root using uproot
 		self.file = uproot.open(self.fname)
 		self.tree = self.file["T"]
 
 	def closeFile(self):
+		#close file for saving memory
 		self.file = None
 		self.tree = None
 
 	def readEPG(self, entry_stop = None):
-
+		#save data into df_epg, df_epgg for parent class epg
 		self.readFile()
 
 		df_electron = pd.DataFrame()
@@ -239,4 +266,53 @@ class epgFromData(epg):
 		self.df_epg = df_epg
 		self.df_epgg = df_epgg
 
+class epgFromLund(epg):
+	#class to read lund format to make epg pairs, inherited from epg
+	def __init__(self, fname, entry_stop = None):
+		self.fname = fname
+		self.readEPG(entry_stop)
 
+	def readFile(self):
+		#read tsv file using python built-in functions
+		with open(self.fname,"r") as file:
+		    self.data = file.read()
+	
+	def closeFile(self):
+		#close file for saving memory
+		self.file.close()
+		self.data = None
+
+	def readEPG(self, entry_stop = None):
+		#save data into df_epg, df_epgg for parent class epg
+		self.readFile()
+		partArray = []
+
+		txtlst = self.data.split("\n")
+		for ind, line in enumerate(txtlst):
+			if entry_stop:
+				if ind==entry_stop:
+					break
+			if ind %400000 == 0:
+				print("On event {}".format(ind/4))
+			if ind % 4 == 0:
+				header = line
+				eleLine = txtlst[ind+1]
+				eleQuantities = eleLine.split()
+				Epx = eleQuantities[6]
+				Epy = eleQuantities[7]
+				Epz = eleQuantities[8]
+				proLine = txtlst[ind+2]
+				proQuantities = proLine.split()
+				Ppx = proQuantities[6]
+				Ppy = proQuantities[7]
+				Ppz = proQuantities[8]
+				gamLine = txtlst[ind+3]
+				gamQuantities = gamLine.split()
+				Gpx = gamQuantities[6]
+				Gpy = gamQuantities[7]
+				Gpz = gamQuantities[8]
+				partArray.append([float(Epx), float(Epy), float(Epz), float(Ppx), float(Ppy), float(Ppz), float(Gpx), float(Gpy), float(Gpz)])
+
+		self.df_epg = pd.DataFrame(partArray, columns = ["Epx", "Epy", "Epz", "Ppx", "Ppy", "Ppz", "Gpx", "Gpy", "Gpz"])
+		self.df_epgg = None
+		self.closeFile()

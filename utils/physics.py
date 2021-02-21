@@ -1,4 +1,4 @@
-#!/bin/bash/python3
+#!/usr/bin/env python3
 """
 Modules help pandas algebra without using ROOT.
 """
@@ -18,11 +18,11 @@ def mag2(vec1):
 
 def cosTheta(vec1, vec2):
 	# cosine angle between two 3d vectors
-    return dot(vec1,vec2)/np.sqrt(dot(vec1,vec1))/np.sqrt(dot(vec2,vec2))
+    return dot(vec1,vec2)/np.sqrt(mag2(vec1) * mag2(vec2))
 
 def angle(vec1, vec2):
 	# angle between two 3d vectors
-    return 180/np.pi*np.arccos(cosTheta(vec1, vec2))
+	return 180/np.pi*np.arccos(np.minimum(1, cosTheta(vec1, vec2)))
 
 def cross(vec1, vec2):
 	# cross product of two 3d vectors
@@ -38,7 +38,11 @@ def pi0Energy(gam1, gam2):
 
 def pi0InvMass(gam1, gam2):
 	# pi0 invariant mass of two 3d photon momenta
-	return np.sqrt(pi0Energy(gam1, gam2)**2-mag2(vecAdd(gam1, gam2)))
+	pi0mass2 = pi0Energy(gam1, gam2)**2-mag2(vecAdd(gam1, gam2))
+	pi0mass2 = np.where(pi0mass2 >= 0, pi0mass2, 10**6)
+	pi0mass = np.sqrt(pi0mass2)
+	pi0mass = np.where(pi0mass > 100, -1000, pi0mass)
+	return pi0mass
 
 def getPhi(vec1):
 	# azimuthal angle of one 3d vector
