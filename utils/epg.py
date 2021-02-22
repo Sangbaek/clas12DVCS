@@ -97,7 +97,10 @@ class epg:
 		cut_mpt = df_dvcs["MPt"] < 0.12  # mpt
 		cut_cone = df_dvcs["coneAngle"] > 10  # coneangle
 		cut_recon = df_dvcs["reconGam"] < 1.1  # recon gam angle
-		cut_sector = df_dvcs["Esector"]!=df_dvcs["Gsector"]
+		if ("Esector" in df_dvcs.index):
+			cut_sector = df_dvcs["Esector"]!=df_dvcs["Gsector"]
+		else:
+			cut_sector = 1
 
 		df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Pp & cut_mmepg &
 		                 cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
@@ -164,8 +167,11 @@ class epg:
 		cut_recon = df_epgg["reconPi"] < 2  # recon gam angle
 		cut_pi0upper = df_epgg["Mpi0"] < 0.2
 		cut_pi0lower = df_epgg["Mpi0"] > 0.07
-		cut_sector = (df_epgg["Esector"]!=df_epgg["Gsector"]) & (df_epgg["Esector"]!=df_epgg["Gsector2"])
-		
+		if ("Esector" in df_epgg.index):
+			cut_sector = (df_epgg["Esector"]!=df_epgg["Gsector"]) & (df_epgg["Esector"]!=df_epgg["Gsector2"])
+		else:
+			cut_sector = 1
+
 		df_dvpi0 = df_epgg[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg &
 		                   cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector]
 		self.df_dvpi0 = df_dvpi0
@@ -214,8 +220,9 @@ class epg:
 
 class epgFromROOT(epg):
 	#class to read root to make epg pairs, inherited from epg
-	def __init__(self, fname, entry_stop = None):
+	def __init__(self, fname, entry_stop = None, mc = False):
 		self.fname = fname
+		self.mc = mc
 		self.readEPG(entry_stop)
 
 	def readFile(self):
@@ -236,13 +243,21 @@ class epgFromROOT(epg):
 		df_proton = pd.DataFrame()
 		df_gamma = pd.DataFrame()
 
-		for key in ["Epx", "Epy", "Epz", "Evz", "Esector"]:
+		eleKeys = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+		proKeys = ["Ppx", "Ppy", "Ppz", "Pvz", "PorigIndx", "Pstat", "Psector"]
+		gamKeys = ["Gpx", "Gpy", "Gpz", "GorigIndx", "Gstat", "Gsector"]
+		if (self.mc):
+			eleKeys = eleKeys[:-1]
+			proKeys = proKeys[:-2]
+			gamKeys = gamKeys[:-2]
+
+		for key in eleKeys:
 			df_electron[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
-		for key in ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "PorigIndx", "Psector"]:
+		for key in proKeys:
 			df_proton[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
-		for key in ["Gpx", "Gpy", "Gpz", "Gstat", "GorigIndx", "Gsector"]:
+		for key in gamKeys:
 			df_gamma[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
 		self.closeFile()
@@ -279,7 +294,6 @@ class epgFromLund(epg):
 	
 	def closeFile(self):
 		#close file for saving memory
-		self.file.close()
 		self.data = None
 
 	def readEPG(self, entry_stop = None):

@@ -46,11 +46,11 @@ def pi0InvMass(gam1, gam2):
 
 def getPhi(vec1):
 	# azimuthal angle of one 3d vector
-	return np.arctan2(vec1[1], vec1[0])
+	return 180/np.pi*np.arctan2(vec1[1], vec1[0])
 
 def getTheta(vec1):
 	# polar angle of one 3d vector
-	return np.arctan2(np.sqrt(vec1[0]*vec1[0]+vec1[1]*vec1[1]), vec1[2])
+	return 180/np.pi*np.arctan2(np.sqrt(vec1[0]*vec1[0]+vec1[1]*vec1[1]), vec1[2])
 
 def getEnergy(vec1, mass):
 	# for taken 3d momenta p and mass m, return energy = sqrt(p**2 + m**2)
