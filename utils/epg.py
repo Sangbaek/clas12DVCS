@@ -18,20 +18,25 @@ class epg:
 	def __init(self):
 		pass
 
-	def setDVCSvars(self):
+	def setDVCSvars(self, correction=None):
 		#set up dvcs variables
 		df_epg = self.df_epg
 		if ('Evz' in df_epg.index):
 			df_epg = df_epg[np.abs(df_epg["Evz"] - df_epg["Pvz"]) < 2.5 +
 			                2.5 / mag([df_epg["Ppx"], df_epg["Ppy"], df_epg["Ppz"]])]
-		df_epg['Ee'] = np.sqrt(me**2 + df_epg["Epx"]**2 +
-		                       df_epg["Epy"]**2 + df_epg["Epz"]**2)
-		df_epg['Pe'] = np.sqrt(M**2 + df_epg["Ppx"]**2 +
-		                       df_epg["Ppy"]**2 + df_epg["Ppz"]**2)
-		df_epg['Ge'] = np.sqrt(df_epg["Gpx"]**2 + df_epg["Gpy"]**2 + df_epg["Gpz"]**2)
+		if correction:
+			df_epg["Epx"] = correction * df_epg["Epx"]
+			df_epg["Epy"] = correction * df_epg["Epy"]
+			df_epg["Epy"] = correction * df_epg["Epy"]
+
 		ele = [df_epg['Epx'], df_epg['Epy'], df_epg['Epz']]
 		pro = [df_epg['Ppx'], df_epg['Ppy'], df_epg['Ppz']]
 		gam = [df_epg['Gpx'], df_epg['Gpy'], df_epg['Gpz']]
+
+		df_epg['Ee'] = getEnergy(ele, me)
+		df_epg['Pe'] = getEnergy(pro, M)
+		df_epg['Ge'] = getEnergy(gam, 0)
+
 		VGS = [-df_epg['Epx'], -df_epg['Epy'], pbeam - df_epg['Epz']]
 		v3l = cross(beam, ele)
 		v3h = cross(pro, VGS)
@@ -117,16 +122,17 @@ class epg:
 		if ('Evz' in df_epgg.index):
 			df_epgg = df_epgg[np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 +
 			                  2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])]
-		df_epgg['Ee'] = np.sqrt(me**2 + df_epgg["Epx"]**2 + df_epgg["Epy"]**2 + df_epgg["Epz"]**2)
-		df_epgg['Pe'] = np.sqrt(M**2 + df_epgg["Ppx"]**2 + df_epgg["Ppy"]**2 + df_epgg["Ppz"]**2)
-		df_epgg['Ge'] = np.sqrt(df_epgg["Gpx"]**2 + df_epgg["Gpy"]**2 + df_epgg["Gpz"]**2)
-		df_epgg['Ge2'] = np.sqrt(df_epgg["Gpx2"]**2 + df_epgg["Gpy2"]**2 + df_epgg["Gpz2"]**2)
-		
 		# useful objects
 		ele = [df_epgg['Epx'], df_epgg['Epy'], df_epgg['Epz']]
 		pro = [df_epgg['Ppx'], df_epgg['Ppy'], df_epgg['Ppz']]
 		gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
 		gam2 = [df_epgg['Gpx2'], df_epgg['Gpy2'], df_epgg['Gpz2']]
+
+		df_epgg['Ee'] = getEnergy(ele, me)
+		df_epgg['Pe'] = getEnergy(pro, M)
+		df_epgg['Ge'] = getEnergy(gam, 0)
+		df_epgg['Ge2'] = getEnergy(gam2, 0)
+
 		pi0 = vecAdd(gam, gam2)
 		VGS = [-df_epgg['Epx'], -df_epgg['Epy'], pbeam - df_epgg['Epz']]
 		v3l = cross(beam, ele)
@@ -134,18 +140,22 @@ class epg:
 		v3g = cross(VGS, gam)
 		VmissPi0 = [-df_epgg["Epx"] - df_epgg["Ppx"], -df_epgg["Epy"] -
 		            df_epgg["Ppy"], pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
+		VmissP = [-df_epgg["Epx"] - df_epgg["Gpx"] - df_epgg["Gpx2"], -df_epgg["Epy"] -
+		            df_epgg["Gpy"] - df_epgg["Gpy2"], pbeam - df_epgg["Epz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
 
 		# binning kinematics
 		df_epgg['Q2'] = -((ebeam - df_epgg['Ee'])**2 - mag2(VGS))
 		df_epgg['nu'] = (ebeam - df_epgg['Ee'])
 		df_epgg['xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
-		df_epgg['W'] = np.sqrt((ebeam + M - df_epgg['Ee'])**2 - mag2(VGS))
+		df_epgg['W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
 		df_epgg['MPt'] = np.sqrt((df_epgg["Epx"] + df_epgg["Ppx"] + df_epgg["Gpx"] + df_epgg["Gpx2"])**2 +
 		                         (df_epgg["Epy"] + df_epgg["Ppy"] + df_epgg["Gpy"] + df_epgg["Gpy2"])**2)
 
 		# exclusivity variables
 		df_epgg['MM2_ep'] = (-M - ebeam + df_epgg["Ee"] +
 		                     df_epgg["Pe"])**2 - mag2(VmissPi0)
+		df_epgg['MM2_egg'] = (-M - ebeam + df_epgg["Ee"] +
+		                     df_epgg["Ge"] + df_epgg["Ge2"])**2 - mag2(VmissP)
 		df_epgg['ME_epgg'] = (M + ebeam - df_epgg["Ee"] - df_epgg["Pe"] - df_epgg["Ge"] - df_epgg["Ge2"])
 		df_epgg['Mpi0'] = pi0InvMass(gam, gam2)
 		df_epgg['reconPi'] = angle(VmissPi0, pi0)
@@ -192,20 +202,15 @@ class epg:
 		self.setDVpi0vars()
 		return self.df_epgg
 
-	def getDVCS(self, sub2g = None):
-		#returning pd.DataFrame of epg
-		self.setDVCSvars()
-		return self.df_epg
-
 	def getDVpi0(self):
 		#returning pd.DataFrame of dvpi0
 		self.setDVpi0vars()
 		self.makeDVpi0()
 		return self.df_dvpi0
 
-	def getDVCS(self, sub2g = None):
+	def getDVCS(self, correction = None, sub2g = None):
 		#returning pd.DataFrame of dvcs
-		self.setDVCSvars()
+		self.setDVCSvars(correction)
 		self.makeDVCS()
 		if(sub2g):
 			self.pi02gSubtraction()
@@ -220,9 +225,10 @@ class epg:
 
 class epgFromROOT(epg):
 	#class to read root to make epg pairs, inherited from epg
-	def __init__(self, fname, entry_stop = None, mc = False):
+	def __init__(self, fname, entry_stop = None, mc = False, rec = False):
 		self.fname = fname
 		self.mc = mc
+		self.rec = rec
 		self.readEPG(entry_stop)
 
 	def readFile(self):
@@ -239,17 +245,22 @@ class epgFromROOT(epg):
 		#save data into df_epg, df_epgg for parent class epg
 		self.readFile()
 
+		df_logistics = pd.DataFrame()
 		df_electron = pd.DataFrame()
 		df_proton = pd.DataFrame()
 		df_gamma = pd.DataFrame()
 
-		eleKeys = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+		logistics = ["RunNum", "EventNum", "beamQ", "helicity"]
+		eleKeys = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
 		proKeys = ["Ppx", "Ppy", "Ppz", "Pvz", "PorigIndx", "Pstat", "Psector"]
 		gamKeys = ["Gpx", "Gpy", "Gpz", "GorigIndx", "Gstat", "Gsector"]
 		if (self.mc):
 			eleKeys = eleKeys[:-1]
-			proKeys = proKeys[:-2]
-			gamKeys = gamKeys[:-2]
+			proKeys = proKeys[:-3]
+			gamKeys = gamKeys[:-3]
+
+		for key in logistics:
+			df_logistics[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
 		for key in eleKeys:
 			df_electron[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -260,15 +271,39 @@ class epgFromROOT(epg):
 		for key in gamKeys:
 			df_gamma[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
+		if (self.rec):
+			df_MC = pd.DataFrame()
+			df_MC2 = pd.DataFrame()
+			MCKeys = ["MCEpx", "MCEpy", "MCEpz", "MCEvx", "MCEvy", "MCEvz", "MCPpx", "MCPpy", "MCPpz"]
+			MCKeys2 = ["MCGpx", "MCGpy", "MCGpz"]
+			for key in MCKeys:
+				df_MC[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+			for key in MCKeys2:
+				df_MC2[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+			df_MC['event'] = df_MC.index.get_level_values('entry')
+			df_MC2['event'] = df_MC2.index.get_level_values('entry')
+			df_MC3 = pd.merge(df_MC, df_MC2,
+			                 how='outer', on='event')
+			self.df_MC = df_MC3
+
 		self.closeFile()
 
 		df_electron = df_electron.astype({"Epx": float, "Epy": float, "Epz": float})
 		df_proton = df_proton.astype({"Ppx": float, "Ppy": float, "Ppz": float})
 		df_gamma = df_gamma.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
+		df_logistics['event'] = df_logistics.index
 		df_electron['event'] = df_electron.index.get_level_values('entry')
 		df_proton['event'] = df_proton.index.get_level_values('entry')
 		df_gamma['event'] = df_gamma.index.get_level_values('entry')
+
+		df_electron = pd.merge(df_electron, df_logistics,
+								how='outer', on='event')
+
+		if ('PorigIndx' not in df_proton.index):
+			df_proton['PorigIndx'] = df_proton.index.get_level_values('subentry')
+		if ('GorigIndx' not in df_gamma.index):
+			df_gamma['GorigIndx'] = df_gamma.index.get_level_values('subentry')
 
 		df_gg = pd.merge(df_gamma, df_gamma,
 		                 how='outer', on='event', suffixes=("", "2"))
@@ -315,6 +350,9 @@ class epgFromLund(epg):
 				Epx = eleQuantities[6]
 				Epy = eleQuantities[7]
 				Epz = eleQuantities[8]
+				Evx = eleQuantities[11]
+				Evy = eleQuantities[12]
+				Evz = eleQuantities[13]
 				proLine = txtlst[ind+2]
 				proQuantities = proLine.split()
 				Ppx = proQuantities[6]
@@ -325,8 +363,8 @@ class epgFromLund(epg):
 				Gpx = gamQuantities[6]
 				Gpy = gamQuantities[7]
 				Gpz = gamQuantities[8]
-				partArray.append([float(Epx), float(Epy), float(Epz), float(Ppx), float(Ppy), float(Ppz), float(Gpx), float(Gpy), float(Gpz)])
+				partArray.append([float(Epx), float(Epy), float(Epz), float(Evz), float(Ppx), float(Ppy), float(Ppz), float(Pvz), float(Gpx), float(Gpy), float(Gpz)])
 
-		self.df_epg = pd.DataFrame(partArray, columns = ["Epx", "Epy", "Epz", "Ppx", "Ppy", "Ppz", "Gpx", "Gpy", "Gpz"])
+		self.df_epg = pd.DataFrame(partArray, columns = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Ppx", "Ppy", "Ppz", "Gpx", "Gpy", "Gpz"])
 		self.df_epgg = None
 		self.closeFile()
