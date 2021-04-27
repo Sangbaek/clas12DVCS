@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A simple script to save Z and X of 6862 nflow project.
+A simple script to save data in pickle.
 """
 
 import uproot
@@ -8,65 +8,7 @@ import pandas as pd
 import numpy as np
 import argparse
 from copy import copy
-
-M = 0.938272081 # target mass
-me = 0.5109989461 * 0.001 # electron mass
-ebeam = 10.604 # beam energy
-pbeam = np.sqrt(ebeam * ebeam - me * me) # beam electron momentum
-beam = [0, 0, pbeam] # beam vector
-target = [0, 0, 0] # target vector
-
-def dot(vec1, vec2):
-    # dot product of two 3d vectors
-    return vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2]
-
-def mag(vec1):
-    # L2 norm of vector
-    return np.sqrt(dot(vec1, vec1))
-
-def mag2(vec1):
-    # square of L2 norm
-    return  dot(vec1, vec1)
-
-def cosTheta(vec1, vec2):
-    # cosine angle between two 3d vectors
-    return dot(vec1,vec2)/np.sqrt(mag2(vec1) * mag2(vec2))
-
-def angle(vec1, vec2):
-    # angle between two 3d vectors
-    return 180/np.pi*np.arccos(np.minimum(1, cosTheta(vec1, vec2)))
-
-def cross(vec1, vec2):
-    # cross product of two 3d vectors
-    return [vec1[1]*vec2[2]-vec1[2]*vec2[1], vec1[2]*vec2[0]-vec1[0]*vec2[2], vec1[0]*vec2[1]-vec1[1]*vec2[0]]
-
-def vecAdd(gam1, gam2):
-    # add two 3d vectors
-    return [gam1[0]+gam2[0], gam1[1]+gam2[1], gam1[2]+gam2[2]]
-
-def pi0Energy(gam1, gam2):
-    # reconstructed pi0 energy of two 3d photon momenta
-    return mag(gam1)+mag(gam2)
-
-def pi0InvMass(gam1, gam2):
-    # pi0 invariant mass of two 3d photon momenta
-    pi0mass2 = pi0Energy(gam1, gam2)**2-mag2(vecAdd(gam1, gam2))
-    pi0mass2 = np.where(pi0mass2 >= 0, pi0mass2, 10**6)
-    pi0mass = np.sqrt(pi0mass2)
-    pi0mass = np.where(pi0mass > 100, -1000, pi0mass)
-    return pi0mass
-
-def getPhi(vec1):
-    # azimuthal angle of one 3d vector
-    return 180/np.pi*np.arctan2(vec1[1], vec1[0])
-
-def getTheta(vec1):
-    # polar angle of one 3d vector
-    return 180/np.pi*np.arctan2(np.sqrt(vec1[0]*vec1[0]+vec1[1]*vec1[1]), vec1[2])
-
-def getEnergy(vec1, mass):
-    # for taken 3d momenta p and mass m, return energy = sqrt(p**2 + m**2)
-    return np.sqrt(mag2(vec1)+mass**2)
+from utils.epg import *
 
 
 class root2pickle():
@@ -76,12 +18,7 @@ class root2pickle():
         self.readEPGG(entry_stop)
         self.saveDVpi0vars()
         self.makeDVpi0()
-        if mode == 'spherical':
-            self.saveDfSpherical()
-        elif mode == 'cartesian':
-            self.saveDfCartesian()
-        else:
-            print('mode must be either spherical or cartesian')
+        self.saveRaw()
 
     def readFile(self):
         #read root using uproot
@@ -182,8 +119,8 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Psector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
@@ -196,8 +133,8 @@ class root2pickle():
         self.closeFile()
 
         #convert data type to standard double
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
         #set up a dummy index for merging
@@ -238,6 +175,42 @@ class root2pickle():
         df_epgg.loc[:, 'Pe'] = getEnergy(pro, M)
         df_epgg.loc[:, 'Ptheta'] = getTheta(pro)
         df_epgg.loc[:, 'Pphi'] = getPhi(pro)
+
+        const = np.select([df_epgg.Ptheta<27, (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [-0.0123049 + 0.00028887*df_epgg.Ptheta, -0.138227479 + 8.07557430*0.001*df_epgg.Ptheta -1.34807927*0.0001*df_epgg.Ptheta*df_epgg.Ptheta, -0.0275235])
+        coeff = np.select([df_epgg.Ptheta<27, (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [0.01528006 - 0.00024079*df_epgg.Ptheta, 5.65817597*0.01 -2.36903348*0.001*df_epgg.Ptheta + 4.93780046*0.00001*df_epgg.Ptheta*df_epgg.Ptheta, 0.03998975])    
+
+        CorrectedPp = const + coeff/df_epgg.loc[:, "Pp"] + df_epgg.loc[:, "Pp"]
+
+        const = np.select([df_epgg.Ptheta<19.5, (df_epgg.Ptheta>=19.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<39), (df_epgg.Ptheta>=39) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [2.63643690*0.01, 0.50047232 -0.03834672 *df_epgg.Ptheta + 0.00071967*df_epgg.Ptheta*df_epgg.Ptheta, 6.91308654 - 0.439839300*df_epgg.Ptheta +6.83075548*0.001*df_epgg.Ptheta*df_epgg.Ptheta, 1.59424606, 1.47198581*10])
+        coeff = np.select([df_epgg.Ptheta<19.5, (df_epgg.Ptheta>=19.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<39), (df_epgg.Ptheta>=39) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [-1.46440415, 74.99891704  -6.1576777*df_epgg.Ptheta + 0.11469137*df_epgg.Ptheta*df_epgg.Ptheta, 682.909471 - 43.9551177 * df_epgg.Ptheta + 0.682383790 * df_epgg.Ptheta * df_epgg.Ptheta, -8.19627119, -23.55701865])    
+        coeff2 = np.select([df_epgg.Ptheta<19.5, (df_epgg.Ptheta>=19.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<39), (df_epgg.Ptheta>=39) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [-3.47690993, 47.71351973 -4.34918241*df_epgg.Ptheta + 0.08841191*df_epgg.Ptheta*df_epgg.Ptheta, 100.33995753 - 6.96600416*df_epgg.Ptheta + 0.11223046*df_epgg.Ptheta*df_epgg.Ptheta, -1.25261927, -0.40113733])    
+
+        CorrectedPtheta = const + coeff*np.exp(coeff2*df_epgg.loc[:, "Pp"]) + df_epgg.loc[:, "Ptheta"]
+
+        const = np.select([df_epgg.Ptheta<16.5, (df_epgg.Ptheta>=16.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [-0.190662844, -0.20725736 -0.00675627 *df_epgg.Ptheta + 0.0007863*df_epgg.Ptheta*df_epgg.Ptheta, 12.1881698 - 0.78906294*df_epgg.Ptheta +0.01297898*df_epgg.Ptheta*df_epgg.Ptheta, -4.59743066*10])
+        coeff = np.select([df_epgg.Ptheta<16.5, (df_epgg.Ptheta>=16.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [6.48745941, 142.96379788  -16.66339055*df_epgg.Ptheta + 0.51311212*df_epgg.Ptheta*df_epgg.Ptheta, 2.1853046 + 5.78521226 * df_epgg.Ptheta - 0.09727796 * df_epgg.Ptheta * df_epgg.Ptheta, 7.46969457*10])    
+        coeff2 = np.select([df_epgg.Ptheta<16.5, (df_epgg.Ptheta>=16.5) & (df_epgg.Ptheta<27), (df_epgg.Ptheta>=27) & (df_epgg.Ptheta<42), df_epgg.Ptheta>=42],
+                          [-3.14646608, 17.39529095 -1.78403359*df_epgg.Ptheta + 0.0335692*df_epgg.Ptheta*df_epgg.Ptheta, -1.03655317*10 + 0.161333213*df_epgg.Ptheta -1.29625675*0.001*df_epgg.Ptheta*df_epgg.Ptheta, -4.41246899*0.1])    
+
+        CorrectedPphi = const + coeff*np.exp(coeff2*df_epgg.loc[:, "Pp"]) + df_epgg.loc[:, "Pphi"]
+
+        df_epgg.loc[:, "Pp"] = CorrectedPp
+        df_epgg.loc[:, "Ptheta"] = CorrectedPtheta
+        df_epgg.loc[:, "Pphi"] = CorrectedPphi
+
+        df_epgg.loc[:, "Ppx"] = df_epgg.loc[:, "Pp"]*np.sin(np.radians(df_epgg.loc[:, "Ptheta"]))*np.cos(np.radians(df_epgg.loc[:, "Pphi"]))
+        df_epgg.loc[:, "Ppy"] = df_epgg.loc[:, "Pp"]*np.sin(np.radians(df_epgg.loc[:, "Ptheta"]))*np.sin(np.radians(df_epgg.loc[:, "Pphi"]))
+        df_epgg.loc[:, "Ppz"] = df_epgg.loc[:, "Pp"]*np.cos(np.radians(df_epgg.loc[:, "Ptheta"]))
+
+        pro = [df_epgg['Ppx'], df_epgg['Ppy'], df_epgg['Ppz']]
+        df_epgg.loc[:, 'Pe'] = getEnergy(pro, M)
 
         gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
         df_epgg.loc[:, 'Gp'] = mag(gam)
@@ -307,8 +280,9 @@ class root2pickle():
         cut_pi0upper = df_epgg.loc[:, "Mpi0"] < 0.2
         cut_pi0lower = df_epgg.loc[:, "Mpi0"] > 0.07
         cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
+        cut_Vz = np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
 
-        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg &
+        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
 
         #For an event, there can be two gg's passed conditions above.
@@ -318,51 +292,13 @@ class root2pickle():
         df_dvpi0.sort_values(by='closeness', ascending=False)
         df_dvpi0.sort_values(by='event')        
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
+        self.df_x = df_dvpi0 #done with saving x
 
-        df_x = df_dvpi0.loc[:, ["event", "Epx", "Epy", "Epz", "Ep", "Ephi", "Etheta", "Ppx", "Ppy", "Ppz", "Pp", "Pphi", "Ptheta", "Gpx", "Gpy", "Gpz", "Gp", "Gtheta", "Gphi", "Gpx2", "Gpy2", "Gpz2", "Gp2", "Gtheta2", "Gphi2"]]
-        self.df_x = df_x #done with saving x
-
-    def saveDfCartesian(self):
-        df_z = self.df_z
-        df_x = self.df_x
-
-        df_z = df_z.rename(columns = {"GenEpx": "z00", "GenEpy": "z01", "GenEpz": "z02", "GenPpx": "z10", "GenPpy": "z11", "GenPpz": "z12", "GenGpx": "z20", "GenGpy": "z21", "GenGpz": "z22", "GenGpx2": "z30", "GenGpy2": "z31", "GenGpz2": "z32"})
-        df_z.loc[:, "z03"] = 1 # electron
-        df_z.loc[:, "z13"] = 2 # proton
-        df_z.loc[:, "z23"] = 3 # photon
-        df_z.loc[:, "z33"] = 3 # photon
-        df_z = df_z.loc[:, ["event", "z00", "z01", "z02", "z03", "z10", "z11", "z12", "z13", "z20", "z21", "z22", "z23", "z30", "z31", "z32", "z33"]]
-
-        df_x = df_x.rename(columns = {"Epx": "x00", "Epy": "x01", "Epz": "x02", "Ppx": "x10", "Ppy": "x11", "Ppz": "x12", "Gpx": "x20", "Gpy": "x21", "Gpz": "x22", "Gpx2": "x30", "Gpy2": "x31", "Gpz2": "x32"})
-        df_x.loc[:, "x03"] = 1 # electron
-        df_x.loc[:, "x13"] = 2 # proton
-        df_x.loc[:, "x23"] = 3 # photon
-        df_x.loc[:, "x33"] = 3 # photon
-        df_x = df_x.loc[:, ["event", "x00", "x01", "x02", "x03", "x10", "x11", "x12", "x13", "x20", "x21", "x22", "x23", "x30", "x31", "x32", "x33"]]
+    def saveDfRaw(self):
 
         df = pd.merge(df_x, df_z, how = 'inner', on='event')
         self.df = df
 
-    def saveDfSpherical(self):
-        df_z = self.df_z
-        df_x = self.df_x
-
-        df_z = df_z.rename(columns = {"GenEp": "z00", "GenEtheta": "z01", "GenEphi": "z02", "GenPp": "z10", "GenPtheta": "z11", "GenPphi": "z12", "GenGp": "z20", "GenGtheta": "z21", "GenGphi": "z22", "GenGp2": "z30", "GenGtheta2": "z31", "GenGphi2": "z32"})
-        df_z.loc[:, "z03"] = 1 # electron
-        df_z.loc[:, "z13"] = 2 # proton
-        df_z.loc[:, "z23"] = 3 # photon
-        df_z.loc[:, "z33"] = 3 # photon
-        df_z = df_z.loc[:, ["event", "z00", "z01", "z02", "z03", "z10", "z11", "z12", "z13", "z20", "z21", "z22", "z23", "z30", "z31", "z32", "z33"]]
-
-        df_x = df_x.rename(columns = {"Ep": "x00", "Etheta": "x01", "Ephi": "x02", "Pp": "x10", "Ptheta": "x11", "Pphi": "x12", "Gp": "x20", "Gtheta": "x21", "Gphi": "x22", "Gp2": "x30", "Gtheta2": "x31", "Gphi2": "x32"})
-        df_x.loc[:, "x03"] = 1 # electron
-        df_x.loc[:, "x13"] = 2 # proton
-        df_x.loc[:, "x23"] = 3 # photon
-        df_x.loc[:, "x33"] = 3 # photon
-        df_x = df_x.loc[:, ["event", "x00", "x01", "x02", "x03", "x10", "x11", "x12", "x13", "x20", "x21", "x22", "x23", "x30", "x31", "x32", "x33"]]
-
-        df = pd.merge(df_x, df_z, how = 'inner', on='event')
-        self.df = df
 
 if __name__ == "__main__":
 
