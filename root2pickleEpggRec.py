@@ -13,7 +13,7 @@ from utils.epg import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_stop = None, mode = 'spherical'):
+    def __init__(self, fname, entry_stop = None):
         self.fname = fname
         self.readEPGG(entry_stop)
         self.saveDVpi0vars()
@@ -38,7 +38,7 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
         # read keys
@@ -50,7 +50,7 @@ class root2pickle():
             df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         #convert data type to standard double
-        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
+        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvz": float})
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
         df_gammaGen = df_gammaGen.astype({"GenGpx": float, "GenGpy": float, "GenGpz": float})
 
@@ -60,7 +60,7 @@ class root2pickle():
         df_gammaGen.loc[:,'event'] = df_gammaGen.index.get_level_values('entry')
 
         #sort columns for readability
-        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz"]]
+        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvz"]]
 
         #two g's to one gg.
         gamGen = [df_gammaGen["GenGpx"], df_gammaGen["GenGpy"], df_gammaGen["GenGpz"]]
@@ -294,7 +294,7 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
         self.df_x = df_dvpi0 #done with saving x
 
-    def saveDfRaw(self):
+    def saveRaw(self):
 
         df = pd.merge(df_x, df_z, how = 'inner', on='event')
         self.df = df
@@ -310,7 +310,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop, mode = 'spherical')
+    converter = root2pickle(args.fname, entry_stop = args.entry_stop)
     df = converter.df
 
     df.to_pickle(args.out)
