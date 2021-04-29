@@ -133,6 +133,8 @@ class root2pickle():
         df_epgg.loc[:, 'Etheta'] = getTheta(ele)
         df_epgg.loc[:, 'Ephi'] = getPhi(ele)
 
+        pro = [df_epgg['Ppx'], df_epgg['Ppy'], df_epgg['Ppz']]
+
         gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
         df_epgg.loc[:, 'Gp'] = mag(gam)
         df_epgg.loc[:, 'Ge'] = getEnergy(gam, 0)
