@@ -427,7 +427,7 @@ class root2pickle():
     def saveRaw(self):
         df_x = self.df_dvcs
         df_z = self.df_z
-        df = pd.merge(df_dvcs, df_z, how = 'inner', on='event')
+        df = pd.merge(df_x, df_z, how = 'inner', on='event')
         self.df = df
 
 
