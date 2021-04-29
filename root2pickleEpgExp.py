@@ -63,6 +63,7 @@ class root2pickle():
         df_electronRec.loc[:,'event'] = df_electronRec.index
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
         #save only FD protons and photons
         df_protonRec = df_protonRec[df_protonRec["Psector"]<7]
