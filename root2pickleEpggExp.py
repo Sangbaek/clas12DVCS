@@ -8,7 +8,8 @@ import pandas as pd
 import numpy as np
 import argparse
 from copy import copy
-from utils.epg import *
+from utils.const import *
+from utils.physics import *
 
 
 class root2pickle():
@@ -33,7 +34,7 @@ class root2pickle():
     def readEPGG(self, entry_stop = None):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
-
+        print(entry_stop)
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
@@ -43,11 +44,11 @@ class root2pickle():
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
-            df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
         for key in proKeysRec:
-            df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
         for key in gamKeysRec:
-            df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
 
         self.closeFile()
 
@@ -119,6 +120,10 @@ class root2pickle():
         df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
         df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
         df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+
+        print(len(df_gg))
+        print(len(df_ep))
+        print(len(df_epgg))
 
         self.df_epgg = df_epgg #temporarily save df_epgg
 
@@ -208,6 +213,8 @@ class root2pickle():
         df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
 
+        print(len(df_dvpi0))
+
         #For an event, there can be two gg's passed conditions above.
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
@@ -215,6 +222,7 @@ class root2pickle():
         df_dvpi0.sort_values(by='closeness', ascending=False)
         df_dvpi0.sort_values(by='event')        
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
+        print(len(df_dvpi0))
         self.df_x = df_dvpi0 #done with saving x
 
     def saveRaw(self):
