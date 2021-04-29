@@ -13,10 +13,10 @@ from utils.epg import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_stop = None, gen = "dvcs"):
+    def __init__(self, fname, entry_stop = None):
         self.fname = fname
 
-        self.readEPGG(entry_stop, gen = gen)
+        self.readEPGG(entry_stop)
         self.saveDVCSvars()
         self.makeDVCS()
         self.saveDVpi0vars()
@@ -34,7 +34,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_stop = None, gen = "dvcs"):
+    def readEPGG(self, entry_stop = None):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -350,7 +350,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop, gen = args.generator)
+    converter = root2pickle(args.fname, entry_stop = args.entry_stop)
     df = converter.df
 
     df.to_pickle(args.out)
