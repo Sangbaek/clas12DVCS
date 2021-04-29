@@ -318,7 +318,7 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
         self.df_dvpi0 = df_dvpi0 #done with saving x
 
-    def setDVCSvars(self, correction=None):
+    def saveDVCSvars(self, correction=None):
         #set up dvcs variables
         df_epg = self.df_epg
 
