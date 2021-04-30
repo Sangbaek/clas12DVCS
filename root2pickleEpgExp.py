@@ -222,9 +222,9 @@ class root2pickle():
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
         #For now, duplicated proton is not considered.
-        df_dvpi0.sort_values(by='closeness', ascending=False)
-        df_dvpi0.sort_values(by='event')        
+        df_dvpi0 = df_dvpi0.sort_values(by='closeness', ascending = True)
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
+        df_dvpi0 = df_dvpi0.sort_values(by='event')        
         self.df_dvpi0 = df_dvpi0 #done with saving x
 
     def saveDVCSvars(self, correction=None):
@@ -324,6 +324,11 @@ class root2pickle():
 
         df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
+
+        #dealing with duplicates
+        df_dvcs = df_dvcs.sort_values(by='Ge', ascending = False)
+        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+        df_dvcs = df_dvcs.sort_values(by='event')
         self.df_dvcs = df_dvcs               
 
     def pi02gSubtraction(self):
