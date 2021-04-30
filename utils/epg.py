@@ -340,6 +340,7 @@ class epg:
 	def makeDVpi0(self):
 		#make dvpi0 pairs
 		df_epgg = self.df_epgg
+		print(len(df_epgg))
 		cut_xBupper = df_epgg["xB"] < 1  # xB
 		cut_xBlower = df_epgg["xB"] > 0  # xB
 		cut_Q2 = df_epgg["Q2"] > 1  # Q2
@@ -353,13 +354,14 @@ class epg:
 		cut_recon = df_epgg["reconPi"] < 2  # recon gam angle
 		cut_pi0upper = df_epgg["Mpi0"] < 0.2
 		cut_pi0lower = df_epgg["Mpi0"] > 0.07
-		if ("Esector" in df_epgg.index):
-			cut_sector = (df_epgg["Esector"]!=df_epgg["Gsector"]) & (df_epgg["Esector"]!=df_epgg["Gsector2"])
+		if ("Esector" in df_epgg.columns):
+			cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
 		else:
 			cut_sector = 1
 
-		df_dvpi0 = df_epgg[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Vz & cut_mmep & cut_meepgg &
-		                   cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector]
+		df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Vz & cut_mmep & cut_meepgg &
+		                   cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
+
 		self.df_dvpi0 = df_dvpi0
 
 		# #cut by detector status
@@ -487,8 +489,8 @@ class epgFromROOT(epg):
 
 		self.closeFile()
 
-		df_electron = df_electron.astype({"Epx": float, "Epy": float, "Epz": float})
-		df_proton = df_proton.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+		df_electron = df_electron.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
+		df_proton = df_proton.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
 		df_gamma = df_gamma.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
 		df_logistics.loc[:,'event'] = df_logistics.index
@@ -496,8 +498,11 @@ class epgFromROOT(epg):
 		df_proton.loc[:,'event'] = df_proton.index.get_level_values('entry')
 		df_gamma.loc[:,'event'] = df_gamma.index.get_level_values('entry')
 
-		df_electron = pd.merge(df_electron, df_logistics,
-								how='outer', on='event')
+		# df_electron = pd.merge(df_electron, df_logistics,
+		# 						how='outer', on='event')
+		if ('Pstat' in df_proton):
+			df_proton = df_proton[df_proton["Pstat"]<4000]
+			df_gamma = df_gamma[df_gamma["Gstat"]>2000]
 
 		if ('PorigIndx' not in df_proton.index):
 			df_proton['PorigIndx'] = df_proton.index.get_level_values('subentry')
@@ -510,15 +515,10 @@ class epgFromROOT(epg):
 		df_ep = pd.merge(df_electron, df_proton, how='outer', on='event')
 		df_epg = pd.merge(df_ep, df_gamma, how='outer', on='event')
 		df_epg = df_epg[~np.isnan(df_epg["Gpx"])]
-		if ('Pstat' in df_epg):
-			df_epg = df_epg[df_epg["Pstat"]<4000]
-			df_epg = df_epg[df_epg["Gstat"]>2000]
 		df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
+		df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
 		df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
 		df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
-		if ('Pstat' in df_epgg):
-			df_epgg = df_epgg[df_epgg["Pstat"]<4000]
-			df_epgg = df_epgg[(df_epgg["Gstat"]>2000) | (df_epgg["Gstat2"]>2000)]
 
 		self.df_ep = df_ep
 		self.df_epg = df_epg
