@@ -39,7 +39,7 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvz"]
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
         # read keys
@@ -51,7 +51,7 @@ class root2pickle():
             df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         #convert data type to standard double
-        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvz": float})
+        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
         df_gammaGen = df_gammaGen.astype({"GenGpx": float, "GenGpy": float, "GenGpz": float})
 
@@ -120,7 +120,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
@@ -134,7 +134,7 @@ class root2pickle():
         self.closeFile()
 
         #convert data type to standard double
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
