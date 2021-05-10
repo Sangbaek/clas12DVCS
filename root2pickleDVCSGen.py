@@ -167,7 +167,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop, gen = args.generator)
+    converter = root2pickle(args.fname, entry_stop = args.entry_stop)
     df = converter.df
 
     df.to_pickle(args.out)
