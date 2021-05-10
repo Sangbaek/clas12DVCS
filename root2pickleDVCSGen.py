@@ -40,7 +40,7 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
         # read keys
@@ -52,7 +52,7 @@ class root2pickle():
             df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         #convert data type to standard double
-        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
+        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
         df_gammaGen = df_gammaGen.astype({"GenGpx": float, "GenGpy": float, "GenGpz": float})
 
@@ -62,7 +62,7 @@ class root2pickle():
         df_gammaGen.loc[:,'event'] = df_gammaGen.index.get_level_values('entry')
 
         #sort columns for readability
-        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvz"]]
+        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz"]]
 
         #spherical coordinates
         eleGen = [df_electronGen["GenEpx"], df_electronGen["GenEpy"], df_electronGen["GenEpz"]]
@@ -86,6 +86,7 @@ class root2pickle():
         df_z = pd.merge(df_z, df_gammaGen, how='inner', on='event')
 
         keys = {key:key[3:] for key in df_z.columns}
+        keys["event"] = "event"
         self.df_epg = df_z.rename(columns=keys)
 
     def saveDVCSvars(self, correction=None):
