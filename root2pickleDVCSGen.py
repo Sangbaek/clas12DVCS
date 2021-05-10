@@ -56,8 +56,6 @@ class root2pickle():
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
         df_gammaGen = df_gammaGen.astype({"GenGpx": float, "GenGpy": float, "GenGpz": float})
 
-        df_electronGen = 
-
         #set up a dummy index for merging
         df_electronGen.loc[:,'event'] = df_electronGen.index
         df_protonGen.loc[:,'event'] = df_protonGen.index
