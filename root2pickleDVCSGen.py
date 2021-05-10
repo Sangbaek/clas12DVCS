@@ -159,7 +159,7 @@ class root2pickle():
         self.df_epg = df_epg
 
     def saveRaw(self):
-        self.df = df_epg
+        self.df = self.df_epg
 
 
 if __name__ == "__main__":
