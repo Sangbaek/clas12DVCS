@@ -175,6 +175,10 @@ class root2pickle():
         df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
         df_epgg.loc[:,'MPt'] = np.sqrt((df_epgg["Epx"] + df_epgg["Ppx"] + df_epgg["Gpx"] + df_epgg["Gpx2"])**2 +
                                  (df_epgg["Epy"] + df_epgg["Ppy"] + df_epgg["Gpy"] + df_epgg["Gpy2"])**2)
+        # trento angles
+        df_epgg.loc[:,'phi1'] = angle(v3l, v3h)
+        df_epgg.loc[:,'phi1'] = np.where(dot(v3l, pro) > 0, 360.0 -
+                                  df_epgg['phi1'], df_epgg['phi1'])
 
         # exclusivity variables
         df_epgg.loc[:,'MM2_ep'] = (-M - ebeam + df_epgg["Ee"] +
