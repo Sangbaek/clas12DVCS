@@ -44,11 +44,11 @@ class root2pickle():
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
-            df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
+            df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in proKeysRec:
-            df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
+            df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in gamKeysRec:
-            df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=int(entry_stop))
+            df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         self.closeFile()
 
