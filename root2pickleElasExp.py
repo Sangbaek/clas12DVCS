@@ -362,8 +362,8 @@ class root2pickle():
 
         Vmiss = [-df_ep["Epx"] - df_ep["Ppx"], -df_ep["Epy"] - df_ep["Ppy"],
                   pbeam - df_ep["Epz"] - df_ep["Ppz"]]
-        VmissP = [-(df_epg["Epx"]), -(df_epg["Epy"]),
-                 -(-pbeam + df_epg["Epz"])]
+        VmissP = [-(df_ep["Epx"]), -(df_ep["Epy"]),
+                 -(-pbeam + df_ep["Epz"])]
         tanTan = np.tan(np.radians(df_ep['Ptheta'])) * np.tan(0.5*np.radians(df_ep['Etheta']))
         rEb = M * (1-tanTan)/tanTan
         delPhi = df_ep['Ephi'] - df_ep['Pphi']
@@ -372,7 +372,7 @@ class root2pickle():
         radElastElecMom = rEb / ( 1  + rEb * ( 1 - Math.cos(VE.theta() ) ) / targetMass );
 
 
-        df_ep.loc[:, 'Mpx'], df_epg.loc[:, 'Mpy'], df_epg.loc[:, 'Mpz'] = Vmiss
+        df_ep.loc[:, 'Mpx'], df_ep.loc[:, 'Mpy'], df_ep.loc[:, 'Mpz'] = Vmiss
 
         # binning kinematics
         df_ep.loc[:,'Q2'] = -((ebeam - df_ep['Ee'])**2 - mag2(VGS))
