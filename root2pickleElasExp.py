@@ -399,7 +399,7 @@ class root2pickle():
         df_elas_cand = df_ep[cut_W & cut_Ee & cut_Pp & cut_Vz & cut_back2back]
 
         #pure elastic conditions
-        cut_W = df_ep["W"] < 1.6  # W
+        cut_W = df_elas_cand["W"] < 1.6  # W
         cut_Eb = np.abs(df_elas_cand["rEb"] - ebeam) < 0.12*ebeam
         df_elas_pure = df_elas_cand[cut_W & cut_Eb]
         df_elas_pure.loc[:, 'pure'] = True
