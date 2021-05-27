@@ -393,7 +393,7 @@ class root2pickle():
         #common cuts
         cut_Ee = df_ep["Ee"] > 2  # Ee
         cut_Pp = mag([df_ep["Ppx"], df_ep["Ppy"], df_ep["Ppz"]]) > 0.12  # Pp
-        cut_Vz = np.abs(df_ep["Evz"] - df_ep["Pvz"]) < 2.5 + 2.5 / mag([df_ep["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
+        cut_Vz = np.abs(df_ep["Evz"] - df_ep["Pvz"]) < 2.5 + 2.5 / mag([df_ep["Ppx"], df_ep["Ppy"], df_ep["Ppz"]])
         cut_back2back = np.abs(delPhi-180) < 7.5
 
         df_elas_cand = df_ep[cut_W & cut_Ee & cut_Pp & cut_Vz & cut_back2back]
