@@ -369,8 +369,7 @@ class root2pickle():
         delPhi = df_ep['Ephi'] - df_ep['Pphi']
         delPhi = np.where(delPhi>360, delPhi-360, delPhi)
         delPhi = np.where(delPhi<0, delPhi+360, delPhi)
-        radElastElecMom = rEb / ( 1  + rEb * ( 1 - Math.cos(VE.theta() ) ) / targetMass );
-
+        radElastElecMom = rEb /(1 + rEb*(1 - np.cos(np.radians(df_ep["Etheta"]))) / M )
 
         df_ep.loc[:, 'Mpx'], df_ep.loc[:, 'Mpy'], df_ep.loc[:, 'Mpz'] = Vmiss
 
@@ -383,7 +382,7 @@ class root2pickle():
         df_ep.loc[:,'coplanarity'] = angle(v3l, v3h)
         df_ep.loc[:,'delPhi'] = delPhi
         df_ep.loc[:,'rEb'] = rEb
-        df_ep.loc[:, 'radElastElecMom'] = radElastElecMom
+        df_ep.loc[:,'radElastElecMom'] = radElastElecMom
 
         self.df_ep = df_ep
 
