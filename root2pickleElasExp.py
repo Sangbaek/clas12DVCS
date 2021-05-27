@@ -420,7 +420,7 @@ class root2pickle():
 
     def saveRaw(self):
         df_x = self.df_elas
-        self.df = df_elas
+        self.df = df_x
 
 
 if __name__ == "__main__":
