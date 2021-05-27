@@ -343,7 +343,7 @@ class root2pickle():
     #     self.df_dvcs = df_dvcs
 
 
-    def setElasVars(self):
+    def saveElasVars(self):
 
         df_ep = self.df_ep
 
