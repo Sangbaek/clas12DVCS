@@ -142,7 +142,7 @@ class root2pickle():
         df_epg.loc[:,'phi1'] = np.where(dot(v3l, pro) > 0, 360.0 -
                                   df_epg['phi1'], df_epg['phi1'])
         df_epg.loc[:,'phi2'] = angle(v3l, v3g)
-        df_epg.loc[:,'phi2'] = np.where(dot(VGS, cross(v3l, v3g)) <
+        df_epg.loc[:,'phi2'] = np.where(dot(v3l, gam) <
                                   0, 360.0 - df_epg['phi2'], df_epg['phi2'])
 
         # exclusivity variables
