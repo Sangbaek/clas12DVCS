@@ -229,7 +229,7 @@ class root2pickle():
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
         #For now, duplicated proton is not considered.
-        df_dvpi0 = df_dvpi0.sort_values(by='closeness', ascending = True)
+        df_dvpi0 = df_dvpi0.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
         df_dvpi0 = df_dvpi0.sort_values(by='event')        
         print(len(df_dvpi0))
