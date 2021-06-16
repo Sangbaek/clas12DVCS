@@ -196,7 +196,7 @@ class root2pickle():
             pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
+        # df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))

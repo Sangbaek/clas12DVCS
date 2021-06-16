@@ -109,11 +109,11 @@ class root2pickle():
             pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
+        # df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
         #photon momentum correction
-        df_gammaRec.loc[:, "Gpz"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpz+0.13, df_gammaRec.Gpz+0.13*(df_gammaRec.Gpz-1), df_gammaRec.Gpz])
-        df_gammaRec.loc[:, "Gpx"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpx+0.13*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx])
-        df_gammaRec.loc[:, "Gpy"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpy+0.13*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy])
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpz"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpz+0.13, df_gammaRec.Gpz+0.13*(df_gammaRec.Gpz-1), df_gammaRec.Gpz])
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpx"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpx+0.13*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx])
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpy"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpy+0.13*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy])
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
@@ -327,7 +327,7 @@ class root2pickle():
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
 
         #dealing with duplicates
-        df_dvcs = df_dvcs.sort_values(by='Ge', ascending = False)
+        df_dvcs = df_dvcs.sort_values(by=['Ge', 'Pstat'], ascending = [False, True])
         df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
         df_dvcs = df_dvcs.sort_values(by='event')
         self.df_dvcs = df_dvcs               
