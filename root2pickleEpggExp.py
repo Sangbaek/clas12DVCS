@@ -109,9 +109,13 @@ class root2pickle():
 
         # df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
         #photon momentum correction
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpz"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpz+0.13, df_gammaRec.Gpz+0.13*(df_gammaRec.Gpz-1), df_gammaRec.Gpz])
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpx"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpx+0.13*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx])
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpy"] = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpy+0.13*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy])
+        newGpz = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpz+0.13, df_gammaRec.Gpz+0.13*(df_gammaRec.Gpz-1), df_gammaRec.Gpz])
+        newGpx = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpx+0.13*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpx/df_gammaRec.Gpz, df_gammaRec.Gpx])
+        newGpy = np.select([df_gammaRec.Gpz>=2, (df_gammaRec.Gpz<2) & (df_gammaRec.Gpz>1), df_gammaRec.Gpz<=1],[df_gammaRec.Gpy+0.13*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy+0.13*(df_gammaRec.Gpz-1)*df_gammaRec.Gpy/df_gammaRec.Gpz, df_gammaRec.Gpy])
+        
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpx"] = newGpx
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpy"] = newGpy
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gpz"] = newGpz
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
