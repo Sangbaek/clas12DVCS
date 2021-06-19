@@ -388,8 +388,8 @@ class root2pickle():
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
         # proton reconstruction quality
-        cut_FD_proton = (df_epg.loc[:, "Psector"]<7) & (df_epg.loc[:, "Ptheta"]<37)
-        cut_CD_proton = (df_epg.loc[:, "Psector"]>7) & (df_epg.loc[:, "Ptheta"]>40) & (df_epg.loc[:, "Ptheta"]<66)
+        cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>40) & (df_dvcs.loc[:, "Ptheta"]<66)
 
         #   Exclusivity cuts
         cut_mmepg = np.abs(df_dvcs["MM2_epg"]) < 0.1  # mmepg
