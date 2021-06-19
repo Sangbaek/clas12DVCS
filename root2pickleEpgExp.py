@@ -75,7 +75,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
 
         df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
-        df_protonRecCD = df_protonRec.loc[df_protonRec.Psector>7, :]
+        df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
 
         #inbending
         if pol == "inbending":
@@ -170,9 +170,9 @@ class root2pickle():
         df_protonRec.loc[df_protonRec["Psector"]<7, "Ptheta"] = CorrectedPtheta_FD
         df_protonRec.loc[df_protonRec["Psector"]<7, "Pphi"] = CorrectedPphi_FD
 
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = CorrectedPp_CD
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = CorrectedPtheta_CD
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = CorrectedPphi_CD
+        df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Pp"] = CorrectedPp_CD
+        df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Ptheta"] = CorrectedPtheta_CD
+        df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Pphi"] = CorrectedPphi_CD
 
         df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
         df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
