@@ -141,8 +141,8 @@ class root2pickle():
         #convert data type to standard double
         # df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
         # df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
         #set up a dummy index for merging

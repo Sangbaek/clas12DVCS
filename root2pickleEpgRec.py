@@ -155,8 +155,8 @@ class root2pickle():
         #convert data type to standard double
         # df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
         # df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
         #set up a dummy index for merging
@@ -477,6 +477,7 @@ class root2pickle():
         # proton reconstruction quality
         cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<37)
         cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>40) & (df_dvcs.loc[:, "Ptheta"]<66)
+        cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
         #   Exclusivity cuts
         cut_mmepg = np.abs(df_dvcs["MM2_epg"]) < 0.1  # mmepg
@@ -494,7 +495,7 @@ class root2pickle():
         else:
             cut_sector = 1
 
-        df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_FD_proton & cut_CD_proton & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
+        df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
 
         #dealing with duplicates
