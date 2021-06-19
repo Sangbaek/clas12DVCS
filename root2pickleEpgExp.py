@@ -102,6 +102,23 @@ class root2pickle():
 
             CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
+            #CD part
+            const_CD = 1.93686914 - 0.116288824*df_protonRec.Ptheta + 0.00223685833*df_protonRec.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRec.Ptheta**3
+            coeff_CD = -0.738047800 + 0.0443343685*df_protonRec.Ptheta - 8.50985972*10**(-4)*df_protonRec.Ptheta*df_protonRec.Ptheta + 5.36810280 * 10**(-6) * df_protonRec.Ptheta**3
+
+            CorrectedPp_CD = const_CD + coeff_CD/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
+
+            const_CD = -1.09849291*100 + 8.86664014 * df_protonRec.Ptheta - 0.26643881 * df_protonRec.Ptheta**2 + 3.53814210 * 10**(-3) * df_protonRec.Ptheta**3 - 1.75297107 * 10**(-5) * df_protonRec.Ptheta**4
+            coeff_CD = 9.52034523*100 -5.74808292 * 10 * df_protonRec.Ptheta + 1.15386949 * df_protonRec.Ptheta**2 - 7.57970373 * 0.001 * df_protonRec.Ptheta**3
+            coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * df_protonRec.Ptheta - 2.37730217*0.1 * df_protonRec.Ptheta**2 + 1.55153003*0.001*df_protonRec.Ptheta**3
+
+            CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
+
+            const_CD = 4.94546178 -3.26662886*0.1 * df_protonRec.Ptheta +  7.39069603 * 0.001 * df_protonRec.Ptheta**2 -6.83599356*10**(-5) * df_protonRec.Ptheta**3 + 2.12303103*10**(-7) * df_protonRec.Ptheta**4
+            coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * df_protonRec.Ptheta + 4.00923146*10**(2) * df_protonRec.Ptheta**2 - 5.12792347 * df_protonRec.Ptheta**3 + 2.41793167*10**(-2) * df_protonRec.Ptheta**4
+            coeff2_CD =  1.20477219*10**(2) -5.86630228 * df_protonRec.Ptheta + 7.44007875*10**(-2) * df_protonRec.Ptheta**2 -2.42652473*10**(-4) * df_protonRec.Ptheta**3
+            CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
+
         elif pol == "outbending":
             #FD part
             const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27)],
@@ -129,9 +146,30 @@ class root2pickle():
 
             CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
+            #CD part
+            const_CD = 1.92657376 - 0.113836734*df_protonRec.Ptheta + 0.00215038526*df_protonRec.Ptheta**2 - 1.32525053 * 10**(-5)*df_protonRec.Ptheta**3
+            coeff_CD = -0.755650043 + 0.0445538936*df_protonRec.Ptheta - 8.38241864*10**(-4)*df_protonRec.Ptheta*df_protonRec.Ptheta + 5.16887255 * 10**(-6) * df_protonRec.Ptheta**3
+
+            CorrectedPp_CD = const_CD + coeff_CD/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
+
+            const_CD = -5.79024055*10 + 4.67197531 * df_protonRec.Ptheta - 0.140156897 * df_protonRec.Ptheta**2 + 1.85853057 * 10**(-3) * df_protonRec.Ptheta**3 - 9.19989908 * 10**(-6) * df_protonRec.Ptheta**4
+            coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * df_protonRec.Ptheta + 5.84757503 * df_protonRec.Ptheta**2 - 6.80409195 * 0.01 * df_protonRec.Ptheta**3 + 2.89244618 * 0.0001 * df_protonRec.Ptheta**4
+            coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * df_protonRec.Ptheta - 2.24699931*0.1 * df_protonRec.Ptheta**2 + 1.49390960*0.001*df_protonRec.Ptheta**3
+
+            CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
+
+            const_CD = 7.58761670 - 5.28224578*0.1 * df_protonRec.Ptheta +  1.31580117 * 0.01 * df_protonRec.Ptheta**2 -1.41738951*10**(-4) * df_protonRec.Ptheta**3 + 5.62884363*10**(-7) * df_protonRec.Ptheta**4
+            coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * df_protonRec.Ptheta + 2.57187193*10**(2) * df_protonRec.Ptheta**2 - 3.31379317 * df_protonRec.Ptheta**3 + 1.56896621*10**(-2) * df_protonRec.Ptheta**4
+            coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRec.Ptheta + 1.56575252*10**(-1) * df_protonRec.Ptheta**2 -7.71489734*10**(-4) * df_protonRec.Ptheta**3
+            CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
+
         df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = CorrectedPp_FD
         df_protonRec.loc[df_protonRec["Psector"]<7, "Ptheta"] = CorrectedPtheta_FD
         df_protonRec.loc[df_protonRec["Psector"]<7, "Pphi"] = CorrectedPphi_FD
+
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = CorrectedPp_CD
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = CorrectedPtheta_CD
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = CorrectedPphi_CD
 
         df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
         df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
@@ -241,6 +279,10 @@ class root2pickle():
         cut_Q2 = df_epgg.loc[:, "Q2"] > 1  # Q2
         cut_W = df_epgg.loc[:, "W"] > 2  # W
 
+        # proton reconstruction quality
+        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<66)
+
         # Exclusivity cuts
         cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
         cut_meepgg = df_epgg.loc[:, "ME_epgg"] < 0.7  # meepgg
@@ -251,7 +293,7 @@ class root2pickle():
         cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
         cut_Vz = np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
 
-        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg & cut_Vz &
+        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_FD_proton & cut_CD_proton & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
 
         #For an event, there can be two gg's passed conditions above.
@@ -261,7 +303,7 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
         df_dvpi0 = df_dvpi0.sort_values(by='event')        
-        self.df_dvpi0 = df_dvpi0 #done with saving x
+        self.df_x = df_dvpi0 #done with saving x
 
     def saveDVCSvars(self, correction=None):
         #set up dvcs variables
@@ -342,6 +384,10 @@ class root2pickle():
         cut_Pp = mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]]) > 0.12  # Pp
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
+        # proton reconstruction quality
+        cut_FD_proton = (df_epg.loc[:, "Psector"]<7) & (df_epg.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_epg.loc[:, "Psector"]>7) & (df_epg.loc[:, "Ptheta"]>40) & (df_epg.loc[:, "Ptheta"]<66)
+
         #   Exclusivity cuts
         cut_mmepg = np.abs(df_dvcs["MM2_epg"]) < 0.1  # mmepg
         cut_mmep = np.abs(df_dvcs["MM2_ep"]) < 0.6  # mmep
@@ -358,7 +404,7 @@ class root2pickle():
         else:
             cut_sector = 1
 
-        df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
+        df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_FD_proton & cut_CD_proton & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
 
         #dealing with duplicates
