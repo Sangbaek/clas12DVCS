@@ -467,10 +467,11 @@ class root2pickle():
         cut_back2back = np.abs(df_ep["delPhi"]-180) < 7.5
 
         # proton reconstruction quality
-        cut_FD_proton = (df_ep.loc[:, "Psector"]<7) & (df_ep.loc[:, "Ptheta"]<37)
-        cut_CD_proton = (df_ep.loc[:, "Psector"]>7) & (df_ep.loc[:, "Ptheta"]>40) & (df_ep.loc[:, "Ptheta"]<66)
+        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<66)
+        cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
-        df_elas_cand = df_ep[cut_Ee & cut_Pp & cut_Vz & cut_back2back & cut_FD_proton & cut_CD_proton]
+        df_elas_cand = df_ep[cut_Ee & cut_Pp & cut_Vz & cut_back2back & cut_proton]
 
         #pure elastic conditions
         cut_W = df_elas_cand["W"] < 1.6  # W

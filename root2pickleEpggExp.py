@@ -281,6 +281,11 @@ class root2pickle():
         cut_Q2 = df_epgg.loc[:, "Q2"] > 1  # Q2
         cut_W = df_epgg.loc[:, "W"] > 2  # W
 
+        # proton reconstruction quality
+        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<66)
+        cut_proton = (cut_FD_proton)|(cut_CD_proton)
+
         # Exclusivity cuts
         cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
         cut_meepgg = df_epgg.loc[:, "ME_epgg"] < 0.7  # meepgg
@@ -291,7 +296,7 @@ class root2pickle():
         cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
         cut_Vz = np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
 
-        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_mmep & cut_meepgg & cut_Vz &
+        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
 
         print(len(df_dvpi0))
