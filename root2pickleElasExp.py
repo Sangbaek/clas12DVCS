@@ -439,7 +439,7 @@ class root2pickle():
         #rad. elastic conditions
         cut_rad = np.abs(df_elas_cand["Ep"] - df_elas_cand["radElastElecMom"]) < 0.12 * df_elas_cand["radElastElecMom"]
         cut_missDir = np.sqrt(df_elas_cand["Mpx"]**2 + df_elas_cand["Mpy"]**2)/np.sqrt(df_elas_cand["Mpx"]**2 + df_elas_cand["Mpy"]**2 + df_elas_cand["Mpz"]**2) < 0.25
-        cut_ignore_pure = df_elas_cand["event"].isin(df_elas_pure["event"])
+        cut_exclude_pure = ~df_elas_cand["event"].isin(df_elas_pure["event"])
         df_elas_rad = df_elas_cand[cut_rad & cut_missDir & cut_ignore_pure]
         df_elas_rad.loc[:, 'pure'] = False
 
