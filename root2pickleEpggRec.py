@@ -194,7 +194,7 @@ class root2pickle():
             coeff_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27)],
                               [-0.03334437+0.00177781*df_protonRec.Ptheta, 0.0402797945 - 0.00197220505*df_protonRec.Ptheta + 4.50918200*10**(-5) * df_protonRec.Ptheta * df_protonRec.Ptheta])
 
-            CorrectedPp_FD = const_FD + coeff/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
+            CorrectedPp_FD = const_FD + coeff_FD/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
 
             const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
                               [0, -1.79343987 +0.105559096 *df_protonRec.Ptheta + -0.00157174358*df_protonRec.Ptheta*df_protonRec.Ptheta, -0.123044632])
