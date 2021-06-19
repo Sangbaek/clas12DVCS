@@ -151,7 +151,7 @@ class root2pickle():
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
-        # #save only FD protons and photons
+        #save only FD protons and photons
         # df_protonRec = df_protonRec[df_protonRec["Psector"]<7]
         #proton momentum correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
@@ -161,39 +161,68 @@ class root2pickle():
 
         #inbending
         if pol == "inbending":
-            const = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            #FD part
+            const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [-0.0123049 + 0.00028887*df_protonRec.Ptheta, -0.138227479 + 8.07557430*0.001*df_protonRec.Ptheta -1.34807927*0.0001*df_protonRec.Ptheta*df_protonRec.Ptheta, -0.0275235])
-            coeff = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            coeff_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [0.01528006 - 0.00024079*df_protonRec.Ptheta, 5.65817597*0.01 -2.36903348*0.001*df_protonRec.Ptheta + 4.93780046*0.00001*df_protonRec.Ptheta*df_protonRec.Ptheta, 0.03998975])    
 
-            CorrectedPp = const + coeff/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
+            CorrectedPp_FD = const_FD + coeff_FD/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
 
-            const = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            const_FD = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [2.63643690*0.01, 0.50047232 -0.03834672 *df_protonRec.Ptheta + 0.00071967*df_protonRec.Ptheta*df_protonRec.Ptheta, 6.91308654 - 0.439839300*df_protonRec.Ptheta +6.83075548*0.001*df_protonRec.Ptheta*df_protonRec.Ptheta, 1.59424606, 1.47198581*10])
-            coeff = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            coeff_FD = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [-1.46440415, 74.99891704  -6.1576777*df_protonRec.Ptheta + 0.11469137*df_protonRec.Ptheta*df_protonRec.Ptheta, 682.909471 - 43.9551177 * df_protonRec.Ptheta + 0.682383790 * df_protonRec.Ptheta * df_protonRec.Ptheta, -8.19627119, -23.55701865])    
-            coeff2 = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            coeff2_FD = np.select([df_protonRec.Ptheta<19.5, (df_protonRec.Ptheta>=19.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<39), (df_protonRec.Ptheta>=39) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [-3.47690993, 47.71351973 -4.34918241*df_protonRec.Ptheta + 0.08841191*df_protonRec.Ptheta*df_protonRec.Ptheta, 100.33995753 - 6.96600416*df_protonRec.Ptheta + 0.11223046*df_protonRec.Ptheta*df_protonRec.Ptheta, -1.25261927, -0.40113733])    
 
-            CorrectedPtheta = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
+            CorrectedPtheta_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
 
-            const = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            const_FD = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [-0.190662844, -0.20725736 -0.00675627 *df_protonRec.Ptheta + 0.0007863*df_protonRec.Ptheta*df_protonRec.Ptheta, 12.1881698 - 0.78906294*df_protonRec.Ptheta +0.01297898*df_protonRec.Ptheta*df_protonRec.Ptheta, -4.59743066*10])
-            coeff = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            coeff_FD = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [6.48745941, 142.96379788  -16.66339055*df_protonRec.Ptheta + 0.51311212*df_protonRec.Ptheta*df_protonRec.Ptheta, 2.1853046 + 5.78521226 * df_protonRec.Ptheta - 0.09727796 * df_protonRec.Ptheta * df_protonRec.Ptheta, 7.46969457*10])    
-            coeff2 = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
+            coeff2_FD = np.select([df_protonRec.Ptheta<16.5, (df_protonRec.Ptheta>=16.5) & (df_protonRec.Ptheta<27), (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<42), df_protonRec.Ptheta>=42],
                               [-3.14646608, 17.39529095 -1.78403359*df_protonRec.Ptheta + 0.0335692*df_protonRec.Ptheta*df_protonRec.Ptheta, -1.03655317*10 + 0.161333213*df_protonRec.Ptheta -1.29625675*0.001*df_protonRec.Ptheta*df_protonRec.Ptheta, -4.41246899*0.1])    
 
-            CorrectedPphi = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
+            CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = CorrectedPp
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Ptheta"] = CorrectedPtheta
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pphi"] = CorrectedPphi
+        elif pol == "outbending":
+            #FD part
+            const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27)],
+                              [0.02067157-0.0009827*df_protonRec.Ptheta, -0.11216694 + 0.0069912*df_protonRec.Ptheta - 0.00011733 * df_protonRec.Ptheta * df_protonRec.Ptheta])
+            coeff_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27)],
+                              [-0.03334437+0.00177781*df_protonRec.Ptheta, 0.0402797945 - 0.00197220505*df_protonRec.Ptheta + 4.50918200*10**(-5) * df_protonRec.Ptheta * df_protonRec.Ptheta])
 
-            df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
-            pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+            CorrectedPp_FD = const_FD + coeff/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
+
+            const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, -1.79343987 +0.105559096 *df_protonRec.Ptheta + -0.00157174358*df_protonRec.Ptheta*df_protonRec.Ptheta, -0.123044632])
+            coeff_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, -27.4344526 + 1.61037587* df_protonRec.Ptheta - 0.0242300381* df_protonRec.Ptheta * df_protonRec.Ptheta, -7.52117236])    
+            coeff2_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, -45.2983842 +2.51745350*df_protonRec.Ptheta - 0.0365942178*df_protonRec.Ptheta*df_protonRec.Ptheta, -3.52825441])    
+
+            CorrectedPtheta_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
+
+            const_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, 5.37967179 -0.324630795 *df_protonRec.Ptheta + 0.00476947696*df_protonRec.Ptheta*df_protonRec.Ptheta, -0.0224918574])
+            coeff_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, 7.25038499*1000 + -413.586911* df_protonRec.Ptheta + 5.91815405 * df_protonRec.Ptheta * df_protonRec.Ptheta, 55.6319490])    
+            coeff2_FD = np.select([df_protonRec.Ptheta<27, (df_protonRec.Ptheta>=27) & (df_protonRec.Ptheta<38), df_protonRec.Ptheta>=38],
+                              [0, -124.626261 + 6.77668728*df_protonRec.Ptheta - 0.0960045129*df_protonRec.Ptheta*df_protonRec.Ptheta, -5.12646023])    
+
+            CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
+
+        df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = CorrectedPp_FD
+        df_protonRec.loc[df_protonRec["Psector"]<7, "Ptheta"] = CorrectedPtheta_FD
+        df_protonRec.loc[df_protonRec["Psector"]<7, "Pphi"] = CorrectedPphi_FD
+
+        df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+        pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
         # df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
