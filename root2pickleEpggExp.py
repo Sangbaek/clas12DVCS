@@ -309,10 +309,10 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
         df_dvpi0 = df_dvpi0.sort_values(by='event')        
         print(len(df_dvpi0))
-        self.df_x = df_dvpi0 #done with saving x
+        self.df_dvpi0 = df_dvpi0 #done with saving x
 
     def saveRaw(self):
-        df_x = self.df_x
+        df_x = self.df_dvpi0
         self.df = df_x
 
 
