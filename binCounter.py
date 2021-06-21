@@ -17,6 +17,7 @@ from copy import copy
 class binCounter():
 	def __init__(self, df):
 		self.df = df
+		self.counts = []
 		binedges_xB = [0.29, 0.32, 0.35, 0.38] # start with small range of xB to ignore finite bin volume effects.
 		binedges_Q2 = [2.2, 2.7, 3.2] # start with small range of xB to ignore finite bin volume effects.
 		binedges_t = [0.23, 0.3, 0.39, 0.52]
@@ -48,7 +49,7 @@ class binCounter():
 				lower_t = binedges_t[ind_t]
 				upper_t = binedges_t[ind_t+1]
 
-				print(ind_bin, self.dfinOneBin(lower_xB, upper_xB, lower_Q2, upper_Q2, lower_t, upper_t)[0])
+				self.counts.append(self.dfinOneBin(lower_xB, upper_xB, lower_Q2, upper_Q2, lower_t, upper_t)[0])
 
 		# dict_xB = {'lower_xB': np.array(binedges_xB[:-1]), 'upper_xB': np.array(binedges_xB[1:])}
 		# dict_Q2 = {'lower_Q2': np.array(binedges_Q2[:-1]), 'upper_Q2': np.array(binedges_Q2[1:])}
@@ -102,32 +103,61 @@ class binCounter():
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+	parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-f","--fname", help="a pickle file contains xB, Q2, t, phi", default="pi0.pkl")
-    parser.add_argument("-o","--out", help="a single pickle file that only contains xBQ2tphi binned data", default="xBQ2tphi.pkl")
-    parser.add_argument("-d","--detector", help="detector components/FDFD/CDFD/CDFT", default= "all")
-    
-    args = parser.parse_args()
+	parser.add_argument("-f","--fname", help="a pickle file contains xB, Q2, t, phi", default="pi0.pkl")
+	parser.add_argument("-o","--out", help="a single pickle file that only contains xBQ2tphi binned data", default="xBQ2tphi.pkl")
+	parser.add_argument("-d","--detector", help="detector components/FDFD/CDFD/CDFT", default= "all")
 
-    df = pd.read_pickle(args.fname)
-    if args.detector == "all":
-    	pass
-    elif args.detector == "FD":
-    	df = df[(df.Psector<7)]
+	args = parser.parse_args()
 
-    elif args.detector == "CD":
-    	df = df[(df.Psector>6)]
+	df_array = []
+	counts = None
+	for i in range(10):
+		df = pd.read_pickle("gen/2942_"+str(i)+".gen.pkl")
 
-    # elif args.detector == "CDFT":
-    # 	df = df[(df.Psector<7) & (df.Gsector>7)]
+		print(i)
+		if args.detector == "all":
+			pass
+		elif args.detector == "FD":
+			df = df[(df.Psector<7)]
+		elif args.detector == "CD":
+			df = df[(df.Psector>6)]
 
-    # elif args.detector == "FDFT":
-    # 	df = df[(df.Psector<7) & (df.Gsector>7)]
+		if counts:
+			new_counts = binCounter(df).counts
+			for i, count in enumerate(new_counts):
+				counts[i] = counts[i] + count
+		else:
+			counts = binCounter(df).counts
 
-    # else:
-    # 	print("check the desired detector component.")
-    # 	exit()
-    binCounter(df)
+		df = pd.read_pickle("gen/3057_"+str(i)+".gen.pkl")
+		if args.detector == "all":
+			pass
+		elif args.detector == "FD":
+			df = df[(df.Psector<7)]
+		elif args.detector == "CD":
+			df = df[(df.Psector>6)]
+
+		if counts:
+			new_counts = binCounter(df).counts
+			for i, count in enumerate(new_counts):
+				counts[i] = counts[i] + count
+		else:
+			counts = binCounter(df).counts
+
+	print(counts)
+
+
+
+	    # elif args.detector == "CDFT":
+	    # 	df = df[(df.Psector<7) & (df.Gsector>7)]
+
+	    # elif args.detector == "FDFT":
+	    # 	df = df[(df.Psector<7) & (df.Gsector>7)]
+
+	    # else:
+	    # 	print("check the desired detector component.")
+	    # 	exit()
     # df_xBQ2tphi = binCounter(df).df_xBQ2tphi
     # df_xBQ2tphi.to_pickle(args.out)
