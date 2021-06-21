@@ -468,7 +468,7 @@ class root2pickle():
 
         # proton reconstruction quality
         cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<37)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<66)
+        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<65)
         cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
         df_elas_cand = df_ep[cut_Ee & cut_Pp & cut_Vz & cut_back2back & cut_proton]

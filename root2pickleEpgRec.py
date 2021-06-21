@@ -375,7 +375,7 @@ class root2pickle():
 
         # proton reconstruction quality
         cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<37)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<66)
+        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>40) & (df_epgg.loc[:, "Ptheta"]<65)
         cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
         # Exclusivity cuts
@@ -480,10 +480,10 @@ class root2pickle():
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
         # proton reconstruction quality
-        # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<37)
-        # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>40) & (df_dvcs.loc[:, "Ptheta"]<66)
-        cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) #& (df_dvcs.loc[:, "Ptheta"]<37)
-        cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) #& (df_dvcs.loc[:, "Ptheta"]<66) #& (df_dvcs.loc[:, "Ptheta"]>40) 
+        cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<37)
+        cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>40) & (df_dvcs.loc[:, "Ptheta"]<65)
+        # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) #& (df_dvcs.loc[:, "Ptheta"]<37)
+        # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) #& (df_dvcs.loc[:, "Ptheta"]<66) #& (df_dvcs.loc[:, "Ptheta"]>40) 
         cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
         #   Exclusivity cuts
@@ -506,9 +506,9 @@ class root2pickle():
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
 
         #dealing with duplicates
-        # df_dvcs = df_dvcs.sort_values(by=['Ge', 'Psector', 'Gsector'], ascending = [False, True, True])
-        # df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
-        # df_dvcs = df_dvcs.sort_values(by='event')
+        df_dvcs = df_dvcs.sort_values(by=['Ge', 'Psector', 'Gsector'], ascending = [False, True, True])
+        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+        df_dvcs = df_dvcs.sort_values(by='event')
         self.df_dvcs = df_dvcs               
          
 
