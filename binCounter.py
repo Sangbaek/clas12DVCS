@@ -126,8 +126,8 @@ if __name__ == "__main__":
 
 		if counts:
 			new_counts = binCounter(df).counts
-			for i, count in enumerate(new_counts):
-				counts[i] = counts[i] + count
+			for it, count in enumerate(new_counts):
+				counts[it] = counts[it] + count
 		else:
 			counts = binCounter(df).counts
 
@@ -141,8 +141,8 @@ if __name__ == "__main__":
 
 		if counts:
 			new_counts = binCounter(df).counts
-			for i, count in enumerate(new_counts):
-				counts[i] = counts[i] + count
+			for it, count in enumerate(new_counts):
+				counts[it] = counts[it] + count
 		else:
 			counts = binCounter(df).counts
 
