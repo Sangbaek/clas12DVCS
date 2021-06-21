@@ -411,6 +411,12 @@ class root2pickle():
 
         df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
+        
+        #dealing with duplicates
+        df_dvcs = df_dvcs.sort_values(by=['Ge', 'Psector', 'Gsector'], ascending = [False, True, True])
+        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+        df_dvcs = df_dvcs.sort_values(by='event')
+        self.df_dvcs = df_dvcs               
 
     def pi02gSubtraction(self):
         #exclude dvpi0 from dvcs. use only when both set up.
