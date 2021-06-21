@@ -75,12 +75,14 @@ if __name__ == "__main__":
 
     parser.add_argument("-f","--fname", help="a pickle file contains xB, Q2, t, phi", default="pi0.pkl")
     parser.add_argument("-o","--out", help="a single pickle file that only contains xBQ2tphi binned data", default="xBQ2tphi.pkl")
-    parser.add_argument("-d","--detector", help="detector components/FDFD/CDFD/CDFT", default= "FDFD")
+    parser.add_argument("-d","--detector", help="detector components/FDFD/CDFD/CDFT", default= "all")
     
     args = parser.parse_args()
 
     df = pd.read_pickle(args.fname)
-    if args.detector == "FDFD":
+    if args.detector == "all":
+    	pass
+    elif args.detector == "FDFD":
     	df = df[(df.Psector<7) & (df.Gsector<7)]
 
     elif args.detector == "CDFD":
