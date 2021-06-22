@@ -88,11 +88,11 @@ class binCounter():
 			cond_lower_t = df["t"] > lower_t
 			cond_upper_t = df["t"] < upper_t
 		if "phi2" in df.columns:
-			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t]
+			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t].phi2
 			# cond_lower_phi = df["phi2"] > lower_phi
 			# cond_upper_phi = df["phi2"] < upper_phi
 		else:
-			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t]
+			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t].phi
 		# 	cond_lower_phi = df["phi"] > lower_phi
 		# 	cond_upper_phi = df["phi"] < upper_phi
 
