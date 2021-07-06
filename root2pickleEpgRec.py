@@ -141,7 +141,7 @@ class root2pickle():
         # eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector", "PPcalsector", "PFtof1asector", "PFtof1bsector", "PFtof2sector"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector", "PPcalSector", "PFtof1aSector", "PFtof1bSector", "PFtof2Sector"]
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
