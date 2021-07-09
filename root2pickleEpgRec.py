@@ -387,10 +387,11 @@ class root2pickle():
         cut_W = df_epgg.loc[:, "W"] > 2  # W
 
         # proton reconstruction quality
-        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
-        cut_proton = (cut_FD_proton)|(cut_CD_proton)
-
+        # cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
+        # cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
+        # cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        cut_proton = 1
+        
         # Exclusivity cuts
         cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
         cut_meepgg = df_epgg.loc[:, "ME_epgg"] < 0.7  # meepgg
@@ -493,11 +494,12 @@ class root2pickle():
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
         # proton reconstruction quality
-        cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>45) & (df_dvcs.loc[:, "Ptheta"]<65)
+        # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<35)
+        # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>45) & (df_dvcs.loc[:, "Ptheta"]<65)
         # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) #& (df_dvcs.loc[:, "Ptheta"]<37)
         # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) #& (df_dvcs.loc[:, "Ptheta"]<66) #& (df_dvcs.loc[:, "Ptheta"]>40) 
-        cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        # cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        cut_proton = 1 #(cut_FD_proton)|(cut_CD_proton)
 
         #   Exclusivity cuts
         cut_mmepg = np.abs(df_dvcs["MM2_epg"]) < 0.1  # mmepg
@@ -518,10 +520,10 @@ class root2pickle():
         df_dvcs = df_dvcs[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_Ee & cut_Ge & cut_Pp & cut_Vz & cut_mmepg & cut_mmep &
                          cut_mmegupper & cut_mmeglower & cut_meepgupper & cut_meepglower & cut_mpt & cut_cone & cut_recon & cut_sector]
 
-        #dealing with duplicates
-        df_dvcs = df_dvcs.sort_values(by=['Ge', 'Psector', 'Gsector'], ascending = [False, True, True])
-        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
-        df_dvcs = df_dvcs.sort_values(by='event')
+        # #dealing with duplicates
+        # df_dvcs = df_dvcs.sort_values(by=['Ge', 'Psector', 'Gsector'], ascending = [False, True, True])
+        # df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+        # df_dvcs = df_dvcs.sort_values(by='event')
         self.df_dvcs = df_dvcs               
          
 
