@@ -146,6 +146,9 @@ class root2pickle():
         proKeysRec.extend(["PFtof1bSector", "PFtof1bHitx", "PFtof1bHity", "PFtof1bHitz", "PFtof1bTime", "PFtof1bPath"])
         proKeysRec.extend(["PFtof2Sector", "PFtof2Hitx", "PFtof2Hity", "PFtof2Hitz", "PFtof2Time", "PFtof2Path"])
         proKeysRec.extend(["PCtofHitx", "PCtofHity", "PCtofHitz", "PCtofTime", "PCtofPath"])
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
+        proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz"])
+        proKeysRec.extend(["PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
