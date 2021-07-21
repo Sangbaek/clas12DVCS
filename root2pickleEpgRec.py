@@ -138,23 +138,26 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
+        df_protonDet = pd.DataFrame()
         # eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        proKeysRec.extend(["PFtof1aSector", "PFtof1aHitx", "PFtof1aHity", "PFtof1aHitz", "PFtof1aTime", "PFtof1aPath"])
-        proKeysRec.extend(["PFtof1bSector", "PFtof1bHitx", "PFtof1bHity", "PFtof1bHitz", "PFtof1bTime", "PFtof1bPath"])
-        proKeysRec.extend(["PFtof2Sector", "PFtof2Hitx", "PFtof2Hity", "PFtof2Hitz", "PFtof2Time", "PFtof2Path"])
-        proKeysRec.extend(["PCtofHitx", "PCtofHity", "PCtofHitz", "PCtofTime", "PCtofPath"])
-        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
-        proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz"])
-        proKeysRec.extend(["PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
+        proKeysDet = ["PFtof1aSector", "PFtof1aHitx", "PFtof1aHity", "PFtof1aHitz", "PFtof1aTime", "PFtof1aPath"]
+        proKeysDet.extend(["PFtof1bSector", "PFtof1bHitx", "PFtof1bHity", "PFtof1bHitz", "PFtof1bTime", "PFtof1bPath"])
+        proKeysDet.extend(["PFtof2Sector", "PFtof2Hitx", "PFtof2Hity", "PFtof2Hitz", "PFtof2Time", "PFtof2Path"])
+        proKeysDet.extend(["PCtofHitx", "PCtofHity", "PCtofHitz", "PCtofTime", "PCtofPath"])
+        proKeysDet.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
+        proKeysDet.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz"])
+        proKeysDet.extend(["PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in proKeysRec:
             df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+        for key in proKeysDet:
+            df_protonDet[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in gamKeysRec:
             df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         self.closeFile()
@@ -169,6 +172,7 @@ class root2pickle():
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+        df_protonDet.loc[:,'event'] = df_protonDet.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
@@ -301,6 +305,7 @@ class root2pickle():
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
         df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
@@ -315,6 +320,8 @@ class root2pickle():
         df_epg = df_epg[~np.isnan(df_epg["Gpx"])]
 
         self.df_epg = df_epg #temporarily save df_epgg
+
+        self.df_protonDet = df_protonDet # save proton detector properties
 
     def saveDVpi0vars(self):
         #set up pi0 variables
@@ -540,7 +547,9 @@ class root2pickle():
     def saveRaw(self):
         df_x = self.df_dvcs
         df_z = self.df_z
+        df_protonDet = self.df_protonDet
         df = pd.merge(df_x, df_z, how = 'inner', on='event')
+        df = pd.merge(df, df_protonDet, how = 'inner', on ='event')
         self.df = df
 
 
