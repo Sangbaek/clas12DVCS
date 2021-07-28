@@ -164,7 +164,6 @@ class root2pickle():
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-        df_protonDet.loc[:,'event'] = df_protonDet.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
@@ -372,8 +371,6 @@ class root2pickle():
         df_epg = df_epg[~np.isnan(df_epg["Gpx"])]
 
         self.df_epg = df_epg #temporarily save df_epgg
-
-        self.df_protonDet = df_protonDet # save proton detector properties
 
     def saveDVpi0vars(self):
         #set up pi0 variables
@@ -599,9 +596,7 @@ class root2pickle():
     def saveRaw(self):
         df_x = self.df_dvcs
         df_z = self.df_z
-        df_protonDet = self.df_protonDet
         df = pd.merge(df_x, df_z, how = 'inner', on='event')
-        df = pd.merge(df, df_protonDet, how = 'inner', on ='event')
         self.df = df
 
 
