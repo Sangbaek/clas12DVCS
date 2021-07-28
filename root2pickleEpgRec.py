@@ -186,7 +186,7 @@ class root2pickle():
                 x0, x1, x2, x3 = x
                 return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
-            df_protonRecFD = dfprotonRecFD.loc[df_protonRec.Pp > 0.3, :]
+            df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
             df_protonRecFD.DC1theta = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
             best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
             df_protonRecFD_check1 = df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), :]
