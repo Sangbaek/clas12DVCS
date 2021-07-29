@@ -336,7 +336,7 @@ class root2pickle():
                 df_protonRecFD_check1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
                 df_protonRecFD_check1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_check2.loc[:, "Pp"] = CorrectedPp_FD_2
                 df_protonRecFD_check2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
                 df_protonRecFD_check2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
