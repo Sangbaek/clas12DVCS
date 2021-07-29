@@ -177,6 +177,7 @@ class root2pickle():
 
         df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
         df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
+        df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
 
         correction = False
 
@@ -331,21 +332,26 @@ class root2pickle():
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             if pol == "inbending":
-                df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), "Pp"] = CorrectedPp_FD_1
-                df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), "Ptheta"] = CorrectedPtheta_FD_1
-                df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), "Pphi"] = CorrectedPphi_FD_1
+                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_1
+                df_protonRecFD_check1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                df_protonRecFD_check1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-                df_protonRecFD.loc[df_protonRecFD.DC1theta >= corr(best_params, df_protonRecFD.Pp), "Pp"] = CorrectedPp_FD_2
-                df_protonRecFD.loc[df_protonRecFD.DC1theta >= corr(best_params, df_protonRecFD.Pp), "Ptheta"] = CorrectedPtheta_FD_2
-                df_protonRecFD.loc[df_protonRecFD.DC1theta >= corr(best_params, df_protonRecFD.Pp), "Pphi"] = CorrectedPphi_FD_2
+                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_check2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                df_protonRecFD_check2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+
+                df_protonRecFD = pd.concat([df_protonRecFD_check1, df_protonRecFD_check2])
+                df_protonRecFD = df_protonRecFD.drop("DC1theta", axis = 1)
 
             if pol == "outbending":
-                df_protonRecFD.loc[df_protonRecFD["Psector"]<7, "Pp"] = CorrectedPp_FD
-                df_protonRecFD.loc[df_protonRecFD["Psector"]<7, "Ptheta"] = CorrectedPtheta_FD
-                df_protonRecFD.loc[df_protonRecFD["Psector"]<7, "Pphi"] = CorrectedPphi_FD
+                df_protonRecFD.loc[:, "Pp"] = CorrectedPp_FD
+                df_protonRecFD.loc[:, "Ptheta"] = CorrectedPtheta_FD
+                df_protonRecFD.loc[:, "Pphi"] = CorrectedPphi_FD
 
-            df_protonRec.loc[df_protonRec.Psector<7, :] = df_protonRecFD
-            df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :] = df_protonRecCD
+            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
+
+            # df_protonRec.loc[df_protonRec.Psector<7, :] = df_protonRecFD
+            # df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :] = df_protonRecCD
 
             df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
