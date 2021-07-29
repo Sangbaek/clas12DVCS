@@ -230,9 +230,12 @@ class root2pickle():
 
             CorrectedPtheta_FD_1 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check1.loc[:, "Pp"]) + df_protonRecFD_check1.loc[:, "Ptheta"]
 
-            const_FD = 4.53922278 - 0.72676857*df_protonRecFD_check1.Ptheta + 0.02197507 * df_protonRecFD_check1.Ptheta * df_protonRecFD_check1.Ptheta
-            coeff_FD = -71.11886036 + 9.04008928*df_protonRecFD_check1.Ptheta  -0.26198965*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta
-            coeff2_FD = -9.85151405 +  1.19279965*df_protonRecFD_check1.Ptheta -0.03529071*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta
+            const_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, 4.53922278 - 0.72676857*df_protonRecFD_check1.Ptheta + 0.02197507*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
+            coeff_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, -13.23900015  + 1.70084877*df_protonRecFD_check1.Ptheta  -0.04636718*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
+            coeff2_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, -3.25471872 + 0.38338761*df_protonRecFD_check1.Ptheta  -0.0122272*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
             CorrectedPphi_FD_1 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check1.loc[:, "Pp"]) + df_protonRecFD_check1.loc[:, "Pphi"]
 
             const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*df_protonRecFD_check2.Ptheta - 2.86486404*10**(-4)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
