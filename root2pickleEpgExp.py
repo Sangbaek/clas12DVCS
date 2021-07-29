@@ -48,21 +48,13 @@ class root2pickle():
         # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        proKeysDet = ["PFtof1aSector", "PFtof1aHitx", "PFtof1aHity", "PFtof1aHitz", "PFtof1aTime", "PFtof1aPath"]
-        proKeysDet.extend(["PFtof1bSector", "PFtof1bHitx", "PFtof1bHity", "PFtof1bHitz", "PFtof1bTime", "PFtof1bPath"])
-        proKeysDet.extend(["PFtof2Sector", "PFtof2Hitx", "PFtof2Hity", "PFtof2Hitz", "PFtof2Time", "PFtof2Path"])
-        proKeysDet.extend(["PCtofHitx", "PCtofHity", "PCtofHitz", "PCtofTime", "PCtofPath"])
-        proKeysDet.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
-        proKeysDet.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz"])
-        proKeysDet.extend(["PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in proKeysRec:
             df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
-        for key in proKeysDet:
-            df_protonDet[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in gamKeysRec:
             df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         self.closeFile()
@@ -77,7 +69,6 @@ class root2pickle():
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-        df_protonDet.loc[:,'event'] = df_protonDet.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
@@ -91,36 +82,86 @@ class root2pickle():
 
         df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
         df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
+        df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
 
         correction = False
 
         #inbending
         if pol == "inbending":
-            #FD part
-            const_FD = np.select([df_protonRecFD.Ptheta<27, (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [-0.0123049 + 0.00028887*df_protonRecFD.Ptheta, -0.138227479 + 8.07557430*0.001*df_protonRecFD.Ptheta -1.34807927*0.0001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -0.0275235])
-            coeff_FD = np.select([df_protonRecFD.Ptheta<27, (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [0.01528006 - 0.00024079*df_protonRecFD.Ptheta, 5.65817597*0.01 -2.36903348*0.001*df_protonRecFD.Ptheta + 4.93780046*0.00001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 0.03998975])    
+            def corr(x, t):
+                x0, x1, x2, x3 = x
+                return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
-            CorrectedPp_FD = const_FD + coeff_FD/df_protonRecFD.loc[:, "Pp"] + df_protonRecFD.loc[:, "Pp"]
+            df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
+            df_protonRecFD.loc[:, "DC1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
+            best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
+            df_protonRecFD_check1 = df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), :]
+            df_protonRecFD_check2 = df_protonRecFD.loc[df_protonRecFD.DC1theta >= corr(best_params, df_protonRecFD.Pp), :]
+            # FD part
+            # const_FD = np.select([df_protonRecFD.Ptheta<27, (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [-0.0123049 + 0.00028887*df_protonRecFD.Ptheta, -0.138227479 + 8.07557430*0.001*df_protonRecFD.Ptheta -1.34807927*0.0001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -0.0275235])
+            # coeff_FD = np.select([df_protonRecFD.Ptheta<27, (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [0.01528006 - 0.00024079*df_protonRecFD.Ptheta, 5.65817597*0.01 -2.36903348*0.001*df_protonRecFD.Ptheta + 4.93780046*0.00001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 0.03998975])    
 
-            const_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [2.63643690*0.01, 0.50047232 -0.03834672 *df_protonRecFD.Ptheta + 0.00071967*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 6.91308654 - 0.439839300*df_protonRecFD.Ptheta +6.83075548*0.001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 1.59424606, 1.47198581*10])
-            coeff_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [-1.46440415, 74.99891704  -6.1576777*df_protonRecFD.Ptheta + 0.11469137*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 682.909471 - 43.9551177 * df_protonRecFD.Ptheta + 0.682383790 * df_protonRecFD.Ptheta * df_protonRecFD.Ptheta, -8.19627119, -23.55701865])    
-            coeff2_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [-3.47690993, 47.71351973 -4.34918241*df_protonRecFD.Ptheta + 0.08841191*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 100.33995753 - 6.96600416*df_protonRecFD.Ptheta + 0.11223046*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -1.25261927, -0.40113733])    
+            # CorrectedPp_FD = const_FD + coeff_FD/df_protonRecFD.loc[:, "Pp"] + df_protonRecFD.loc[:, "Pp"]
 
-            CorrectedPtheta_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD.loc[:, "Pp"]) + df_protonRecFD.loc[:, "Ptheta"]
+            # const_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [2.63643690*0.01, 0.50047232 -0.03834672 *df_protonRecFD.Ptheta + 0.00071967*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 6.91308654 - 0.439839300*df_protonRecFD.Ptheta +6.83075548*0.001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 1.59424606, 1.47198581*10])
+            # coeff_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [-1.46440415, 74.99891704  -6.1576777*df_protonRecFD.Ptheta + 0.11469137*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 682.909471 - 43.9551177 * df_protonRecFD.Ptheta + 0.682383790 * df_protonRecFD.Ptheta * df_protonRecFD.Ptheta, -8.19627119, -23.55701865])    
+            # coeff2_FD = np.select([df_protonRecFD.Ptheta<19.5, (df_protonRecFD.Ptheta>=19.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<39), (df_protonRecFD.Ptheta>=39) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [-3.47690993, 47.71351973 -4.34918241*df_protonRecFD.Ptheta + 0.08841191*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 100.33995753 - 6.96600416*df_protonRecFD.Ptheta + 0.11223046*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -1.25261927, -0.40113733])    
 
-            const_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [-0.190662844, -0.20725736 -0.00675627 *df_protonRecFD.Ptheta + 0.0007863*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 12.1881698 - 0.78906294*df_protonRecFD.Ptheta +0.01297898*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -4.59743066*10])
-            coeff_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [6.48745941, 142.96379788  -16.66339055*df_protonRecFD.Ptheta + 0.51311212*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 2.1853046 + 5.78521226 * df_protonRecFD.Ptheta - 0.09727796 * df_protonRecFD.Ptheta * df_protonRecFD.Ptheta, 7.46969457*10])    
-            coeff2_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
-                              [-3.14646608, 17.39529095 -1.78403359*df_protonRecFD.Ptheta + 0.0335692*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -1.03655317*10 + 0.161333213*df_protonRecFD.Ptheta -1.29625675*0.001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -4.41246899*0.1])    
+            # CorrectedPtheta_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD.loc[:, "Pp"]) + df_protonRecFD.loc[:, "Ptheta"]
 
-            CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD.loc[:, "Pp"]) + df_protonRecFD.loc[:, "Pphi"]
+            # const_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [-0.190662844, -0.20725736 -0.00675627 *df_protonRecFD.Ptheta + 0.0007863*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 12.1881698 - 0.78906294*df_protonRecFD.Ptheta +0.01297898*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -4.59743066*10])
+            # coeff_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [6.48745941, 142.96379788  -16.66339055*df_protonRecFD.Ptheta + 0.51311212*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, 2.1853046 + 5.78521226 * df_protonRecFD.Ptheta - 0.09727796 * df_protonRecFD.Ptheta * df_protonRecFD.Ptheta, 7.46969457*10])    
+            # coeff2_FD = np.select([df_protonRecFD.Ptheta<16.5, (df_protonRecFD.Ptheta>=16.5) & (df_protonRecFD.Ptheta<27), (df_protonRecFD.Ptheta>=27) & (df_protonRecFD.Ptheta<42), df_protonRecFD.Ptheta>=42],
+            #                   [-3.14646608, 17.39529095 -1.78403359*df_protonRecFD.Ptheta + 0.0335692*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -1.03655317*10 + 0.161333213*df_protonRecFD.Ptheta -1.29625675*0.001*df_protonRecFD.Ptheta*df_protonRecFD.Ptheta, -4.41246899*0.1])    
+
+            # CorrectedPphi_FD = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD.loc[:, "Pp"]) + df_protonRecFD.loc[:, "Pphi"]
+
+            const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_check1.Ptheta
+            coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_check1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_check1.Ptheta * df_protonRecFD_check1.Ptheta
+            CorrectedPp_FD_1 = const_FD + coeff_FD/df_protonRecFD_check1.loc[:, "Pp"] + df_protonRecFD_check1.loc[:, "Pp"]
+
+            const_FD = np.select([df_protonRecFD_check1.Ptheta<8, (df_protonRecFD_check1.Ptheta>=8) & (df_protonRecFD_check1.Ptheta<20), (df_protonRecFD_check1.Ptheta>=20)],
+                              [-0.3828741 + 0.05081733 * df_protonRecFD_check1.Ptheta, 0, -0.2425042 + 0.01725155 * df_protonRecFD_check1.Ptheta])
+            coeff_FD = np.select([df_protonRecFD_check1.Ptheta<8, (df_protonRecFD_check1.Ptheta>=8) & (df_protonRecFD_check1.Ptheta<20), (df_protonRecFD_check1.Ptheta>=20)],
+                              [-29.52213218 + 6.87345942 * df_protonRecFD_check1.Ptheta, 0,  2.08762216 - 0.11464056 * df_protonRecFD_check1.Ptheta])    
+            coeff2_FD = np.select([df_protonRecFD_check1.Ptheta<8, (df_protonRecFD_check1.Ptheta>=8) & (df_protonRecFD_check1.Ptheta<20), (df_protonRecFD_check1.Ptheta>=20)],
+                              [6.63357631 - 1.66750966 * df_protonRecFD_check1.Ptheta, 0, 1.37736738 - 0.09848285 * df_protonRecFD_check1.Ptheta])    
+
+            CorrectedPtheta_FD_1 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check1.loc[:, "Pp"]) + df_protonRecFD_check1.loc[:, "Ptheta"]
+
+            const_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, 4.53922278 - 0.72676857*df_protonRecFD_check1.Ptheta + 0.02197507*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
+            coeff_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, -13.23900015  + 1.70084877*df_protonRecFD_check1.Ptheta  -0.04636718*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
+            coeff2_FD = np.select([df_protonRecFD_check1.Ptheta<15, df_protonRecFD_check1.Ptheta>=15],
+                              [0, -3.25471872 + 0.38338761*df_protonRecFD_check1.Ptheta  -0.0122272*df_protonRecFD_check1.Ptheta*df_protonRecFD_check1.Ptheta])
+            CorrectedPphi_FD_1 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check1.loc[:, "Pp"]) + df_protonRecFD_check1.loc[:, "Pphi"]
+
+            const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*df_protonRecFD_check2.Ptheta - 2.86486404*10**(-4)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
+            coeff_FD =  2.01023276*10**(-1) - 1.13312215*10**(-2)*df_protonRecFD_check2.Ptheta + 1.82487916*10**(-4)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
+            CorrectedPp_FD_2 = const_FD + coeff_FD/df_protonRecFD_check2.loc[:, "Pp"] + df_protonRecFD_check2.loc[:, "Pp"]
+
+            const_FD = np.select([df_protonRecFD_check2.Ptheta<30, (df_protonRecFD_check2.Ptheta>=30)],
+                              [2.98140652*10**(2) - 2.75743096*10**(1)*df_protonRecFD_check2.Ptheta + 8.35818159*10**(-1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta - 8.26147941*10**(-3)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta, 1.34032831*10**(2) - 1.12452272*10**(1)*df_protonRecFD_check2.Ptheta + 3.12125195*10**(-1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta -2.86545130*10**(-3)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta])
+            coeff_FD = np.select([df_protonRecFD_check2.Ptheta<30, (df_protonRecFD_check2.Ptheta>=30)],
+                              [1.82790220*10**(6) - 1.98950907*10**(5)*df_protonRecFD_check2.Ptheta + 7.20647164*10**(3)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta - 8.68597440*10**(1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta, 9.37101732*10**(2) - 7.92142664*10**(1)*df_protonRecFD_check2.Ptheta + 2.22452861*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta -2.08191298*10**(-2)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta])    
+            coeff2_FD = np.select([df_protonRecFD_check2.Ptheta<30, (df_protonRecFD_check2.Ptheta>=30)],
+                              [1.09369187*10**(4) - 1.29345623*10**(3)*df_protonRecFD_check2.Ptheta + 5.07524944*10**(1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta - 6.61520585*10**(-1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta, 1.02129004*10**(3) - 8.43398593*10**(1)*df_protonRecFD_check2.Ptheta + 2.29760161*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta  -2.07085860*10**(-2)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta])
+            CorrectedPtheta_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check2.loc[:, "Pp"]) + df_protonRecFD_check2.loc[:, "Ptheta"]
+
+            const_FD = 0.54697831 -0.04896981*df_protonRecFD_check2.Ptheta +  0.00111376*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
+            coeff_FD = -4.06733541*10**2 + 2.43696202*10*df_protonRecFD_check2.Ptheta -3.36144736*10**(-1)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
+            coeff2_FD = 2.06378660*10 - 1.42866062*df_protonRecFD_check2.Ptheta + 2.01085440*10**(-2)*df_protonRecFD_check2.Ptheta*df_protonRecFD_check2.Ptheta
+            CorrectedPphi_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_check2.loc[:, "Pp"]) + df_protonRecFD_check2.loc[:, "Pphi"]
+
+
 
             #CD part
             const_CD = 1.93686914 - 0.116288824*df_protonRecCD.Ptheta + 0.00223685833*df_protonRecCD.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRecCD.Ptheta**3
@@ -190,13 +231,32 @@ class root2pickle():
 
         if correction:
             print("correction applied for " + pol)
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = CorrectedPp_FD
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Ptheta"] = CorrectedPtheta_FD
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pphi"] = CorrectedPphi_FD
 
-            df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Pp"] = CorrectedPp_CD
-            df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Ptheta"] = CorrectedPtheta_CD
-            df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), "Pphi"] = CorrectedPphi_CD
+            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
+            df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
+
+            if pol == "inbending":
+                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_1
+                df_protonRecFD_check1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                df_protonRecFD_check1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+
+                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_check2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                df_protonRecFD_check2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+
+                df_protonRecFD = pd.concat([df_protonRecFD_check1, df_protonRecFD_check2])
+                df_protonRecFD = df_protonRecFD.drop("DC1theta", axis = 1)
+
+            if pol == "outbending":
+                df_protonRecFD.loc[:, "Pp"] = CorrectedPp_FD
+                df_protonRecFD.loc[:, "Ptheta"] = CorrectedPtheta_FD
+                df_protonRecFD.loc[:, "Pphi"] = CorrectedPphi_FD
+
+            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
+
+            # df_protonRec.loc[df_protonRec.Psector<7, :] = df_protonRecFD
+            # df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :] = df_protonRecCD
 
             df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
@@ -225,8 +285,6 @@ class root2pickle():
         df_epg = df_epg[~np.isnan(df_epg["Gpx"])]
 
         self.df_epg = df_epg #temporarily save df_epgg
-
-        self.df_protonDet = df_protonDet # save proton detector properties
 
     def saveDVpi0vars(self):
         #set up pi0 variables
@@ -302,9 +360,9 @@ class root2pickle():
         cut_W = df_epgg.loc[:, "W"] > 2  # W
 
         # proton reconstruction quality
-        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
-        cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        # cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
+        # cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
+        cut_proton = 1#(cut_FD_proton)|(cut_CD_proton)
 
         # Exclusivity cuts
         cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
@@ -408,9 +466,9 @@ class root2pickle():
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
         # proton reconstruction quality
-        cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>45) & (df_dvcs.loc[:, "Ptheta"]<65)
-        cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<35)
+        # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) & (df_dvcs.loc[:, "Ptheta"]>45) & (df_dvcs.loc[:, "Ptheta"]<65)
+        cut_proton = 1#(cut_FD_proton)|(cut_CD_proton)
 
         #   Exclusivity cuts
         cut_mmepg = np.abs(df_dvcs["MM2_epg"]) < 0.1  # mmepg
@@ -445,10 +503,10 @@ class root2pickle():
         self.df_dvcs = df_dvcs
 
     def saveRaw(self):
-        df_x = self.df_dvcs
-        df_protonDet = self.df_protonDet
-        df = pd.merge(df_x, df_protonDet, how = 'inner', on ='event')
-        self.df = df
+        # df_x = self.df_dvcs
+        # df_protonDet = self.df_protonDet
+        # df = pd.merge(df_x, df_protonDet, how = 'inner', on ='event')
+        self.df = self.df_dvcs
 
 if __name__ == "__main__":
 
