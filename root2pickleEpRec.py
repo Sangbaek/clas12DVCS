@@ -70,7 +70,7 @@ class root2pickle():
         df_protonGen.loc[:, 'GenPtheta'] = getTheta(proGen)
         df_protonGen.loc[:, 'GenPphi'] = getPhi(proGen)
 
-        df_z = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
+        self.df_z = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
 
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
