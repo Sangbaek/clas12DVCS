@@ -292,15 +292,15 @@ class root2pickle():
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             if pol == "inbending":
-                df_protonRecFD_check1.loc[:, "Pp"] = CorrectedPp_FD_1
-                df_protonRecFD_check1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-                df_protonRecFD_check1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+                df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+                df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-                df_protonRecFD_check2.loc[:, "Pp"] = CorrectedPp_FD_2
-                df_protonRecFD_check2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-                df_protonRecFD_check2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+                df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
-                df_protonRecFD = pd.concat([df_protonRecFD_check1, df_protonRecFD_check2])
+                df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
                 df_protonRecFD = df_protonRecFD.drop("DC1theta", axis = 1)
 
             if pol == "outbending":
