@@ -43,10 +43,11 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
-        # eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
+
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
+
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -56,8 +57,7 @@ class root2pickle():
             df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         #convert data type to standard double
-        # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
-        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
+        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
         df_gammaGen = df_gammaGen.astype({"GenGpx": float, "GenGpy": float, "GenGpz": float})
 
@@ -67,8 +67,7 @@ class root2pickle():
         df_gammaGen.loc[:,'event'] = df_gammaGen.index.get_level_values('entry')
 
         #sort columns for readability
-        # df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvz"]]
-        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz"]]
+        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
 
         #spherical coordinates
         eleGen = [df_electronGen["GenEpx"], df_electronGen["GenEpy"], df_electronGen["GenEpz"]]
@@ -81,7 +80,7 @@ class root2pickle():
         df_protonGen.loc[:, 'GenPtheta'] = getTheta(proGen)
         df_protonGen.loc[:, 'GenPphi'] = getPhi(proGen)
 
-        df_z = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
+        df_MC = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
 
         if gen == "dvcs":
             df_gammaGen = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
@@ -90,8 +89,8 @@ class root2pickle():
             df_gammaGen.loc[:, 'GenGtheta'] = getTheta(gamGen)
             df_gammaGen.loc[:, 'GenGphi'] = getPhi(gamGen)
 
-            df_z = pd.merge(df_z, df_gammaGen, how='inner', on='event')
-            self.df_z = df_z    #done with saving z
+            df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
+            self.df_MC = df_MC    #done with saving MC
 
         elif gen == "pi0":
             #two g's to one gg.
@@ -131,20 +130,19 @@ class root2pickle():
             df_gammaGen.loc[:, 'GenGtheta2'] = getTheta(gamGen2)
             df_gammaGen.loc[:, 'GenGphi2'] = getPhi(gamGen2)
 
-            df_z = pd.merge(df_z, df_gammaGen, how='inner', on='event')
-            self.df_z = df_z    #done with saving z
+            df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
+            self.df_MC = df_MC    #done with saving z
 
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         df_protonDet = pd.DataFrame()
-        # eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
-        # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -168,7 +166,6 @@ class root2pickle():
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
         #save only FD protons and photons
-        # df_protonRec = df_protonRec[df_protonRec["Psector"]<7]
         #proton momentum correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pp'] = mag(pro)
@@ -301,9 +298,6 @@ class root2pickle():
             df_protonRecFD = df_protonRecFD.drop("DC1theta", axis = 1)
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
-
-            # df_protonRec.loc[df_protonRec.Psector<7, :] = df_protonRecFD
-            # df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :] = df_protonRecCD
 
             df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
@@ -555,9 +549,9 @@ class root2pickle():
         self.df_dvcs = df_dvcs
 
     def saveRaw(self):
-        df_x = self.df_dvcs
-        df_z = self.df_z
-        df = pd.merge(df_x, df_z, how = 'inner', on='event')
+        df_Rec = self.df_dvcs
+        df_MC = self.df_MC
+        df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
         self.df = df
 
 
