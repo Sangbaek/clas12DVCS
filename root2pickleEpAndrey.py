@@ -49,7 +49,7 @@ class root2pickle():
         #convert data type to standard double
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
-        df_protonGen = df_protonGen.rename({"GenPpx": "px0", "GenPpy": "py0", "GenPpz": "pz0"})
+        df_protonGen = df_protonGen.rename(columns = {"px0": "GenPpx", "py0": "GenPpy", "pz0": "GenPpz"})
         df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
 
 
@@ -88,8 +88,8 @@ class root2pickle():
         self.closeFile()
 
         #convert data type to standard double
-        df_protonRec = df_protonRec.rename({"Ppx": "px", "Ppy": "py", "Ppz": "pz", "PDc1Hitx": "dcx1", "PDc1Hity":"dcy1", "PDc1Hitz": "dcz1"})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+        df_protonRec = df_protonRec.rename(columns = {"px": "Ppx", "py": "Ppy", "pz": "Ppz", "dcx1": "PDc1Hitx", "dcy1":"PDc1Hity", "dcz1": "PDc1Hitz"})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
 
         #set up a dummy index for merging
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
