@@ -236,7 +236,7 @@ class root2pickle():
 
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        df_x = df_protonRec
+        self.df_x = df_protonRec
 
         # df_gammaRec = df_gammaRec[df_gammaRec["Gsector"]<7]
 
