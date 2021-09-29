@@ -145,6 +145,10 @@ class root2pickle():
             coeff2_FD = 2.06378660*10 - 1.42866062*df_protonRecFD_2.Ptheta + 2.01085440*10**(-2)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
             CorrectedPphi_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_2.loc[:, "Pp"]) + df_protonRecFD_2.loc[:, "Pphi"]
 
+            AndreyPp_1 = df_protonRecFD_1.loc[:, "Pp"] + exp(-2.739 - 3.932*df_protonRecFD_1.loc[:, "Pp"]) + 0.002907;
+            AndreyPp_2 = df_protonRecFD_2.loc[:, "Pp"] + exp(-1.2 - 4.228*df_protonRecFD_2.loc[:, "Pp"]) + 0.007502;
+
+
             #CD part
             # const_CD = 1.93686914 - 0.116288824*df_protonRecCD.Ptheta + 0.00223685833*df_protonRecCD.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRecCD.Ptheta**3
             # coeff_CD = -0.738047800 + 0.0443343685*df_protonRecCD.Ptheta - 8.50985972*10**(-4)*df_protonRecCD.Ptheta*df_protonRecCD.Ptheta + 5.36810280 * 10**(-6) * df_protonRecCD.Ptheta**3
@@ -217,10 +221,12 @@ class root2pickle():
             # df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+            df_protonRecFD_1.loc[:, "AndreyPp"] = AndreyPp_1
             df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
             df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
             df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+            df_protonRecFD_2.loc[:, "AndreyPp"] = AndreyPp_2
             df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
             df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
