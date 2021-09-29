@@ -145,8 +145,8 @@ class root2pickle():
             coeff2_FD = 2.06378660*10 - 1.42866062*df_protonRecFD_2.Ptheta + 2.01085440*10**(-2)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
             CorrectedPphi_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_2.loc[:, "Pp"]) + df_protonRecFD_2.loc[:, "Pphi"]
 
-            AndreyPp_1 = df_protonRecFD_1.loc[:, "Pp"] + exp(-2.739 - 3.932*df_protonRecFD_1.loc[:, "Pp"]) + 0.002907;
-            AndreyPp_2 = df_protonRecFD_2.loc[:, "Pp"] + exp(-1.2 - 4.228*df_protonRecFD_2.loc[:, "Pp"]) + 0.007502;
+            AndreyPp_1 = df_protonRecFD_1.loc[:, "Pp"] + np.exp(len(-2.739*np.ones(df_protonRecFD_1.loc[:, "Pp"])) - 3.932*df_protonRecFD_1.loc[:, "Pp"]) + 0.002907;
+            AndreyPp_2 = df_protonRecFD_2.loc[:, "Pp"] + np.exp(len(-1.2*np.ones(df_protonRecFD_2.loc[:, "Pp"])) - 4.228*df_protonRecFD_2.loc[:, "Pp"]) + 0.007502;
 
 
             #CD part
