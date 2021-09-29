@@ -89,7 +89,7 @@ class root2pickle():
 
         #convert data type to standard double
         df_protonRec = df_protonRec.rename(columns = {"px": "Ppx", "py": "Ppy", "pz": "Ppz", "dcx1": "PDc1Hitx", "dcy1":"PDc1Hity", "dcz1": "PDc1Hitz"})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
 
         #set up a dummy index for merging
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
