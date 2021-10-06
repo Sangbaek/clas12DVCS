@@ -43,13 +43,11 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        df_protonDet = pd.DataFrame()
-        # eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
-        # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)

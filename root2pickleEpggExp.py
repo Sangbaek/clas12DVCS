@@ -34,14 +34,15 @@ class root2pickle():
     def readEPGG(self, entry_stop = None, pol = "inbending"):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
-        print(entry_stop)
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "RunNum", "beamQ", "liveTime", "helicity"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -49,11 +50,12 @@ class root2pickle():
             df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in gamKeysRec:
             df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
-
         self.closeFile()
 
         #convert data type to standard double
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
+        # df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
+        # df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
