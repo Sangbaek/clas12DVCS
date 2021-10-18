@@ -39,10 +39,11 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
         # eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
+
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -123,11 +124,11 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        # eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
-        # proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
