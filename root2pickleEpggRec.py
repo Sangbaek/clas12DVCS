@@ -385,10 +385,11 @@ class root2pickle():
         cut_Q2 = df_epgg.loc[:, "Q2"] > 1  # Q2
         cut_W = df_epgg.loc[:, "W"] > 2  # W
 
-        # proton reconstruction quality
-        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
-        cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        # # proton reconstruction quality
+        # cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
+        # cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
+        # cut_proton = (cut_FD_proton)|(cut_CD_proton)
+        cut_proton = 1
 
         # Exclusivity cuts
         cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
