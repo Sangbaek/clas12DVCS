@@ -99,8 +99,8 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
-	df_array = []
-	counts = None
+	# df_array = []
+	# counts = None
 	# for i in range(10):
 		# df = pd.read_pickle("gen/2942_"+str(i)+".gen.pkl")
 
@@ -117,7 +117,10 @@ if __name__ == "__main__":
 	# 	for it, count in enumerate(new_counts):
 	# 		counts[it] = counts[it] + count
 	# else:
+	print("reading the pkl file")
 	df = pd.read_pickle(args.fname)
+	
+	print("counting the bin counts...")
 	counts = binCounter(df).counts
 
 		# df = pd.read_pickle("gen/3057_"+str(i)+".gen.pkl")
