@@ -23,8 +23,8 @@ class binCounter():
 		binedges_t = [0.23, 0.3, 0.39, 0.52]
 		# binedges_phi = np.linspace(0, 360, 21) # 21 = 360/30 + 1
 
-		for ind_xbq2 in range(4):
-			for ind_t in range(3):
+		for ind_xbq2 in range(1):
+			for ind_t in range(1):
 				ind_bin = ind_xbq2*3 + ind_t
 				if ind_xbq2 == 0:
 					lower_xB = 0.29
@@ -81,22 +81,10 @@ class binCounter():
 		cond_upper_Q2 = df["Q2"] < upper_Q2
 		cond_lower_xB = df["xB"] > lower_xB
 		cond_upper_xB = df["xB"] < upper_xB
-		if "t2" in df.columns:
-			cond_lower_t = df["t2"] > lower_t
-			cond_upper_t = df["t2"] < upper_t
-		else:	
-			cond_lower_t = df["t"] > lower_t
-			cond_upper_t = df["t"] < upper_t
-		if "phi2" in df.columns:
-			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t].phi2
-			# cond_lower_phi = df["phi2"] > lower_phi
-			# cond_upper_phi = df["phi2"] < upper_phi
-		else:
-			phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t].phi
-		# 	cond_lower_phi = df["phi"] > lower_phi
-		# 	cond_upper_phi = df["phi"] < upper_phi
-
-
+		cond_lower_t = df["t2"] > lower_t
+		cond_upper_t = df["t2"] < upper_t
+		phi = df[cond_lower_xB & cond_upper_xB & cond_lower_Q2 & cond_upper_Q2 & cond_lower_t & cond_upper_t].phi2
+		
 		return np.histogram(phi, bins = np.linspace(0, 360, 21))
 
 
@@ -113,38 +101,39 @@ if __name__ == "__main__":
 
 	df_array = []
 	counts = None
-	for i in range(10):
-		df = pd.read_pickle("gen/2942_"+str(i)+".gen.pkl")
+	# for i in range(10):
+		# df = pd.read_pickle("gen/2942_"+str(i)+".gen.pkl")
 
-		print(i)
-		if args.detector == "all":
-			pass
-		elif args.detector == "FD":
-			df = df[(df.Psector<7)]
-		elif args.detector == "CD":
-			df = df[(df.Psector>6)]
+		# print(i)
+	if args.detector == "all":
+		pass
+	elif args.detector == "FD":
+		df = df[(df.Psector<7)]
+	elif args.detector == "CD":
+		df = df[(df.Psector>6)]
 
-		if counts:
-			new_counts = binCounter(df).counts
-			for it, count in enumerate(new_counts):
-				counts[it] = counts[it] + count
-		else:
-			counts = binCounter(df).counts
+	# if counts:
+	# 	new_counts = binCounter(df).counts
+	# 	for it, count in enumerate(new_counts):
+	# 		counts[it] = counts[it] + count
+	# else:
+	df = pd.read_pickle(args.fname)
+	counts = binCounter(df).counts
 
-		df = pd.read_pickle("gen/3057_"+str(i)+".gen.pkl")
-		if args.detector == "all":
-			pass
-		elif args.detector == "FD":
-			df = df[(df.Psector<7)]
-		elif args.detector == "CD":
-			df = df[(df.Psector>6)]
+		# df = pd.read_pickle("gen/3057_"+str(i)+".gen.pkl")
+		# if args.detector == "all":
+		# 	pass
+		# elif args.detector == "FD":
+		# 	df = df[(df.Psector<7)]
+		# elif args.detector == "CD":
+		# 	df = df[(df.Psector>6)]
 
-		if counts:
-			new_counts = binCounter(df).counts
-			for it, count in enumerate(new_counts):
-				counts[it] = counts[it] + count
-		else:
-			counts = binCounter(df).counts
+		# if counts:
+		# 	new_counts = binCounter(df).counts
+		# 	for it, count in enumerate(new_counts):
+		# 		counts[it] = counts[it] + count
+		# else:
+		# 	counts = binCounter(df).counts
 
 	print(counts)
 
