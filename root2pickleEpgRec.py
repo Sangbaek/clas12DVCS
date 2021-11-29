@@ -501,8 +501,8 @@ class root2pickle():
         cut_xBlower = df_dvcs["xB"] > 0  # xB
         cut_Q2 = df_dvcs["Q2"] > 1  # Q2
         cut_W = df_dvcs["W"] > 2  # W
-        cut_Ee = df_dvcs["Ee"] > 2  # Ee
-        cut_Ge = df_dvcs["Ge"] > 3  # Ge
+        cut_Ee = df_dvcs["Ee"] > 1  # Ee
+        cut_Ge = df_dvcs["Ge"] > 1  # Ge
         cut_Pp = mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]]) > 0.12  # Pp
         cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
 
