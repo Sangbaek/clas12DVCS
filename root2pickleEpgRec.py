@@ -82,7 +82,7 @@ class root2pickle():
 
         df_MC = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
 
-        if gen == "dvcs":
+        if gen == "dvcsnorad":
             df_gammaGen = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
             gamGen = [df_gammaGen["GenGpx"], df_gammaGen["GenGpy"], df_gammaGen["GenGpz"]]
             df_gammaGen.loc[:, 'GenGp'] = mag(gamGen)
@@ -92,7 +92,7 @@ class root2pickle():
             df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
             self.df_MC = df_MC    #done with saving MC
 
-        elif gen == "pi0":
+        elif (gen == "pi0norad") or (gen == "dvcsrad"):
             #two g's to one gg.
             gamGen = [df_gammaGen["GenGpx"], df_gammaGen["GenGpy"], df_gammaGen["GenGpz"]]
             df_gammaGen.loc[:, 'GenGp'] = mag(gamGen)
@@ -132,7 +132,31 @@ class root2pickle():
 
             df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
             self.df_MC = df_MC    #done with saving z
+        
+        else:
+            for key in pi0KeysGen:
+                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_pi0Gen = df_pi0Gen.astype({"GenPipx": float, "GenPipy": float, "GenPipz": float})
+            df_pi0Gen.loc[:,'event'] = df_pi0Gen.index
+            #two g's to one gg.
+            pi0Gen = [df_pi0Gen["GenPipx"], df_pi0Gen["GenPipy"], df_pi0Gen["GenPipz"]]
+            df_pi0Gen.loc[:, 'GenPip'] = mag(pi0Gen)
+            df_pi0Gen.loc[:, 'GenPitheta'] = getTheta(pi0Gen)
+            df_pi0Gen.loc[:, 'GenPiphi'] = getPhi(pi0Gen)
 
+            df_gammaGen = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
+            gamGen = [df_gammaGen["GenGpx"], df_gammaGen["GenGpy"], df_gammaGen["GenGpz"]]
+            df_gammaGen.loc[:, 'GenGp'] = mag(gamGen)
+            df_gammaGen.loc[:, 'GenGtheta'] = getTheta(gamGen)
+            df_gammaGen.loc[:, 'GenGphi'] = getPhi(gamGen)
+
+            df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
+            df_MC = pd.merge(df_MC, df_pi0Gen, how='inner', on='event')
+            self.df_MC = df_MC    #done with saving MC
+
+        print("generator mode: ", gen)
+        print("debug:: number of files", len(df_electronGen))
+        print("debug:: number of all MC df", len(df_MC))
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
@@ -182,6 +206,7 @@ class root2pickle():
             return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
         df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
+        df_protonRecFD.loc[:, "DC1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
         df_protonRecFD.loc[:, "DC1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
         best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
         df_protonRecFD_1 = df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), :]
@@ -561,7 +586,7 @@ if __name__ == "__main__":
     parser.add_argument("-f","--fname", help="a single root file to convert into pickles", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
-    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcs")
+    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
     
     args = parser.parse_args()
