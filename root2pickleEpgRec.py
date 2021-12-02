@@ -134,6 +134,7 @@ class root2pickle():
             self.df_MC = df_MC    #done with saving z
         
         else:
+            df_pi0Gen = pd.DataFrame()
             for key in pi0KeysGen:
                 df_pi0Gen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
             df_pi0Gen = df_pi0Gen.astype({"GenPipx": float, "GenPipy": float, "GenPipz": float})
