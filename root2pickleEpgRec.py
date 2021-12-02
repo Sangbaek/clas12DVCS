@@ -47,6 +47,7 @@ class root2pickle():
         eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]
         proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
+        pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
 
         # read keys
         for key in eleKeysGen:
