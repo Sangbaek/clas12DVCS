@@ -44,9 +44,12 @@ class root2pickle():
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+        eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
+        eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+        gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
 
         # read them
         for key in eleKeysRec:
@@ -78,6 +81,9 @@ class root2pickle():
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
 
+        df_protonRec.loc[:, "PDc1theta"] = -100000
+        df_protonRec.loc[:, "PDc3theta"] = -100000
+
         df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
         df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
         df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
@@ -89,10 +95,11 @@ class root2pickle():
             return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
         df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
-        df_protonRecFD.loc[:, "DC1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
+        df_protonRecFD.loc[:, "PDc1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
+        df_protonRecFD.loc[:, "PDc3theta"] = getTheta([df_protonRecFD.PDc3Hitx, df_protonRecFD.PDc3Hity, df_protonRecFD.PDc3Hitz])
         best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
-        df_protonRecFD_1 = df_protonRecFD.loc[df_protonRecFD.DC1theta < corr(best_params, df_protonRecFD.Pp), :]
-        df_protonRecFD_2 = df_protonRecFD.loc[df_protonRecFD.DC1theta >= corr(best_params, df_protonRecFD.Pp), :]
+        df_protonRecFD_1 = df_protonRecFD.loc[df_protonRecFD.PDc1theta < corr(best_params, df_protonRecFD.Pp), :]
+        df_protonRecFD_2 = df_protonRecFD.loc[df_protonRecFD.PDc1theta >= corr(best_params, df_protonRecFD.Pp), :]
 
         #inbending
         if pol == "inbending":
@@ -201,7 +208,6 @@ class root2pickle():
             df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
-            df_protonRecFD = df_protonRecFD.drop("DC1theta", axis = 1)
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
@@ -229,6 +235,10 @@ class root2pickle():
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
         df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
+
+        df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"], axis = 1)
+        df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"], axis = 1)
+
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
         df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
