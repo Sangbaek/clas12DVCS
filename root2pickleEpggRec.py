@@ -473,7 +473,7 @@ if __name__ == "__main__":
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
-    parser.add_argument("-g","--gen", help="generator", default = "norad")
+    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "pi0norad")
     
     args = parser.parse_args()
 
