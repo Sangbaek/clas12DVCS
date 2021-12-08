@@ -18,7 +18,6 @@ class root2pickle():
         self.fname = fname
 
         self.readEPGG(entry_stop)
-        self.saveDVCSvars()
         # self.saveHistogram()
         self.saveRaw()
 
@@ -43,6 +42,8 @@ class root2pickle():
         # read keys
         for key in eleKeysGen:
             df_epg[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+
+        self.df_epg = df_epg
 
     def saveRaw(self):
         self.df = self.df_epg
