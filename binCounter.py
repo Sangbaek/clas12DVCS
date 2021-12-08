@@ -19,18 +19,18 @@ class binCounter():
 		self.df = df
 		self.counts = []
 		binedges_xB = [0.29, 0.32, 0.35, 0.38] # start with small range of xB to ignore finite bin volume effects.
-		binedges_Q2 = [2.2, 2.7, 3.2] # start with small range of xB to ignore finite bin volume effects.
-		binedges_t = [0.23, 0.3]#[0.23, 0.3, 0.39, 0.52]
+		binedges_Q2 = [2.5, 3] # start with small range of xB to ignore finite bin volume effects.
+		binedges_t = [0.3, 0.4]#[0.23, 0.3, 0.39, 0.52]
 		# binedges_phi = np.linspace(0, 360, 21) # 21 = 360/30 + 1
 
 		for ind_xbq2 in range(1):
 			for ind_t in range(1):
 				ind_bin = ind_xbq2*3 + ind_t
 				if ind_xbq2 == 0:
-					lower_xB = 0.32
-					upper_xB = 0.35
-					lower_Q2 = 2.2
-					upper_Q2 = 2.7
+					lower_xB = 0.25
+					upper_xB = 0.3
+					lower_Q2 = 2.5
+					upper_Q2 = 3
 					# lower_xB = 0.29
 					# upper_xB = 0.32
 					# lower_Q2 = 2.2
