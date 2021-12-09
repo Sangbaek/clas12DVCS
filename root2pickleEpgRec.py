@@ -14,16 +14,19 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_stop = None, gen = "dvcs", pol = "inbending"):
+    def __init__(self, fname, entry_stop = None, gen = "dvcs", pol = "inbending", raw = False):
         self.fname = fname
 
-        self.readEPGG(entry_stop, gen = gen, pol = pol)
+        self.readEPGG(entry_stop, gen = gen, pol = pol, raw = raw)
         self.saveDVCSvars()
-        self.makeDVCS()
-        self.saveDVpi0vars()
-        self.makeDVpi0()
-        self.pi02gSubtraction()
-        self.saveRaw()
+        if raw:
+            self.save(raw)
+        else:
+            self.makeDVCS()
+            self.saveDVpi0vars()
+            self.makeDVpi0()
+            self.pi02gSubtraction()
+            self.save()
 
     def readFile(self):
         #read root using uproot
@@ -35,7 +38,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_stop = None, gen = "dvcsnorad", pol = "inbending"):
+    def readEPGG(self, entry_stop = None, gen = "dvcsnorad", pol = "inbending", raw = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -405,23 +408,24 @@ class root2pickle():
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        df_gg = pd.merge(df_gammaRec, df_gammaRec,
-                         how='outer', on='event', suffixes=("", "2"))
-        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
-        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
-
         df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz", "EDc1theta", "EDc3theta"], axis = 1)
         df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc1theta", "PDc3theta"], axis = 1)
         df_protonRec = df_protonRec.drop(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
-        df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
-        df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+        if not raw:
+            df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                             how='outer', on='event', suffixes=("", "2"))
+            df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+            df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
-        self.df_epgg = df_epgg #temporarily save df_epgg
+            df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
+            df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
+            df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
+            df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+
+            self.df_epgg = df_epgg #temporarily save df_epgg
 
         df_epg = pd.merge(df_ep, df_gammaRec, how='outer', on='event')
         df_epg = df_epg[~np.isnan(df_epg["Ppx"])]
@@ -650,8 +654,11 @@ class root2pickle():
         df_dvcs = df_dvcs[~pi0to2gammas]
         self.df_dvcs = df_dvcs
 
-    def saveRaw(self):
-        df_Rec = self.df_dvcs
+    def save(self, raw):
+        if raw:
+            df_Rec = self.df_epg
+        else:
+            df_Rec = self.df_dvcs
         df_MC = self.df_MC
         df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
         self.df = df
@@ -666,10 +673,11 @@ if __name__ == "__main__":
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
+    parser.add_argument("-r","--raw", help="save raw only", default = False)
     
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop, gen = args.generator, pol = args.polarity)
+    converter = root2pickle(args.fname, entry_stop = args.entry_stop, gen = args.generator, pol = args.polarity, raw = args.raw)
     df = converter.df
 
     df.to_pickle(args.out)

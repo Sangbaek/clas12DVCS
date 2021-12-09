@@ -19,7 +19,7 @@ class root2pickle():
         self.readEPGG(entry_stop, gen = gen, pol = pol)
         self.saveDVpi0vars()
         self.makeDVpi0()
-        self.saveRaw()
+        self.save()
 
     def readFile(self):
         #read root using uproot
@@ -525,7 +525,7 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.sort_values(by='event')        
         self.df_dvpi0 = df_dvpi0 #done with saving x
 
-    def saveRaw(self):
+    def save(self):
         df_Rec = self.df_dvpi0
         df_MC = self.df_MC
         df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')

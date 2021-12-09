@@ -23,7 +23,7 @@ class root2pickle():
         self.saveDVpi0vars()
         self.makeDVpi0()
         self.pi02gSubtraction()
-        self.saveRaw()
+        self.save()
 
     def readFile(self):
         #read root using uproot
@@ -515,7 +515,7 @@ class root2pickle():
         df_dvcs = df_dvcs[~pi0to2gammas]
         self.df_dvcs = df_dvcs
 
-    def saveRaw(self):
+    def save(self):
         # df_x = self.df_dvcs
         # df_protonDet = self.df_protonDet
         # df = pd.merge(df_x, df_protonDet, how = 'inner', on ='event')

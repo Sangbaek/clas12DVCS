@@ -19,7 +19,7 @@ class root2pickle():
         self.readEPGG(entry_stop, pol = pol)
         self.saveDVpi0vars()
         self.makeDVpi0()
-        self.saveRaw()
+        self.save()
 
     def readFile(self):
         #read root using uproot
@@ -408,7 +408,7 @@ class root2pickle():
         print(len(df_dvpi0))
         self.df_dvpi0 = df_dvpi0 #done with saving x
 
-    def saveRaw(self):
+    def save(self):
         df_x = self.df_dvpi0
         self.df = df_x
 
