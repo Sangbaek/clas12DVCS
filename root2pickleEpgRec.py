@@ -654,6 +654,10 @@ class root2pickle():
     def save(self, raw):
         if raw:
             df_Rec = self.df_epg
+            df_Rec = df_Rec.sort_values(by=['Ge', 'Pe'], ascending = [False, False])
+            df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
+            df_Rec = df_Rec.sort_values(by='event')
+
         else:
             df_Rec = self.df_dvcs
         df_MC = self.df_MC
