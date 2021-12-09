@@ -673,7 +673,7 @@ if __name__ == "__main__":
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
-    parser.add_argument("-r","--raw", help="save raw only", default = False)
+    parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     
     args = parser.parse_args()
 
