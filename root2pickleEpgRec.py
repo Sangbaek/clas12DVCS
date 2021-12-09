@@ -19,14 +19,12 @@ class root2pickle():
 
         self.readEPGG(entry_stop, gen = gen, pol = pol, raw = raw)
         self.saveDVCSvars()
-        if raw:
-            self.save(raw)
-        else:
+        self.saveDVpi0vars()
+        self.makeDVpi0()
+        self.pi02gSubtraction()
+        if not raw:
             self.makeDVCS()
-            self.saveDVpi0vars()
-            self.makeDVpi0()
-            self.pi02gSubtraction()
-            self.save()
+        self.save(raw)
 
     def readFile(self):
         #read root using uproot
@@ -414,18 +412,17 @@ class root2pickle():
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
-        if not raw:
-            df_gg = pd.merge(df_gammaRec, df_gammaRec,
-                             how='outer', on='event', suffixes=("", "2"))
-            df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
-            df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
+        df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                         how='outer', on='event', suffixes=("", "2"))
+        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
-            df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
-            df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
-            df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
-            df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+        df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
+        df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
+        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
+        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
 
-            self.df_epgg = df_epgg #temporarily save df_epgg
+        self.df_epgg = df_epgg #temporarily save df_epgg
 
         df_epg = pd.merge(df_ep, df_gammaRec, how='outer', on='event')
         df_epg = df_epg[~np.isnan(df_epg["Ppx"])]
@@ -649,10 +646,10 @@ class root2pickle():
 
     def pi02gSubtraction(self):
         #exclude dvpi0 from dvcs. use only when both set up.
-        df_dvcs = self.df_dvcs
-        pi0to2gammas = df_dvcs["event"].isin(self.df_dvpi0["event"])
-        df_dvcs = df_dvcs[~pi0to2gammas]
-        self.df_dvcs = df_dvcs
+        df_epg = self.df_epg
+        pi0to2gammas = df_epg["event"].isin(self.df_dvpi0["event"])
+        df_epg = df_epg[~pi0to2gammas]
+        self.df_epg = df_epg
 
     def save(self, raw):
         if raw:
