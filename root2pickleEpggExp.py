@@ -235,8 +235,8 @@ class root2pickle():
         if correction:
             print("correction applied for " + pol)
 
-            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
+            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD - 0.01
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.36
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
@@ -265,7 +265,7 @@ class root2pickle():
         df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
         df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.025*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
         df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))

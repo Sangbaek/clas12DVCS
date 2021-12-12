@@ -384,7 +384,9 @@ class root2pickle():
         df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, 0.1, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, 0.04, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.9, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 2, len(df_protonRec.loc[df_protonRec.Psector>7])) 
         df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, 0.06, len(df_protonRec.loc[df_protonRec.Psector<7]))
 
         df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
