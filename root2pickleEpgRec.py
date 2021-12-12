@@ -110,7 +110,7 @@ class root2pickle():
             gam1.loc[:,"GenGpz2"] = gam2.loc[:,"GenGpz"]
             df_gammaGen = gam1
 
-            if gen == pi0norad:
+            if gen == "pi0norad":
                 #sort GenG indices so that GenGp > GenGp2. This is because Gp > Gp2 at reconstruction level.
                 df_gammaGencopy = copy(df_gammaGen)
                 df_gammaGencopy.loc[:, "GenGp"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGp"], df_gammaGen.loc[:, "GenGp2"])
