@@ -43,12 +43,13 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "EventNum", "RunNum", "beamQ", "liveTime", "helicity", "startTime"]
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
         eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
+        proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
         proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
@@ -260,20 +261,21 @@ class root2pickle():
             df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
             pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
 
-        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+            df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+
+            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
+            df_gammaRec.loc[:, 'Gp'] = mag(gam)
+            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
+            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
+
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+
+            df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
+
         df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
-
-        gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
-        df_gammaRec.loc[:, 'Gp'] = mag(gam)
-        df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
-        df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
-
-        df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
-
-        df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
-        df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
-        df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
@@ -462,6 +464,16 @@ class root2pickle():
         df_epg.loc[:,'coneAngle'] = angle(ele, gam)
         df_epg.loc[:,'reconGam'] = angle(gam, VmissG)
         df_epg.loc[:,'coplanarity'] = angle(v3h, v3g)
+
+        eps = 2*M*df_epg.xB / np.sqrt(df_epg.Q2)
+        df_epg.loc[:,'ycol1'] = (df_epg.Q2-df_epg.t2)/(df_epg.Q2-df_epg.xB*df_epg.t2)
+        df_epg.loc[:,'ycol2'] = 1 - (1-df_epg.xB)*df_epg.t2/df_epg.Q2
+        df_epg.loc[:,'ymax1'] = 2*(np.sqrt(1+eps**2)-1)/(eps**2)
+        df_epg.loc[:,'ymax2'] = 1 - (M**2)*(df_epg.xB**2)/df_epg.Q2
+        df_epg.loc[:,'tmin1'] = df_epg.Q2*(2*(1-df_epg.xB)*(1-np.sqrt(1+eps**2))+eps**2)/(4*df_epg.xB*(1-df_epg.xB) + eps**2)
+        df_epg.loc[:,'tmin2'] = M*M*(df_epg.xB**2)/(1-df_epg.xB+df_epg.xB*M*M/df_epg.Q2)
+        df_epg.loc[:,'tcol'] = df_epg.Q2*(df_epg.Q2-2*df_epg.xB*M*ebeam)/df_epg.xB/(df_epg.Q2-2*M*ebeam)
+
         self.df_epg = df_epg
 
     def makeDVCS(self):

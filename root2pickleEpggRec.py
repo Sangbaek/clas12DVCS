@@ -151,12 +151,13 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "startTime"]
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
         eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
+        proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
         proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
@@ -365,29 +366,31 @@ class root2pickle():
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
-            df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
-            pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
-
         df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
-
+        #smearing photon
         gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
         df_gammaRec.loc[:, 'Gp'] = mag(gam)
         df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
         df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
-
+        #FT photon
         df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]*np.random.normal(1, 0.014, len(df_gammaRec.loc[df_gammaRec.Gsector>7]))
+        #FD photon
         df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, 0.035, len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
 
         df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
+        #smearing proton
+        #CD proton
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, 0.04, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.9, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 2, len(df_protonRec.loc[df_protonRec.Psector>7])) 
+        #FD proton
         df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, 0.06, len(df_protonRec.loc[df_protonRec.Psector<7]))
+        #moduli proton phi
+        df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
+        df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]<-180, df_protonRec.loc[:, "Pphi"] + 360, df_protonRec.loc[:, "Pphi"]) 
 
         df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
         df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
@@ -399,7 +402,7 @@ class root2pickle():
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
-        df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12+ df_gg.Gedep22+df_gg.Gedep32
+        df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
 
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
 
