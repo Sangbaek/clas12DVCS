@@ -414,9 +414,9 @@ class root2pickle():
         # df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
         # df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]<-180, df_protonRec.loc[:, "Pphi"] + 360, df_protonRec.loc[:, "Pphi"]) 
 
-        # df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
-        # df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
-        # df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+        df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
 
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
