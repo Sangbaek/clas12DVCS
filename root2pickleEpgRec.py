@@ -169,6 +169,7 @@ class root2pickle():
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+        gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
 
         detRes = False
 
