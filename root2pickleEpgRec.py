@@ -159,7 +159,7 @@ class root2pickle():
             self.df_MC = df_MC    #done with saving MC
 
         print("generator mode: ", gen)
-        print("debug:: number of files", len(df_electronGen))
+        print("debug:: number of events", len(df_electronGen))
         print("debug:: number of all MC df", len(df_MC))
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
