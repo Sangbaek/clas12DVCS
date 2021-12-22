@@ -17,7 +17,7 @@ class root2pickle():
     def __init__(self, fname, entry_start = None, entry_stop = None, gen = "dvcs", pol = "inbending", raw = False):
         self.fname = fname
 
-        self.readEPGG(entry_start, entry_stop, gen = gen, pol = pol, raw = raw)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, gen = gen, pol = pol, raw = raw)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0()

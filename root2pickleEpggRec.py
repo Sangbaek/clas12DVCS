@@ -14,9 +14,9 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_stop = None, pol = "inbending", gen = "norad"):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad"):
         self.fname = fname
-        self.readEPGG(entry_stop, gen = gen, pol = pol)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, gen = gen, pol = pol)
         self.saveDVpi0vars()
         self.makeDVpi0()
         self.save()
@@ -31,7 +31,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_stop = None, gen = "pi0norad", pol = "inbending"):
+    def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending"):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -47,11 +47,11 @@ class root2pickle():
 
         # read keys
         for key in eleKeysGen:
-            df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_electronGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
         for key in proKeysGen:
-            df_protonGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_protonGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
         for key in gamKeysGen:
-            df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_gammaGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
 
         #convert data type to standard double
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
@@ -84,7 +84,7 @@ class root2pickle():
         if gen == "pi0rad":
             df_pi0Gen = pd.DataFrame()
             for key in pi0KeysGen:
-                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
             df_pi0Gen = df_pi0Gen.astype({"GenPipx": float, "GenPipy": float, "GenPipz": float})
             df_pi0Gen.loc[:,'event'] = df_pi0Gen.index
             #two g's to one gg.
@@ -172,11 +172,11 @@ class root2pickle():
 
         # read them
         for key in eleKeysRec:
-            df_electronRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_electronRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
         for key in proKeysRec:
-            df_protonRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_protonRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
         for key in gamKeysRec:
-            df_gammaRec[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_gammaRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
 
         self.closeFile()
 
@@ -555,13 +555,19 @@ if __name__ == "__main__":
 
     parser.add_argument("-f","--fname", help="a single root file to convert into pickles", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
+    parser.add_argument("-S","--entry_start", help="entry_start to start reading the root file", default = None)
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "pi0norad")
     
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator)
+    if args.entry_start:
+        args.entry_start = int(args.entry_start)
+    if args.entry_stop:
+        args.entry_stop = int(args.entry_stop)
+
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator)
     df = converter.df
 
     df.to_pickle(args.out)
