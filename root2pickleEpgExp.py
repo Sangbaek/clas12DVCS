@@ -585,8 +585,8 @@ class root2pickle():
         cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.736  # mmeg
         cut_meepg1_FD = df_dvcs["ME_epg"] < 1.403  # meepg
         cut_meepg2_FD = df_dvcs["ME_epg"] > -1.396  # meepg
-        cut_cone1_FD = df_dvcs["coneAngle"] < 17.516  # coneangle
-        cut_cone2_FD = df_dvcs["coneAngle"] > 47.728  # coneangle
+        cut_cone1_FD = df_dvcs["coneAngle"] < 47.728  # coneangle
+        cut_cone2_FD = df_dvcs["coneAngle"] > 17.516  # coneangle
         cut_mpt_FD = df_dvcs["MPt"] < 0.349  # mpt
         cut_recon_FD = df_dvcs["reconGam"] < 1.620  # recon gam angle
         cut_coplanarity_FD = 1#df_dvcs["coplanarity"] < 7.822  # coplanarity angle - no cut
