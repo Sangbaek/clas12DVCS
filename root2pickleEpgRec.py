@@ -635,9 +635,9 @@ class root2pickle():
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
         cut_Ge = df_dvcs["Ge"] > 3  # Ge
         cut_Esector = df_dvcs["Esector"]!=df_dvcs["Gsector"]
-        cut_Ppmax = df_dvcs.Pp < 0.8  # Pp
+        cut_t2max = df_dvcs.t2 < 0.8  # Pp
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Ppmax
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_t2max
 
         df_dvcs = df_dvcs[cut_common]
 
@@ -652,24 +652,24 @@ class root2pickle():
         df_dvcs.loc[:, "config"] = 0
 
         #CDFT
-        cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
+        cut_Pp1_CDFT = df_dvcs.Pp > 0.25  # Pp
         cut_Psector_CDFT = df_dvcs.Psector>7
         cut_Ptheta1_CDFT = df_dvcs.Ptheta<60
         cut_Ptheta2_CDFT = df_dvcs.Ptheta>38
         cut_Gsector_CDFT = df_dvcs.Gsector>7
-        cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.547  # mmep
-        cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.475  # mmep
-        cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.576  # mmeg
-        cut_mmeg2_CDFT = df_dvcs["MM2_eg"] > 0.22  # mmeg
-        cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.467  # meepg
-        cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.423  # meepg
-        cut_cone1_CDFT = df_dvcs["coneAngle"] < 28.703  # coneangle
-        cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.933  # coneangle
-        cut_mpt_CDFT = df_dvcs["MPt"] < 0.102  # mpt
-        cut_recon_CDFT = df_dvcs["reconGam"] < 0.73  # recon gam angle
-        cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.434  # coplanarity angle
-        cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.012  # mmepg
-        cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.015  # mmepg
+        cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.614  # mmep
+        cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.547  # mmep
+        cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.534  # mmeg
+        cut_mmeg2_CDFT = df_dvcs["MM2_eg"] > 0.271  # mmeg
+        cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.455  # meepg
+        cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.424  # meepg
+        cut_cone1_CDFT = df_dvcs["coneAngle"] < 29.272  # coneangle
+        cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.385  # coneangle
+        cut_mpt_CDFT = df_dvcs["MPt"] < 0.110  # mpt
+        cut_recon_CDFT = df_dvcs["reconGam"] < 0.774  # recon gam angle
+        cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.345  # coplanarity angle
+        cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0122  # mmepg
+        cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0160  # mmepg
 
         cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Gsector_CDFT &
                     cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
@@ -678,24 +678,24 @@ class root2pickle():
 
 
         #CD
-        cut_Pp1_CD = df_dvcs.Pp > 0.3  # Pp
+        cut_Pp1_CD = df_dvcs.Pp > 0.25  # Pp
         cut_Psector_CD = df_dvcs.Psector>7
         cut_Ptheta1_CD = df_dvcs.Ptheta<60
         cut_Ptheta2_CD = df_dvcs.Ptheta>34
         cut_Gsector_CD = df_dvcs.Gsector<7
-        cut_mmep1_CD = df_dvcs["MM2_ep"] < 0.393  # mmep
-        cut_mmep2_CD = df_dvcs["MM2_ep"] > -0.383  # mmep
-        cut_mmeg1_CD = df_dvcs["MM2_eg"] < 2.25  # mmeg
-        cut_mmeg2_CD = df_dvcs["MM2_eg"] > -0.386  # mmeg
-        cut_meepg1_CD = df_dvcs["ME_epg"] < 1.006  # meepg
-        cut_meepg2_CD = df_dvcs["ME_epg"] > -0.904  # meepg
-        cut_cone1_CD = df_dvcs["coneAngle"] < 32.555  # coneangle
-        cut_cone2_CD = df_dvcs["coneAngle"] > 12.925  # coneangle
-        cut_mpt_CD = df_dvcs["MPt"] < 0.145  # mpt
-        cut_recon_CD = df_dvcs["reconGam"] < 0.602  # recon gam angle
-        cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.434  # coplanarity angle
-        cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0223  # mmepg
-        cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0247  # mmepg
+        cut_mmep1_CD = df_dvcs["MM2_ep"] < 0.433  # mmep
+        cut_mmep2_CD = df_dvcs["MM2_ep"] > -0.417  # mmep
+        cut_mmeg1_CD = df_dvcs["MM2_eg"] < 2.375  # mmeg
+        cut_mmeg2_CD = df_dvcs["MM2_eg"] > -0.515 # mmeg
+        cut_meepg1_CD = df_dvcs["ME_epg"] < 1.041  # meepg
+        cut_meepg2_CD = df_dvcs["ME_epg"] > -0.931  # meepg
+        cut_cone1_CD = df_dvcs["coneAngle"] < 34.083  # coneangle
+        cut_cone2_CD = df_dvcs["coneAngle"] > 11.817  # coneangle
+        cut_mpt_CD = df_dvcs["MPt"] < 0.187  # mpt
+        cut_recon_CD = df_dvcs["reconGam"] < 0.929  # recon gam angle
+        cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.358  # coplanarity angle
+        cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0249  # mmepg
+        cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0286  # mmepg
 
         cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Gsector_CD &
                     cut_mmep1_CD & cut_mmep2_CD & cut_mmeg1_CD & cut_mmeg2_CD &
@@ -703,24 +703,24 @@ class root2pickle():
                     cut_mpt_CD & cut_recon_CD & cut_coplanarity_CD & cut_mmepg1_CD & cut_mmepg2_CD)
 
         #FD
-        cut_Pp1_FD = df_dvcs.Pp > 0.42  # Pp
+        cut_Pp1_FD = df_dvcs.Pp > 0.35  # Pp
         cut_Psector_FD = df_dvcs.Psector<7
         cut_Ptheta1_FD = df_dvcs.Ptheta<32
         cut_Ptheta2_FD = df_dvcs.Ptheta>2.477
         cut_Gsector_FD = df_dvcs.Gsector<7
-        cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.32  # mmep
-        cut_mmep2_FD = df_dvcs["MM2_ep"] > -0.326  # mmep
-        cut_mmeg1_FD = df_dvcs["MM2_eg"] < 1.789  # mmeg
-        cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.045  # mmeg
-        cut_meepg1_FD = df_dvcs["ME_epg"] < 0.774  # meepg
-        cut_meepg2_FD = df_dvcs["ME_epg"] > -0.799  # meepg
-        cut_cone1_FD = df_dvcs["coneAngle"] < 38.54  # coneangle
-        cut_cone2_FD = df_dvcs["coneAngle"] > 24.3  # coneangle
-        cut_mpt_FD = df_dvcs["MPt"] < 0.209  # mpt
-        cut_recon_FD = df_dvcs["reconGam"] < 0.858  # recon gam angle
-        cut_coplanarity_FD = df_dvcs["coplanarity"] < 7.822  # coplanarity angle
-        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0187  # mmepg
-        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.021  # mmepg
+        cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.509  # mmep
+        cut_mmep2_FD = df_dvcs["MM2_ep"] > -0.5  # mmep
+        cut_mmeg1_FD = df_dvcs["MM2_eg"] < 2.505  # mmeg
+        cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.736  # mmeg
+        cut_meepg1_FD = df_dvcs["ME_epg"] < 1.403  # meepg
+        cut_meepg2_FD = df_dvcs["ME_epg"] > -1.396  # meepg
+        cut_cone1_FD = df_dvcs["coneAngle"] < 17.516  # coneangle
+        cut_cone2_FD = df_dvcs["coneAngle"] > 47.728  # coneangle
+        cut_mpt_FD = df_dvcs["MPt"] < 0.349  # mpt
+        cut_recon_FD = df_dvcs["reconGam"] < 1.620  # recon gam angle
+        cut_coplanarity_FD = 1#df_dvcs["coplanarity"] < 7.822  # coplanarity angle - no cut
+        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0286  # mmepg
+        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0327  # mmepg
 
         cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta1_FD & cut_Gsector_FD &
                     cut_mmep1_FD & cut_mmep2_FD & cut_mmeg1_FD & cut_mmeg2_FD &
