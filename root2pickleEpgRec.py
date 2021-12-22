@@ -50,6 +50,9 @@ class root2pickle():
         gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
         pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
 
+        if gen == "dvcsrad":
+            eleKeysGen.extend(["GenxB", "GenQ2", "Gent2", "Genphi2"])
+
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
