@@ -413,7 +413,7 @@ class root2pickle():
         cut_pi0upper = df_epgg.loc[:, "Mpi0"] < 0.2
         cut_pi0lower = df_epgg.loc[:, "Mpi0"] > 0.07
         cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
-        cut_Vz = np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
+        cut_Vz = 1#np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
 
         df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
