@@ -286,7 +286,7 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
             df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
-            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.025*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2#0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
@@ -405,7 +405,7 @@ class root2pickle():
         cut_pi0upper = df_epgg.loc[:, "Mpi0"] < 0.2
         cut_pi0lower = df_epgg.loc[:, "Mpi0"] > 0.07
         cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
-        cut_Vz = np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
+        cut_Vz = 1#np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
 
         df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_mmep & cut_meepgg & cut_Vz &
                            cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
@@ -542,7 +542,7 @@ class root2pickle():
         cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0124  # mmepg
         cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0153  # mmepg
 
-        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Gsector_CDFT &
+        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT &
                     cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
                     cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
                     cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
@@ -568,7 +568,7 @@ class root2pickle():
         cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0248  # mmepg
         cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0282  # mmepg
 
-        cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Gsector_CD &
+        cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Ptheta2_CD & cut_Gsector_CD &
                     cut_mmep1_CD & cut_mmep2_CD & cut_mmeg1_CD & cut_mmeg2_CD &
                     cut_meepg1_CD & cut_meepg2_CD & cut_cone1_CD & cut_cone2_CD &
                     cut_mpt_CD & cut_recon_CD & cut_coplanarity_CD & cut_mmepg1_CD & cut_mmepg2_CD)
@@ -593,7 +593,7 @@ class root2pickle():
         cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0303  # mmepg
         cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0344  # mmepg
 
-        cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta1_FD & cut_Gsector_FD &
+        cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta1_FD & cut_Ptheta2_FD & cut_Gsector_FD &
                     cut_mmep1_FD & cut_mmep2_FD & cut_mmeg1_FD & cut_mmeg2_FD &
                     cut_meepg1_FD & cut_meepg2_FD & cut_cone1_FD & cut_cone2_FD &
                     cut_mpt_FD & cut_recon_FD & cut_coplanarity_FD & cut_mmepg1_FD & cut_mmepg2_FD)
