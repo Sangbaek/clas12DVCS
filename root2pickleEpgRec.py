@@ -72,7 +72,10 @@ class root2pickle():
         df_gammaGen.loc[:,'event'] = df_gammaGen.index.get_level_values('entry')
 
         #sort columns for readability
-        df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
+        if gen == "dvcsrad":
+            df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent2", "Genphi2"]]
+        else:
+            df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
 
         #spherical coordinates
         eleGen = [df_electronGen["GenEpx"], df_electronGen["GenEpy"], df_electronGen["GenEpz"]]
