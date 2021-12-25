@@ -660,8 +660,7 @@ class root2pickle():
         #CDFT
         cut_Pp1_CDFT = df_dvcs.Pp > 0.25  # Pp
         cut_Psector_CDFT = df_dvcs.Psector>7
-        cut_Ptheta1_CDFT = df_dvcs.Ptheta<60
-        cut_Ptheta2_CDFT = 1#df_dvcs.Ptheta>38
+        cut_Ptheta_CDFT = df_dvcs.Ptheta<60
         cut_Gsector_CDFT = df_dvcs.Gsector>7
         cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.598  # mmep
         cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.526  # mmep
@@ -677,7 +676,7 @@ class root2pickle():
         cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0124  # mmepg
         cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0153  # mmepg
 
-        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT &
+        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
                     cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
                     cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
                     cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
@@ -686,8 +685,7 @@ class root2pickle():
         #CD
         cut_Pp1_CD = df_dvcs.Pp > 0.25  # Pp
         cut_Psector_CD = df_dvcs.Psector>7
-        cut_Ptheta1_CD = df_dvcs.Ptheta<60
-        cut_Ptheta2_CD = 1#df_dvcs.Ptheta>34
+        cut_Ptheta_CD = df_dvcs.Ptheta<60
         cut_Gsector_CD = df_dvcs.Gsector<7
         cut_mmep1_CD = df_dvcs["MM2_ep"] < 0.433  # mmep
         cut_mmep2_CD = df_dvcs["MM2_ep"] > -0.418  # mmep
@@ -703,7 +701,7 @@ class root2pickle():
         cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0248  # mmepg
         cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0282  # mmepg
 
-        cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Ptheta2_CD & cut_Gsector_CD &
+        cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD &
                     cut_mmep1_CD & cut_mmep2_CD & cut_mmeg1_CD & cut_mmeg2_CD &
                     cut_meepg1_CD & cut_meepg2_CD & cut_cone1_CD & cut_cone2_CD &
                     cut_mpt_CD & cut_recon_CD & cut_coplanarity_CD & cut_mmepg1_CD & cut_mmepg2_CD)
