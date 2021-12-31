@@ -34,33 +34,31 @@ class root2pickle():
     def readEPGG(self, entry_stop = None, pol = "inbending"):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
+        
         # data frames and their keys to read X part
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector", "startTime"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evz", "Esector"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
-        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
+        eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Psector"]
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
-        gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
 
         detRes = False
         logistics = False
 
         if detRes:
+            eleKeysRec.extend(["Evx", "Evy", "Evz"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
             eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
             gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
+            proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
             proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         if logistics:
-            eleKeysRec.extend(["Evx", "Evy"])
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
 
@@ -76,8 +74,8 @@ class root2pickle():
         #convert data type to standard double
         # df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
         # df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
-        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evz": float})
-        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
+        df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
+        df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
         # df_protonRec = df_protonRec.astype({"PDc1Hitx": float, "PDc1Hity": float, "PDc1Hitz": float})
         # df_protonRec = df_protonRec.astype({"PDc3Hitx": float, "PDc3Hity": float, "PDc3Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt1Hitx": float, "PCvt1Hity": float, "PCvt1Hitz": float})
@@ -102,9 +100,10 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
 
         df_protonRec.loc[:, "PDc1theta"] = -100000
-        df_protonRec.loc[:, "PDc3theta"] = -100000
 
         if detRes:
+            df_protonRec.loc[:, "PDc3theta"] = -100000
+
             df_electronRec.loc[:, "EDc1theta"] = getTheta([df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity, df_electronRec.EDc1Hitz])
             df_electronRec.loc[:, "EDc3theta"] = getTheta([df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity, df_electronRec.EDc3Hitz])
             df_electronRec.loc[:, "EAngleDiff"] = df_electronRec.loc[:, "EDc3theta"] - df_electronRec.loc[:, "EDc1theta"]
@@ -137,7 +136,8 @@ class root2pickle():
 
         df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
         df_protonRecFD.loc[:, "PDc1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
-        df_protonRecFD.loc[:, "PDc3theta"] = getTheta([df_protonRecFD.PDc3Hitx, df_protonRecFD.PDc3Hity, df_protonRecFD.PDc3Hitz])
+        if detRes:
+            df_protonRecFD.loc[:, "PDc3theta"] = getTheta([df_protonRecFD.PDc3Hitx, df_protonRecFD.PDc3Hity, df_protonRecFD.PDc3Hitz])
         best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
         df_protonRecFD_1 = df_protonRecFD.loc[df_protonRecFD.PDc1theta < corr(best_params, df_protonRecFD.Pp), :]
         df_protonRecFD_2 = df_protonRecFD.loc[df_protonRecFD.PDc1theta >= corr(best_params, df_protonRecFD.Pp), :]
@@ -287,21 +287,23 @@ class root2pickle():
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
-
-        df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
+        
+        if detRes:
+            df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
 
-        # if detRes:
-        df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
-        df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
+        if detRes:
+            df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
+            df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
 
-        df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc1theta", "PDc3theta"], axis = 1)
+        df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta"], axis = 1)
         if detRes:
             df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz", "EDc1theta", "EDc3theta"], axis = 1)
             df_protonRec = df_protonRec.drop(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
+            df_protonRec = df_protonRec.drop(["PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc3theta"], axis = 1)
 
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
