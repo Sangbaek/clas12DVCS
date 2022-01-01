@@ -643,4 +643,7 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics)
     df = converter.df
 
+    if args.entry_start:
+        df.loc[:, "event"] = df.loc[:, "event"] + args.entry_start
+
     df.to_pickle(args.out)

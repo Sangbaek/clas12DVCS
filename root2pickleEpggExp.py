@@ -345,6 +345,8 @@ class root2pickle():
         v3l = cross(beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
+        v3pi0 = cross(VGS, pi0)
+
         VmissPi0 = [-df_epgg["Epx"] - df_epgg["Ppx"], -df_epgg["Epy"] -
                     df_epgg["Ppy"], pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
         VmissP = [-df_epgg["Epx"] - df_epgg["Gpx"] - df_epgg["Gpx2"], -df_epgg["Epy"] -
@@ -385,6 +387,10 @@ class root2pickle():
         df_epgg.loc[:,'Mpi0'] = pi0InvMass(gam, gam2)
         df_epgg.loc[:,'reconPi'] = angle(VmissPi0, pi0)
         df_epgg.loc[:,"Pie"] = df_epgg['Ge'] + df_epgg['Ge2']
+        df_epgg.loc[:,'coplanarity'] = angle(v3h, v3pi0)
+        df_epgg.loc[:,'coneAngle1'] = angle(ele, gam)
+        df_epgg.loc[:,'coneAngle2'] = angle(ele, gam2)
+
         self.df_epgg = df_epgg
 
     def makeDVpi0(self):
@@ -455,5 +461,8 @@ if __name__ == "__main__":
 
     converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics)
     df = converter.df
+
+    if args.entry_start:
+        df.loc[:, "event"] = df.loc[:, "event"] + args.entry_start
 
     df.to_pickle(args.out)
