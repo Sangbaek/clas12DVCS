@@ -14,10 +14,10 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, gen = "dvcs", pol = "inbending", raw = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False):
         self.fname = fname
 
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, gen = gen, pol = pol, raw = raw)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, raw = raw, detRes = detRes)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0()
@@ -36,11 +36,9 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_start = None, entry_stop = None, gen = "dvcsnorad", pol = "inbending", raw = False):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", raw = False, detRes = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
-
-        detRes = False
 
         # data frames and their keys to read Z part
         df_electronGen = pd.DataFrame()
@@ -790,6 +788,7 @@ if __name__ == "__main__":
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
     parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
+    parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
     
     args = parser.parse_args()
 
@@ -798,7 +797,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, gen = args.generator, pol = args.polarity, raw = args.raw)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, detRes = args.detRes)
     df = converter.df
 
     df.to_pickle(args.out)
