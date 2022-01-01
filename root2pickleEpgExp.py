@@ -306,15 +306,15 @@ class root2pickle():
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
         df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
-        df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Ppx"]), :]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Gpx"]), :]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Gpx2"]), :]
 
         self.df_epgg = df_epgg #temporarily save df_epgg
 
         df_epg = pd.merge(df_ep, df_gammaRec, how='outer', on='event')
-        df_epg = df_epg[~np.isnan(df_epg["Ppx"])]
-        df_epg = df_epg[~np.isnan(df_epg["Gpx"])]
+        df_epg = df_epg.loc[~np.isnan(df_epg["Ppx"]), :]
+        df_epg = df_epg.loc[~np.isnan(df_epg["Gpx"]), :]
 
         self.df_epg = df_epg #temporarily save df_epgg
 
@@ -509,7 +509,7 @@ class root2pickle():
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
         cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Ppmax
 
-        df_dvcs = df_dvcs[cut_common]
+        df_dvcs = df_dvcs[cut_common, :]
 
         # proton reconstruction quality
         # cut_FD_proton = (df_dvcs.loc[:, "Psector"]<7) & (df_dvcs.loc[:, "Ptheta"]<35)
@@ -599,7 +599,7 @@ class root2pickle():
         df_dvcs.loc[cut_CD, "config"] = 2
         df_dvcs.loc[cut_FD, "config"] = 1
 
-        df_dvcs = df_dvcs[df_dvcs.config>0]
+        df_dvcs = df_dvcs.loc[df_dvcs.config>0, :]
 
         # # dealing with duplicates
         # df_dvcs = df_dvcs.sort_values(by=['Ge', 'config'], ascending = [False, True])
@@ -612,7 +612,7 @@ class root2pickle():
         #exclude dvpi0 from dvcs. use only when both set up.
         df_dvcs = self.df_dvcs
         pi0to2gammas = df_dvcs["event"].isin(self.df_dvpi0["event"])
-        df_dvcs = df_dvcs[~pi0to2gammas]
+        df_dvcs = df_dvcs.loc[~pi0to2gammas, :]
         self.df_dvcs = df_dvcs
 
     def save(self):
