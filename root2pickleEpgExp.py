@@ -64,12 +64,12 @@ class root2pickle():
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
         # read them
-        for key in eleKeysGen:
-            df_electronGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
-        for key in proKeysGen:
-            df_protonGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
-        for key in gamKeysGen:
-            df_gammaGen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
+        for key in eleKeysRec:
+            df_electronRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
+        for key in proKeysRec:
+            df_protonRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
+        for key in gamKeysRec:
+            df_gammaRec[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
         self.closeFile()
 
         #convert data type to standard double
