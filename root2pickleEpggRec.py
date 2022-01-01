@@ -14,12 +14,13 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", detRes = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False):
         self.fname = fname
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, gen = gen, pol = pol, detRes = detRes)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes)
         self.saveDVpi0vars()
-        self.makeDVpi0()
-        self.save()
+        if not raw:
+            self.makeDVpi0()
+        self.save(raw = raw)
 
     def readFile(self):
         #read root using uproot
@@ -554,8 +555,11 @@ class root2pickle():
         df_dvpi0 = df_dvpi0.sort_values(by='event')        
         self.df_dvpi0 = df_dvpi0 #done with saving x
 
-    def save(self):
-        df_Rec = self.df_dvpi0
+    def save(self, raw = False):
+        if raw:
+            df_Rec = self.df_epgg
+        else:
+            df_Rec = self.df_dvpi0
         df_MC = self.df_MC
         df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
         self.df = df
@@ -571,6 +575,7 @@ if __name__ == "__main__":
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "pi0norad")
+    parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
     
     args = parser.parse_args()

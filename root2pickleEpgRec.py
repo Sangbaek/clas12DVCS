@@ -17,14 +17,14 @@ class root2pickle():
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False):
         self.fname = fname
 
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, raw = raw, detRes = detRes)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0()
         self.pi02gSubtraction()
         if not raw:
             self.makeDVCS()
-        self.save(raw)
+        self.save(raw = raw)
 
     def readFile(self):
         #read root using uproot
@@ -36,7 +36,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", raw = False, detRes = False):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", detRes = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -763,7 +763,7 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self, raw):
+    def save(self, raw = False):
         if raw:
             df_Rec = self.df_epg
             df_Rec = df_Rec.sort_values(by=['Ge', 'Pe'], ascending = [False, False])
@@ -785,8 +785,8 @@ if __name__ == "__main__":
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-S","--entry_start", help="entry_start to stop reading the root file", default = None)
-    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
+    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsnorad")
     parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
     
