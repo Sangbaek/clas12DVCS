@@ -291,9 +291,13 @@ class root2pickle():
             df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + 0.25
             df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
 
-            df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
-            df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
-            df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
+            df_gg.loc[df_gg["Gsector"]>7, "Gpx"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"]*np.sin(np.radians(df_gg.loc[df_gg["Gsector"]>7, "Gtheta"]))*np.cos(np.radians(df_gg.loc[df_gg["Gsector"]>7, "Gphi"]))
+            df_gg.loc[df_gg["Gsector"]>7, "Gpy"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"]*np.sin(np.radians(df_gg.loc[df_gg["Gsector"]>7, "Gtheta"]))*np.sin(np.radians(df_gg.loc[df_gg["Gsector"]>7, "Gphi"]))
+            df_gg.loc[df_gg["Gsector"]>7, "Gpz"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"]*np.cos(np.radians(df_gg.loc[df_gg["Gsector"]>7, "Gtheta"]))
+
+            df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gpx2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"]*np.sin(np.radians(df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gtheta2"]))*np.cos(np.radians(df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gphi2"]))
+            df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gpy2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"]*np.sin(np.radians(df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gtheta2"]))*np.sin(np.radians(df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gphi2"]))
+            df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gpz2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"]*np.cos(np.radians(df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gtheta2"]))
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
