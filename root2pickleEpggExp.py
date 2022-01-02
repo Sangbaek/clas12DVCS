@@ -289,7 +289,7 @@ class root2pickle():
 
         if correction:
             df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + 0.25
-            df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
+            # df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
 
             df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
             df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
