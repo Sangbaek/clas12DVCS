@@ -585,7 +585,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, detRes = args.detRes)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes)
     df = converter.df
 
     df.to_pickle(args.out)
