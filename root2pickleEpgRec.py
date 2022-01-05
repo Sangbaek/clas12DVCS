@@ -20,7 +20,7 @@ class root2pickle():
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes)
         self.saveDVCSvars()
         self.saveDVpi0vars()
-        self.makeDVpi0()
+        self.makeDVpi0P_DVCS()
         self.pi02gSubtraction()
         if not raw:
             self.makeDVCS()
