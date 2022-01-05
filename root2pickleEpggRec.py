@@ -530,7 +530,7 @@ class root2pickle():
         cut_Ge2 = df_dvpi0p["Ge2"] > 0.8  # Ge cut. Ge>3 for DVCS module.
         cut_Esector = (df_dvpi0p.loc[:, "Esector"]!=df_dvpi0p.loc[:, "Gsector"]) & (df_dvpi0p.loc[:, "Esector"]!=df_dvpi0p.loc[:, "Gsector2"])
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Ppmax
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ge2 & cut_Esector
 
         df_dvpi0p = df_dvpi0p[cut_common]
 
