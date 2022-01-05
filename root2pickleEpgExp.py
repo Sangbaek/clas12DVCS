@@ -21,7 +21,7 @@ class root2pickle():
         self.saveDVCSvars()
         self.makeDVCS()
         self.saveDVpi0vars()
-        self.makeDVpi0()
+        self.makeDVpi0P_DVCS()
         self.pi02gSubtraction()
         self.save()
 
