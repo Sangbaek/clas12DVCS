@@ -18,7 +18,7 @@ class root2pickle():
         self.fname = fname
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics)
         self.saveDVpi0vars()
-        self.makeDVpi0()
+        self.makeDVpi0P()
         self.save()
 
     def readFile(self):
@@ -397,53 +397,123 @@ class root2pickle():
         df_epgg.loc[:,'coplanarity'] = angle(v3h, v3pi0)
         df_epgg.loc[:,'coneAngle1'] = angle(ele, gam)
         df_epgg.loc[:,'coneAngle2'] = angle(ele, gam2)
+        
+        df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
 
         self.df_epgg = df_epgg
 
-    def makeDVpi0(self):
+    def makeDVpi0P(self):
         #make dvpi0 pairs
-        df_epgg = self.df_epgg
+        df_dvpi0p = self.df_epgg
 
-        df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
+        #common cuts
+        cut_xBupper = df_dvpi0p.loc[:, "xB"] < 1  # xB
+        cut_xBlower = df_dvpi0p.loc[:, "xB"] > 0  # xB
+        cut_Q2 = df_dvpi0p.loc[:, "Q2"] > 1  # Q2
+        cut_W = df_dvpi0p.loc[:, "W"] > 2  # W
+        cut_Ge2 = df_dvpi0p["Ge2"] > 0.8  # Ge cut. Ge>3 for DVCS module.
+        cut_Esector = (df_dvpi0p.loc[:, "Esector"]!=df_dvpi0p.loc[:, "Gsector"]) & (df_dvpi0p.loc[:, "Esector"]!=df_dvpi0p.loc[:, "Gsector2"])
+        # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ge2 & cut_Esector
 
-        cut_xBupper = df_epgg.loc[:, "xB"] < 1  # xB
-        cut_xBlower = df_epgg.loc[:, "xB"] > 0  # xB
-        cut_Q2 = df_epgg.loc[:, "Q2"] > 1  # Q2
-        cut_W = df_epgg.loc[:, "W"] > 2  # W
+        df_dvpi0p = df_dvpi0p[cut_common]
 
-        # # proton reconstruction quality
+        # proton reconstruction quality
         # cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
         # cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
         # cut_proton = (cut_FD_proton)|(cut_CD_proton)
         cut_proton = 1
 
-        # Exclusivity cuts
-        cut_mmep = df_epgg.loc[:, "MM2_ep"] < 0.7  # mmep
-        cut_meepgg = df_epgg.loc[:, "ME_epgg"] < 0.7  # meepgg
-        cut_mpt = df_epgg.loc[:, "MPt"] < 0.2  # mpt
-        cut_recon = df_epgg.loc[:, "reconPi"] < 2  # recon gam angle
-        cut_pi0upper = df_epgg.loc[:, "Mpi0"] < 0.2
-        cut_pi0lower = df_epgg.loc[:, "Mpi0"] > 0.07
-        cut_sector = (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector"]) & (df_epgg.loc[:, "Esector"]!=df_epgg.loc[:, "Gsector2"])
-        cut_Vz = 1#np.abs(df_epgg["Evz"] - df_epgg["Pvz"]) < 2.5 + 2.5 / mag([df_epgg["Ppx"], df_epgg["Ppy"], df_epgg["Ppz"]])
+        df_dvpi0p.loc[:, "config"] = 0
 
-        df_dvpi0 = df_epgg.loc[cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_proton & cut_mmep & cut_meepgg & cut_Vz &
-                           cut_mpt & cut_recon & cut_pi0upper & cut_pi0lower & cut_sector, :]
+        #CDFT
+        cut_Pp1_CDFT = df_dvpi0p.Pp > 0.25  # Pp
+        cut_Psector_CDFT = df_dvpi0p.Psector>7
+        cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
+        cut_Gsector_CDFT = df_dvpi0p.Gsector>7
+        cut_mpi01_CDFT = df_dvpi0p["Mpi0"] < 0.159  # mpi0
+        cut_mpi02_CDFT = df_dvpi0p["Mpi0"] > 0.117  # mpi0
+        cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 1.001  # mmep
+        cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.843  # mmep
+        cut_mmegg1_CDFT = df_dvpi0p["MM2_egg"] < 2.077  # mmegg
+        cut_mmegg2_CDFT = df_dvpi0p["MM2_egg"] > -0.336  # mmegg
+        cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.849  # meepgg
+        cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.858  # meepgg
+        cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.266  # mpt
+        cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.647  # recon gam angle
+        cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0605  # mmepgg
+        cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0532  # mmepgg
 
-        print(len(df_dvpi0))
+        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+                    cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
+                    cut_mmegg1_CDFT & cut_mmegg2_CDFT & cut_meepgg1_CDFT & cut_meepgg2_CDFT &
+                    cut_mpt_CDFT & cut_recon_CDFT & cut_mmepgg1_CDFT & cut_mmepgg2_CDFT)
+
+
+        #CD
+        cut_Pp1_CD = df_dvpi0p.Pp > 0.25  # Pp
+        cut_Psector_CD = df_dvpi0p.Psector>7
+        cut_Ptheta_CD = df_dvpi0p.Ptheta<60
+        cut_Gsector_CD = df_dvpi0p.Gsector<7
+        cut_mpi01_CD = df_dvpi0p["Mpi0"] < 0.161  # mpi0
+        cut_mpi02_CD = df_dvpi0p["Mpi0"] > 0.107  # mpi0
+        cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.355  # mmep
+        cut_mmep2_CD = df_dvpi0p["MM2_ep"] > -0.274  # mmep
+        cut_mmegg1_CD = df_dvpi0p["MM2_egg"] < 1.805  # mmegg
+        cut_mmegg2_CD = df_dvpi0p["MM2_egg"] > 0.0702  # mmegg
+        cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.757  # meepgg
+        cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.665  # meepgg
+        cut_mpt_CD = df_dvpi0p["MPt"] < 0.199  # mpt
+        cut_recon_CD = df_dvpi0p["reconPi"] < 1.794  # recon gam angle
+        cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0221  # mmepgg
+        cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0281  # mmepgg
+
+        cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD &
+                    cut_mmep1_CD & cut_mmep2_CD & cut_mpi01_CD & cut_mpi02_CD & 
+                    cut_mmegg1_CD & cut_mmegg2_CD & cut_meepgg1_CD & cut_meepgg2_CD &
+                    cut_mpt_CD & cut_recon_CD & cut_mmepgg1_CD & cut_mmepgg2_CD)
+
+        #FD
+        cut_Pp1_FD = df_dvpi0p.Pp > 0.35  # Pp
+        cut_Psector_FD = df_dvpi0p.Psector<7
+        cut_Ptheta_FD = df_dvpi0p.Ptheta>2.477
+        cut_Gsector_FD = df_dvpi0p.Gsector<7
+        cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.163  # mpi0
+        cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.106  # mpi0
+        cut_mmep1_FD = df_dvpi0p["MM2_ep"] < 0.428  # mmep
+        cut_mmep2_FD = df_dvpi0p["MM2_ep"] > -0.340  # mmep
+        cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.701  # mmegg
+        cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > 0.141  # mmegg
+        cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.782  # meepgg
+        cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.682  # meepgg
+        cut_mpt_FD = df_dvpi0p["MPt"] < 0.206  # mpt
+        cut_recon_FD = df_dvpi0p["reconPi"] < 1.513  # recon gam angle
+        cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0212  # mmepgg
+        cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0249  # mmepgg
+
+        cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD &
+                    cut_mmep1_FD & cut_mmep2_FD & cut_mpi01_FD & cut_mpi02_FD & 
+                    cut_mmegg1_FD & cut_mmegg2_FD & cut_meepgg1_FD & cut_meepgg2_FD &
+                    cut_mpt_FD & cut_recon_FD & cut_mmepgg1_FD & cut_mmepgg2_FD)
+
+
+        df_dvpi0p.loc[cut_CDFT, "config"] = 3
+        df_dvpi0p.loc[cut_CD, "config"] = 2
+        df_dvpi0p.loc[cut_FD, "config"] = 1
+
+        df_dvpi0p = df_dvpi0p[df_dvpi0p.config>0]
 
         #For an event, there can be two gg's passed conditions above.
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
         #For now, duplicated proton is not considered.
-        df_dvpi0 = df_dvpi0.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
-        df_dvpi0 = df_dvpi0.loc[~df_dvpi0.event.duplicated(), :]
-        df_dvpi0 = df_dvpi0.sort_values(by='event')        
-        print(len(df_dvpi0))
-        self.df_dvpi0 = df_dvpi0 #done with saving x
+        df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+        df_dvpi0p = df_dvpi0p.loc[~df_dvpi0p.event.duplicated(), :]
+        df_dvpi0p = df_dvpi0p.sort_values(by='event')        
+        self.df_dvpi0p = df_dvpi0p #done with saving x
 
     def save(self):
-        df_x = self.df_dvpi0
+        df_x = self.df_dvpi0p
         self.df = df_x
 
 
