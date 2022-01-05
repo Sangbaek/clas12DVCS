@@ -520,7 +520,7 @@ class root2pickle():
 
     def makeDVpi0P(self):
         #make dvpi0 pairs
-        df_dvpi0p = self.df_dvpi0p
+        df_dvpi0p = self.df_epgg
 
         #common cuts
         cut_xBupper = df_dvpi0p.loc[:, "xB"] < 1  # xB
