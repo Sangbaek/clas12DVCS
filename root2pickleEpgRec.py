@@ -826,7 +826,7 @@ class root2pickle():
     def pi02gSubtraction(self):
         #exclude dvpi0 from dvcs. use only when both set up.
         df_epg = self.df_epg
-        pi0to2gammas = df_epg["event"].isin(self.df_dvpi0["event"])
+        pi0to2gammas = df_epg["event"].isin(self.df_dvpi0p["event"])
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
