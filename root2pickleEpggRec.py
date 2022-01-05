@@ -632,7 +632,7 @@ class root2pickle():
         if raw:
             df_Rec = self.df_epgg
         else:
-            df_Rec = self.df_dvpi0
+            df_Rec = self.df_dvpi0p
         df_MC = self.df_MC
         df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
         self.df = df
