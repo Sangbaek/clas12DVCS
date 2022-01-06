@@ -99,7 +99,7 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
     total = pd.concat(df_allBins.values()).sort_values( by = 'event')
     return total
 
-parent_Gen = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/dvcs/inb"
+parent_Gen = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/dvcs/inb/"
 parent_bhGen = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/bh/inb/"
 
 df_3987_Gen = pd.read_pickle(parent_Gen + "3987.pkl")
