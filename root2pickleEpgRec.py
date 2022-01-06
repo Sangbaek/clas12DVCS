@@ -76,9 +76,9 @@ class root2pickle():
         #sort columns for readability
         if gen == "dvcsrad":
             if detRes:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenQ2", "Gent2", "Genphi2"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent2", "Genphi2"]]
             else:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenQ2", "Gent2", "Genphi2"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenxB", "GenQ2", "Gent2", "Genphi2"]]
         else:
             if detRes:
                 df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
