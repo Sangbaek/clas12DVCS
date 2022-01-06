@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+M = 0.938272081 # target mass
+
 k= 2*M*(np.sqrt(0.8**2+M**2)-M)
 x1 = 1.456/2/M/8.604
 x2 = 1.456/2/M/3
