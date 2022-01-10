@@ -557,9 +557,9 @@ class root2pickle():
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.818  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.839  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.265  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.684  # recon gam angle
-            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0533  # mmepgg
-            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0610  # mmepgg
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.680  # recon gam angle
+            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0532  # mmepgg
+            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0609  # mmepgg
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
@@ -603,7 +603,7 @@ class root2pickle():
             cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > 0.0833  # mmegg
             cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.807  # meepgg
             cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.698  # meepgg
-            cut_mpt_FD = df_dvpi0p["MPt"] < 0.271  # mpt
+            cut_mpt_FD = df_dvpi0p["MPt"] < 0.272  # mpt
             cut_recon_FD = df_dvpi0p["reconPi"] < 1.428  # recon gam angle
             cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0227  # mmepgg
             cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0265  # mmepgg
@@ -769,8 +769,8 @@ class root2pickle():
                 cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
                 cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
             elif pol == "outbending":
-                cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
-                cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
+                cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.617  # mmep
+                cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.521  # mmep
             
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.25  # Pp
@@ -781,8 +781,8 @@ class root2pickle():
                 cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
                 cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
             elif pol == "outbending":
-                cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
-                cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
+                cut_mmep1_CD = df_Rec["MM2_ep"] < 0.362  # mmep
+                cut_mmep2_CD = df_Rec["MM2_ep"] > -0.340  # mmep
 
             #FD
             cut_Pp1_FD = df_Rec.Pp > 0.35  # Pp
@@ -793,8 +793,8 @@ class root2pickle():
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.553  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.569  # mmep
             elif pol == "outbending":
-                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
-                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep                
+                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.614  # mmep
+                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.612  # mmep                
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_mmep1_CD & cut_mmep2_CD)
