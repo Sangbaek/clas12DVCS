@@ -702,6 +702,18 @@ class root2pickle():
     def save(self, raw = False):
         if raw:
             df_Rec = self.df_epgg
+            #common cuts
+            cut_xBupper = df_Rec.loc[:, "xB"] < 1  # xB
+            cut_xBlower = df_Rec.loc[:, "xB"] > 0  # xB
+            cut_Q2 = df_Rec.loc[:, "Q2"] > 1  # Q2
+            cut_W = df_Rec.loc[:, "W"] > 2  # W
+            cut_Ge2 = df_Rec["Ge2"] > 0.8  # Ge cut. Ge>3 for DVCS module.
+            cut_Esector = (df_Rec.loc[:, "Esector"]!=df_Rec.loc[:, "Gsector"]) & (df_Rec.loc[:, "Esector"]!=df_Rec.loc[:, "Gsector2"])
+            # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ge2 & cut_Esector
+
+            df_Rec = df_Rec[cut_common]
+
         else:
             df_Rec = self.df_dvpi0p
         df_MC = self.df_MC

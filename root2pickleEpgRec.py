@@ -978,6 +978,20 @@ class root2pickle():
     def save(self, raw = False):
         if raw:
             df_Rec = self.df_epg
+            #common cuts
+            cut_xBupper = df_Rec["xB"] < 1  # xB
+            cut_xBlower = df_Rec["xB"] > 0  # xB
+            cut_Q2 = df_Rec["Q2"] > 1  # Q2
+            cut_W = df_Rec["W"] > 2  # W
+            cut_Ee = df_Rec["Ee"] > 2  # Ee
+            cut_Ge = df_Rec["Ge"] > 3  # Ge
+            cut_Esector = df_Rec["Esector"]!=df_Rec["Gsector"]
+            cut_Ppmax = df_Rec.Pp < 0.8  # Pp
+            # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Ppmax
+
+            df_Rec = df_Rec[cut_common]
+
             df_Rec = df_Rec.sort_values(by=['Ge', 'Pe'], ascending = [False, False])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), ]
             df_Rec = df_Rec.sort_values(by='event')
