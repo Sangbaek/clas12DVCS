@@ -552,14 +552,14 @@ class root2pickle():
             cut_mpi02_CDFT = df_dvpi0p["Mpi0"] > 0.117  # mpi0
             cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 1.025  # mmep
             cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.881  # mmep
-            cut_mmegg1_CDFT = df_dvpi0p["MM2_egg"] < 2.001  # mmegg
+            cut_mmegg1_CDFT = df_dvpi0p["MM2_egg"] < 2.010  # mmegg
             cut_mmegg2_CDFT = df_dvpi0p["MM2_egg"] > -0.259  # mmegg
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.818  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.839  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.265  # mpt
             cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.684  # recon gam angle
-            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0531  # mmepgg
-            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0608  # mmepgg
+            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0533  # mmepgg
+            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0610  # mmepgg
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
@@ -574,7 +574,7 @@ class root2pickle():
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_mpi01_CD = df_dvpi0p["Mpi0"] < 0.162  # mpi0
             cut_mpi02_CD = df_dvpi0p["Mpi0"] > 0.107  # mpi0
-            cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.362  # mmep
+            cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.372  # mmep
             cut_mmep2_CD = df_dvpi0p["MM2_ep"] > -0.281  # mmep
             cut_mmegg1_CD = df_dvpi0p["MM2_egg"] < 1.903  # mmegg
             cut_mmegg2_CD = df_dvpi0p["MM2_egg"] > 0.0119  # mmegg
@@ -790,8 +790,8 @@ class root2pickle():
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
             if pol == "inbending":
-                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
-                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep
+                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.553  # mmep
+                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.569  # mmep
             elif pol == "outbending":
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep                
