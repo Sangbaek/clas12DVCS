@@ -20,7 +20,7 @@ class root2pickle():
         self.saveDVpi0vars()
         if not raw:
             self.makeDVpi0P(pol = pol)
-        self.save(raw = raw, dvcs = dvcs)
+        self.save(raw = raw, dvcs = dvcs, pol = pol)
 
     def readFile(self):
         #read root using uproot
@@ -699,7 +699,7 @@ class root2pickle():
         df_dvpi0p = df_dvpi0p.sort_values(by='event')        
         self.df_dvpi0p = df_dvpi0p #done with saving x
 
-    def save(self, raw = False, dvcs = False):
+    def save(self, raw = False, dvcs = False, pol = "inbending"):
         if raw:
             df_Rec = self.df_epgg
             #common cuts
@@ -763,22 +763,36 @@ class root2pickle():
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
-            cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
-            cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
+            if pol == "inbending":
+                cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
+                cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
+            elif pol == "outbending":
+                cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
+                cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
+            
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.25  # Pp
             cut_Psector_CD = df_Rec.Psector>7
             cut_Ptheta_CD = df_Rec.Ptheta<60
             cut_Gsector_CD = df_Rec.Gsector<7
-            cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
-            cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
+            if pol == "inbending":
+                cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
+                cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
+            elif pol == "outbending":
+                cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
+                cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
+
             #FD
             cut_Pp1_FD = df_Rec.Pp > 0.35  # Pp
             cut_Psector_FD = df_Rec.Psector<7
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
-            cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
-            cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep
+            if pol == "inbending":
+                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
+                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep
+            elif pol == "outbending":
+                cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
+                cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep                
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_mmep1_CD & cut_mmep2_CD)
