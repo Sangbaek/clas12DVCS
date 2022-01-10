@@ -711,8 +711,36 @@ class root2pickle():
             cut_Esector = (df_Rec.loc[:, "Esector"]!=df_Rec.loc[:, "Gsector"]) & (df_Rec.loc[:, "Esector"]!=df_Rec.loc[:, "Gsector2"])
             # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
             cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ge2 & cut_Esector
-
             df_Rec = df_Rec[cut_common]
+
+            #CDFT
+            cut_Pp1_CDFT = df_Rec.Pp > 0.25  # Pp
+            cut_Psector_CDFT = df_Rec.Psector>7
+            cut_Ptheta_CDFT = df_Rec.Ptheta<60
+            cut_Gsector_CDFT = df_Rec.Gsector>7
+            #CD
+            cut_Pp1_CD = df_Rec.Pp > 0.25  # Pp
+            cut_Psector_CD = df_Rec.Psector>7
+            cut_Ptheta_CD = df_Rec.Ptheta<60
+            cut_Gsector_CD = df_Rec.Gsector<7
+            #FD
+            cut_Pp1_FD = df_Rec.Pp > 0.35  # Pp
+            cut_Psector_FD = df_Rec.Psector<7
+            cut_Ptheta_FD = df_Rec.Ptheta>2.477
+            cut_Gsector_FD = df_Rec.Gsector<7
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT)
+            cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD)
+            cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD)
+
+            df_Rec.loc[cut_CDFT, "config"] = 3
+            df_Rec.loc[cut_CD, "config"] = 2
+            df_Rec.loc[cut_FD, "config"] = 1
+
+            df_Rec = df_Rec[df_Rec.config>0]
+            
+            df_Rec = df_Rec.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+            df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
+            df_Rec = df_Rec.sort_values(by='event')        
 
         else:
             df_Rec = self.df_dvpi0p
