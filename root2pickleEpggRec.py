@@ -14,13 +14,13 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, dvcs = False):
         self.fname = fname
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes)
         self.saveDVpi0vars()
         if not raw:
             self.makeDVpi0P(pol = pol)
-        self.save(raw = raw)
+        self.save(raw = raw, dvcs = dvcs)
 
     def readFile(self):
         #read root using uproot
@@ -550,16 +550,16 @@ class root2pickle():
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
             cut_mpi01_CDFT = df_dvpi0p["Mpi0"] < 0.159  # mpi0
             cut_mpi02_CDFT = df_dvpi0p["Mpi0"] > 0.117  # mpi0
-            cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 0.999  # mmep
-            cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.849  # mmep
-            cut_mmegg1_CDFT = df_dvpi0p["MM2_egg"] < 2.057  # mmegg
-            cut_mmegg2_CDFT = df_dvpi0p["MM2_egg"] > -0.320  # mmegg
-            cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.847  # meepgg
-            cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.868  # meepgg
-            cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.264  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.710  # recon gam angle
-            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0615  # mmepgg
-            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0539  # mmepgg
+            cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 1.025  # mmep
+            cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.881  # mmep
+            cut_mmegg1_CDFT = df_dvpi0p["MM2_egg"] < 2.001  # mmegg
+            cut_mmegg2_CDFT = df_dvpi0p["MM2_egg"] > -0.259  # mmegg
+            cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.818  # meepgg
+            cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.839  # meepgg
+            cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.265  # mpt
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.684  # recon gam angle
+            cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0531  # mmepgg
+            cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0608  # mmepgg
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
@@ -574,16 +574,16 @@ class root2pickle():
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_mpi01_CD = df_dvpi0p["Mpi0"] < 0.162  # mpi0
             cut_mpi02_CD = df_dvpi0p["Mpi0"] > 0.107  # mpi0
-            cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.361  # mmep
-            cut_mmep2_CD = df_dvpi0p["MM2_ep"] > -0.279  # mmep
-            cut_mmegg1_CD = df_dvpi0p["MM2_egg"] < 1.798  # mmegg
-            cut_mmegg2_CD = df_dvpi0p["MM2_egg"] > 0.0694  # mmegg
-            cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.749  # meepgg
-            cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.656  # meepgg
-            cut_mpt_CD = df_dvpi0p["MPt"] < 0.197  # mpt
-            cut_recon_CD = df_dvpi0p["reconPi"] < 1.871  # recon gam angle
-            cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0223  # mmepgg
-            cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0285  # mmepgg
+            cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.362  # mmep
+            cut_mmep2_CD = df_dvpi0p["MM2_ep"] > -0.281  # mmep
+            cut_mmegg1_CD = df_dvpi0p["MM2_egg"] < 1.903  # mmegg
+            cut_mmegg2_CD = df_dvpi0p["MM2_egg"] > 0.0119  # mmegg
+            cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.803  # meepgg
+            cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.686  # meepgg
+            cut_mpt_CD = df_dvpi0p["MPt"] < 0.189  # mpt
+            cut_recon_CD = df_dvpi0p["reconPi"] < 1.678  # recon gam angle
+            cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0229  # mmepgg
+            cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0283  # mmepgg
 
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD &
                         cut_mmep1_CD & cut_mmep2_CD & cut_mpi01_CD & cut_mpi02_CD & 
@@ -595,18 +595,18 @@ class root2pickle():
             cut_Psector_FD = df_dvpi0p.Psector<7
             cut_Ptheta_FD = df_dvpi0p.Ptheta>2.477
             cut_Gsector_FD = df_dvpi0p.Gsector<7
-            cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.163  # mpi0
-            cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.106  # mpi0
-            cut_mmep1_FD = df_dvpi0p["MM2_ep"] < 0.426  # mmep
-            cut_mmep2_FD = df_dvpi0p["MM2_ep"] > -0.341  # mmep
-            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.717  # mmegg
-            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > 0.128  # mmegg
-            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.781  # meepgg
-            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.684  # meepgg
+            cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.162  # mpi0
+            cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.107  # mpi0
+            cut_mmep1_FD = df_dvpi0p["MM2_ep"] < 0.442  # mmep
+            cut_mmep2_FD = df_dvpi0p["MM2_ep"] > -0.349  # mmep
+            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.779  # mmegg
+            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > 0.0833  # mmegg
+            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.807  # meepgg
+            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.698  # meepgg
             cut_mpt_FD = df_dvpi0p["MPt"] < 0.271  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 1.513  # recon gam angle
-            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0221  # mmepgg
-            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0261  # mmepgg
+            cut_recon_FD = df_dvpi0p["reconPi"] < 1.428  # recon gam angle
+            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0227  # mmepgg
+            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0265  # mmepgg
 
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD &
                         cut_mmep1_FD & cut_mmep2_FD & cut_mpi01_FD & cut_mpi02_FD & 
@@ -699,7 +699,7 @@ class root2pickle():
         df_dvpi0p = df_dvpi0p.sort_values(by='event')        
         self.df_dvpi0p = df_dvpi0p #done with saving x
 
-    def save(self, raw = False):
+    def save(self, raw = False, dvcs = False):
         if raw:
             df_Rec = self.df_epgg
             #common cuts
@@ -737,10 +737,62 @@ class root2pickle():
             df_Rec.loc[cut_FD, "config"] = 1
 
             df_Rec = df_Rec[df_Rec.config>0]
-            
+
             df_Rec = df_Rec.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
-            df_Rec = df_Rec.sort_values(by='event')        
+            df_Rec = df_Rec.sort_values(by='event')
+
+        elif dvcs:
+            df_Rec = self.df_epgg
+            #common cuts
+            cut_xBupper = df_Rec["xB"] < 1  # xB
+            cut_xBlower = df_Rec["xB"] > 0  # xB
+            cut_Q2 = df_Rec["Q2"] > 1  # Q2
+            cut_W = df_Rec["W"] > 2  # W
+            cut_Ee = df_Rec["Ee"] > 2  # Ee
+            cut_Ge = df_Rec["Ge"] > 3  # Ge
+            cut_Esector = df_Rec["Esector"]!=df_Rec["Gsector"]
+            cut_Ppmax = df_Rec.Pp < 0.8  # Pp
+            # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Ppmax
+
+            df_Rec = df_Rec[cut_common]
+
+            #CDFT
+            cut_Pp1_CDFT = df_Rec.Pp > 0.25  # Pp
+            cut_Psector_CDFT = df_Rec.Psector>7
+            cut_Ptheta_CDFT = df_Rec.Ptheta<60
+            cut_Gsector_CDFT = df_Rec.Gsector>7
+            cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.599  # mmep
+            cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.528  # mmep
+            #CD
+            cut_Pp1_CD = df_Rec.Pp > 0.25  # Pp
+            cut_Psector_CD = df_Rec.Psector>7
+            cut_Ptheta_CD = df_Rec.Ptheta<60
+            cut_Gsector_CD = df_Rec.Gsector<7
+            cut_mmep1_CD = df_Rec["MM2_ep"] < 0.410  # mmep
+            cut_mmep2_CD = df_Rec["MM2_ep"] > -0.401  # mmep
+            #FD
+            cut_Pp1_FD = df_Rec.Pp > 0.35  # Pp
+            cut_Psector_FD = df_Rec.Psector<7
+            cut_Ptheta_FD = df_Rec.Ptheta>2.477
+            cut_Gsector_FD = df_Rec.Gsector<7
+            cut_mmep1_FD = df_Rec["MM2_ep"] < 0.558  # mmep
+            cut_mmep2_FD = df_Rec["MM2_ep"] > -0.559  # mmep
+
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
+            cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_mmep1_CD & cut_mmep2_CD)
+            cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD & cut_mmep1_FD & cut_mmep2_FD)
+
+            df_Rec.loc[cut_CDFT, "config"] = 3
+            df_Rec.loc[cut_CD, "config"] = 2
+            df_Rec.loc[cut_FD, "config"] = 1
+
+            df_Rec = df_Rec[df_Rec.config>0]
+
+            df_Rec = df_Rec.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+            df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
+            df_Rec = df_Rec.sort_values(by='event')
 
         else:
             df_Rec = self.df_dvpi0p
@@ -761,6 +813,7 @@ if __name__ == "__main__":
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "pi0norad")
     parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
+    parser.add_argument("-D","--dvcs", help="save dvcs overlap", action = "store_true")
     
     args = parser.parse_args()
 
@@ -769,7 +822,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, dvcs = args.dvcs)
     df = converter.df
 
     df.to_pickle(args.out)
