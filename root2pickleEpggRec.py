@@ -700,7 +700,8 @@ class root2pickle():
         self.df_dvpi0p = df_dvpi0p #done with saving x
 
     def save(self, raw = False, dvcs = False, pol = "inbending"):
-        if raw:
+        if raw and not dvcs:
+            print("saving raw with common cuts")
             df_Rec = self.df_epgg
             #common cuts
             cut_xBupper = df_Rec.loc[:, "xB"] < 1  # xB
@@ -742,7 +743,8 @@ class root2pickle():
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
             df_Rec = df_Rec.sort_values(by='event')
 
-        elif dvcs:
+        elif (raw and dvcs):
+            print("saving raw and dvcs overlap")
             df_Rec = self.df_epgg
             #common cuts
             cut_xBupper = df_Rec["xB"] < 1  # xB
