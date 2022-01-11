@@ -960,10 +960,10 @@ class root2pickle():
 
         df_dvcs = df_dvcs[df_dvcs.config>0]
 
-        # # dealing with duplicates
-        # df_dvcs = df_dvcs.sort_values(by=['Ge', 'config'], ascending = [False, True])
-        # df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
-        # df_dvcs = df_dvcs.sort_values(by='event')
+        # dealing with duplicates
+        df_dvcs = df_dvcs.sort_values(by=['reconGam', 'Ge', 'Pe'], ascending = [True, False, False])
+        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+        df_dvcs = df_dvcs.sort_values(by='event')
 
         self.df_dvcs = df_dvcs               
          
@@ -1018,7 +1018,7 @@ class root2pickle():
 
             df_Rec = df_Rec[df_Rec.config>0]
 
-            df_Rec = df_Rec.sort_values(by=['Ge', 'Pe'], ascending = [False, False])
+            df_Rec = df_Rec.sort_values(by=['reconGam', 'Ge', 'Pe'], ascending = [True, False, False])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), ]
             df_Rec = df_Rec.sort_values(by='event')
 
