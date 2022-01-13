@@ -1010,7 +1010,7 @@ class root2pickle():
             if pol == "inbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
             elif pol == "outbending":
-                cut_Pp1_FD = df_Rec.Pp > 0.55  # Pp
+                cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
             cut_Psector_FD = df_Rec.Psector<7
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
