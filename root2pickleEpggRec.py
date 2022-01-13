@@ -403,7 +403,11 @@ class root2pickle():
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.8, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 2.2, len(df_protonRec.loc[df_protonRec.Psector>7])) 
         #FD proton
-        df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(0.12*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.42)/0.05))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
+        if pol == "inbending":
+            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(0.12*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.42)/0.05))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
+        elif pol == "outbending":
+            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(0.12*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.55)/0.05))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
+
         #moduli proton phi
         df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
         df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]<-180, df_protonRec.loc[:, "Pphi"] + 360, df_protonRec.loc[:, "Pphi"]) 
@@ -761,7 +765,7 @@ class root2pickle():
             df_Rec = df_Rec[cut_common]
 
             #CDFT
-            cut_Pp1_CDFT = df_Rec.Pp > 0.25  # Pp
+            cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
@@ -773,7 +777,7 @@ class root2pickle():
                 cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.521  # mmep
             
             #CD
-            cut_Pp1_CD = df_Rec.Pp > 0.25  # Pp
+            cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
             cut_Ptheta_CD = df_Rec.Ptheta<60
             cut_Gsector_CD = df_Rec.Gsector<7
@@ -785,14 +789,15 @@ class root2pickle():
                 cut_mmep2_CD = df_Rec["MM2_ep"] > -0.340  # mmep
 
             #FD
-            cut_Pp1_FD = df_Rec.Pp > 0.35  # Pp
             cut_Psector_FD = df_Rec.Psector<7
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
             if pol == "inbending":
+                cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.553  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.569  # mmep
             elif pol == "outbending":
+                cut_Pp1_FD = df_Rec.Pp > 0.55  # Pp
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.614  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.612  # mmep                
 
