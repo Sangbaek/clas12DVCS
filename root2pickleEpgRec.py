@@ -24,7 +24,7 @@ class root2pickle():
         self.pi02gSubtraction()
         if not raw:
             self.makeDVCS(pol = pol)
-        self.save(raw = raw)
+        self.save(raw = raw, pol = pol)
 
     def readFile(self):
         #read root using uproot
@@ -979,7 +979,7 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self, raw = False):
+    def save(self, raw = False, pol = "inbending"):
         if raw:
             df_Rec = self.df_epg
             #common cuts
