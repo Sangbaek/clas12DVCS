@@ -129,7 +129,7 @@ class root2pickle():
         df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
         df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
 
-        correction = False
+        correction = True#False
 
         def corr(x, t):
             x0, x1, x2, x3 = x
