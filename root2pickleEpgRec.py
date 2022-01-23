@@ -395,10 +395,12 @@ class root2pickle():
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
             df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
             df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+            df_protonRecFD_1.loc[:, "Pband"] = "lower"
 
             df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
             df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
             df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+            df_protonRecFD_2.loc[:, "Pband"] = "upper"
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
@@ -426,11 +428,11 @@ class root2pickle():
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, np.abs(0.16*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.1))-0.5)), len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.8, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 2.0, len(df_protonRec.loc[df_protonRec.Psector>7])) 
-        #FD proton
-        if pol == "inbending":
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(2*(0.08-0.025*(np.abs(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8) - (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8)))*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.42)/0.05))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
-        elif pol == "outbending":
-            df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(2*(0.08-0.025*(np.abs(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8) - (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8)))*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.5)/0.075))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
+        # #FD proton
+        # if pol == "inbending":
+        #     df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(2*(0.08-0.025*(np.abs(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8) - (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8)))*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.42)/0.05))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
+        # elif pol == "outbending":
+        #     df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, np.abs(2*(0.08-0.025*(np.abs(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8) - (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.8)))*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.5)/0.075))-0.5)), len(df_protonRec.loc[df_protonRec.Psector<7]))
 
         #moduli proton phi
         df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
