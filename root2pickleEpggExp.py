@@ -254,13 +254,13 @@ class root2pickle():
             df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.5
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
-            # df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-            # df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-            # df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+            df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1 + 0.02
+            df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+            df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-            # df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-            # df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-            # df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+            df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2 + 0.02
+            df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+            df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
