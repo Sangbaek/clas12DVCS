@@ -129,7 +129,7 @@ class root2pickle():
         df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
         df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
 
-        correction = True#False
+        correction = False
 
         def corr(x, t):
             x0, x1, x2, x3 = x
@@ -258,13 +258,13 @@ class root2pickle():
             df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.5
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
-            df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-            df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-            df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+            # df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+            # df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+            # df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-            df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-            df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-            df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+            # df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+            # df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+            # df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
