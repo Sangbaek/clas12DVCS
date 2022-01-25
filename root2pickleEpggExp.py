@@ -267,7 +267,7 @@ class root2pickle():
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
             if pol == "inbending":
-                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 0.02*(1/(1+np.exp(-(df_protonRecFD.Pp-0.55)/0.01)))
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + np.select([(df_protonRecFD.Pp<0.4742),(df_protonRecFD.Pp>=0.4742)& (df_protonRecFD.Pp<1.191), (df_protonRecFD.Pp>=1.191)], [0, np.poly1d([29.076, -143.194, 285.466, -294.795, 166.302, -48.553, 5.731])(df_protonRecFD.Pp), -0.0100891])
             if pol == "outbending":
                 df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
