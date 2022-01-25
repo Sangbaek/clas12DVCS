@@ -210,6 +210,13 @@ class root2pickle():
         qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
         qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
         #first condition
+        ang = np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+        GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+        GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+
+        df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
+        df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
+
         cond1_1 = df_gammaRec.GcX >= psplit
         cond1_2 = df_gammaRec.GcY < sleft * (df_gammaRec.GcX - tleft)
         cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
