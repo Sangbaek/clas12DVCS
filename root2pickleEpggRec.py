@@ -210,17 +210,19 @@ class root2pickle():
         qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
         qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
         #first condition
-        cond1_1 = df_gammaRec.cX >= psplit
-        cond1_2 = df_gammaRec.cY < sleft * (df_gammaRec.cX - tleft)
-        cond1_3 = df_gammaRec.cY > sright * (df_gammaRec.cX - tright)
-        cond1 = cond1_1 & cond1_2 & cond1_3
+        cond1_1 = df_gammaRec.GcX >= psplit
+        cond1_2 = df_gammaRec.GcY < sleft * (df_gammaRec.GcX - tleft)
+        cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
+        cond1_4 = df_gammaRec.Gsector < 7
+        cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
         df_gammaRec.loc[cond1, "GFidFX"] = 1
-        #second condition else if first
+        #second condition else if the first
         # cond2_0 = df_gammaRec.GFidFX == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
-        cond2_1 = df_gammaRec.cX < psplit
-        cond2_2 = df_gammaRec.cY < qleft * (df_gammaRec.cX - rleft)
-        cond2_3 = df_gammaRec.cY > qright * (df_gammaRec.cX - rright)
-        cond2 = cond2_1 & cond2_2 & cond2_3
+        cond2_1 = df_gammaRec.GcX < psplit
+        cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
+        cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
+        cond2_4 = df_gammaRec.Gsector < 7
+        cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
         df_gammaRec.loc[cond2, "GFidFX"] = 1
 
         #set up a dummy index for merging
