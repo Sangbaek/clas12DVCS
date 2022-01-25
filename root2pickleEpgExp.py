@@ -46,13 +46,13 @@ class root2pickle():
         eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
-        gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
+        gamKeysRec = ["Gpx", "Gpy", "Gpz", "GcX", "GcY", "Gsector"]
 
         if detRes:
             eleKeysRec.extend(["Evx", "Evy", "Evz"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
             eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
-            gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3", "GcX", "GcY"])
+            gamKeysRec.extend(["Gedep", "Gedep1", "Gedep2", "Gedep3"])
             proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
@@ -84,7 +84,34 @@ class root2pickle():
         # df_protonRec = df_protonRec.astype({"PCvt5Hitx": float, "PCvt5Hity": float, "PCvt5Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt7Hitx": float, "PCvt7Hity": float, "PCvt7Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt12Hitx": float, "PCvt12Hity": float, "PCvt12Hitz": float})
-        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
+        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "GcX": float, "GcY": float})
+
+        #photon fiducial cuts by F.X. Girod
+        df_gammaRec.loc[:, "GFidFX"] = 0
+
+        sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
+        psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
+        tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
+        tright = np.select(sector_cond, [58.7477, 51.2589, 59.2357, 56.2415, 60.8219, 49.8914])
+        sleft = np.select(sector_cond, [0.582053, 0.544976, 0.549788, 0.56899, 0.56414, 0.57343])
+        sright = np.select(sector_cond, [-0.591876, -0.562926, -0.562246, -0.563726, -0.568902, -0.550729])
+        rleft = np.select(sector_cond, [64.9348, 64.7541, 67.832, 55.9324, 55.9225, 60.0997])
+        rright = np.select(sector_cond, [65.424, 54.6992, 63.6628, 57.8931, 56.5367, 56.4641])
+        qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
+        qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
+        #first condition
+        cond1_1 = df_gammaRec.cX >= psplit
+        cond1_2 = df_gammaRec.cY < sleft * (df_gammaRec.cX - tleft)
+        cond1_3 = df_gammaRec.cY > sright * (df_gammaRec.cX - tright)
+        cond1 = cond1_1 & cond1_2 & cond1_3
+        df_gammaRec.loc[cond1, "GFidFX"] = 1
+        #second condition else if first
+        # cond2_0 = df_gammaRec.GFidFX == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
+        cond2_1 = df_gammaRec.cX < psplit
+        cond2_2 = df_gammaRec.cY < qleft * (df_gammaRec.cX - rleft)
+        cond2_3 = df_gammaRec.cY > qright * (df_gammaRec.cX - rright)
+        cond2 = cond2_1 & cond2_2 & cond2_3
+        df_gammaRec.loc[cond2, "GFidFX"] = 1
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
