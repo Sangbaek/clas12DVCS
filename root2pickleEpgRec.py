@@ -539,6 +539,8 @@ class root2pickle():
         v3l = cross(beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
+        v3pi0 = cross(VGS, pi0)
+
         VmissPi0 = [-df_epgg["Epx"] - df_epgg["Ppx"], -df_epgg["Epy"] -
                     df_epgg["Ppy"], pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
         VmissP = [-df_epgg["Epx"] - df_epgg["Gpx"] - df_epgg["Gpx2"], -df_epgg["Epy"] -
@@ -546,6 +548,7 @@ class root2pickle():
         Vmiss = [-df_epgg["Epx"] - df_epgg["Ppx"] - df_epgg["Gpx"] - df_epgg["Gpx2"],
                     -df_epgg["Epy"] - df_epgg["Ppy"] - df_epgg["Gpy"] - df_epgg["Gpy2"],
                     pbeam - df_epgg["Epz"] - df_epgg["Ppz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
+        costheta = cosTheta(VGS, gam)
 
         df_epgg.loc[:, 'Mpx'], df_epgg.loc[:, 'Mpy'], df_epgg.loc[:, 'Mpz'] = Vmiss
 
@@ -553,10 +556,19 @@ class root2pickle():
         df_epgg.loc[:,'Q2'] = -((ebeam - df_epgg['Ee'])**2 - mag2(VGS))
         df_epgg.loc[:,'nu'] = (ebeam - df_epgg['Ee'])
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
-        df_epgg.loc[:,'t'] = 2 * M * (df_epgg['Pe'] - M)
+        df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
+        df_epgg.loc[:,'t2'] = (M * df_epgg['Q2'] + 2 * M * df_epgg['nu'] * (df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta))\
+        / (M + df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta)
         df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
         df_epgg.loc[:,'MPt'] = np.sqrt((df_epgg["Epx"] + df_epgg["Ppx"] + df_epgg["Gpx"] + df_epgg["Gpx2"])**2 +
                                  (df_epgg["Epy"] + df_epgg["Ppy"] + df_epgg["Gpy"] + df_epgg["Gpy2"])**2)
+        # trento angles
+        df_epgg.loc[:,'phi1'] = angle(v3l, v3h)
+        df_epgg.loc[:,'phi1'] = np.where(dot(v3l, pro) > 0, 360.0 -
+                                  df_epgg['phi1'], df_epgg['phi1'])
+        df_epgg.loc[:,'phi2'] = angle(v3l, v3g)
+        df_epgg.loc[:,'phi2'] = np.where(dot(v3l, gam) <
+                                  0, 360.0 - df_epgg['phi2'], df_epgg['phi2'])
 
         # exclusivity variables
         df_epgg.loc[:,'MM2_ep'] = (-M - ebeam + df_epgg["Ee"] +
@@ -569,6 +581,12 @@ class root2pickle():
         df_epgg.loc[:,'Mpi0'] = pi0InvMass(gam, gam2)
         df_epgg.loc[:,'reconPi'] = angle(VmissPi0, pi0)
         df_epgg.loc[:,"Pie"] = df_epgg['Ge'] + df_epgg['Ge2']
+        df_epgg.loc[:,'coplanarity'] = angle(v3h, v3pi0)
+        df_epgg.loc[:,'coneAngle1'] = angle(ele, gam)
+        df_epgg.loc[:,'coneAngle2'] = angle(ele, gam2)
+        
+        df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
+
         self.df_epgg = df_epgg
 
     def makeDVpi0P_DVCS(self, pol = "inbending"):
