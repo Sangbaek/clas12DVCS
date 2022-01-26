@@ -651,15 +651,15 @@ class root2pickle():
             cut_mmep1_FD = df_dvpi0p["MM2_ep"] < 0.6  # mmep
             cut_mmep2_FD = df_dvpi0p["MM2_ep"] > -0.6  # mmep
             cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.167  # mpi0
-            cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.105  # mpi0
-            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.801  # mmegg
-            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > -0.120  # mmegg
-            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.792  # meepgg
-            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.813  # meepgg
-            cut_mpt_FD = df_dvpi0p["MPt"] < 0.217  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 1.182  # recon gam angle
-            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0254  # mmepgg
-            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0299  # mmepgg
+            cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.104  # mpi0
+            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.813  # mmegg
+            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > -0.113  # mmegg
+            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.810  # meepgg
+            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.814  # meepgg
+            cut_mpt_FD = df_dvpi0p["MPt"] < 0.209  # mpt
+            cut_recon_FD = df_dvpi0p["reconPi"] < 1.190  # recon gam angle
+            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0269  # mmepgg
+            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0319  # mmepgg
 
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD &
                         cut_mmep1_FD & cut_mmep2_FD & cut_mpi01_FD & cut_mpi02_FD & 
@@ -721,16 +721,16 @@ class root2pickle():
             cut_Gsector_FD = df_dvpi0p.Gsector<7
             cut_mmep1_FD = df_dvpi0p["MM2_ep"] < 0.6  # mmep
             cut_mmep2_FD = df_dvpi0p["MM2_ep"] > -0.6  # mmep
-            cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.169  # mpi0
+            cut_mpi01_FD = df_dvpi0p["Mpi0"] < 0.168  # mpi0
             cut_mpi02_FD = df_dvpi0p["Mpi0"] > 0.103  # mpi0
-            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.870  # mmegg
-            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > -0.168  # mmegg
-            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.806  # meepgg
-            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.754  # meepgg
-            cut_mpt_FD = df_dvpi0p["MPt"] < 0.206  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 1.272  # recon gam angle
-            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0273  # mmepgg
-            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0325  # mmepgg
+            cut_mmegg1_FD = df_dvpi0p["MM2_egg"] < 1.911  # mmegg
+            cut_mmegg2_FD = df_dvpi0p["MM2_egg"] > -0.198  # mmegg
+            cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.854  # meepgg
+            cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.792  # meepgg
+            cut_mpt_FD = df_dvpi0p["MPt"] < 0.213  # mpt
+            cut_recon_FD = df_dvpi0p["reconPi"] < 1.416  # recon gam angle
+            cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0429  # mmepgg
+            cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0617  # mmepgg
 
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD &
                         cut_mmep1_FD & cut_mmep2_FD & cut_mpi01_FD & cut_mpi02_FD & 
