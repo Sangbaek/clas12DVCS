@@ -785,15 +785,15 @@ class root2pickle():
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
-            cut_GFidFX2_CDFT = df_dvpi0p.GFidFX2==1
+            cut_GFidFX2_CDFT = df_Rec.GFidFX2==1
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
             cut_Ptheta_CD = df_Rec.Ptheta<60
             cut_Gsector_CD = df_Rec.Gsector<7
-            cut_Gsector2_CD = df_dvpi0p.Gsector2<7
-            cut_GFidFX_CD = df_dvpi0p.GFidFX==1
-            cut_GFidFX2_CD = df_dvpi0p.GFidFX2==1
+            cut_Gsector2_CD = df_Rec.Gsector2<7
+            cut_GFidFX_CD = df_Rec.GFidFX==1
+            cut_GFidFX2_CD = df_Rec.GFidFX2==1
             #FD
             if pol == "inbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
@@ -802,9 +802,9 @@ class root2pickle():
             cut_Psector_FD = df_Rec.Psector<7
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
-            cut_Gsector2_FD = df_dvpi0p.Gsector2<7
-            cut_GFidFX_FD = df_dvpi0p.GFidFX==1
-            cut_GFidFX2_FD = df_dvpi0p.GFidFX2==1
+            cut_Gsector2_FD = df_Rec.Gsector2<7
+            cut_GFidFX_FD = df_Rec.GFidFX==1
+            cut_GFidFX2_FD = df_Rec.GFidFX2==1
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFidFX2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_Gsector2_CD & cut_GFidFX_CD & cut_GFidFX2_CD)
@@ -842,7 +842,7 @@ class root2pickle():
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
-            cut_GFidFX2_CDFT = df_dvpi0p.GFidFX2==1
+            cut_GFidFX2_CDFT = df_Rec.GFidFX2==1
             if pol == "inbending":
                 cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.6  # mmep
                 cut_mmep2_CDFT = df_Rec["MM2_ep"] > -0.6  # mmep
@@ -855,9 +855,9 @@ class root2pickle():
             cut_Psector_CD = df_Rec.Psector>7
             cut_Ptheta_CD = df_Rec.Ptheta<60
             cut_Gsector_CD = df_Rec.Gsector<7
-            cut_Gsector2_CD = df_dvpi0p.Gsector2<7
-            cut_GFidFX_CD = df_dvpi0p.GFidFX==1
-            cut_GFidFX2_CD = df_dvpi0p.GFidFX2==1
+            cut_Gsector2_CD = df_Rec.Gsector2<7
+            cut_GFidFX_CD = df_Rec.GFidFX==1
+            cut_GFidFX2_CD = df_Rec.GFidFX2==1
             if pol == "inbending":
                 cut_mmep1_CD = df_Rec["MM2_ep"] < 0.6  # mmep
                 cut_mmep2_CD = df_Rec["MM2_ep"] > -0.6  # mmep
@@ -869,9 +869,9 @@ class root2pickle():
             cut_Psector_FD = df_Rec.Psector<7
             cut_Ptheta_FD = df_Rec.Ptheta>2.477
             cut_Gsector_FD = df_Rec.Gsector<7
-            cut_Gsector2_FD = df_dvpi0p.Gsector2<7
-            cut_GFidFX_FD = df_dvpi0p.GFidFX==1
-            cut_GFidFX2_FD = df_dvpi0p.GFidFX2==1
+            cut_Gsector2_FD = df_Rec.Gsector2<7
+            cut_GFidFX_FD = df_Rec.GFidFX==1
+            cut_GFidFX2_FD = df_Rec.GFidFX2==1
             if pol == "inbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.6 # mmep
