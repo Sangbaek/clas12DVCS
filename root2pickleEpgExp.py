@@ -461,8 +461,8 @@ class root2pickle():
         cut_W = df_dvpi0p["W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
         cut_Ge = df_dvpi0p["Ge"] > 3  # Ge
-        cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
-        cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"])) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
+        cut_Esector = 1#(df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
+        cut_Psector = 1#~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"])) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
         cut_Ppmax = df_dvpi0p.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvpi0p["Evz"] - df_dvpi0p["Pvz"]) < 2.5 + 2.5 / mag([df_dvpi0p["Ppx"], pi0SimInb_forDVCS["Ppy"], pi0SimInb_forDVCS["Ppz"]])
         cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax

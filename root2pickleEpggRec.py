@@ -839,8 +839,8 @@ class root2pickle():
             cut_W = df_Rec["W"] > 2  # W
             cut_Ee = df_Rec["Ee"] > 2  # Ee
             cut_Ge = df_Rec["Ge"] > 3  # Ge
-            cut_Esector = (df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
-            cut_Psector = ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"])) & ~( ((df_Rec["Pstat"]//10)%10>0) & df_Rec["Psector"]!=df_Rec["Gsector2"])
+            cut_Esector = 1#(df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
+            cut_Psector = 1#~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"])) & ~( ((df_Rec["Pstat"]//10)%10>0) & df_Rec["Psector"]!=df_Rec["Gsector2"])
             cut_Ppmax = df_Rec.Pp < 0.8  # Pp
             # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
             cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax
