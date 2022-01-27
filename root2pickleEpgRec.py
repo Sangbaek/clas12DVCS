@@ -600,7 +600,7 @@ class root2pickle():
         cut_W = df_dvpi0p["W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
         cut_Ge = df_dvpi0p["Ge"] > 3  # Ge
-        cut_sector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Psector"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
+        cut_sector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
         cut_Ppmax = df_dvpi0p.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvpi0p["Evz"] - df_dvpi0p["Pvz"]) < 2.5 + 2.5 / mag([df_dvpi0p["Ppx"], pi0SimInb_forDVCS["Ppy"], pi0SimInb_forDVCS["Ppz"]])
         cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_sector & cut_Ppmax
@@ -876,7 +876,7 @@ class root2pickle():
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
         cut_Ge = df_dvcs["Ge"] > 3  # Ge
-        cut_sector = (df_dvcs["Esector"]!=df_dvcs["Gsector"]) & (df_dvcs["Esector"]!=df_dvcs["Psector"]) & (df_dvcs["Psector"]!=df_dvcs["Gsector"])
+        cut_sector = (df_dvcs["Esector"]!=df_dvcs["Gsector"]) & (df_dvcs["Psector"]!=df_dvcs["Gsector"])
         cut_Ppmax = df_dvcs.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
         cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_sector & cut_Ppmax
@@ -1076,7 +1076,7 @@ class root2pickle():
             cut_W = df_Rec["W"] > 2  # W
             cut_Ee = df_Rec["Ee"] > 2  # Ee
             cut_Ge = df_Rec["Ge"] > 3  # Ge
-            cut_sector = (df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Psector"]) & (df_Rec["Psector"]!=df_Rec["Gsector"])
+            cut_sector = (df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Psector"]!=df_Rec["Gsector"])
             cut_Ppmax = df_Rec.Pp < 0.8  # Pp
             # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
             cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_sector & cut_Ppmax
