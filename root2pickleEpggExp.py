@@ -40,7 +40,7 @@ class root2pickle():
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Psector"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "GcX", "GcY", "Gsector"]
 
@@ -459,10 +459,12 @@ class root2pickle():
         cut_W = df_dvpi0p.loc[:, "W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
         cut_Ge2 = df_dvpi0p["Ge2"] > 0.6  # Ge cut. Ge>3 for DVCS module.
-        cut_sector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
+        cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
+        cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]))
+                        & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
         cut_Ppmax = df_dvpi0p.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_sector & cut_Ppmax
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax
 
         df_dvpi0p = df_dvpi0p[cut_common]
 

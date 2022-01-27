@@ -44,7 +44,7 @@ class root2pickle():
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Psector"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "GcX", "GcY", "Gsector"]
 
@@ -461,10 +461,12 @@ class root2pickle():
         cut_W = df_dvpi0p["W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
         cut_Ge = df_dvpi0p["Ge"] > 3  # Ge
-        cut_sector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
+        cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
+        cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]))
+                        & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
         cut_Ppmax = df_dvpi0p.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvpi0p["Evz"] - df_dvpi0p["Pvz"]) < 2.5 + 2.5 / mag([df_dvpi0p["Ppx"], pi0SimInb_forDVCS["Ppy"], pi0SimInb_forDVCS["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_sector & cut_Ppmax
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax
 
         df_dvpi0p = df_dvpi0p[cut_common]
 
@@ -737,10 +739,11 @@ class root2pickle():
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
         cut_Ge = df_dvcs["Ge"] > 3  # Ge
-        cut_sector = (df_dvcs["Esector"]!=df_dvcs["Gsector"]) & (df_dvcs["Psector"]!=df_dvcs["Gsector"])
+        cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
+        cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
         cut_Ppmax = df_dvcs.Pp < 0.8  # Pp
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_sector & cut_Ppmax
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax
 
         df_dvcs = df_dvcs[cut_common]
 
@@ -820,7 +823,7 @@ class root2pickle():
             cut_cone1_FD = df_dvcs["coneAngle"] < 41.033  # coneangle
             cut_cone2_FD = df_dvcs["coneAngle"] > 15.910  # coneangle
             cut_mpt_FD = df_dvcs["MPt"] < 0.315  # mpt
-            cut_recon_FD = df_dvcs["reconGam"] < 5  # recon gam angle
+            cut_recon_FD = df_dvcs["reconGam"] < 1.667  # recon gam angle
             cut_coplanarity_FD = 1#df_dvcs["coplanarity"] < 7.822  # coplanarity angle - no cut
             cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0618  # mmepg
             cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0683  # mmepg
@@ -896,7 +899,7 @@ class root2pickle():
             cut_cone1_FD = df_dvcs["coneAngle"] < 37.803  # coneangle
             cut_cone2_FD = df_dvcs["coneAngle"] > 20.974  # coneangle
             cut_mpt_FD = df_dvcs["MPt"] < 0.342  # mpt
-            cut_recon_FD = df_dvcs["reconGam"] < 5  # recon gam angle
+            cut_recon_FD = df_dvcs["reconGam"] < 2.099  # recon gam angle
             cut_coplanarity_FD = 1#df_dvcs["coplanarity"] < 7.822  # coplanarity angle - no cut
             cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0767  # mmepg
             cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0796  # mmepg
