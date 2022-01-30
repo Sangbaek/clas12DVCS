@@ -953,19 +953,19 @@ class root2pickle():
             cut_Ptheta_FD = df_dvcs.Ptheta>2.477
             cut_Gsector_FD = df_dvcs.Gsector<7
             cut_GFidFX_FD = df_dvcs.GFidFX==1
-            cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.585  # mmep
-            cut_mmep2_FD = df_dvcs["MM2_ep"] > -0.607  # mmep
-            cut_mmeg1_FD = df_dvcs["MM2_eg"] < 2.701  # mmeg
-            cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.893  # mmeg
-            cut_meepg1_FD = df_dvcs["ME_epg"] < 1.534  # meepg
-            cut_meepg2_FD = df_dvcs["ME_epg"] > -1.456  # meepg
-            cut_cone1_FD = df_dvcs["coneAngle"] < 41.033  # coneangle
-            cut_cone2_FD = df_dvcs["coneAngle"] > 15.910  # coneangle
-            cut_mpt_FD = df_dvcs["MPt"] < 0.315  # mpt
-            cut_recon_FD = df_dvcs["reconGam"] < 1.667  # recon gam angle
-            cut_coplanarity_FD = 1#df_dvcs["coplanarity"] < 7.822  # coplanarity angle - no cut
-            cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0618  # mmepg
-            cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0683  # mmepg
+            cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.408  # mmep
+            cut_mmep2_FD = df_dvcs["MM2_ep"] > -0.397  # mmep
+            cut_mmeg1_FD = df_dvcs["MM2_eg"] < 2.046  # mmeg
+            cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.164  # mmeg
+            cut_meepg1_FD = df_dvcs["ME_epg"] < 0.994  # meepg
+            cut_meepg2_FD = df_dvcs["ME_epg"] > -0.861 # meepg
+            cut_cone1_FD = df_dvcs["coneAngle"] < 35.864  # coneangle
+            cut_cone2_FD = df_dvcs["coneAngle"] > 23.149  # coneangle
+            cut_mpt_FD = df_dvcs["MPt"] < 0.300  # mpt
+            cut_recon_FD = df_dvcs["reconGam"] < 1.947  # recon gam angle
+            cut_coplanarity_FD = df_dvcs["coplanarity"] < 13.751  # coplanarity angle - no cut
+            cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0343  # mmepg
+            cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0415  # mmepg
 
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD & cut_GFidFX_FD &
                         cut_mmep1_FD & cut_mmep2_FD & cut_mmeg1_FD & cut_mmeg2_FD &
