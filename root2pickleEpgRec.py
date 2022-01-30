@@ -119,6 +119,9 @@ class root2pickle():
             gam2 = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==1]
             gam2 = gam2.reset_index(drop=True)
 
+            if gen == "dvcsrad":
+                gam2.index = gam2.event
+
             gam1.loc[:,"GenGp2"] = gam2.loc[:,"GenGp"]
             gam1.loc[:,"GenGpx2"] = gam2.loc[:,"GenGpx"]
             gam1.loc[:,"GenGpy2"] = gam2.loc[:,"GenGpy"]
