@@ -155,7 +155,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
 # local502.loc[:, "binVolInb"] = TrueVolInb
 # local502.to_pickle("truebinVol_inb.pkl")
 
-local502 = pd.read_pickle("trubinVol_inb.pkl")
+local502 = pd.read_pickle("truebinVol_inb.pkl")
 
 parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/dvcs/"
 parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bh/"
