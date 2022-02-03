@@ -340,8 +340,8 @@ df_global = countDF(dvcsSimOutb40nA.loc[ dvcsSimOutb40nA.radMode == 3], local502
 df_global = countGenDF(dvcsGenOutb0nA.loc[ dvcsGenOutb0nA.radMode == 3], local502, "dvcsGenOutb0nA_pPeak")
 df_global = countDF(dvcsSimOutb0nA.loc[ dvcsSimOutb0nA.radMode == 3], local502, "dvcsSimOutb0nA_pPeak")
 
-df_global = countGenDF(dvcsGenOutb40nT.loc[ dvcsGenOutb40nT.radMode == 3], local502, "dvcsGenOutb40nT_pPeak")
-df_global = countDF(dvcsSimOutb40nT.loc[ dvcsSimOutb40nT.radMode == 3], local502, "dvcsSimOutb40nT_pPeak")
+df_global = countGenDF(dvcsGenOutb40nAT.loc[ dvcsGenOutb40nAT.radMode == 3], local502, "dvcsGenOutb40nAT_pPeak")
+df_global = countDF(dvcsSimOutb40nAT.loc[ dvcsSimOutb40nAT.radMode == 3], local502, "dvcsSimOutb40nAT_pPeak")
 
 df_global = countGenDF(bhGenOutb50nA.loc[ bhGenOutb50nA.radMode == 3], local502, "bhGenOutb50nA_pPeak")
 df_global = countDF(bhSimOutb50nA.loc[ bhSimOutb50nA.radMode == 3], local502, "bhSimOutb50nA_pPeak")
