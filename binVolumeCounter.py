@@ -47,8 +47,7 @@ phibin_f = phibin[1:]
 goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '020', '021', '022', '023', '100', '101', '102', '103', '110', '111', '112', '113', '120', '121', '122', '123', '200', '201', '202', '203', '210', '211', '212', '213', '220', '221', '222', '223', '231', '232', '233', '300', '301', '302', '303', '310', '311', '312', '313', '321', '322', '323', '332', '333', '400', '401', '402', '403', '411', '412', '413', '422', '423', '502', '503', '512', '513']
 badBins = ['230', '320', '330', '331', '410', '420', '421', '500', '501', '510', '511', '600', '601', '602', '603']
 
-df_global = pd.read_pickle("df_globalFeb.pkl")
-local502 = df_global.loc[df_global.Q2xBt == "502"]
+local502 = pd.read_pickle("local502_outb.pkl")
 
 def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
     
@@ -166,7 +165,7 @@ TrueVolInb = []
 for i in range(len(phibin_i)):
     TrueVolInb = TruebinVol(5, 0, 2, i, dvcsBHSimInb, 10, 10, 10, 10)
 local502.loc[:, "binVolInb"] = TrueVolInb
-df_global.to_pickle("truebinVol_inb.pkl")
+local502.to_pickle("truebinVol_inb.pkl")
 
 parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/dvcs/"
 parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bh/"
@@ -194,4 +193,4 @@ TrueVolOutb = []
 for i in range(len(phibin_i)):
     TrueVolOutb = TruebinVol(5, 0, 2, i, dvcsBHSimOutb, 10, 10, 10, 10)
 local502.loc[:, "binVolInb"] = TrueVolOutb
-df_global.to_pickle("truebinVol_outb.pkl")
+local502.to_pickle("truebinVol_outb.pkl")
