@@ -107,10 +107,10 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
     return total
 
 parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/"
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl/bh/"
-parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl/bkg_1g/"
-parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl/bkg_2g/"
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/dvcs/"
+parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bh/"
+parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bkg_1g/"
+parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bkg_2g/"
 parent_Gen = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/dvcs/outb/"
 parent_bhGen = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/bh/outb/"
 
