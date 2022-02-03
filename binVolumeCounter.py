@@ -150,7 +150,8 @@ dvcsBHSimInb = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSi
 print("counting inb bin volumes")
 TrueVolInb = []
 for i in range(len(phibin_i)):
-    TrueVolInb = TruebinVol(5, 0, 2, i, dvcsBHSimInb, 10, 10, 10, 10)
+    print(i)
+    TrueVolInb.append(TruebinVol(5, 0, 2, i, dvcsBHSimInb, 10, 10, 10, 10))
 local502.loc[:, "binVolInb"] = TrueVolInb
 local502.to_pickle("truebinVol_inb.pkl")
 
@@ -178,6 +179,7 @@ dvcsBHSimOutb = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvc
 print("counting outb bin volumes")
 TrueVolOutb = []
 for i in range(len(phibin_i)):
-    TrueVolOutb = TruebinVol(5, 0, 2, i, dvcsBHSimOutb, 10, 10, 10, 10)
+    print(i)
+    TrueVolOutb.append(TruebinVol(5, 0, 2, i, dvcsBHSimOutb, 10, 10, 10, 10))
 local502.loc[:, "binVolInb"] = TrueVolOutb
 local502.to_pickle("truebinVol_outb.pkl")
