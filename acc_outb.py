@@ -51,7 +51,7 @@ badBins = ['230', '320', '330', '331', '410', '420', '421', '500', '501', '510',
 # local502 = df_global.loc[df_global.Q2xBt == "502"]
 local502 = pd.read_pickle("local502_inb.pkl")
 
-def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins, df_global=df_global):
+def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins):
     df_allBins = {}
     Q2xBtphi = 1281#0
 
