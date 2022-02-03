@@ -139,19 +139,6 @@ df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
 print("reading bh inb 50 nA")
 df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
 
-
-df_3987_corr = numberingDF(df_3987_corr)
-df_4124_corr = numberingDF(df_4124_corr)
-df_4139_corr = numberingDF(df_4139_corr)
-df_4181_corr = numberingDF(df_4181_corr)
-df_4182_corr = numberingDF(df_4182_corr)
-df_4186_corr = numberingDF(df_4186_corr)
-df_4188_corr = numberingDF(df_4188_corr)
-df_4192_corr = numberingDF(df_4192_corr)
-
-df_4238_corr = numberingDF(df_4238_corr)
-
-
 dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr])
 dvcsSimInb55nA = df_4186_corr
 dvcsSimInb45nA = df_4188_corr
