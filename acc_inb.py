@@ -47,10 +47,10 @@ phibin_f = phibin[1:]
 goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '020', '021', '022', '023', '100', '101', '102', '103', '110', '111', '112', '113', '120', '121', '122', '123', '200', '201', '202', '203', '210', '211', '212', '213', '220', '221', '222', '223', '231', '232', '233', '300', '301', '302', '303', '310', '311', '312', '313', '321', '322', '323', '332', '333', '400', '401', '402', '403', '411', '412', '413', '422', '423', '502', '503', '512', '513']
 badBins = ['230', '320', '330', '331', '410', '420', '421', '500', '501', '510', '511', '600', '601', '602', '603']
 
-df_global = pd.read_pickle("df_globalFeb.pkl")
-local502 = df_global.loc[df_global.Q2xBt == "502"]
+local502 = pd.read_pickle("df_globalFeb.pkl")
+local502 = local502.loc[local502.Q2xBt == "502"]
 
-def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins, df_global=df_global):
+def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins):
     df_allBins = {}
     Q2xBtphi = 1281#0
 
@@ -281,73 +281,73 @@ def countGenDF(total, df_global, colName = "new"):
     return df_global
 
 #total acc.
-df_global = countGenDF(dvcsGenInb50nA, local502, "dvcsGenInb50nA")
-df_global = countDF(dvcsSimInb50nA, local502, "dvcsSimInb50nA")
+local502 = countGenDF(dvcsGenInb50nA, local502, "dvcsGenInb50nA")
+local502 = countDF(dvcsSimInb50nA, local502, "dvcsSimInb50nA")
 
-df_global = countGenDF(dvcsGenInb55nA, local502, "dvcsGenInb55nA")
-df_global = countDF(dvcsSimInb55nA, local502, "dvcsSimInb55nA")
+local502 = countGenDF(dvcsGenInb55nA, local502, "dvcsGenInb55nA")
+local502 = countDF(dvcsSimInb55nA, local502, "dvcsSimInb55nA")
 
-df_global = countGenDF(dvcsGenInb45nA, local502, "dvcsGenInb45nA")
-df_global = countDF(dvcsSimInb45nA, local502, "dvcsSimInb45nA")
+local502 = countGenDF(dvcsGenInb45nA, local502, "dvcsGenInb45nA")
+local502 = countDF(dvcsSimInb45nA, local502, "dvcsSimInb45nA")
 
-df_global = countGenDF(dvcsGenInb0nA, local502, "dvcsGenInb0nA")
-df_global = countDF(dvcsSimInb0nA, local502, "dvcsSimInb0nA")
+local502 = countGenDF(dvcsGenInb0nA, local502, "dvcsGenInb0nA")
+local502 = countDF(dvcsSimInb0nA, local502, "dvcsSimInb0nA")
 
-df_global = countGenDF(bhGenInb50nA, local502, "bhGenInb50nA")
-df_global = countDF(bhSimInb50nA, local502, "bhSimInb50nA")
+local502 = countGenDF(bhGenInb50nA, local502, "bhGenInb50nA")
+local502 = countDF(bhSimInb50nA, local502, "bhSimInb50nA")
 
 #fractional acc.
-df_global = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 1], local502, "dvcsGenInb50nA_non")
-df_global = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 1], local502, "dvcsSimInb50nA_non")
+local502 = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 1], local502, "dvcsGenInb50nA_non")
+local502 = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 1], local502, "dvcsSimInb50nA_non")
 
-df_global = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 1], local502, "dvcsGenInb55nA_non")
-df_global = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 1], local502, "dvcsSimInb55nA_non")
+local502 = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 1], local502, "dvcsGenInb55nA_non")
+local502 = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 1], local502, "dvcsSimInb55nA_non")
 
-df_global = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 1], local502, "dvcsGenInb45nA_non")
-df_global = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 1], local502, "dvcsSimInb45nA_non")
+local502 = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 1], local502, "dvcsGenInb45nA_non")
+local502 = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 1], local502, "dvcsSimInb45nA_non")
 
-df_global = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 1], local502, "dvcsGenInb0nA_non")
-df_global = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 1], local502, "dvcsSimInb0nA_non")
+local502 = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 1], local502, "dvcsGenInb0nA_non")
+local502 = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 1], local502, "dvcsSimInb0nA_non")
 
-df_global = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 1], local502, "bhGenInb50nA_non")
-df_global = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 1], local502, "bhSimInb50nA_non")
+local502 = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 1], local502, "bhGenInb50nA_non")
+local502 = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 1], local502, "bhSimInb50nA_non")
 
 #fractional acc. s peak
-df_global = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 2], local502, "dvcsGenInb50nA_sPeak")
-df_global = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 2], local502, "dvcsSimInb50nA_sPeak")
+local502 = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 2], local502, "dvcsGenInb50nA_sPeak")
+local502 = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 2], local502, "dvcsSimInb50nA_sPeak")
 
-df_global = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 2], local502, "dvcsGenInb55nA_sPeak")
-df_global = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 2], local502, "dvcsSimInb55nA_sPeak")
+local502 = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 2], local502, "dvcsGenInb55nA_sPeak")
+local502 = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 2], local502, "dvcsSimInb55nA_sPeak")
 
-df_global = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 2], local502, "dvcsGenInb45nA_sPeak")
-df_global = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 2], local502, "dvcsSimInb45nA_sPeak")
+local502 = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 2], local502, "dvcsGenInb45nA_sPeak")
+local502 = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 2], local502, "dvcsSimInb45nA_sPeak")
 
-df_global = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 2], local502, "dvcsGenInb0nA_sPeak")
-df_global = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 2], local502, "dvcsSimInb0nA_sPeak")
+local502 = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 2], local502, "dvcsGenInb0nA_sPeak")
+local502 = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 2], local502, "dvcsSimInb0nA_sPeak")
 
-df_global = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 2], local502, "bhGenInb50nA_sPeak")
-df_global = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 2], local502, "bhSimInb50nA_sPeak")
+local502 = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 2], local502, "bhGenInb50nA_sPeak")
+local502 = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 2], local502, "bhSimInb50nA_sPeak")
 
 #fractional acc. p peak
-df_global = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 3], local502, "dvcsGenInb50nA_pPeak")
-df_global = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 3], local502, "dvcsSimInb50nA_pPeak")
+local502 = countGenDF(dvcsGenInb50nA.loc[ dvcsGenInb50nA.radMode == 3], local502, "dvcsGenInb50nA_pPeak")
+local502 = countDF(dvcsSimInb50nA.loc[ dvcsSimInb50nA.radMode == 3], local502, "dvcsSimInb50nA_pPeak")
 
-df_global = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 3], local502, "dvcsGenInb55nA_pPeak")
-df_global = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 3], local502, "dvcsSimInb55nA_pPeak")
+local502 = countGenDF(dvcsGenInb55nA.loc[ dvcsGenInb55nA.radMode == 3], local502, "dvcsGenInb55nA_pPeak")
+local502 = countDF(dvcsSimInb55nA.loc[ dvcsSimInb55nA.radMode == 3], local502, "dvcsSimInb55nA_pPeak")
 
-df_global = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 3], local502, "dvcsGenInb45nA_pPeak")
-df_global = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 3], local502, "dvcsSimInb45nA_pPeak")
+local502 = countGenDF(dvcsGenInb45nA.loc[ dvcsGenInb45nA.radMode == 3], local502, "dvcsGenInb45nA_pPeak")
+local502 = countDF(dvcsSimInb45nA.loc[ dvcsSimInb45nA.radMode == 3], local502, "dvcsSimInb45nA_pPeak")
 
-df_global = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 3], local502, "dvcsGenInb0nA_pPeak")
-df_global = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 3], local502, "dvcsSimInb0nA_pPeak")
+local502 = countGenDF(dvcsGenInb0nA.loc[ dvcsGenInb0nA.radMode == 3], local502, "dvcsGenInb0nA_pPeak")
+local502 = countDF(dvcsSimInb0nA.loc[ dvcsSimInb0nA.radMode == 3], local502, "dvcsSimInb0nA_pPeak")
 
-df_global = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 3], local502, "bhGenInb50nA_pPeak")
-df_global = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 3], local502, "bhSimInb50nA_pPeak")
+local502 = countGenDF(bhGenInb50nA.loc[ bhGenInb50nA.radMode == 3], local502, "bhGenInb50nA_pPeak")
+local502 = countDF(bhSimInb50nA.loc[ bhSimInb50nA.radMode == 3], local502, "bhSimInb50nA_pPeak")
 
-df_global = countDF(epgExpInb, df_global, "epgExpInb")
-df_global = countDF(pi0ExpInb, df_global, "pi0ExpInb")
-df_global = countDF(bkgSimInb50nA, df_global, "bkgSimInb50nA")
-df_global = countDF(pi0SimInb50nA, df_global, "pi0SimInb50nA")
+local502 = countDF(epgExpInb, local502, "epgExpInb")
+local502 = countDF(pi0ExpInb, local502, "pi0ExpInb")
+local502 = countDF(bkgSimInb50nA, local502, "bkgSimInb50nA")
+local502 = countDF(pi0SimInb50nA, local502, "pi0SimInb50nA")
 
 
-df_global.to_pickle("local502_inb.pkl")
+local502.to_pickle("local502_inb.pkl")
