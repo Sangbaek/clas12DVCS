@@ -324,11 +324,11 @@ class root2pickle():
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
-            # if pol == "inbending":
-            #     df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 58.62412832*(df_protonRecFD.Pp-0.42)**4.35483964*np.exp(-10.03753023*(df_protonRecFD.Pp-0.42))
-            # if pol == "outbending":
-            #     df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp - 0.02
-            #     df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
+            if pol == "inbending":
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 58.62412832*(df_protonRecFD.Pp-0.42)**4.35483964*np.exp(-10.03753023*(df_protonRecFD.Pp-0.42))
+            if pol == "outbending":
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp - 0.02
+                df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
@@ -344,7 +344,7 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
-            # df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
         if detRes:
             df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
@@ -353,17 +353,17 @@ class root2pickle():
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
 
-        # if correction:
-            # df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + 0.25
+        if correction:
+            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + 0.25
             # df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
 
-            # df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
-            # df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
-            # df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
+            df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
+            df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
+            df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
 
-            # df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
-            # df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
-            # df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
+            df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
+            df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
+            df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]

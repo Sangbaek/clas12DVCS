@@ -328,11 +328,11 @@ class root2pickle():
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
-            # if pol == "inbending":
-            #     df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 58.62412832*(df_protonRecFD.Pp-0.42)**4.35483964*np.exp(-10.03753023*(df_protonRecFD.Pp-0.42))
-            # if pol == "outbending":
-            #     df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp - 0.02
-            #     df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
+            if pol == "inbending":
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 58.62412832*(df_protonRecFD.Pp-0.42)**4.35483964*np.exp(-10.03753023*(df_protonRecFD.Pp-0.42))
+            if pol == "outbending":
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp - 0.02
+                df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
@@ -348,8 +348,8 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
-            # df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
-            # df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + 0.25
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
