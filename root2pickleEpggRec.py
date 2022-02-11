@@ -859,7 +859,7 @@ class root2pickle():
             cut_Q2 = df_Rec["Q2"] > 1  # Q2
             cut_W = df_Rec["W"] > 2  # W
             cut_Ee = df_Rec["Ee"] > 2  # Ee
-            cut_Ge = df_Rec["Ge"] > 2  # Ge
+            cut_Ge = df_Rec["Ge"] > 1.8  # Ge
             cut_Esector = 1#(df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
             cut_Psector = 1#~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"])) & ~( ((df_Rec["Pstat"]//10)%10>0) & df_Rec["Psector"]!=df_Rec["Gsector2"])
             cut_Ppmax = df_Rec.Pp < 2  # Pp
