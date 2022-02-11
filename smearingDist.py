@@ -38,7 +38,7 @@ class smearingDist():
 		pi0OutbJobs = [ 4243, 4271, 4290, 4293, 4304, 4306 ]
 
 		epgExpInb = pd.read_pickle(inDirInb+"/exp/dvcs.pkl")
-		# pi0ExpInb = pd.read_pickle(inDirInb+"/exp/pi0.pkl")
+		pi0ExpInb = pd.read_pickle(inDirInb+"/exp/pi0.pkl")
 		df = []
 		for job in dvcsInbJobs:
 			df.append(pd.read_pickle(inDirInb+"/dvcs/{}.pkl".format(job)))
@@ -54,7 +54,7 @@ class smearingDist():
 		pi0SimInb = pd.concat(df)
 
 		epgExpOutb = pd.read_pickle(inDirOutb+"/exp/dvcs.pkl")
-		# pi0ExpOutb = pd.read_pickle(inDirOutb+"/exp/pi0.pkl")
+		pi0ExpOutb = pd.read_pickle(inDirOutb+"/exp/pi0.pkl")
 		
 		df = []
 		for job in dvcsOutbJobs:
@@ -145,7 +145,13 @@ class smearingDist():
 		bkgSimOubFD.to_pickle(outDir+ "bkgSimOubFD")
 
 
-	def MakeV1(self, inDir, outDir):
+	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
+
+		epgExpInbCDFT = pd.read_pickle(inDir+"/epgExpInbCDFT.pkl")
+		epgExpOutbCDFT = pd.read_pickle(inDir+"/epgExpOutbCDFT.pkl")
+		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
+		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
+		
 		#divide into fd photon energy range
 		epgExpInbCDFT0 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>2)&(epgExpInbCDFT.Ge<3)]
 		epgExpInbCDFT1 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>3)&(epgExpInbCDFT.Ge<3.5)]
