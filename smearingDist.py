@@ -314,8 +314,12 @@ class smearingDist():
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
 		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7), len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
-		print(entropy(dvcsSimInbCDFT7.ME_epg, epgExpInbCDFT7.ME_epg))
-		print(entropy(dvcsSimInbCDFT7.ME_epg, dvcsSimInbCDFT7.ME_epg))
+		binsMEepgInb = np.linspace(-0.439, 0.484, 101)
+		binsMM2eggInb = np.linspace(0.246, 1.569, 101)
+		binsMEepgOutb = np.linspace(-0.796, 0.947, 101)
+		binsMM2eggOutb = np.linspace(-0.205, 2.049, 101)
+		print(entropy(np.histogram(dvcsSimInbCDFT7.ME_epg, bins = binsMEepgInb, density = True), np.histogram(dvcsSimInbCDFT7.ME_epg, bins = binsMEepgInb, density = True)))
+		print(entropy(np.histogram(epgExpInbCDFT7.ME_epg, bins = binsMEepgInb, density = True), np.histogram(dvcsSimInbCDFT7.ME_epg, bins = binsMEepgInb, density = True)))
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
 		df_epg = df
