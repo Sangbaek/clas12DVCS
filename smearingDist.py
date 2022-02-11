@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from copy import copy
 cmap = copy(plt.cm.get_cmap("jet"))
 from scipy.optimize import least_squares
-
+from scipy.stats import entropy
 
 class smearingDist():
 
@@ -313,9 +313,9 @@ class smearingDist():
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
-		plt.hist(epgExpInbCDFT0.ME_epg, bins = 100, density = True)
-		plt.hist(dvcsSimInbCDFT0.ME_epg, bins = 100, density = True)
-		plt.show()
+		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7), len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
+		print(entropy(dvcsSimInbCDFT7.ME_epg, epgExpInbCDFT7.ME_epg))
+		print(entropy(dvcsSimInbCDFT7.ME_epg, dvcsSimInbCDFT7.ME_epg))
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
 		df_epg = df
