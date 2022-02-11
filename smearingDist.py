@@ -186,8 +186,8 @@ class smearingDist():
 			self.MakeV1Exp()
 			exit()
 
-		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
-		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
+		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
+		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
 		sigma = 0.014
 
