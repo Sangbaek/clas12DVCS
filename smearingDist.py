@@ -189,13 +189,13 @@ class smearingDist():
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
 
-		SmearingParam = 0.014
+		sigma = 0.014
 
 		#performing smearing
-		self.smearingV0(dvcsSimInbCDFT, mode = "epg")
-		self.saveDVCSvars(dvcsSimInbCDFT, mode = "epg")
-		self.smearingV0(dvcsSimOutbCDFT, mode = "epg")
-		self.saveDVCSvars(dvcsSimOutbCDFT, mode = "epg")
+		self.smearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
+		self.saveDVCSvars(dvcsSimInbCDFT, sigma, mode = "epg")
+		self.smearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
+		self.saveDVCSvars(dvcsSimOutbCDFT, sigma, mode = "epg")
 		dvcsSimInbCDFT = self.df_epg
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
 		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
@@ -279,7 +279,7 @@ class smearingDist():
 		plt.hist(dvcsSimInbCDFT0.MM2_eg, bins = 100, density = True)
 		plt.show()
 
-	def SmearingV0(self, df, mode = "epg"):
+	def SmearingV0(self, df, sigma, mode = "epg"):
 		df_epg = df
 		if mode == "epg":
 			df_epg.loc[df_epg.Gsector>7, 'Gp'] = np.random.normal(1, sigma, len(df_epg.loc[df_epg.Gsector>7]))*df_epg.loc[df_epg.Gsector>7, 'Gp']
