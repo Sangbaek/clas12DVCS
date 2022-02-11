@@ -126,32 +126,27 @@ class smearingDist():
 		pi0SimInbFD.to_pickle(outDir+ "pi0SimInbFD")
 		bkgSimInbFD.to_pickle(outDir+ "bkgSimInbFD")
 
-		epgExpOubCDFT.to_pickle(outDir+ "epgExpOubCDFT")
-		dvcsSimOubCDFT.to_pickle(outDir+ "dvcsSimOubCDFT")
-		pi0ExpOubCDFT.to_pickle(outDir+ "pi0ExpOubCDFT")
-		pi0SimOubCDFT.to_pickle(outDir+ "pi0SimOubCDFT")
-		bkgSimOubCDFT.to_pickle(outDir+ "bkgSimOubCDFT")
+		epgExpOutbCDFT.to_pickle(outDir+ "epgExpOutbCDFT")
+		dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT")
+		pi0ExpOutbCDFT.to_pickle(outDir+ "pi0ExpOutbCDFT")
+		pi0SimOutbCDFT.to_pickle(outDir+ "pi0SimOutbCDFT")
+		bkgSimOutbCDFT.to_pickle(outDir+ "bkgSimOutbCDFT")
 
-		epgExpOubCD.to_pickle(outDir+ "epgExpOubCD")
-		dvcsSimOubCD.to_pickle(outDir+ "dvcsSimOubCD")
-		pi0ExpOubCD.to_pickle(outDir+ "pi0ExpOubCD")
-		pi0SimOubCD.to_pickle(outDir+ "pi0SimOubCD")
-		bkgSimOubCD.to_pickle(outDir+ "bkgSimOubCD")
+		epgExpOutbCD.to_pickle(outDir+ "epgExpOutbCD")
+		dvcsSimOutbCD.to_pickle(outDir+ "dvcsSimOutbCD")
+		pi0ExpOutbCD.to_pickle(outDir+ "pi0ExpOutbCD")
+		pi0SimOutbCD.to_pickle(outDir+ "pi0SimOutbCD")
+		bkgSimOutbCD.to_pickle(outDir+ "bkgSimOutbCD")
 
-		epgExpOubFD.to_pickle(outDir+ "epgExpOubFD")
-		dvcsSimOubFD.to_pickle(outDir+ "dvcsSimOubFD")
-		pi0ExpOubFD.to_pickle(outDir+ "pi0ExpOubFD")
-		pi0SimOubFD.to_pickle(outDir+ "pi0SimOubFD")
-		bkgSimOubFD.to_pickle(outDir+ "bkgSimOubFD")
+		epgExpOutbFD.to_pickle(outDir+ "epgExpOutbFD")
+		dvcsSimOutbFD.to_pickle(outDir+ "dvcsSimOutbFD")
+		pi0ExpOutbFD.to_pickle(outDir+ "pi0ExpOutbFD")
+		pi0SimOutbFD.to_pickle(outDir+ "pi0SimOutbFD")
+		bkgSimOutbFD.to_pickle(outDir+ "bkgSimOutbFD")
 
-
-	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
-
+	def MakeV1Exp(self, inDir = "SimtoDat/v0"):
 		epgExpInbCDFT = pd.read_pickle(inDir+"/epgExpInbCDFT.pkl")
 		epgExpOutbCDFT = pd.read_pickle(inDir+"/epgExpOutbCDFT.pkl")
-		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
-		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
-		
 		#divide into fd photon energy range
 		epgExpInbCDFT0 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>2)&(epgExpInbCDFT.Ge<3)]
 		epgExpInbCDFT1 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>3)&(epgExpInbCDFT.Ge<3.5)]
@@ -178,6 +173,13 @@ class smearingDist():
 		epgExpOutbCDFT9 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>7)&(epgExpOutbCDFT.Ge<7.5)]
 		epgExpOutbCDFT10 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>7.5)&(epgExpOutbCDFT.Ge<8)]
 		epgExpOutbCDFT11 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>8)&(epgExpOutbCDFT.Ge<9)]
+
+	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
+
+		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
+		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
+
+		SmearingParam = 0.014
 
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
 		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
@@ -261,7 +263,7 @@ class smearingDist():
 		#smearing
 		print(1)
 
-	def Evaluation(self, df, mode):
+	def EvaluateV1(self, df, mode):
 		#smearing
 		print(1)
 
