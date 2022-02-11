@@ -319,7 +319,7 @@ class smearingDist():
 		binsMEepgOutb = np.linspace(-0.796, 0.947, 101)
 		binsMM2eggOutb = np.linspace(-0.205, 2.049, 101)
 
-		def distance(df1, df2, var = "ME_epg", bins = binMEepgInb):
+		def distance(df1, df2, var = "ME_epg", bins = binsMEepgInb):
 			hist1 = np.histogram(df1.loc[var], bins = bins)
 			hist2 = np.histogram(df2.loc[var], bins = bins)
 			unchist1 = np.histogram(df1.loc[var], bins = bins)
