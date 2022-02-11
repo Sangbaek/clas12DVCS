@@ -324,10 +324,11 @@ class smearingDist():
 			hist2 = np.histogram(df2.loc[:, var], bins = bins)
 			unchist1 = np.histogram(df1.loc[:, var], bins = bins)
 			unchist2 = np.histogram(df1.loc[:, var], bins = bins)
-			dist1 = hist1/np.sum(hist1)/np.diff(bins)[0]
-			uncdist1 = unchist1//np.sum(hist1)/np.diff(bins)[0]
-			dist2 = hist2/np.sum(hist2)/np.diff(bins)[0]
-			uncdist2 = unchist2//np.sum(hist2)/np.diff(bins)[0]
+			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			dist1 = hist1/np.sum(hist1)/np.diff(bincenters)[0]
+			uncdist1 = unchist1//np.sum(hist1)/np.diff(bincenters)[0]
+			dist2 = hist2/np.sum(hist2)/np.diff(bincenters)[0]
+			uncdist2 = unchist2//np.sum(hist2)/np.diff(bincenters)[0]
 			uncdist = np.sqrt(uncdist1**2 + uncdist2 **2)
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
