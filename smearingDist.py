@@ -10,14 +10,20 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
+import matplotlib.pyplot as plt
+from copy import copy
+cmap = copy(plt.cm.get_cmap("jet"))
+from scipy.optimize import least_squares
 
 
 class smearingDist():
 
-	def __init__(self, version):
+	def __init__(self, version, exp):
 		self.GetVersion(version)
 		if version == "v0":
 			self.MakeV0()
+		if version == "v1":
+			self.MakeV1(exp)
 
 	def GetVersion(self, version):
 		self.version = version
@@ -174,13 +180,23 @@ class smearingDist():
 		epgExpOutbCDFT10 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>7.5)&(epgExpOutbCDFT.Ge<8)]
 		epgExpOutbCDFT11 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>8)&(epgExpOutbCDFT.Ge<9)]
 
-	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
+	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1", exp = None):
+
+		if exp:
+			self.MakeV1Exp()
+			exit()
 
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT.pkl")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT.pkl")
 
 		SmearingParam = 0.014
 
+		#performing smearing
+		self.smearingV0(dvcsSimInbCDFT, mode = "epg")
+		self.saveDVCSvars(dvcsSimInbCDFT, mode = "epg")
+		self.smearingV0(dvcsSimOutbCDFT, mode = "epg")
+		self.saveDVCSvars(dvcsSimOutbCDFT, mode = "epg")
+		dvcsSimInbCDFT = self.df_epg
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
 		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
 		dvcsSimInbCDFT2 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3.5)&(dvcsSimInbCDFT.Ge<4)]
@@ -259,18 +275,31 @@ class smearingDist():
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
+		plt.hist(epgExpInbCDFT0.MM2_eg, bins = 100, density = True)
+		plt.hist(dvcsSimInbCDFT0.MM2_eg, bins = 100, density = True)
+		plt.show()
+
 	def SmearingV0(self, df, mode = "epg"):
-		#smearing
-		print(1)
+		df_epg = df
+		if mode == "epg":
+			df_epg.loc[df_epg.Gsector>7, 'Gp'] = np.random.normal(1, sigma, len(df_epg.loc[df_epg.Gsector>7]))*df_epg.loc[df_epg.Gsector>7, 'Gp']
+			df_epg.loc[df_epg.Gsector>7, 'Ge'] = df_epg.loc[df_epg.Gsector>7, 'Gp']
+			df_epg.loc[:, 'Gtheta'] = getTheta(gam)
+			df_epg.loc[:, 'Gphi'] = getPhi(gam)
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
+
+		self.df_epg = df
 
 	def EvaluateV1(self, df, mode):
 		#smearing
 		print(1)
 
 
-	def saveDVCSvars(self, correction=None):
+	def saveDVCSvars(self, df):
 	    #set up dvcs variables
-	    df_epg = self.df_epg
+	    df_epg = df
 
 	    ele = [df_epg['Epx'], df_epg['Epy'], df_epg['Epz']]
 	    df_epg.loc[:, 'Ep'] = mag(ele)
@@ -833,7 +862,8 @@ if __name__ == "__main__":
 
     parser.add_argument("-v","--version", help="version", default="v0")
     parser.add_argument("-p","--parameters", help="parameters for smearing", default=0)
+    parser.add_argument("-e","--makeExp", help="makeExp or not", action= "store_true")
     
     args = parser.parse_args()
 
-    smearingDist = smearingDist(args.version)
+    smearingDist = smearingDist(version = args.version, exp = args.makeExp)
