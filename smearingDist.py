@@ -242,8 +242,7 @@ class smearingDist():
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
-		def sigma(df):
-			condList = []
+		sigma = 0.014
 
 		#performing smearing
 		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
