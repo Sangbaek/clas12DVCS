@@ -242,13 +242,12 @@ class smearingDist():
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
-		sigma = 0.014
+		def sigma(df):
+			condList = []
 
 		#performing smearing
 		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
 		self.saveDVCSvars(dvcsSimInbCDFT)
-		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
-		self.saveDVCSvars(dvcsSimOutbCDFT)
 		dvcsSimInbCDFT = self.df_epg
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
 		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
@@ -263,6 +262,9 @@ class smearingDist():
 		dvcsSimInbCDFT10 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>7.5)&(dvcsSimInbCDFT.Ge<8)]
 		dvcsSimInbCDFT11 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>8)&(dvcsSimInbCDFT.Ge<9)]
 
+		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
+		self.saveDVCSvars(dvcsSimOutbCDFT)
+		dvcsSimOutbCDFT = self.df_epg
 		dvcsSimOutbCDFT0 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>2)&(dvcsSimOutbCDFT.Ge<3)]
 		dvcsSimOutbCDFT1 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>3)&(dvcsSimOutbCDFT.Ge<3.5)]
 		dvcsSimOutbCDFT2 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>3.5)&(dvcsSimOutbCDFT.Ge<4)]
@@ -302,8 +304,8 @@ class smearingDist():
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
-		plt.hist(epgExpInbCDFT0.MM2_eg, bins = 100, density = True)
-		plt.hist(dvcsSimInbCDFT0.MM2_eg, bins = 100, density = True)
+		plt.hist(epgExpInbCDFT0.ME_epg, bins = 100, density = True)
+		plt.hist(dvcsSimInbCDFT0.ME_epg, bins = 100, density = True)
 		plt.show()
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
