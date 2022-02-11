@@ -150,7 +150,7 @@ class smearingDist():
 		pi0SimOutbFD.to_pickle(outDir+ "pi0SimOutbFD")
 		bkgSimOutbFD.to_pickle(outDir+ "bkgSimOutbFD")
 
-	def MakeV1Exp(self, inDir = "SimtoDat/v0"):
+	def MakeV1Exp(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
 		epgExpInbCDFT = pd.read_pickle(inDir+"/epgExpInbCDFT")
 		epgExpOutbCDFT = pd.read_pickle(inDir+"/epgExpOutbCDFT")
 		#divide into fd photon energy range
@@ -180,10 +180,36 @@ class smearingDist():
 		epgExpOutbCDFT10 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>7.5)&(epgExpOutbCDFT.Ge<8)]
 		epgExpOutbCDFT11 = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>8)&(epgExpOutbCDFT.Ge<9)]
 
+		epgExpInbCDFT0.to_pickle(outDir+ "epgExpInbCDFT0")
+		epgExpInbCDFT1.to_pickle(outDir+ "epgExpInbCDFT1")
+		epgExpInbCDFT2.to_pickle(outDir+ "epgExpInbCDFT2")
+		epgExpInbCDFT3.to_pickle(outDir+ "epgExpInbCDFT3")
+		epgExpInbCDFT4.to_pickle(outDir+ "epgExpInbCDFT4")
+		epgExpInbCDFT5.to_pickle(outDir+ "epgExpInbCDFT5")
+		epgExpInbCDFT6.to_pickle(outDir+ "epgExpInbCDFT6")
+		epgExpInbCDFT7.to_pickle(outDir+ "epgExpInbCDFT7")
+		epgExpInbCDFT8.to_pickle(outDir+ "epgExpInbCDFT8")
+		epgExpInbCDFT9.to_pickle(outDir+ "epgExpInbCDFT9")
+		epgExpInbCDFT10.to_pickle(outDir+ "epgExpInbCDFT10")
+		epgExpInbCDFT11.to_pickle(outDir+ "epgExpInbCDFT11")
+
+		epgExpOutbCDFT0.to_pickle(outDir+ "epgExpOutbCDFT0")
+		epgExpOutbCDFT1.to_pickle(outDir+ "epgExpOutbCDFT1")
+		epgExpOutbCDFT2.to_pickle(outDir+ "epgExpOutbCDFT2")
+		epgExpOutbCDFT3.to_pickle(outDir+ "epgExpOutbCDFT3")
+		epgExpOutbCDFT4.to_pickle(outDir+ "epgExpOutbCDFT4")
+		epgExpOutbCDFT5.to_pickle(outDir+ "epgExpOutbCDFT5")
+		epgExpOutbCDFT6.to_pickle(outDir+ "epgExpOutbCDFT6")
+		epgExpOutbCDFT7.to_pickle(outDir+ "epgExpOutbCDFT7")
+		epgExpOutbCDFT8.to_pickle(outDir+ "epgExpOutbCDFT8")
+		epgExpOutbCDFT9.to_pickle(outDir+ "epgExpOutbCDFT9")
+		epgExpOutbCDFT10.to_pickle(outDir+ "epgExpOutbCDFT10")
+		epgExpOutbCDFT11.to_pickle(outDir+ "epgExpOutbCDFT11")
+
 	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1", exp = None):
 
 		if exp:
-			self.MakeV1Exp()
+			self.MakeV1Exp(inDir, outDir)
 			exit()
 
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
@@ -223,19 +249,6 @@ class smearingDist():
 		dvcsSimOutbCDFT10 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>7.5)&(dvcsSimOutbCDFT.Ge<8)]
 		dvcsSimOutbCDFT11 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>8)&(dvcsSimOutbCDFT.Ge<9)]
 
-		epgExpInbCDFT0.to_pickle(outDir+ "epgExpInbCDFT0")
-		epgExpInbCDFT1.to_pickle(outDir+ "epgExpInbCDFT1")
-		epgExpInbCDFT2.to_pickle(outDir+ "epgExpInbCDFT2")
-		epgExpInbCDFT3.to_pickle(outDir+ "epgExpInbCDFT3")
-		epgExpInbCDFT4.to_pickle(outDir+ "epgExpInbCDFT4")
-		epgExpInbCDFT5.to_pickle(outDir+ "epgExpInbCDFT5")
-		epgExpInbCDFT6.to_pickle(outDir+ "epgExpInbCDFT6")
-		epgExpInbCDFT7.to_pickle(outDir+ "epgExpInbCDFT7")
-		epgExpInbCDFT8.to_pickle(outDir+ "epgExpInbCDFT8")
-		epgExpInbCDFT9.to_pickle(outDir+ "epgExpInbCDFT9")
-		epgExpInbCDFT10.to_pickle(outDir+ "epgExpInbCDFT10")
-		epgExpInbCDFT11.to_pickle(outDir+ "epgExpInbCDFT11")
-
 		dvcsSimInbCDFT0.to_pickle(outDir+ "dvcsSimInbCDFT0")
 		dvcsSimInbCDFT1.to_pickle(outDir+ "dvcsSimInbCDFT1")
 		dvcsSimInbCDFT2.to_pickle(outDir+ "dvcsSimInbCDFT2")
@@ -248,19 +261,6 @@ class smearingDist():
 		dvcsSimInbCDFT9.to_pickle(outDir+ "dvcsSimInbCDFT9")
 		dvcsSimInbCDFT10.to_pickle(outDir+ "dvcsSimInbCDFT10")
 		dvcsSimInbCDFT11.to_pickle(outDir+ "dvcsSimInbCDFT11")
-
-		epgExpOutbCDFT0.to_pickle(outDir+ "epgExpOutbCDFT0")
-		epgExpOutbCDFT1.to_pickle(outDir+ "epgExpOutbCDFT1")
-		epgExpOutbCDFT2.to_pickle(outDir+ "epgExpOutbCDFT2")
-		epgExpOutbCDFT3.to_pickle(outDir+ "epgExpOutbCDFT3")
-		epgExpOutbCDFT4.to_pickle(outDir+ "epgExpOutbCDFT4")
-		epgExpOutbCDFT5.to_pickle(outDir+ "epgExpOutbCDFT5")
-		epgExpOutbCDFT6.to_pickle(outDir+ "epgExpOutbCDFT6")
-		epgExpOutbCDFT7.to_pickle(outDir+ "epgExpOutbCDFT7")
-		epgExpOutbCDFT8.to_pickle(outDir+ "epgExpOutbCDFT8")
-		epgExpOutbCDFT9.to_pickle(outDir+ "epgExpOutbCDFT9")
-		epgExpOutbCDFT10.to_pickle(outDir+ "epgExpOutbCDFT10")
-		epgExpOutbCDFT11.to_pickle(outDir+ "epgExpOutbCDFT11")
 
 		dvcsSimOutbCDFT0.to_pickle(outDir+ "dvcsSimOutbCDFT0")
 		dvcsSimOutbCDFT1.to_pickle(outDir+ "dvcsSimOutbCDFT1")
