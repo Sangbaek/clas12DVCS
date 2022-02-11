@@ -44,14 +44,14 @@ class smearingDist():
 			df.append(pd.read_pickle(inDirInb+"/dvcs/{}.pkl".format(job)))
 		dvcsSimInb = pd.concat(df)
 		
-		# df = []
-		# for job in pi0InbJobs:
-		# 	df.append(pd.read_pickle(inDirInb+"/bkg_1g/{}.pkl".format(job)))
-		# bkgSimInb = pd.concat(df)
-		# df = []
-		# for job in pi0InbJobs:
-		# 	df.append(pd.read_pickle(inDirInb+"/bkg_2g/{}.pkl".format(job)))
-		# pi0SimInb = pd.concat(df)
+		df = []
+		for job in pi0InbJobs:
+			df.append(pd.read_pickle(inDirInb+"/bkg_1g/{}.pkl".format(job)))
+		bkgSimInb = pd.concat(df)
+		df = []
+		for job in pi0InbJobs:
+			df.append(pd.read_pickle(inDirInb+"/bkg_2g/{}.pkl".format(job)))
+		pi0SimInb = pd.concat(df)
 
 		epgExpOutb = pd.read_pickle(inDirOutb+"/exp/dvcs.pkl")
 		# pi0ExpOutb = pd.read_pickle(inDirOutb+"/exp/pi0.pkl")
@@ -61,15 +61,15 @@ class smearingDist():
 			df.append(pd.read_pickle(inDirOutb+"/dvcs/{}.pkl".format(job)))
 		dvcsSimOutb = pd.concat(df)
 		
-		# df = []
-		# for job in pi0OutbJobs:
-		# 	df.append(pd.read_pickle(inDirOutb+"/bkg_1g/{}.pkl".format(job)))
-		# bkgSimOutb = pd.concat(df)
+		df = []
+		for job in pi0OutbJobs:
+			df.append(pd.read_pickle(inDirOutb+"/bkg_1g/{}.pkl".format(job)))
+		bkgSimOutb = pd.concat(df)
 
-		# df = []
-		# for job in pi0OutbJobs:
-		# 	df.append(pd.read_pickle(inDirOutb+"/bkg_2g/{}.pkl".format(job)))
-		# pi0SimOutb = pd.concat(df)
+		df = []
+		for job in pi0OutbJobs:
+			df.append(pd.read_pickle(inDirOutb+"/bkg_2g/{}.pkl".format(job)))
+		pi0SimOutb = pd.concat(df)
 
 		#CDFT
 		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
@@ -83,19 +83,69 @@ class smearingDist():
 		dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
 		bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config == 3]
 		pi0SimOutbCDFT = pi0SimOutb.loc[pi0SimOutb.config == 3]
-		# #CD
-		# epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
-		# pi0ExpInbCD = pi0ExpInb.loc[pi0ExpInb.config == 2]
-		# dvcsSimInbCD = dvcsSimInb.loc[dvcsSimInb.config == 2]
-		# bkgSimInbCD = bkgSimInb.loc[bkgSimInb.config == 2]
-		# pi0SimInbCD = pi0SimInb.loc[pi0SimInb.config == 2]
-		# #CDFT
-		# epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
-		# pi0ExpInbFD = pi0ExpInb.loc[pi0ExpInb.config == 1]
-		# dvcsSimInbFD = dvcsSimInb.loc[dvcsSimInb.config == 1]
-		# bkgSimInbFD = bkgSimInb.loc[bkgSimInb.config == 1]
-		# pi0SimInbFD = pi0SimInb.loc[pi0SimInb.config == 1]
+		#CD
+		epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
+		pi0ExpInbCD = pi0ExpInb.loc[pi0ExpInb.config == 2]
+		dvcsSimInbCD = dvcsSimInb.loc[dvcsSimInb.config == 2]
+		bkgSimInbCD = bkgSimInb.loc[bkgSimInb.config == 2]
+		pi0SimInbCD = pi0SimInb.loc[pi0SimInb.config == 2]
 
+		epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+		pi0ExpOutbCD = pi0ExpOutb.loc[pi0ExpOutb.config == 2]
+		dvcsSimOutbCD = dvcsSimOutb.loc[dvcsSimOutb.config == 2]
+		bkgSimOutbCD = bkgSimOutb.loc[bkgSimOutb.config == 2]
+		pi0SimOutbCD = pi0SimOutb.loc[pi0SimOutb.config == 2]
+		#CDFT
+		epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
+		pi0ExpInbFD = pi0ExpInb.loc[pi0ExpInb.config == 1]
+		dvcsSimInbFD = dvcsSimInb.loc[dvcsSimInb.config == 1]
+		bkgSimInbFD = bkgSimInb.loc[bkgSimInb.config == 1]
+		pi0SimInbFD = pi0SimInb.loc[pi0SimInb.config == 1]
+
+		epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+		pi0ExpOutbFD = pi0ExpOutb.loc[pi0ExpOutb.config == 1]
+		dvcsSimOutbFD = dvcsSimOutb.loc[dvcsSimOutb.config == 1]
+		bkgSimOutbFD = bkgSimOutb.loc[bkgSimOutb.config == 1]
+		pi0SimOutbFD = pi0SimOutb.loc[pi0SimOutb.config == 1]
+
+		epgExpInbCDFT.to_pickle(outDir+ "epgExpInbCDFT")
+		dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT")
+		pi0ExpInbCDFT.to_pickle(outDir+ "pi0ExpInbCDFT")
+		pi0SimInbCDFT.to_pickle(outDir+ "pi0SimInbCDFT")
+		bkgSimInbCDFT.to_pickle(outDir+ "bkgSimInbCDFT")
+
+		epgExpInbCD.to_pickle(outDir+ "epgExpInbCD")
+		dvcsSimInbCD.to_pickle(outDir+ "dvcsSimInbCD")
+		pi0ExpInbCD.to_pickle(outDir+ "pi0ExpInbCD")
+		pi0SimInbCD.to_pickle(outDir+ "pi0SimInbCD")
+		bkgSimInbCD.to_pickle(outDir+ "bkgSimInbCD")
+
+		epgExpInbFD.to_pickle(outDir+ "epgExpInbFD")
+		dvcsSimInbFD.to_pickle(outDir+ "dvcsSimInbFD")
+		pi0ExpInbFD.to_pickle(outDir+ "pi0ExpInbFD")
+		pi0SimInbFD.to_pickle(outDir+ "pi0SimInbFD")
+		bkgSimInbFD.to_pickle(outDir+ "bkgSimInbFD")
+
+		epgExpOubCDFT.to_pickle(outDir+ "epgExpOubCDFT")
+		dvcsSimOubCDFT.to_pickle(outDir+ "dvcsSimOubCDFT")
+		pi0ExpOubCDFT.to_pickle(outDir+ "pi0ExpOubCDFT")
+		pi0SimOubCDFT.to_pickle(outDir+ "pi0SimOubCDFT")
+		bkgSimOubCDFT.to_pickle(outDir+ "bkgSimOubCDFT")
+
+		epgExpOubCD.to_pickle(outDir+ "epgExpOubCD")
+		dvcsSimOubCD.to_pickle(outDir+ "dvcsSimOubCD")
+		pi0ExpOubCD.to_pickle(outDir+ "pi0ExpOubCD")
+		pi0SimOubCD.to_pickle(outDir+ "pi0SimOubCD")
+		bkgSimOubCD.to_pickle(outDir+ "bkgSimOubCD")
+
+		epgExpOubFD.to_pickle(outDir+ "epgExpOubFD")
+		dvcsSimOubFD.to_pickle(outDir+ "dvcsSimOubFD")
+		pi0ExpOubFD.to_pickle(outDir+ "pi0ExpOubFD")
+		pi0SimOubFD.to_pickle(outDir+ "pi0SimOubFD")
+		bkgSimOubFD.to_pickle(outDir+ "bkgSimOubFD")
+
+
+	def MakeV1(self, inDir, outDir):
 		#divide into fd photon energy range
 		epgExpInbCDFT0 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>2)&(epgExpInbCDFT.Ge<3)]
 		epgExpInbCDFT1 = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>3)&(epgExpInbCDFT.Ge<3.5)]
@@ -200,11 +250,6 @@ class smearingDist():
 		dvcsSimOutbCDFT9.to_pickle(outDir+ "dvcsSimOutbCDFT9")
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
-
-
-	def MakeVn(self, inDir, outDir):
-		#smearing
-		print(1)
 
 	def SmearingV0(self, df, mode = "epg"):
 		#smearing
