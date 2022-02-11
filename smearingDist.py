@@ -212,6 +212,33 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
+		epgExpInbCDFT0 = pd.read_pickle(outDir+ "epgExpInbCDFT0")
+		epgExpInbCDFT1 = pd.read_pickle(outDir+ "epgExpInbCDFT1")
+		epgExpInbCDFT2 = pd.read_pickle(outDir+ "epgExpInbCDFT2")
+		epgExpInbCDFT3 = pd.read_pickle(outDir+ "epgExpInbCDFT3")
+		epgExpInbCDFT4 = pd.read_pickle(outDir+ "epgExpInbCDFT4")
+		epgExpInbCDFT5 = pd.read_pickle(outDir+ "epgExpInbCDFT5")
+		epgExpInbCDFT6 = pd.read_pickle(outDir+ "epgExpInbCDFT6")
+		epgExpInbCDFT7 = pd.read_pickle(outDir+ "epgExpInbCDFT7")
+		epgExpInbCDFT8 = pd.read_pickle(outDir+ "epgExpInbCDFT8")
+		epgExpInbCDFT9 = pd.read_pickle(outDir+ "epgExpInbCDFT9")
+		epgExpInbCDFT10 = pd.read_pickle(outDir+ "epgExpInbCDFT10")
+		epgExpInbCDFT11 = pd.read_pickle(outDir+ "epgExpInbCDFT11")
+
+		epgExpOutbCDFT0 = pd.read_pickle(outDir+ "epgExpOutbCDFT0")
+		epgExpOutbCDFT1 = pd.read_pickle(outDir+ "epgExpOutbCDFT1")
+		epgExpOutbCDFT2 = pd.read_pickle(outDir+ "epgExpOutbCDFT2")
+		epgExpOutbCDFT3 = pd.read_pickle(outDir+ "epgExpOutbCDFT3")
+		epgExpOutbCDFT4 = pd.read_pickle(outDir+ "epgExpOutbCDFT4")
+		epgExpOutbCDFT5 = pd.read_pickle(outDir+ "epgExpOutbCDFT5")
+		epgExpOutbCDFT6 = pd.read_pickle(outDir+ "epgExpOutbCDFT6")
+		epgExpOutbCDFT7 = pd.read_pickle(outDir+ "epgExpOutbCDFT7")
+		epgExpOutbCDFT8 = pd.read_pickle(outDir+ "epgExpOutbCDFT8")
+		epgExpOutbCDFT9 = pd.read_pickle(outDir+ "epgExpOutbCDFT9")
+		epgExpOutbCDFT10 = pd.read_pickle(outDir+ "epgExpOutbCDFT10")
+		epgExpOutbCDFT11 = pd.read_pickle(outDir+ "epgExpOutbCDFT11")
+
+
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
