@@ -246,9 +246,9 @@ class smearingDist():
 
 		#performing smearing
 		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
-		self.saveDVCSvars(dvcsSimInbCDFT, sigma, mode = "epg")
+		self.saveDVCSvars(dvcsSimInbCDFT)
 		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
-		self.saveDVCSvars(dvcsSimOutbCDFT, sigma, mode = "epg")
+		self.saveDVCSvars(dvcsSimOutbCDFT)
 		dvcsSimInbCDFT = self.df_epg
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
 		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
