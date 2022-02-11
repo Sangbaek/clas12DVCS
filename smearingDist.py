@@ -242,7 +242,7 @@ class smearingDist():
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
-		def sigma(df):
+		def sigma(df, sigmaList = [0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014]):
 			GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 			condList = []
 			for i in range(len(GeEdges)-1):
@@ -250,7 +250,6 @@ class smearingDist():
 				GeMax = GeEdges[i+1]
 				cond = (df.Ge > GeMin) & (df.Ge < GeMax)
 				condList.append(cond)
-			sigmaList = [0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014]
 			sigma = np.select(condList, sigmaList)
 			return sigma
 
@@ -313,7 +312,6 @@ class smearingDist():
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
-		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7), len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
 		binsMEepgInb = np.linspace(-0.439, 0.484, 101)
 		binsMM2eggInb = np.linspace(0.246, 1.569, 101)
 		binsMEepgOutb = np.linspace(-0.796, 0.947, 101)
@@ -325,14 +323,15 @@ class smearingDist():
 			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			unchist2, _ = np.histogram(df2.loc[:, var], bins = bins)
 			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters[0]))
-			uncdist1 = unchist1//np.sum(hist1)/(np.diff(bincenters[0]))
-			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters[0]))
-			uncdist2 = unchist2//np.sum(hist2)/(np.diff(bincenters[0]))
+			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters)[0])
+			uncdist1 = unchist1//np.sum(hist1)/(np.diff(bincenters)[0])
+			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			uncdist2 = unchist2//np.sum(hist2)/(np.diff(bincenters)[0])
 			uncdist = np.sqrt(uncdist1**2 + uncdist2 **2)
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
 
+		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7), len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
 		print(distance(dvcsSimInbCDFT7, epgExpInbCDFT7, var = "ME_epg", bins = binsMEepgInb))
 		print(distance(dvcsSimInbCDFT7, dvcsSimInbCDFT7, var = "ME_epg", bins = binsMEepgInb))
 
