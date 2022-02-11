@@ -242,10 +242,20 @@ class smearingDist():
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
-		sigma = 0.014
+		def sigma(df):
+			GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+			condList = []
+			for i in range(len(GeEdges)-1):
+				GeMin = GeEdges[i]
+				GeMax = GeEdges[i+1]
+				cond = (df.Ge > GeMin) & (df.Ge < GeMax)
+				condList.append(cond)
+			sigmaList = [0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014]
+			sigma = np.select(condList, sigmaList)
+			return sigma
 
 		#performing smearing
-		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
+		self.SmearingV0(dvcsSimInbCDFT, sigma(dvcsSimInbCDFT), mode = "epg")
 		self.saveDVCSvars(dvcsSimInbCDFT)
 		dvcsSimInbCDFT = self.df_epg
 		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
@@ -261,7 +271,7 @@ class smearingDist():
 		dvcsSimInbCDFT10 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>7.5)&(dvcsSimInbCDFT.Ge<8)]
 		dvcsSimInbCDFT11 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>8)&(dvcsSimInbCDFT.Ge<9)]
 
-		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
+		self.SmearingV0(dvcsSimOutbCDFT, sigma(dvcsSimOutbCDFT), mode = "epg")
 		self.saveDVCSvars(dvcsSimOutbCDFT)
 		dvcsSimOutbCDFT = self.df_epg
 		dvcsSimOutbCDFT0 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>2)&(dvcsSimOutbCDFT.Ge<3)]
