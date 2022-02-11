@@ -23,7 +23,7 @@ class smearingDist():
 		if version == "v0":
 			self.MakeV0()
 		if version == "v1":
-			self.MakeV1(exp)
+			self.MakeV1(exp = exp)
 
 	def GetVersion(self, version):
 		self.version = version
