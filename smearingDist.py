@@ -14,7 +14,7 @@ from utils.physics import *
 
 class smearingDist():
 
-	def __init__(self, version, outDir):
+	def __init__(self, version):
 		self.GetVersion(version)
 		if version == "v0":
 			self.MakeV0()
