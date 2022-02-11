@@ -150,7 +150,7 @@ class smearingDist():
 		pi0SimOutbFD.to_pickle(outDir+ "pi0SimOutbFD")
 		bkgSimOutbFD.to_pickle(outDir+ "bkgSimOutbFD")
 
-	def MakeV1Exp(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1"):
+	def MakeV1Exp(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1/"):
 		epgExpInbCDFT = pd.read_pickle(inDir+"/epgExpInbCDFT")
 		epgExpOutbCDFT = pd.read_pickle(inDir+"/epgExpOutbCDFT")
 		#divide into fd photon energy range
@@ -206,7 +206,7 @@ class smearingDist():
 		epgExpOutbCDFT10.to_pickle(outDir+ "epgExpOutbCDFT10")
 		epgExpOutbCDFT11.to_pickle(outDir+ "epgExpOutbCDFT11")
 
-	def MakeV1(self, inDir = "SimtoDat/v0", outDir = "SimtoDat/v1", exp = None):
+	def MakeV1(self, inDir = "SimtoDat/v0/", outDir = "SimtoDat/v1/", exp = None):
 
 		if exp:
 			self.MakeV1Exp(inDir, outDir)
