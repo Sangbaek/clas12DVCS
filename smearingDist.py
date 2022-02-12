@@ -282,7 +282,7 @@ class smearingDist():
 			GeMin = GeEdges[i]
 			GeMax = GeEdges[i+1]
 
-			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			epgExpInbCDFT_corrected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
 			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
 			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
@@ -306,7 +306,13 @@ class smearingDist():
 			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
 			epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
 
+			correction1 = dvcsSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_corrected.ME_epg.mean()
+			correction2 = dvcsSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_corrected.ME_epg.mean()
+			print(correction1, correction2)
+			
 			for sigma in sigmas:
+
+				print("smearing with {}".format(sigma))
 
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
