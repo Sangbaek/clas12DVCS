@@ -269,6 +269,8 @@ class smearingDist():
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 		sigmas = np.linspace(0.005, 0.03, 26)
+		corrections = []
+		sigmas_opt = []
 
 		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
 		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
@@ -292,6 +294,7 @@ class smearingDist():
 			print(correction1)
 			print(correction2)
 			correction = (correction1+correction2)/2
+			corrections.append(correction)
 
 			#performing correcting
 			self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
@@ -330,6 +333,7 @@ class smearingDist():
 
 
 			sigma_opt = sigmas[np.argmin(distances)]
+			sigmas_opt.append(sigma_opt)
 			self.SmearingV0(dvcsSimInbCDFT, sigma_opt, mode = "epg")
 			self.saveDVCSvars()
 			dvcsSimInbCDFT_opt = self.df_epg
@@ -392,7 +396,8 @@ class smearingDist():
 			plt.tight_layout()
 			plt.savefig(outDir+"OutbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
 
-
+		print(sigmas_opt, corrections)
+		
 	def CorrectingV0(self, df, correction, mode = "epg"):
 		df_epg = copy(df)
 		if mode == "epg":
