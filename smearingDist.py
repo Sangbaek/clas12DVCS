@@ -303,18 +303,18 @@ class smearingDist():
 			self.saveDVCSvars()
 			epgExpOutbCDFT = self.df_epg
 
-			epgExpInbCDFT_corrected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
-			epgExpOutbCDFT_corrected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
+			epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
 
 			for sigma in sigmas:
 
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
-				self.saveDVCSvars(dvcsSimInbCDFT)
+				self.saveDVCSvars()
 				dvcsSimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
-				self.saveDVCSvars(dvcsSimOutbCDFT)
+				self.saveDVCSvars()
 				dvcsSimOutbCDFT_smeared = self.df_epg
 
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
@@ -334,7 +334,7 @@ class smearingDist():
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ge>GeMin) & (dvcsSimInbCDFT_opt.Ge<GeMax)]
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ge>GeMin) & (dvcsSimOutbCDFT_opt.Ge<GeMax)]
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
-			print(len(epgExpInbCDFT), len(epgExpOutbCDFT))
+			print(len(epgExpInbCDFT_corrected), len(epgExpOutbCDFT_corrected))
 			print(GeMin, GeMax, sigma_opt, correction) 
 
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
