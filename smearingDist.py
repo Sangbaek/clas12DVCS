@@ -400,17 +400,17 @@ class smearingDist():
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
 			unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
-			binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
-			binends = [GeMax, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
+			# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
 			for yind in range(0, 2):
 			    for xind in range(0,5):
 			        ind = 5*yind + xind
-			        start = binstarts[ind]
-			        end = binends[ind]
-			        bins = np.linspace(start, end, 101)
-			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
+			        # start = binstarts[ind]
+			        # end = binends[ind]
+			        # bins = np.linspace(start, end, 101)
+			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], 100, density = True)
 			        simDist_dvpi0, bins = np.histogram(bkgSimInbCDFT[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
@@ -430,10 +430,10 @@ class smearingDist():
 			for yind in range(0, 2):
 			    for xind in range(0,5):
 			        ind = 5*yind + xind
-			        start = binstarts[ind]
-			        end = binends[ind]
-			        bins = np.linspace(start, end, 101)
-			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
+			        # start = binstarts[ind]
+			        # end = binends[ind]
+			        # bins = np.linspace(start, end, 101)
+			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], 100, density = True)
 			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCDFT[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
