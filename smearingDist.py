@@ -417,7 +417,7 @@ class smearingDist():
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
 			        axs[yind, xind].hist(epgExpInbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
-			        axs[yind, xind].set_xlim([start, end])
+			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
 			            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 			        else:
@@ -440,7 +440,7 @@ class smearingDist():
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
 			        axs[yind, xind].hist(epgExpOutbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
-			        axs[yind, xind].set_xlim([start, end])
+			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
 			            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 			        else:
