@@ -212,99 +212,37 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
-		epgExpInbCDFT0 = pd.read_pickle(outDir+ "epgExpInbCDFT0")
-		epgExpInbCDFT1 = pd.read_pickle(outDir+ "epgExpInbCDFT1")
-		epgExpInbCDFT2 = pd.read_pickle(outDir+ "epgExpInbCDFT2")
-		epgExpInbCDFT3 = pd.read_pickle(outDir+ "epgExpInbCDFT3")
-		epgExpInbCDFT4 = pd.read_pickle(outDir+ "epgExpInbCDFT4")
-		epgExpInbCDFT5 = pd.read_pickle(outDir+ "epgExpInbCDFT5")
-		epgExpInbCDFT6 = pd.read_pickle(outDir+ "epgExpInbCDFT6")
-		epgExpInbCDFT7 = pd.read_pickle(outDir+ "epgExpInbCDFT7")
-		epgExpInbCDFT8 = pd.read_pickle(outDir+ "epgExpInbCDFT8")
-		epgExpInbCDFT9 = pd.read_pickle(outDir+ "epgExpInbCDFT9")
-		epgExpInbCDFT10 = pd.read_pickle(outDir+ "epgExpInbCDFT10")
-		epgExpInbCDFT11 = pd.read_pickle(outDir+ "epgExpInbCDFT11")
+		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		i = 6
+		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
+		binsMM2egInb = np.linspace(0.246, 1.569, 51)
+		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
+		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
-		epgExpOutbCDFT0 = pd.read_pickle(outDir+ "epgExpOutbCDFT0")
-		epgExpOutbCDFT1 = pd.read_pickle(outDir+ "epgExpOutbCDFT1")
-		epgExpOutbCDFT2 = pd.read_pickle(outDir+ "epgExpOutbCDFT2")
-		epgExpOutbCDFT3 = pd.read_pickle(outDir+ "epgExpOutbCDFT3")
-		epgExpOutbCDFT4 = pd.read_pickle(outDir+ "epgExpOutbCDFT4")
-		epgExpOutbCDFT5 = pd.read_pickle(outDir+ "epgExpOutbCDFT5")
-		epgExpOutbCDFT6 = pd.read_pickle(outDir+ "epgExpOutbCDFT6")
-		epgExpOutbCDFT7 = pd.read_pickle(outDir+ "epgExpOutbCDFT7")
-		epgExpOutbCDFT8 = pd.read_pickle(outDir+ "epgExpOutbCDFT8")
-		epgExpOutbCDFT9 = pd.read_pickle(outDir+ "epgExpOutbCDFT9")
-		epgExpOutbCDFT10 = pd.read_pickle(outDir+ "epgExpOutbCDFT10")
-		epgExpOutbCDFT11 = pd.read_pickle(outDir+ "epgExpOutbCDFT11")
+		GeMin = GeEdges[i]
+		GeMax = GeEdges[i+1]
 
+		epgExpInbCDFT = pd.read_pickle(outDir + "epgExpInbCDFT{}".format(i))
+		epgExpOutbCDFT = pd.read_pickle(outDir + "epgExpOutbCDFT{}".format(i))
 
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
 		#performing smearing
-		self.SmearingV0(dvcsSimInbCDFT, sigma(dvcsSimInbCDFT), mode = "epg")
+		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
 		self.saveDVCSvars(dvcsSimInbCDFT)
 		dvcsSimInbCDFT = self.df_epg
-		dvcsSimInbCDFT0 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>2)&(dvcsSimInbCDFT.Ge<3)]
-		dvcsSimInbCDFT1 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3)&(dvcsSimInbCDFT.Ge<3.5)]
-		dvcsSimInbCDFT2 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>3.5)&(dvcsSimInbCDFT.Ge<4)]
-		dvcsSimInbCDFT3 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>4)&(dvcsSimInbCDFT.Ge<4.5)]
-		dvcsSimInbCDFT4 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>4.5)&(dvcsSimInbCDFT.Ge<5)]
-		dvcsSimInbCDFT5 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>5)&(dvcsSimInbCDFT.Ge<5.5)]
-		dvcsSimInbCDFT6 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>5.5)&(dvcsSimInbCDFT.Ge<6)]
-		dvcsSimInbCDFT7 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>6)&(dvcsSimInbCDFT.Ge<6.5)]
-		dvcsSimInbCDFT8 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>6.5)&(dvcsSimInbCDFT.Ge<7)]
-		dvcsSimInbCDFT9 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>7)&(dvcsSimInbCDFT.Ge<7.5)]
-		dvcsSimInbCDFT10 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>7.5)&(dvcsSimInbCDFT.Ge<8)]
-		dvcsSimInbCDFT11 = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>8)&(dvcsSimInbCDFT.Ge<9)]
 
-		self.SmearingV0(dvcsSimOutbCDFT, sigma(dvcsSimOutbCDFT), mode = "epg")
+		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
 		self.saveDVCSvars(dvcsSimOutbCDFT)
 		dvcsSimOutbCDFT = self.df_epg
-		dvcsSimOutbCDFT0 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>2)&(dvcsSimOutbCDFT.Ge<3)]
-		dvcsSimOutbCDFT1 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>3)&(dvcsSimOutbCDFT.Ge<3.5)]
-		dvcsSimOutbCDFT2 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>3.5)&(dvcsSimOutbCDFT.Ge<4)]
-		dvcsSimOutbCDFT3 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>4)&(dvcsSimOutbCDFT.Ge<4.5)]
-		dvcsSimOutbCDFT4 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>4.5)&(dvcsSimOutbCDFT.Ge<5)]
-		dvcsSimOutbCDFT5 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>5)&(dvcsSimOutbCDFT.Ge<5.5)]
-		dvcsSimOutbCDFT6 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>5.5)&(dvcsSimOutbCDFT.Ge<6)]
-		dvcsSimOutbCDFT7 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>6)&(dvcsSimOutbCDFT.Ge<6.5)]
-		dvcsSimOutbCDFT8 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>6.5)&(dvcsSimOutbCDFT.Ge<7)]
-		dvcsSimOutbCDFT9 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>7)&(dvcsSimOutbCDFT.Ge<7.5)]
-		dvcsSimOutbCDFT10 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>7.5)&(dvcsSimOutbCDFT.Ge<8)]
-		dvcsSimOutbCDFT11 = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>8)&(dvcsSimOutbCDFT.Ge<9)]
 
-		dvcsSimInbCDFT0.to_pickle(outDir+ "dvcsSimInbCDFT0")
-		dvcsSimInbCDFT1.to_pickle(outDir+ "dvcsSimInbCDFT1")
-		dvcsSimInbCDFT2.to_pickle(outDir+ "dvcsSimInbCDFT2")
-		dvcsSimInbCDFT3.to_pickle(outDir+ "dvcsSimInbCDFT3")
-		dvcsSimInbCDFT4.to_pickle(outDir+ "dvcsSimInbCDFT4")
-		dvcsSimInbCDFT5.to_pickle(outDir+ "dvcsSimInbCDFT5")
-		dvcsSimInbCDFT6.to_pickle(outDir+ "dvcsSimInbCDFT6")
-		dvcsSimInbCDFT7.to_pickle(outDir+ "dvcsSimInbCDFT7")
-		dvcsSimInbCDFT8.to_pickle(outDir+ "dvcsSimInbCDFT8")
-		dvcsSimInbCDFT9.to_pickle(outDir+ "dvcsSimInbCDFT9")
-		dvcsSimInbCDFT10.to_pickle(outDir+ "dvcsSimInbCDFT10")
-		dvcsSimInbCDFT11.to_pickle(outDir+ "dvcsSimInbCDFT11")
+		dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
+		dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
 
-		dvcsSimOutbCDFT0.to_pickle(outDir+ "dvcsSimOutbCDFT0")
-		dvcsSimOutbCDFT1.to_pickle(outDir+ "dvcsSimOutbCDFT1")
-		dvcsSimOutbCDFT2.to_pickle(outDir+ "dvcsSimOutbCDFT2")
-		dvcsSimOutbCDFT3.to_pickle(outDir+ "dvcsSimOutbCDFT3")
-		dvcsSimOutbCDFT4.to_pickle(outDir+ "dvcsSimOutbCDFT4")
-		dvcsSimOutbCDFT5.to_pickle(outDir+ "dvcsSimOutbCDFT5")
-		dvcsSimOutbCDFT6.to_pickle(outDir+ "dvcsSimOutbCDFT6")
-		dvcsSimOutbCDFT7.to_pickle(outDir+ "dvcsSimOutbCDFT7")
-		dvcsSimOutbCDFT8.to_pickle(outDir+ "dvcsSimOutbCDFT8")
-		dvcsSimOutbCDFT9.to_pickle(outDir+ "dvcsSimOutbCDFT9")
-		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
-		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
+		dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT{}".format(i))
+		dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT{}".format(i))
 
-		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
-		binsMM2egInb = np.linspace(0.246, 1.569, 51)
-		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
-		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
 		def distance(df1, df2, var = "ME_epg", bins = binsMEepgInb):
 			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
@@ -321,17 +259,17 @@ class smearingDist():
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
 
-		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7))
-		print(distance(dvcsSimInbCDFT7, epgExpInbCDFT7, var = "ME_epg", bins = binsMEepgInb))
-		print(len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
-		print(distance(dvcsSimOutbCDFT7, epgExpOutbCDFT7, var = "ME_epg", bins = binsMEepgOutb))
+		print(len(dvcsSimInbCDFT), len(dvcsSimOutbCDFT))
+		print(distance(dvcsSimInbCDFT, epgExpInbCDFT, var = "ME_epg", bins = binsMEepgInb))
+		print(len(epgExpInbCDFT), len(epgExpOutbCDFT))
+		print(distance(dvcsSimOutbCDFT, epgExpOutbCDFT, var = "ME_epg", bins = binsMEepgOutb))
 
 		fig, axs = plt.subplots(2, 1, figsize = (15,10))
-		axs[0].hist(epgExpInbCDFT7.ME_epg, bins = binsMEepgInb, color = 'k')
-		axs[0].hist(dvcsSimInbCDFT7.ME_epg, bins = binsMEepgInb, color = 'r')
-		axs[1].hist(epgExpInbCDFT7.MM2_eg, bins = binsMM2egInb, color = 'k')
-		axs[1].hist(dvcsSimInbCDFT7.MM2_eg, bins = binsMM2egInb, color = 'r')
-		plt.savefig(outDir+"CDFT7_MEepg{}.pdf".format(sigma))
+		axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k')
+		axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r')
+		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k')
+		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r')
+		plt.savefig(outDir+"CDFT{}_MEepg{}.pdf".format(i, sigma))
 
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
