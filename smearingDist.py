@@ -264,12 +264,12 @@ class smearingDist():
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
 		#performing correcting
-		self.CorrectingV0(epgExpInbCDFT, -0.04, mode = "epg")
+		self.CorrectingV0(epgExpInbCDFT, 0.04, mode = "epg")
 		self.saveDVCSvars(epgExpInbCDFT)
 		epgExpInbCDFT = self.df_epg
 
 		#performing correcting
-		self.CorrectingV0(epgExpOutbCDFT, -0.04, mode = "epg")
+		self.CorrectingV0(epgExpOutbCDFT, 0.04, mode = "epg")
 		self.saveDVCSvars(epgExpOutbCDFT)
 		epgExpOutbCDFT = self.df_epg
 
