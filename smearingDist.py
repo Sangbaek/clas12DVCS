@@ -212,6 +212,9 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
+		if isinstance(sigma, str):
+			sigma = float(sigma)
+
 		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 		i = 6
 		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
