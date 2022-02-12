@@ -244,10 +244,10 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
-		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
-		binsMM2egInb = np.linspace(0.246, 1.569, 51)
-		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
-		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
+		binsMEepgInb = np.linspace(-0.439, 0.484, 101)
+		binsMM2egInb = np.linspace(0.246, 1.569, 101)
+		binsMEepgOutb = np.linspace(-0.436, 0.481, 101) 
+		binsMM2egOutb = np.linspace(0.223, 1.602, 101) 
 
 		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg", bins = binsMEepgInb):
 			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
@@ -268,14 +268,14 @@ class smearingDist():
 			uncdist_exp = unchist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
 			uncdist = np.sqrt((1-cont)**2 * uncdist1**2 + cont**2 * uncdist2 **2 + unchist_exp**2)
 			uncdist = np.where(uncdist>0, uncdist, np.inf)
-			chi2 = np.sum(((1-cont)*dist1 + cont*dist2 -dist_exp)**2/uncdist**2)
-			return chi2
+			distance = np.sum(((1-cont)*dist1 + cont*dist2 -dist_exp)**2)
+			return distance
 
 		if isinstance(sigma, str):
 			sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = [0.01, 0.014, 0.018]#np.linspace(0.005, 0.03, 26)
+		sigmas = np.linspace(0.01, 0.02, 6)
 		corrections = []
 		sigmas_opt = []
 
@@ -324,17 +324,21 @@ class smearingDist():
 			#performing correcting
 			self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			epgExpInbCDFT_corrected = self.df_epg
 			self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			pi0ExpInbCDFT_corrected = self.df_epg
 
 			#performing correcting
 			self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			epgExpOutbCDFT_corrected = self.df_epg
 			self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			pi0ExpOutbCDFT_corrected = self.df_epg
 
 			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
@@ -347,18 +351,22 @@ class smearingDist():
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
+				self.makeDVCS()
 				dvcsSimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(bkgSimInbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
+				self.makeDVCS()
 				bkgSimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
+				self.makeDVCS()
 				dvcsSimOutbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(bkgSimOutbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
+				self.makeDVCS()
 				bkgSimOutbCDFT_smeared = self.df_epg
 
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
@@ -371,10 +379,12 @@ class smearingDist():
 			sigmas_opt.append(sigma_opt)
 			self.SmearingV0(dvcsSimInbCDFT, sigma_opt, mode = "epg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			dvcsSimInbCDFT_opt = self.df_epg
 
 			self.SmearingV0(dvcsSimOutbCDFT, sigma_opt, mode = "epg")
 			self.saveDVCSvars()
+			self.makeDVCS()
 			dvcsSimOutbCDFT_opt = self.df_epg
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ge>GeMin) & (dvcsSimInbCDFT_opt.Ge<GeMax)]
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ge>GeMin) & (dvcsSimOutbCDFT_opt.Ge<GeMax)]
