@@ -310,8 +310,8 @@ class smearingDist():
 			contInb = len(bkgSimInbCDFT_selected)/len(pi0SimInbCDFT_selected)*len(pi0ExpInbCDFT_selected)/len(epgExpInbCDFT_selected)
 			contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg - epgExpInbCDFT_selected.ME_epg.mean()
-			correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg - epgExpOutbCDFT_selected.ME_epg.mean()
+			correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
+			correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
 			correction = (correction1+correction2)/2
 			print(correction1, contInb, correction2, contOutb)
 			corrections.append(correction)
