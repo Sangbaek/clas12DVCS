@@ -301,7 +301,7 @@ class smearingDist():
 			#performing correcting
 			self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
 			self.saveDVCSvars()
-			epgExpOutbCDFT = self.df_epg
+			epgExpOutbCDFT_corrected = self.df_epg
 
 			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
 			epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
