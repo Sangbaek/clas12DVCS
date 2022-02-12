@@ -312,8 +312,8 @@ class root2pickle():
         if correction:
             print("correction applied for " + pol)
 
-            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD #+ 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD #- 0.5
+            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.5
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
@@ -363,11 +363,11 @@ class root2pickle():
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
         df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
-        # if correction:
-        #     df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] = df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] - 0.25
-        #     df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
-        #     df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
-        #     df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
+        if correction:
+            df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] = df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] - 0.25
+            df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
+            df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
+            df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
 
         df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta"], axis = 1)
         if detRes:
