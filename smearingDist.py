@@ -232,12 +232,12 @@ class smearingDist():
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
 		#performing correcting
-		self.CorrectingV0(epgExpInbCDFT, -0.01, mode = "epg")
+		self.CorrectingV0(epgExpInbCDFT, -0.1, mode = "epg")
 		self.saveDVCSvars(epgExpInbCDFT)
 		epgExpInbCDFT = self.df_epg
 
 		#performing correcting
-		self.CorrectingV0(epgExpOutbCDFT, -0.01, mode = "epg")
+		self.CorrectingV0(epgExpOutbCDFT, -0.1, mode = "epg")
 		self.saveDVCSvars(epgExpOutbCDFT)
 		epgExpOutbCDFT = self.df_epg
 
@@ -284,6 +284,32 @@ class smearingDist():
 		axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r', density = True, histtype = 'step')
 		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
 		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
+
+		varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt_epg", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
+		title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
+		unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
+		binstarts = [2, 0, -180, 15, 0, 0, -0.5, -0.01, 0.1, 0]
+		binends = [10, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
+		fig, axs = plt.subplots(2, 5, figsize = (15,10))
+		for yind in range(0, 2):
+		    for xind in range(0,5):
+		        ind = 5*yind + xind
+		        start = binstarts[ind]
+		        end = binends[ind]
+		        bins = np.linspace(start, end, 101)
+		        simDist_dvcs, bins = np.histogram(df[varstoplot[ind]], bins, density = True)
+		        simDist = simDist_dvcs# + contCDFT*simDist_dvpi0
+		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+		        axs[yind, xind].hist(correctDVCS(epgExpInbCDFT, 0.25)[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+		        axs[yind, xind].set_title(title[ind])
+		        axs[yind, xind].set_xlim([start, end])
+		        if (unit[ind]):
+		            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+		        else:
+		            axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+
 		plt.savefig(outDir+"CDFT{}_{}.pdf".format(i, sigma))
 
 
