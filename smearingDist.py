@@ -16,6 +16,38 @@ cmap = copy(plt.cm.get_cmap("jet"))
 from scipy.optimize import least_squares
 from scipy.stats import entropy
 
+degree = r"${}^{\circ}$"
+GeV = "GeV"
+GeV2 = "GeV"+r"${}^{2}$"
+GeVc = "GeV/c"
+GeVc2 = "(GeV/c)"+r"${}^{2}$"
+
+import matplotlib
+# initial settings
+pgf_with_latex = {
+		"pgf.texsystem": "pdflatex",
+		"text.usetex": True,            # use LaTeX to write all text
+		"font.family": "sans-serif",         
+		"font.sans-serif": "Helvetica",
+		"font.size": 25,				# default font size
+		"axes.labelsize": 24,			# x and y label size
+		"axes.titlesize": 24,           # subfigure title size, i.e. title size when one figure
+		"legend.fontsize": 22,			# legend size
+		"xtick.labelsize": 23,			# x axis tick label size
+		"ytick.labelsize": 23,			# y axis tick label 
+		"figure.titlesize": 25,         # Figure title size, useful when you have multiple plots in one canvas.
+		"pgf.preamble": r"\usepackage{xcolor}",     # xcolor for colours
+		"figure.autolayout": True
+}
+matplotlib.rcParams.update(pgf_with_latex)
+
+def nphistmean(hist, bins):
+    s=0
+    for i in range(len(hist)):
+        s += hist[i] * ((bins[i] + bins[i+1]) / 2) 
+    mean = s / np.sum(hist)
+    return mean
+
 class smearingDist():
 
 	def __init__(self, version, exp, params = None):
