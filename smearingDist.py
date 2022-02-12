@@ -261,6 +261,8 @@ class smearingDist():
 			uncdist1 = unchist1/np.sum(hist1)/(np.diff(bincenters)[0])
 			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters)[0])
 			uncdist2 = unchist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			dist_exp = hist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
+			uncdist_exp = unchist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
 			uncdist = np.sqrt((1-cont)**2 * uncdist1**2 + cont**2 * uncdist2 **2 + unchist_exp**2)
 			uncdist = np.where(uncdist>0, uncdist, np.inf)
 			chi2 = np.sum(((1-cont)*dist1 + cont*dist2 -dist_exp)**2/uncdist**2)
