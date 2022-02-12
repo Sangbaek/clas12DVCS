@@ -249,13 +249,13 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
-		binsMEepgInb = np.linspace(-0.439, 0.484, 101)
-		binsMM2egInb = np.linspace(0.246, 1.569, 101)
-		binsMEepgOutb = np.linspace(-0.436, 0.481, 101) 
-		binsMM2egOutb = np.linspace(0.223, 1.602, 101) 
+		# binsMEepgInb = np.linspace(-0.439, 0.484, 101)
+		# binsMM2egInb = np.linspace(0.246, 1.569, 101)
+		# binsMEepgOutb = np.linspace(-0.436, 0.481, 101) 
+		# binsMM2egOutb = np.linspace(0.223, 1.602, 101) 
 
-		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg", bins = binsMEepgInb):
-			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
+		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg"):
+			hist1, bins = np.histogram(df1.loc[:, var], bins = 101)
 			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
 			hist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
 			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
@@ -377,7 +377,7 @@ class smearingDist():
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
 				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ge>GeMin) & (dvcsSimOutbCDFT_smeared.Ge<GeMax)]
 
-				distances.append((distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, cont = contInb, var = "ME_epg", bins = binsMEepgInb) + distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, cont = contOutb, var = "ME_epg", bins = binsMEepgOutb))/2)
+				distances.append((distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, cont = contInb, var = "ME_epg") + distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, cont = contOutb, var = "ME_epg"))/2)
 
 
 			sigma_opt = sigmas[np.argmin(distances)]
