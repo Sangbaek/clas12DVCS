@@ -258,6 +258,11 @@ class smearingDist():
 			uncdist = np.where(uncdist>0, uncdist, np.inf)
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
+			
+		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
+		binsMM2egInb = np.linspace(0.246, 1.569, 51)
+		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
+		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
 		if isinstance(sigma, str):
 			sigma = float(sigma)
@@ -285,10 +290,6 @@ class smearingDist():
 			correction = (correction1+correction2)/2
 
 			for sigma in sigmas:
-				binsMEepgInb = np.linspace(-0.439, 0.484, 51)
-				binsMM2egInb = np.linspace(0.246, 1.569, 51)
-				binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
-				binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
 				GeMin = GeEdges[i]
 				GeMax = GeEdges[i+1]
