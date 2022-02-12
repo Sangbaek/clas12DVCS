@@ -350,7 +350,7 @@ class smearingDist():
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
 			unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
-			binstarts = [Gemin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
 			binends = [GeMax, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
@@ -397,7 +397,7 @@ class smearingDist():
 			plt.savefig(outDir+"OutbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
 
 		print(sigmas_opt, corrections)
-		
+
 	def CorrectingV0(self, df, correction, mode = "epg"):
 		df_epg = copy(df)
 		if mode == "epg":
