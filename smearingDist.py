@@ -267,8 +267,8 @@ class smearingDist():
 		if isinstance(sigma, str):
 			sigma = float(sigma)
 
-		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.05, 0.02, 16)
+		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		sigmas = np.linspace(0.005, 0.02, 16)
 
 		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
 		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
@@ -287,8 +287,8 @@ class smearingDist():
 			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
 
-			correction1 = epgExpInbCDFT_selected.ME_epg.mean() - dvcsSimInbCDFT_selected.ME_epg.mean() 
-			correction2 = epgExpOutbCDFT_selected.ME_epg.mean() - dvcsSimOutbCDFT_selected.ME_epg.mean()
+			correction1 = dvcsSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
+			correction2 = dvcsSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
 			print(correction1)
 			print(correction2)
 			correction = (correction1+correction2)/2
