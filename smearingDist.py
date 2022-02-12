@@ -268,11 +268,11 @@ class smearingDist():
 		print(distance(dvcsSimOutbCDFT, epgExpOutbCDFT, var = "ME_epg", bins = binsMEepgOutb))
 
 		fig, axs = plt.subplots(2, 1, figsize = (15,10))
-		axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k')
-		axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r')
-		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k')
-		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r')
-		plt.savefig(outDir+"CDFT{}_MEepg{}.pdf".format(i, sigma))
+		axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k', density = True, histtype = 'step')
+		axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r', density = True, histtype = 'step')
+		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
+		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
+		plt.savefig(outDir+"CDFT{}_{}.pdf".format(i, sigma))
 
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
