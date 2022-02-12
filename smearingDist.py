@@ -287,7 +287,7 @@ class smearingDist():
 			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
 
-			correction1 = dvcsSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
+			correction1 = epgExpInbCDFT_selected.ME_epg.mean() - dvcsSimInbCDFT_selected.ME_epg.mean() 
 			correction2 = epgExpOutbCDFT_selected.ME_epg.mean() - dvcsSimOutbCDFT_selected.ME_epg.mean()
 			print(correction1)
 			print(correction2)
