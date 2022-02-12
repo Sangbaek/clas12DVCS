@@ -244,56 +244,6 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
-		if isinstance(sigma, str):
-			sigma = float(sigma)
-
-		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		i = 6
-		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
-		binsMM2egInb = np.linspace(0.246, 1.569, 51)
-		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
-		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
-
-		GeMin = GeEdges[i]
-		GeMax = GeEdges[i+1]
-
-		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
-		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
-
-		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
-		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
-
-		#performing correcting
-		self.CorrectingV0(epgExpInbCDFT, 0.04, mode = "epg")
-		self.saveDVCSvars(epgExpInbCDFT)
-		epgExpInbCDFT = self.df_epg
-
-		#performing correcting
-		self.CorrectingV0(epgExpOutbCDFT, 0.04, mode = "epg")
-		self.saveDVCSvars(epgExpOutbCDFT)
-		epgExpOutbCDFT = self.df_epg
-
-		#performing smearing
-		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
-		self.saveDVCSvars(dvcsSimInbCDFT)
-		dvcsSimInbCDFT = self.df_epg
-
-		self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
-		self.saveDVCSvars(dvcsSimOutbCDFT)
-		dvcsSimOutbCDFT = self.df_epg
-
-		epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
-		epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
-		dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
-		dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
-
-		print(epgExpInbCDFT.ME_epg.mean() - dvcsSimInbCDFT.ME_epg.mean())
-		print(epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean())
-
-		dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT{}".format(i))
-		dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT{}".format(i))
-
-
 		def distance(df1, df2, var = "ME_epg", bins = binsMEepgInb):
 			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
@@ -309,43 +259,111 @@ class smearingDist():
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
 
-		print(len(dvcsSimInbCDFT), len(dvcsSimOutbCDFT))
-		print(distance(dvcsSimInbCDFT, epgExpInbCDFT, var = "ME_epg", bins = binsMEepgInb))
-		print(len(epgExpInbCDFT), len(epgExpOutbCDFT))
-		print(distance(dvcsSimOutbCDFT, epgExpOutbCDFT, var = "ME_epg", bins = binsMEepgOutb))
+		if isinstance(sigma, str):
+			sigma = float(sigma)
 
-		fig, axs = plt.subplots(2, 1, figsize = (15,10))
-		axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k', density = True, histtype = 'step')
-		axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r', density = True, histtype = 'step')
-		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
-		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
+		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		sigmas = np.linspace(0.05, 0.02, 16)
 
-		varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
-		title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
-		unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
-		binstarts = [2, 0, -180, 15, 0, 0, -0.5, -0.01, 0.1, 0]
-		binends = [10, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
-		fig, axs = plt.subplots(2, 5, figsize = (15,10))
-		for yind in range(0, 2):
-		    for xind in range(0,5):
-		        ind = 5*yind + xind
-		        start = binstarts[ind]
-		        end = binends[ind]
-		        bins = np.linspace(start, end, 101)
-		        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT[varstoplot[ind]], bins, density = True)
-		        simDist = simDist_dvcs# + contCDFT*simDist_dvpi0
-		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-		        axs[yind, xind].hist(epgExpInbCDFT[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
-		        axs[yind, xind].set_title(title[ind])
-		        axs[yind, xind].set_xlim([start, end])
-		        if (unit[ind]):
-		            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		        else:
-		            axs[yind, xind].set_xlabel(title[ind])
-		plt.tight_layout()
+		for i in range(len(GeEdges)-1):
 
-		plt.savefig(outDir+"CDFT{}_{}.pdf".format(i, sigma))
+			distances = []
+
+			epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
+			epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
+
+			dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
+			dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
+
+			epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+			dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
+			dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
+
+			correction1 = dvcsSimInbCDFT.ME_epg.mean() - epgExpInbCDFT.ME_epg.mean()
+			correction2 = epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean()
+			correction = (correction1+correction2)/2
+
+			for sigma in sigmas:
+				binsMEepgInb = np.linspace(-0.439, 0.484, 51)
+				binsMM2egInb = np.linspace(0.246, 1.569, 51)
+				binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
+				binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
+
+				GeMin = GeEdges[i]
+				GeMax = GeEdges[i+1]
+				sigma = sigmas
+
+
+				#performing correcting
+				self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+				self.saveDVCSvars(epgExpInbCDFT)
+				epgExpInbCDFT = self.df_epg
+
+				#performing correcting
+				self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+				self.saveDVCSvars(epgExpOutbCDFT)
+				epgExpOutbCDFT = self.df_epg
+
+				#performing smearing
+				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
+				self.saveDVCSvars(dvcsSimInbCDFT)
+				dvcsSimInbCDFT = self.df_epg
+
+				self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
+				self.saveDVCSvars(dvcsSimOutbCDFT)
+				dvcsSimOutbCDFT = self.df_epg
+
+				epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+				epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+				dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
+				dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
+
+				print(epgExpInbCDFT.ME_epg.mean() - dvcsSimInbCDFT.ME_epg.mean())
+				print(epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean())
+
+				dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT{}".format(i))
+				dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT{}".format(i))
+
+				print(len(dvcsSimInbCDFT), len(dvcsSimOutbCDFT))
+				print(len(epgExpInbCDFT), len(epgExpOutbCDFT))
+				distances.append((distance(dvcsSimInbCDFT, epgExpInbCDFT, var = "ME_epg", bins = binsMEepgInb) + distance(dvcsSimOutbCDFT, epgExpOutbCDFT, var = "ME_epg", bins = binsMEepgOutb))/2)
+
+				# fig, axs = plt.subplots(2, 1, figsize = (15,10))
+				# axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k', density = True, histtype = 'step')
+				# axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r', density = True, histtype = 'step')
+				# axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
+				# axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
+
+			sigma_opt = sigmas[np.argmin(distances)]
+			print(sigma_opt, correction) 
+
+			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
+			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
+			unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
+			binstarts = [2, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			binends = [10, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
+			fig, axs = plt.subplots(2, 5, figsize = (15,10))
+			for yind in range(0, 2):
+			    for xind in range(0,5):
+			        ind = 5*yind + xind
+			        start = binstarts[ind]
+			        end = binends[ind]
+			        bins = np.linspace(start, end, 101)
+			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT[varstoplot[ind]], bins, density = True)
+			        simDist = simDist_dvcs# + contCDFT*simDist_dvpi0
+			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+			        axs[yind, xind].hist(epgExpInbCDFT[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].set_title(title[ind])
+			        axs[yind, xind].set_xlim([start, end])
+			        if (unit[ind]):
+			            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			        else:
+			            axs[yind, xind].set_xlabel(title[ind])
+			plt.tight_layout()
+
+			plt.savefig(outDir+"CDFT{}_{}.pdf".format(i, sigma_opt))
 
 
 	def CorrectingV0(self, df, correction, mode = "epg"):
