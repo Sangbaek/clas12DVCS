@@ -264,12 +264,12 @@ class smearingDist():
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
 
 		#performing correcting
-		self.CorrectingV0(epgExpInbCDFT, -0.1, mode = "epg")
+		self.CorrectingV0(epgExpInbCDFT, 0, mode = "epg")
 		self.saveDVCSvars(epgExpInbCDFT)
 		epgExpInbCDFT = self.df_epg
 
 		#performing correcting
-		self.CorrectingV0(epgExpOutbCDFT, -0.1, mode = "epg")
+		self.CorrectingV0(epgExpOutbCDFT, 0, mode = "epg")
 		self.saveDVCSvars(epgExpOutbCDFT)
 		epgExpOutbCDFT = self.df_epg
 
@@ -286,6 +286,9 @@ class smearingDist():
 		epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
 		dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 		dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
+
+		print(epgExpInbCDFT.ME_epg.mean() - dvcsSimInbCDFT.ME_epg.mean())
+		print(epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean())
 
 		dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT{}".format(i))
 		dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT{}".format(i))
@@ -329,11 +332,11 @@ class smearingDist():
 		        start = binstarts[ind]
 		        end = binends[ind]
 		        bins = np.linspace(start, end, 101)
-		        simDist_dvcs, bins = np.histogram(df[varstoplot[ind]], bins, density = True)
+		        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT[varstoplot[ind]], bins, density = True)
 		        simDist = simDist_dvcs# + contCDFT*simDist_dvpi0
 		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-		        axs[yind, xind].hist(correctDVCS(epgExpInbCDFT, 0.25)[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+		        axs[yind, xind].hist(epgExpInbCDFT[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 		        axs[yind, xind].set_title(title[ind])
 		        axs[yind, xind].set_xlim([start, end])
 		        if (unit[ind]):
