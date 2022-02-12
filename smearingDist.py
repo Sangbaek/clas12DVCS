@@ -272,7 +272,7 @@ class smearingDist():
 			sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.005, 0.03, 26)
+		sigmas = [0.01, 0.014, 0.018]#np.linspace(0.005, 0.03, 26)
 		corrections = []
 		sigmas_opt = []
 
@@ -291,7 +291,7 @@ class smearingDist():
 		pi0SimInbCDFT = pd.read_pickle(inDir+"/pi0SimInbCDFT")
 		pi0SimOutbCDFT = pd.read_pickle(inDir+"/pi0SimOutbCDFT")
 
-		for i in range(len(GeEdges)-1):
+		for i in range(4, 5):
 
 			distances = []
 			GeMin = GeEdges[i]
@@ -377,7 +377,7 @@ class smearingDist():
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ge>GeMin) & (dvcsSimOutbCDFT_opt.Ge<GeMax)]
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_corrected), len(epgExpOutbCDFT_corrected))
-			print(GeMin, GeMax, sigma_opt, correction) 
+			print(GeMin, GeMax, distances, sigma_opt, correction) 
 
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
