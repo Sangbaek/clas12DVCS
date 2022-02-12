@@ -280,7 +280,7 @@ class smearingDist():
 			sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.01, 0.02, 6)
+		sigmas = np.linspace(0.01, 0.02, 11)
 		corrections = []
 		sigmas_opt = []
 
@@ -299,7 +299,7 @@ class smearingDist():
 		pi0SimInbCDFT = pd.read_pickle(inDir+"/pi0SimInbCDFT")
 		pi0SimOutbCDFT = pd.read_pickle(inDir+"/pi0SimOutbCDFT")
 
-		for i in range(4, 5):
+		for i in range(len(GeEdges)-1):
 
 			distances = []
 			GeMin = GeEdges[i]
@@ -351,7 +351,7 @@ class smearingDist():
 
 			for sigma in sigmas:
 
-				print("smearing with {:.4f}".format(sigma))
+				print("smearing with {:.3f}".format(sigma))
 
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
@@ -423,7 +423,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
@@ -446,7 +446,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma_opt))
 
 		print(sigmas_opt, corrections)
 
