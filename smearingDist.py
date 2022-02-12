@@ -244,6 +244,11 @@ class smearingDist():
 			self.MakeV1Exp(inDir, outDir)
 			exit()
 
+		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
+		binsMM2egInb = np.linspace(0.246, 1.569, 51)
+		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
+		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
+
 		def distance(df1, df2, var = "ME_epg", bins = binsMEepgInb):
 			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
@@ -258,11 +263,6 @@ class smearingDist():
 			uncdist = np.where(uncdist>0, uncdist, np.inf)
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
-			
-		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
-		binsMM2egInb = np.linspace(0.246, 1.569, 51)
-		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
-		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
 		if isinstance(sigma, str):
 			sigma = float(sigma)
