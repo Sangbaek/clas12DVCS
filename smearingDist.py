@@ -41,6 +41,11 @@ pgf_with_latex = {
 }
 matplotlib.rcParams.update(pgf_with_latex)
 
+import warnings
+from pandas.core.common import SettingWithCopyWarning
+
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
+
 def nphistmean(hist, bins):
     s=0
     for i in range(len(hist)):
