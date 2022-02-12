@@ -289,19 +289,24 @@ class smearingDist():
 
 			correction1 = dvcsSimInbCDFT.ME_epg.mean() - epgExpInbCDFT.ME_epg.mean()
 			correction2 = epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean()
+			print(correction1)
+			print(correction2)
 			correction = (correction1+correction2)/2
 
+			#performing correcting
+			self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+			self.saveDVCSvars(epgExpInbCDFT)
+			epgExpInbCDFT = self.df_epg
+
+			#performing correcting
+			self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+			self.saveDVCSvars(epgExpOutbCDFT)
+			epgExpOutbCDFT = self.df_epg
+
+			epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+
 			for sigma in sigmas:
-
-				#performing correcting
-				self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
-				self.saveDVCSvars(epgExpInbCDFT)
-				epgExpInbCDFT = self.df_epg
-
-				#performing correcting
-				self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
-				self.saveDVCSvars(epgExpOutbCDFT)
-				epgExpOutbCDFT = self.df_epg
 
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
@@ -312,13 +317,8 @@ class smearingDist():
 				self.saveDVCSvars(dvcsSimOutbCDFT)
 				dvcsSimOutbCDFT = self.df_epg
 
-				epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
-				epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
 				dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 				dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
-
-				print(epgExpInbCDFT.ME_epg.mean() - dvcsSimInbCDFT.ME_epg.mean())
-				print(epgExpOutbCDFT.ME_epg.mean() - dvcsSimOutbCDFT.ME_epg.mean())
 
 				dvcsSimInbCDFT.to_pickle(outDir+ "dvcsSimInbCDFT{}".format(i))
 				dvcsSimOutbCDFT.to_pickle(outDir+ "dvcsSimOutbCDFT{}".format(i))
@@ -326,12 +326,6 @@ class smearingDist():
 				print(len(dvcsSimInbCDFT), len(dvcsSimOutbCDFT))
 				print(len(epgExpInbCDFT), len(epgExpOutbCDFT))
 				distances.append((distance(dvcsSimInbCDFT, epgExpInbCDFT, var = "ME_epg", bins = binsMEepgInb) + distance(dvcsSimOutbCDFT, epgExpOutbCDFT, var = "ME_epg", bins = binsMEepgOutb))/2)
-
-				# fig, axs = plt.subplots(2, 1, figsize = (15,10))
-				# axs[0].hist(epgExpInbCDFT.ME_epg, bins = binsMEepgInb, color = 'k', density = True, histtype = 'step')
-				# axs[0].hist(dvcsSimInbCDFT.ME_epg, bins = binsMEepgInb, color = 'r', density = True, histtype = 'step')
-				# axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
-				# axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
 
 			sigma_opt = sigmas[np.argmin(distances)]
 			print(GeMin, GeMax, sigma_opt, correction) 
