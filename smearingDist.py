@@ -280,12 +280,12 @@ class smearingDist():
 			sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.01, 0.02, 11)
+		sigmas = np.linspace(0.013, 0.018, 6)
 		corrections = []
 		sigmas_opt = []
 
-		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
-		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
+		epgExpInbCDFT = pd.read_pickle(inDir + "/epgExpInbCDFT")
+		epgExpOutbCDFT = pd.read_pickle(inDir + "/epgExpOutbCDFT")
 
 		pi0ExpInbCDFT = pd.read_pickle(inDir+"/pi0ExpInbCDFT")
 		pi0ExpOutbCDFT = pd.read_pickle(inDir+"/pi0ExpOutbCDFT")
@@ -299,55 +299,94 @@ class smearingDist():
 		pi0SimInbCDFT = pd.read_pickle(inDir+"/pi0SimInbCDFT")
 		pi0SimOutbCDFT = pd.read_pickle(inDir+"/pi0SimOutbCDFT")
 
+
+		#performing correcting
+		correction = 0.186/(1+np.exp(1.254*(epgExpInbCDFT.Gp-4.5)))
+		self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+		self.saveDVCSvars()
+		self.makeDVCS()
+		epgExpInbCDFT = self.df_epg
+		correction = 0.186/(1+np.exp(1.254*(pi0ExpInbCDFT.Gp-4.5)))
+		self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
+		self.saveDVCSvars()
+		self.makeDVCS()
+		pi0ExpInbCDFT = self.df_epg
+		#performing correcting
+		correction = 0.186/(1+np.exp(1.254*(epgExpOutbCDFT.Gp-4.5)))
+		self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+		self.saveDVCSvars()
+		self.makeDVCS()
+		epgExpOutbCDFT = self.df_epg
+		correction = 0.186/(1+np.exp(1.254*(pi0ExpOutbCDFT.Gp-4.5)))
+		self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
+		self.saveDVCSvars()
+		self.makeDVCS()
+		pi0ExpOutbCDFT = self.df_epg
+
+		epgExpInbCDFT.to_pickle(outDir + "/epgExpInbCDFT")
+		epgExpOutbCDFT.to_pickle(outDir + "/epgExpOutbCDFT")
+
+		pi0ExpInbCDFT.to_pickle(outDir+"/pi0ExpInbCDFT")
+		pi0ExpOutbCDFT.to_pickle(outDir+"/pi0ExpOutbCDFT")
+
+
 		for i in range(len(GeEdges)-1):
 
 			distances = []
 			GeMin = GeEdges[i]
 			GeMax = GeEdges[i+1]
 
-			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
-			pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Ge>GeMin) & (pi0ExpInbCDFT.Ge<GeMax)]
-			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
-			pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Ge>GeMin) & (pi0SimInbCDFT.Ge<GeMax)]
-			bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Ge>GeMin) & (bkgSimInbCDFT.Ge<GeMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			# pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Ge>GeMin) & (pi0ExpInbCDFT.Ge<GeMax)]
+			# dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
+			# pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Ge>GeMin) & (pi0SimInbCDFT.Ge<GeMax)]
+			# bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Ge>GeMin) & (bkgSimInbCDFT.Ge<GeMax)]
 
-			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
-			pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Ge>GeMin) & (pi0ExpOutbCDFT.Ge<GeMax)]
-			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
-			pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Ge>GeMin) & (pi0SimOutbCDFT.Ge<GeMax)]
-			bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Ge>GeMin) & (bkgSimOutbCDFT.Ge<GeMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+			# pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Ge>GeMin) & (pi0ExpOutbCDFT.Ge<GeMax)]
+			# dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
+			# pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Ge>GeMin) & (pi0SimOutbCDFT.Ge<GeMax)]
+			# bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Ge>GeMin) & (bkgSimOutbCDFT.Ge<GeMax)]
 
-			contInb = len(bkgSimInbCDFT_selected)/len(pi0SimInbCDFT_selected)*len(pi0ExpInbCDFT_selected)/len(epgExpInbCDFT_selected)
-			contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
+			contInb = 0
+			contOutb = 0
+			if len(epgExpInbCDFT_selected)*len(pi0SimInbCDFT_selected) > 0:
+				contInb = len(bkgSimInbCDFT_selected)/len(pi0SimInbCDFT_selected)*len(pi0ExpInbCDFT_selected)/len(epgExpInbCDFT_selected)
+			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_selected) > 0:
+				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
-			correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
-			correction = (correction1+correction2)/2
-			print(correction1, contInb, correction2, contOutb)
-			corrections.append(correction)
+			# correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
+			# correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
+			# correction = (correction1+correction2)/2
+			# print(correction1, contInb, correction2, contOutb)
+			# corrections.append(correction)
 
-			#performing correcting
-			self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpInbCDFT_corrected = self.df_epg
-			self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
-			self.saveDVCSvars()
-			self.makeDVCS()
-			pi0ExpInbCDFT_corrected = self.df_epg
+			# #performing correcting
+			# self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpInbCDFT_corrected = self.df_epg
+			# self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# pi0ExpInbCDFT_corrected = self.df_epg
 
-			#performing correcting
-			self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpOutbCDFT_corrected = self.df_epg
-			self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
-			self.saveDVCSvars()
-			self.makeDVCS()
-			pi0ExpOutbCDFT_corrected = self.df_epg
+			# #performing correcting
+			# self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpOutbCDFT_corrected = self.df_epg
+			# self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# pi0ExpOutbCDFT_corrected = self.df_epg
 
-			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
-			epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
+			# epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
+			# epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
+
+			epgExpInbCDFT_corrected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			epgExpOutbCDFT_corrected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+
 
 			for sigma in sigmas:
 
@@ -841,7 +880,7 @@ class smearingDist():
 	    df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
 	    df_dvcs = df_dvcs.sort_values(by='event')
 
-	    self.df_dvcs = df_dvcs                        
+	    self.df_epg = df_dvcs                        
 
 	def makeDVpi0P(self, pol = "inbending"):
 	    #make dvpi0 pairs
@@ -1049,7 +1088,7 @@ class smearingDist():
 	    df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
 	    df_dvpi0p = df_dvpi0p.loc[~df_dvpi0p.event.duplicated(), :]
 	    df_dvpi0p = df_dvpi0p.sort_values(by='event')        
-	    self.df_dvpi0p = df_dvpi0p #done with saving x
+	    self.df_epgg = df_dvpi0p #done with saving x
 
 
 
