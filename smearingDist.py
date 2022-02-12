@@ -320,7 +320,7 @@ class smearingDist():
 		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
 		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
 
-		varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt_epg", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
+		varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 		title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
 		unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
 		binstarts = [2, 0, -180, 15, 0, 0, -0.5, -0.01, 0.1, 0]
