@@ -256,6 +256,9 @@ class smearingDist():
 			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			unchist2, _ = np.histogram(df2.loc[:, var], bins = bins)
 			unchist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
+			unchist1 = np.sqrt(unchist1)
+			unchist2 = np.sqrt(unchist2)
+			unchist_exp = np.sqrt(unchist_exp)
 			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters)[0])
 			uncdist1 = unchist1/np.sum(hist1)/(np.diff(bincenters)[0])
@@ -361,7 +364,7 @@ class smearingDist():
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
 				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ge>GeMin) & (dvcsSimOutbCDFT_smeared.Ge<GeMax)]
 
-				distances.append((distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, var = "ME_epg", bins = binsMEepgInb) + distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, var = "ME_epg", bins = binsMEepgOutb))/2)
+				distances.append((distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, cont = contInb, var = "ME_epg", bins = binsMEepgInb) + distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, cont = contOutb, var = "ME_epg", bins = binsMEepgOutb))/2)
 
 
 			sigma_opt = sigmas[np.argmin(distances)]
