@@ -394,7 +394,7 @@ class smearingDist():
 			        bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist_dvpi0, bins = np.histogram(bkgSimInbCDFT[varstoplot[ind]], bins, density = True)
-			        simDist = (1-contCDFT)*simDist_dvcs + contCDFT*simDist_dvpi0
+			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
 			        axs[yind, xind].hist(epgExpInbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
@@ -416,7 +416,8 @@ class smearingDist():
 			        end = binends[ind]
 			        bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
-			        simDist = simDist_dvcs# + contCDFT*simDist_dvpi0
+			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCDFT[varstoplot[ind]], bins, density = True)
+			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
 			        axs[yind, xind].hist(epgExpOutbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
