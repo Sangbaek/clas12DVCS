@@ -273,6 +273,8 @@ class smearingDist():
 		for i in range(len(GeEdges)-1):
 
 			distances = []
+			GeMin = GeEdges[i]
+			GeMax = GeEdges[i+1]
 
 			epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
 			epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
@@ -290,11 +292,6 @@ class smearingDist():
 			correction = (correction1+correction2)/2
 
 			for sigma in sigmas:
-
-				GeMin = GeEdges[i]
-				GeMax = GeEdges[i+1]
-				sigma = sigmas
-
 
 				#performing correcting
 				self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
@@ -337,7 +334,7 @@ class smearingDist():
 				# axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
 
 			sigma_opt = sigmas[np.argmin(distances)]
-			print(sigma_opt, correction) 
+			print(GeMin, GeMax, sigma_opt, correction) 
 
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
