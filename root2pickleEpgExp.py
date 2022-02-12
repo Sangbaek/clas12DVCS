@@ -503,6 +503,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvpi0p.Psector>7
             cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
+            cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
             cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 0.6  # mmep
             cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.6  # mmep
@@ -518,7 +519,8 @@ class root2pickle():
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0401  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0438  # mmepgg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+                        cut_GFid_CDFT & cut_GFid2_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
                         cut_mmegg1_CDFT & cut_mmegg2_CDFT & cut_meepgg1_CDFT & cut_meepgg2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepgg1_CDFT & cut_mmepgg2_CDFT)
@@ -587,6 +589,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvpi0p.Psector>7
             cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
+            cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
             cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 0.6  # mmep
             cut_mmep2_CDFT = df_dvpi0p["MM2_ep"] > -0.6  # mmep
@@ -602,7 +605,8 @@ class root2pickle():
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0413  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0440  # mmepgg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+                        cut_GFid_CDFT & cut_GFid2_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
                         cut_mmegg1_CDFT & cut_mmegg2_CDFT & cut_meepgg1_CDFT & cut_meepgg2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepgg1_CDFT & cut_mmepgg2_CDFT)
@@ -782,6 +786,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvcs.Psector>7
             cut_Ptheta_CDFT = df_dvcs.Ptheta<60
             cut_Gsector_CDFT = df_dvcs.Gsector>7
+            cut_GFid_CDFT = df_dvcs.GFid==1
             cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.601  # mmep
             cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.528  # mmep
             cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.569  # mmeg
@@ -796,7 +801,7 @@ class root2pickle():
             cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0122  # mmepg
             cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0151  # mmepg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
                         cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
@@ -858,6 +863,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvcs.Psector>7
             cut_Ptheta_CDFT = df_dvcs.Ptheta<60
             cut_Gsector_CDFT = df_dvcs.Gsector>7
+            cut_GFid_CDFT = df_dvcs.GFid==1
             cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.567  # mmep
             cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.479  # mmep
             cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.602  # mmeg
@@ -872,7 +878,7 @@ class root2pickle():
             cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0128  # mmepg
             cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0155  # mmepg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
                         cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)

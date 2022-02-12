@@ -617,6 +617,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvpi0p.Psector>7
             cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
+            cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
             cut_mpi01_CDFT = df_dvpi0p["Mpi0"] < 0.157  # mpi0
             cut_mpi02_CDFT = df_dvpi0p["Mpi0"] > 0.118  # mpi0
@@ -632,7 +633,8 @@ class root2pickle():
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0440  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0478  # mmepgg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & 
+                        cut_GFid_CDFT & cut_GFid2_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
                         cut_mmegg1_CDFT & cut_mmegg2_CDFT & cut_meepgg1_CDFT & cut_meepgg2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepgg1_CDFT & cut_mmepgg2_CDFT)
@@ -700,6 +702,7 @@ class root2pickle():
             cut_Psector_CDFT = df_dvpi0p.Psector>7
             cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
+            cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
             cut_mpi01_CDFT = df_dvpi0p["Mpi0"] < 0.160  # mpi0
             cut_mpi02_CDFT = df_dvpi0p["Mpi0"] > 0.115  # mpi0
@@ -715,7 +718,8 @@ class root2pickle():
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0549  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0575  # mmepgg
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT &
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & 
+                        cut_GFid_CDFT & cut_GFid2_CDFT &
                         cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mpi01_CDFT & cut_mpi02_CDFT & 
                         cut_mmegg1_CDFT & cut_mmegg2_CDFT & cut_meepgg1_CDFT & cut_meepgg2_CDFT &
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepgg1_CDFT & cut_mmepgg2_CDFT)
@@ -815,6 +819,8 @@ class root2pickle():
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
+            cut_Gsector2_CDFT = df_Rec.Gsector2<7
+            cut_GFid_CDFT = df_Rec.GFid==1
             cut_GFid2_CDFT = df_Rec.GFid2==1
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
@@ -836,7 +842,7 @@ class root2pickle():
             cut_GFid_FD = df_Rec.GFid==1
             cut_GFid2_FD = df_Rec.GFid2==1
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT)
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_Gsector2_CDFT & cut_GFid_CDFT & cut_GFid2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_Gsector2_CD & cut_GFid_CD & cut_GFid2_CD)
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD & cut_Gsector2_FD & cut_GFid_FD & cut_GFid2_FD)
 
@@ -873,6 +879,8 @@ class root2pickle():
             cut_Psector_CDFT = df_Rec.Psector>7
             cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
+            cut_Gsector2_CDFT = df_Rec.Gsector2<7
+            cut_GFid_CDFT = df_Rec.GFid==1
             cut_GFid2_CDFT = df_Rec.GFid2==1
             if pol == "inbending":
                 cut_mmep1_CDFT = df_Rec["MM2_ep"] < 0.6  # mmep
@@ -912,7 +920,7 @@ class root2pickle():
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.6  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.6  # mmep                
 
-            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid2_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_Gsector2_CDFT & cut_GFid_CDFT & cut_GFid2_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta_CD & cut_Gsector_CD & cut_Gsector2_CD & cut_GFid_CD & cut_GFid2_CD & cut_mmep1_CD & cut_mmep2_CD)
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta_FD & cut_Gsector_FD & cut_Gsector2_FD & cut_GFid_FD & cut_GFid2_FD & cut_mmep1_FD & cut_mmep2_FD)
 
