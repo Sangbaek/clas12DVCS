@@ -304,23 +304,23 @@ class smearingDist():
 		correction = 0.186/(1+np.exp(1.254*(epgExpInbCDFT.Gp-4.5)))
 		self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
 		self.saveDVCSvars()
-		self.makeDVCS()
+		self.makeDVCS(pol = "inbending")
 		epgExpInbCDFT = self.df_epg
 		correction = 0.186/(1+np.exp(1.254*(pi0ExpInbCDFT.Gp-4.5)))
 		self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
 		self.saveDVCSvars()
-		self.makeDVCS()
+		self.makeDVCS(pol = "inbending")
 		pi0ExpInbCDFT = self.df_epg
 		#performing correcting
 		correction = 0.186/(1+np.exp(1.254*(epgExpOutbCDFT.Gp-4.5)))
 		self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
 		self.saveDVCSvars()
-		self.makeDVCS()
+		self.makeDVCS(pol = "outbending")
 		epgExpOutbCDFT = self.df_epg
 		correction = 0.186/(1+np.exp(1.254*(pi0ExpOutbCDFT.Gp-4.5)))
 		self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
 		self.saveDVCSvars()
-		self.makeDVCS()
+		self.makeDVCS(pol = "outbending")
 		pi0ExpOutbCDFT = self.df_epg
 
 		epgExpInbCDFT.to_pickle(outDir + "/epgExpInbCDFT")
@@ -395,22 +395,22 @@ class smearingDist():
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
-				self.makeDVCS()
+				self.makeDVCS(pol = "inbending")
 				dvcsSimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(bkgSimInbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
-				self.makeDVCS()
+				self.makeDVCS(pol = "inbending")
 				bkgSimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(dvcsSimOutbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
-				self.makeDVCS()
+				self.makeDVCS(pol = "outbending")
 				dvcsSimOutbCDFT_smeared = self.df_epg
 
 				self.SmearingV0(bkgSimOutbCDFT, sigma, mode = "epg")
 				self.saveDVCSvars()
-				self.makeDVCS()
+				self.makeDVCS(pol = "outbending")
 				bkgSimOutbCDFT_smeared = self.df_epg
 
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
@@ -423,12 +423,12 @@ class smearingDist():
 			sigmas_opt.append(sigma_opt)
 			self.SmearingV0(dvcsSimInbCDFT, sigma_opt, mode = "epg")
 			self.saveDVCSvars()
-			self.makeDVCS()
+			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
 			self.SmearingV0(dvcsSimOutbCDFT, sigma_opt, mode = "epg")
 			self.saveDVCSvars()
-			self.makeDVCS()
+			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ge>GeMin) & (dvcsSimInbCDFT_opt.Ge<GeMax)]
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ge>GeMin) & (dvcsSimOutbCDFT_opt.Ge<GeMax)]
