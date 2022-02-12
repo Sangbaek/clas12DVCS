@@ -402,8 +402,7 @@ class smearingDist():
 			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
 			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
 
-		self.df_epg = df
-
+		self.df_epg = df_epg
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
 		df_epg = copy(df)
