@@ -18,12 +18,12 @@ from scipy.stats import entropy
 
 class smearingDist():
 
-	def __init__(self, version, exp):
+	def __init__(self, version, exp, params = None):
 		self.GetVersion(version)
 		if version == "v0":
 			self.MakeV0()
 		if version == "v1":
-			self.MakeV1(exp = exp)
+			self.MakeV1(exp = exp, sigma = params)
 
 	def GetVersion(self, version):
 		self.version = version
@@ -206,7 +206,7 @@ class smearingDist():
 		epgExpOutbCDFT10.to_pickle(outDir+ "epgExpOutbCDFT10")
 		epgExpOutbCDFT11.to_pickle(outDir+ "epgExpOutbCDFT11")
 
-	def MakeV1(self, inDir = "SimtoDat/v0/", outDir = "SimtoDat/v1/", exp = None):
+	def MakeV1(self, inDir = "SimtoDat/v0/", outDir = "SimtoDat/v1/", exp = None, sigma = 0.014):
 
 		if exp:
 			self.MakeV1Exp(inDir, outDir)
@@ -241,17 +241,6 @@ class smearingDist():
 
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
-
-		def sigma(df, sigmaList = [0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014, 0.014]):
-			GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-			condList = []
-			for i in range(len(GeEdges)-1):
-				GeMin = GeEdges[i]
-				GeMax = GeEdges[i+1]
-				cond = (df.Ge > GeMin) & (df.Ge < GeMax)
-				condList.append(cond)
-			sigma = np.select(condList, sigmaList)
-			return sigma
 
 		#performing smearing
 		self.SmearingV0(dvcsSimInbCDFT, sigma(dvcsSimInbCDFT), mode = "epg")
@@ -312,10 +301,10 @@ class smearingDist():
 		dvcsSimOutbCDFT10.to_pickle(outDir+ "dvcsSimOutbCDFT10")
 		dvcsSimOutbCDFT11.to_pickle(outDir+ "dvcsSimOutbCDFT11")
 
-		binsMEepgInb = np.linspace(-0.439, 0.484, 101)
-		binsMM2eggInb = np.linspace(0.246, 1.569, 101)
-		binsMEepgOutb = np.linspace(-0.796, 0.947, 101)
-		binsMM2eggOutb = np.linspace(-0.205, 2.049, 101)
+		binsMEepgInb = np.linspace(-0.439, 0.484, 51)
+		binsMM2egInb = np.linspace(0.246, 1.569, 51)
+		binsMEepgOutb = np.linspace(-0.796, 0.947, 51)
+		binsMM2egOutb = np.linspace(-0.205, 2.049, 51)
 
 		def distance(df1, df2, var = "ME_epg", bins = binsMEepgInb):
 			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
@@ -332,9 +321,17 @@ class smearingDist():
 			chi2 = np.sum((dist1-dist2)**2/uncdist**2)
 			return chi2
 
-		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7), len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
+		print(len(dvcsSimInbCDFT7), len(dvcsSimOutbCDFT7))
 		print(distance(dvcsSimInbCDFT7, epgExpInbCDFT7, var = "ME_epg", bins = binsMEepgInb))
-		print(distance(dvcsSimInbCDFT7, dvcsSimInbCDFT7, var = "ME_epg", bins = binsMEepgInb))
+		print(len(epgExpInbCDFT7), len(epgExpOutbCDFT7))
+		print(distance(dvcsSimOutbCDFT7, epgExpOutbCDFT7, var = "ME_epg", bins = binsMEepgOutb))
+
+		fig, axs = plt.subplots(2, 1, figsize = (15,10))
+		axs[0].hist(epgExpInbCDFT7.ME_epg, bins = binsMEepgInb, color = 'k')
+		axs[0].hist(dvcsSimInbCDFT7.ME_epg, bins = binsMEepgInb, color = 'r')
+		axs[1].hist(epgExpInbCDFT7.MM2_eg, bins = binsMM2egInb, color = 'k')
+		axs[1].hist(dvcsSimInbCDFT7.MM2_eg, bins = binsMM2egInb, color = 'r')
+		plt.savefig(outDir+"CDFT7_MEepg{}.pdf".format(sigma))
 
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
@@ -917,9 +914,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-v","--version", help="version", default="v0")
-    parser.add_argument("-p","--parameters", help="parameters for smearing", default=0)
+    parser.add_argument("-p","--parameters", help="parameters for smearing", default=None)
     parser.add_argument("-e","--makeExp", help="makeExp or not", action= "store_true")
     
     args = parser.parse_args()
 
-    smearingDist = smearingDist(version = args.version, exp = args.makeExp)
+    smearingDist = smearingDist(version = args.version, exp = args.makeExp, params = args.parameters)
