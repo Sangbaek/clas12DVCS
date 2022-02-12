@@ -225,11 +225,21 @@ class smearingDist():
 		GeMin = GeEdges[i]
 		GeMax = GeEdges[i+1]
 
-		epgExpInbCDFT = pd.read_pickle(outDir + "epgExpInbCDFT{}".format(i))
-		epgExpOutbCDFT = pd.read_pickle(outDir + "epgExpOutbCDFT{}".format(i))
+		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
+		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
 
 		dvcsSimInbCDFT = pd.read_pickle(inDir+"/dvcsSimInbCDFT")
 		dvcsSimOutbCDFT = pd.read_pickle(inDir+"/dvcsSimOutbCDFT")
+
+		#performing correcting
+		self.CorrectingV0(epgExpInbCDFT, -0.01, mode = "epg")
+		self.saveDVCSvars(epgExpInbCDFT)
+		epgExpInbCDFT = self.df_epg
+
+		#performing correcting
+		self.CorrectingV0(epgExpOutbCDFT, -0.01, mode = "epg")
+		self.saveDVCSvars(epgExpOutbCDFT)
+		epgExpOutbCDFT = self.df_epg
 
 		#performing smearing
 		self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
@@ -240,6 +250,8 @@ class smearingDist():
 		self.saveDVCSvars(dvcsSimOutbCDFT)
 		dvcsSimOutbCDFT = self.df_epg
 
+		epgExpInbCDFT = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+		epgExpOutbCDFT = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
 		dvcsSimInbCDFT = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ge>GeMin) & (dvcsSimInbCDFT.Ge<GeMax)]
 		dvcsSimOutbCDFT = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ge>GeMin) & (dvcsSimOutbCDFT.Ge<GeMax)]
 
@@ -273,6 +285,18 @@ class smearingDist():
 		axs[1].hist(epgExpInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'k', density = True, histtype = 'step')
 		axs[1].hist(dvcsSimInbCDFT.MM2_eg, bins = binsMM2egInb, color = 'r', density = True, histtype = 'step')
 		plt.savefig(outDir+"CDFT{}_{}.pdf".format(i, sigma))
+
+
+	def CorrectingV0(self, df, correction, mode = "epg"):
+		df_epg = df
+		if mode == "epg":
+			df_epg.loc[df_epg.Gsector>7, 'Gp'] = df_epg.Gp - correction
+			df_epg.loc[df_epg.Gsector>7, 'Ge'] = df_epg.loc[df_epg.Gsector>7, 'Gp']
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
+
+		self.df_epg = df
 
 
 	def SmearingV0(self, df, sigma, mode = "epg"):
