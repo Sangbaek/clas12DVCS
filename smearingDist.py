@@ -268,7 +268,7 @@ class smearingDist():
 			sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.005, 0.02, 16)
+		sigmas = np.linspace(0.005, 0.03, 26)
 
 		epgExpInbCDFT = pd.read_pickle(inDir + "epgExpInbCDFT")
 		epgExpOutbCDFT = pd.read_pickle(inDir + "epgExpOutbCDFT")
@@ -312,7 +312,7 @@ class smearingDist():
 
 			for sigma in sigmas:
 
-				print("smearing with {}".format(sigma))
+				print("smearing with {:.4f}".format(sigma))
 
 				#performing smearing
 				self.SmearingV0(dvcsSimInbCDFT, sigma, mode = "epg")
@@ -346,8 +346,8 @@ class smearingDist():
 			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
 			unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
-			binstarts = [2, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
-			binends = [10, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
+			binstarts = [Gemin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			binends = [GeMax, 7, 180, 30, 2, .1, 1.2, 0.01, 1.7, 10]
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
 			for yind in range(0, 2):
@@ -368,7 +368,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
@@ -390,7 +390,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.4f}.pdf".format(i, sigma_opt))
 
 
 	def CorrectingV0(self, df, correction, mode = "epg"):
