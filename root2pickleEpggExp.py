@@ -132,13 +132,19 @@ class root2pickle():
         circleCenterY3 = -13
         circleRadius3 = 2.3
 
+        circleCenterX4 = 3.7
+        circleCenterY4 = -6.5
+        circleRadius4 = 2
+        
         circle1 = (df_gammaRec.GcX - circleCenterX1)**2 + (df_gammaRec.GcY - circleCenterY1)**2 < circleRadius1**2
         circle2 = (df_gammaRec.GcX - circleCenterX2)**2 + (df_gammaRec.GcY - circleCenterY2)**2 < circleRadius2**2
         circle3 = (df_gammaRec.GcX - circleCenterX3)**2 + (df_gammaRec.GcY - circleCenterY3)**2 < circleRadius3**2
+        circle4 = (df_gammaRec.GcX - circleCenterX4)**2 + (df_gammaRec.GcY - circleCenterY4)**2 < circleRadius4**2
 
         df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle1, "GFid"] = 0
         df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle2, "GFid"] = 0
         df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle3, "GFid"] = 0
+        df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
