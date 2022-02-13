@@ -784,7 +784,7 @@ class root2pickle():
             cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.484 # meepg
             cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.439  # meepg
             cut_cone1_CDFT = df_dvcs["coneAngle"] < 29.652  # coneangle
-            cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.159  # coneangle
+            cut_cone2_CDFT = df_dvcs["coneAngle"] > 5#12.159  # coneangle
             cut_mpt_CDFT = df_dvcs["MPt"] < 0.0958  # mpt
             cut_recon_CDFT = df_dvcs["reconGam"] < 0.659  # recon gam angle
             cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.251  # coplanarity angle
@@ -810,7 +810,7 @@ class root2pickle():
             cut_meepg1_CD = df_dvcs["ME_epg"] < 1.045  # meepg
             cut_meepg2_CD = df_dvcs["ME_epg"] > -0.922  # meepg
             cut_cone1_CD = df_dvcs["coneAngle"] < 32.817  # coneangle
-            cut_cone2_CD = df_dvcs["coneAngle"] > 12.791  # coneangle
+            cut_cone2_CD = df_dvcs["coneAngle"] > 5#12.791  # coneangle
             cut_mpt_CD = df_dvcs["MPt"] < 0.182  # mpt
             cut_recon_CD = df_dvcs["reconGam"] < 0.876  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.352  # coplanarity angle
@@ -835,7 +835,7 @@ class root2pickle():
             cut_meepg1_FD = df_dvcs["ME_epg"] < 0.996  # meepg
             cut_meepg2_FD = df_dvcs["ME_epg"] > -0.864 # meepg
             cut_cone1_FD = df_dvcs["coneAngle"] < 35.794  # coneangle
-            cut_cone2_FD = df_dvcs["coneAngle"] > 23.175  # coneangle
+            cut_cone2_FD = df_dvcs["coneAngle"] > 5#23.175  # coneangle
             cut_mpt_FD = df_dvcs["MPt"] < 0.184  # mpt
             cut_recon_FD = df_dvcs["reconGam"] < 1.181  # recon gam angle
             cut_coplanarity_FD = df_dvcs["coplanarity"] < 13.178  # coplanarity angle - no cut
@@ -861,7 +861,7 @@ class root2pickle():
             cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.481 # meepg
             cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.436  # meepg
             cut_cone1_CDFT = df_dvcs["coneAngle"] < 28.800  # coneangle
-            cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.573  # coneangle
+            cut_cone2_CDFT = df_dvcs["coneAngle"] > 5#12.573  # coneangle
             cut_mpt_CDFT = df_dvcs["MPt"] < 0.100  # mpt
             cut_recon_CDFT = df_dvcs["reconGam"] < 0.697  # recon gam angle
             cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.479  # coplanarity angle
@@ -887,7 +887,7 @@ class root2pickle():
             cut_meepg1_CD = df_dvcs["ME_epg"] < 0.888  # meepg
             cut_meepg2_CD = df_dvcs["ME_epg"] > -0.825  # meepg
             cut_cone1_CD = df_dvcs["coneAngle"] < 29.471  # coneangle
-            cut_cone2_CD = df_dvcs["coneAngle"] > 7.591  # coneangle
+            cut_cone2_CD = df_dvcs["coneAngle"] > 5#7.591  # coneangle
             cut_mpt_CD = df_dvcs["MPt"] < 0.183  # mpt
             cut_recon_CD = df_dvcs["reconGam"] < 0.954  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 7.347  # coplanarity angle
@@ -912,7 +912,7 @@ class root2pickle():
             cut_meepg1_FD = df_dvcs["ME_epg"] < 0.947  # meepg
             cut_meepg2_FD = df_dvcs["ME_epg"] > -0.796  # meepg
             cut_cone1_FD = df_dvcs["coneAngle"] < 34.592  # coneangle
-            cut_cone2_FD = df_dvcs["coneAngle"] > 24.390  # coneangle
+            cut_cone2_FD = df_dvcs["coneAngle"] > 5#24.390  # coneangle
             cut_mpt_FD = df_dvcs["MPt"] < 0.186  # mpt
             cut_recon_FD = df_dvcs["reconGam"] < 1.662  # recon gam angle
             cut_coplanarity_FD = df_dvcs["coplanarity"] < 11.685  # coplanarity angle - no cut
