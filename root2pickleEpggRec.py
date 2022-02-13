@@ -158,6 +158,7 @@ class root2pickle():
         eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
+        proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "GcX", "GcY", "Gsector"]
 
         if detRes:
@@ -170,7 +171,7 @@ class root2pickle():
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
-            proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
+            # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
 
         # read them
         for key in eleKeysRec:
