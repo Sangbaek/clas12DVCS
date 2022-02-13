@@ -75,10 +75,10 @@ class smearingDist():
 			inDirInb = "SimtoDat/v0/inb/"
 			inDirOutb = "SimtoDat/v0/outb/"
 
-		dvcsInbJobs = [	3987, 4124, 4139, 4181, 4182, 4186, 4188, 4192 ]#, 4397 ]
-		dvcsOutbJobs = [ 4240, 4250, 4251, 4252, 4255, 4263, 4262, 4266 ]#, 4398 ]
-		pi0InbJobs = [ 4076, 4202, 4209, 4212, 4217, 4231 ]
-		pi0OutbJobs = [ 4243, 4271, 4290, 4293, 4304, 4306 ]
+		dvcsInbJobs = [	3987]#, 4124, 4139, 4181, 4182, 4186, 4188, 4192 ]#, 4397 ]
+		dvcsOutbJobs = [ 4240]#, 4250, 4251, 4252, 4255, 4263, 4262, 4266 ]#, 4398 ]
+		pi0InbJobs = [ 4076]#, 4202, 4209, 4212, 4217, 4231 ]
+		pi0OutbJobs = [ 4243]#, 4271, 4290, 4293, 4304, 4306 ]
 
 		epgExpInb = pd.read_pickle(inDirInb+"/exp/dvcs.pkl")
 		pi0ExpInb = pd.read_pickle(inDirInb+"/exp/pi0.pkl")
@@ -276,6 +276,21 @@ class smearingDist():
 			distance = np.sum(((1-cont)*dist1 + cont*dist2 -dist_exp)**2)
 			return distance
 
+
+		def corr(df1, df2, df_exp, cont = 0, var = "ME_epg"):
+			hist1, bins = np.histogram(df1.loc[:, var], bins = 101)
+			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
+			hist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
+			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters)[0])
+			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			dist_exp = hist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
+			simDist = (1-cont)*dist1 + cont*dist2
+			expDist = dist_exp
+			simPeak = bincenters[np.argmax(simDist)]
+			expPeak = bincenters[np.argmax(expDist)]
+			return expPeak - simPeak
+
 		if isinstance(sigma, str):
 			sigma = float(sigma)
 
@@ -300,34 +315,34 @@ class smearingDist():
 		pi0SimOutbCDFT = pd.read_pickle(inDir+"/pi0SimOutbCDFT")
 
 
-		#performing correcting
-		correction = 0.186/(1+np.exp(1.254*(epgExpInbCDFT.Gp-4.5)))
-		self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
-		self.saveDVCSvars()
-		self.makeDVCS(pol = "inbending")
-		epgExpInbCDFT = self.df_epg
-		correction = 0.186/(1+np.exp(1.254*(pi0ExpInbCDFT.Gp-4.5)))
-		self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
-		self.saveDVCSvars()
-		self.makeDVCS(pol = "inbending")
-		pi0ExpInbCDFT = self.df_epg
-		#performing correcting
-		correction = 0.186/(1+np.exp(1.254*(epgExpOutbCDFT.Gp-4.5)))
-		self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
-		self.saveDVCSvars()
-		self.makeDVCS(pol = "outbending")
-		epgExpOutbCDFT = self.df_epg
-		correction = 0.186/(1+np.exp(1.254*(pi0ExpOutbCDFT.Gp-4.5)))
-		self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
-		self.saveDVCSvars()
-		self.makeDVCS(pol = "outbending")
-		pi0ExpOutbCDFT = self.df_epg
+		# #performing correcting
+		# correction = 0.186/(1+np.exp(1.254*(epgExpInbCDFT.Gp-4.5)))
+		# self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "inbending")
+		# epgExpInbCDFT = self.df_epg
+		# correction = 0.186/(1+np.exp(1.254*(pi0ExpInbCDFT.Gp-4.5)))
+		# self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "inbending")
+		# pi0ExpInbCDFT = self.df_epg
+		# #performing correcting
+		# correction = 0.186/(1+np.exp(1.254*(epgExpOutbCDFT.Gp-4.5)))
+		# self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "outbending")
+		# epgExpOutbCDFT = self.df_epg
+		# correction = 0.186/(1+np.exp(1.254*(pi0ExpOutbCDFT.Gp-4.5)))
+		# self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "outbending")
+		# pi0ExpOutbCDFT = self.df_epg
 
-		epgExpInbCDFT.to_pickle(outDir + "/epgExpInbCDFT")
-		epgExpOutbCDFT.to_pickle(outDir + "/epgExpOutbCDFT")
+		# epgExpInbCDFT.to_pickle(outDir + "/epgExpInbCDFT")
+		# epgExpOutbCDFT.to_pickle(outDir + "/epgExpOutbCDFT")
 
-		pi0ExpInbCDFT.to_pickle(outDir+"/pi0ExpInbCDFT")
-		pi0ExpOutbCDFT.to_pickle(outDir+"/pi0ExpOutbCDFT")
+		# pi0ExpInbCDFT.to_pickle(outDir+"/pi0ExpInbCDFT")
+		# pi0ExpOutbCDFT.to_pickle(outDir+"/pi0ExpOutbCDFT")
 
 
 		for i in range(len(GeEdges)-1):
@@ -357,35 +372,37 @@ class smearingDist():
 
 			# correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
 			# correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
-			# correction = (correction1+correction2)/2
-			# print(correction1, contInb, correction2, contOutb)
-			# corrections.append(correction)
+			correction1 = corr(dvcsSimInbCDFT_selected, bkgSimInbCDFT_selected, epgExpInbCDFT_selected, cont = contInb, var = "ME_epg")
+			correction2 = corr(dvcsSimOutbCDFT_selected, bkgSimOutbCDFT_selected, epgExpOutbCDFT_selected, cont = contOutb, var = "ME_epg")
+			correction = (correction1+correction2)/2
+			print(correction1, contInb, correction2, contOutb)
+			corrections.append(correction)
 
-			# #performing correcting
-			# self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
-			# self.saveDVCSvars()
-			# self.makeDVCS()
-			# epgExpInbCDFT_corrected = self.df_epg
-			# self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
-			# self.saveDVCSvars()
-			# self.makeDVCS()
-			# pi0ExpInbCDFT_corrected = self.df_epg
+			#performing correcting
+			self.CorrectingV0(epgExpInbCDFT, correction, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			epgExpInbCDFT_corrected = self.df_epg
+			self.CorrectingV0(pi0ExpInbCDFT, correction, mode = "epgg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			pi0ExpInbCDFT_corrected = self.df_epg
 
-			# #performing correcting
-			# self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
-			# self.saveDVCSvars()
-			# self.makeDVCS()
-			# epgExpOutbCDFT_corrected = self.df_epg
-			# self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
-			# self.saveDVCSvars()
-			# self.makeDVCS()
-			# pi0ExpOutbCDFT_corrected = self.df_epg
+			#performing correcting
+			self.CorrectingV0(epgExpOutbCDFT, correction, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			epgExpOutbCDFT_corrected = self.df_epg
+			self.CorrectingV0(pi0ExpOutbCDFT, correction, mode = "epgg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			pi0ExpOutbCDFT_corrected = self.df_epg
 
-			# epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
-			# epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
+			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
+			epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ge>GeMin) & (epgExpOutbCDFT_corrected.Ge<GeMax)]
 
-			epgExpInbCDFT_corrected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
-			epgExpOutbCDFT_corrected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
+			# epgExpInbCDFT_corrected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ge>GeMin) & (epgExpInbCDFT.Ge<GeMax)]
+			# epgExpOutbCDFT_corrected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ge>GeMin) & (epgExpOutbCDFT.Ge<GeMax)]
 
 
 			for sigma in sigmas:
@@ -416,8 +433,10 @@ class smearingDist():
 				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ge>GeMin) & (dvcsSimInbCDFT_smeared.Ge<GeMax)]
 				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ge>GeMin) & (dvcsSimOutbCDFT_smeared.Ge<GeMax)]
 
-				distances.append((distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, cont = contInb, var = "ME_epg") + distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, cont = contOutb, var = "ME_epg"))/2)
+				distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_corrected, cont = contInb, var = "ME_epg")
+				distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_corrected, cont = contOutb, var = "ME_epg")
 
+				distances.append(( distance1+ distance2 )/2) 
 
 			sigma_opt = sigmas[np.argmin(distances)]
 			sigmas_opt.append(sigma_opt)
@@ -492,13 +511,13 @@ class smearingDist():
 	def CorrectingV0(self, df, correction, mode = "epg"):
 		df_epg = copy(df)
 		if mode == "epg":
-			df_epg.loc[df_epg.Gsector>7, 'Gp'] = df_epg.Gp - correction
+			df_epg.loc[df_epg.Gsector>7, 'Gp'] = df_epg.Gp + correction
 			df_epg.loc[df_epg.Gsector>7, 'Ge'] = df_epg.loc[df_epg.Gsector>7, 'Gp']
 			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
 			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
 			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
 		elif mode == "epgg":
-			df_epg.loc[df_epg.Gsector>7, 'Gp'] = df_epg.Gp - correction
+			df_epg.loc[df_epg.Gsector>7, 'Gp'] = df_epg.Gp + correction
 			df_epg.loc[df_epg.Gsector>7, 'Ge'] = df_epg.loc[df_epg.Gsector>7, 'Gp']
 			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
 			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
