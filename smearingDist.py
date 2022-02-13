@@ -370,10 +370,10 @@ class smearingDist():
 			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_selected) > 0:
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			# correction1 = (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() + contInb*bkgSimInbCDFT_selected.ME_epg.mean() - epgExpInbCDFT_selected.ME_epg.mean()
-			# correction2 = (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() + contOutb*bkgSimOutbCDFT_selected.ME_epg.mean() - epgExpOutbCDFT_selected.ME_epg.mean()
-			correction1 = corr(dvcsSimInbCDFT_selected, bkgSimInbCDFT_selected, epgExpInbCDFT_selected, cont = contInb, var = "ME_epg")
-			correction2 = corr(dvcsSimOutbCDFT_selected, bkgSimOutbCDFT_selected, epgExpOutbCDFT_selected, cont = contOutb, var = "ME_epg")
+			correction1 = epgExpInbCDFT_selected.ME_epg.mean() - (1-contInb)*dvcsSimInbCDFT_selected.ME_epg.mean() - contInb*bkgSimInbCDFT_selected.ME_epg.mean()
+			correction2 = epgExpOutbCDFT_selected.ME_epg.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.ME_epg.mean() - contOutb*bkgSimOutbCDFT_selected.ME_epg.mean()
+			# correction1 = corr(dvcsSimInbCDFT_selected, bkgSimInbCDFT_selected, epgExpInbCDFT_selected, cont = contInb, var = "ME_epg")
+			# correction2 = corr(dvcsSimOutbCDFT_selected, bkgSimOutbCDFT_selected, epgExpOutbCDFT_selected, cont = contOutb, var = "ME_epg")
 			correction = (correction1+correction2)/2
 			print(correction1, contInb, correction2, contOutb)
 			corrections.append(correction)
