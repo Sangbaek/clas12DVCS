@@ -576,7 +576,7 @@ class smearingDist():
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
 		# sigma1s = np.linspace(0.02, 0.09, 8)
-		sigma2s = np.linspace(0.7, 1.5, 8)
+		sigma2s = np.linspace(0.7, 1.5, 9)
 		# sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		# sigma1s_temp = []
