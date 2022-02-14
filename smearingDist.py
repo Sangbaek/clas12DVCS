@@ -575,9 +575,9 @@ class smearingDist():
 
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = np.linspace(0.05, 0.1, 6)
-		sigma2s = np.linspace(0.5, 1, 6)
-		sigma3s = np.linspace(1.8, 2.5, 8)
+		sigma1s = [0.08]#np.linspace(0.05, 0.1, 6)
+		sigma2s = [0.8]#np.linspace(0.5, 1, 6)
+		sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		sigma1s_temp = []
 		sigma2s_temp = []
@@ -629,38 +629,37 @@ class smearingDist():
 			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_selected) > 0:
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			scores = []
-			correction_all = np.linspace(-2, 2, 11)
-			for correction_temp in correction_all:
-				#performing correcting
-				self.CorrectionV1(epgExpInbCDFT, correction_temp)
-				self.saveDVCSvars()
-				self.makeDVCS()
-				epgExpInbCDFT_corrected = self.df_epg
+			# scores = []
+			# correction_all = np.linspace(-2, 2, 11)
+			# for correction_temp in correction_all:
+			# 	#performing correcting
+			# 	self.CorrectionV1(epgExpInbCDFT, correction_temp)
+			# 	self.saveDVCSvars()
+			# 	self.makeDVCS()
+			# 	epgExpInbCDFT_corrected = self.df_epg
 
-				self.CorrectionV1(epgExpOutbCDFT, correction_temp)
-				self.saveDVCSvars()
-				self.makeDVCS()
-				epgExpOutbCDFT_corrected = self.df_epg
+			# 	self.CorrectionV1(epgExpOutbCDFT, correction_temp)
+			# 	self.saveDVCSvars()
+			# 	self.makeDVCS()
+			# 	epgExpOutbCDFT_corrected = self.df_epg
 
-				epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-				epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+			# 	epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+			# 	epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
-				score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
-				score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
-				score = score1**2 +score2**2
-				scores.append(score)
-			print(scores)
-			correction_opt = correction_all[np.argmin(scores)]
-			corrections.append(correction_opt)
+			# 	score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
+			# 	score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
+			# 	score = score1**2 +score2**2
+			# 	scores.append(score)
+			# print(scores)
+			# correction_opt = correction_all[np.argmin(scores)]
+			# corrections.append(correction_opt)
 
-			print("corrected with {} degree".format(correction_opt))
-			self.CorrectionV1(epgExpInbCDFT, correction_opt)
+			self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
 			self.saveDVCSvars()
 			self.makeDVCS()
 			epgExpInbCDFT_corrected = self.df_epg
 
-			self.CorrectionV1(epgExpOutbCDFT, correction_opt)
+			self.CorrectionV1(epgExpOutbCDFT, 0.8/(1+np.exp(58.657*(epgExpOutbCDFT.Pp-0.41))))
 			self.saveDVCSvars()
 			self.makeDVCS()
 			epgExpOutbCDFT_corrected = self.df_epg
