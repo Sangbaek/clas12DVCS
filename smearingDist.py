@@ -677,7 +677,7 @@ class smearingDist():
 				for sigma2 in sigma2s:
 					for sigma3 in sigma3s:
 
-						print("smearing with {:.3f}".format(sigma))
+						print("smearing with {:.3f}{:.3f}{:.3f}".format(sigma1, sigma2, sigma3))
 
 						#performing smearing
 						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, sigma3)
@@ -756,7 +756,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(2, 5, figsize = (15,10))
@@ -779,9 +779,9 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 
-		print(sigmas_opt, corrections)
+		print(sigmas_opt)
 
 	def SmearingV1(self, df, sigma1, sigma2, sigma3):
 		df_epg = copy(df)
