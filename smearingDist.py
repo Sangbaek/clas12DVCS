@@ -552,8 +552,8 @@ class smearingDist():
 	def MakeV2(self, inDir = "SimtoDat/v1/", outDir = "SimtoDat/v2/"):
 
 		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg"):
-			hist_exp, bins = np.histogram(df_exp.loc[:, var], bins = bins)
-			hist1, _ = np.histogram(df1.loc[:, var], bins = 101)
+			hist_exp, bins = np.histogram(df_exp.loc[:, var], bins = 101)
+			hist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
 			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			unchist2, _ = np.histogram(df2.loc[:, var], bins = bins)
