@@ -576,7 +576,7 @@ class smearingDist():
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
 		# sigma1s = np.linspace(0.02, 0.09, 8)
-		sigma2s = [0.6]
+		sigma2s = np.linspace(0, 1, 11)
 		# sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		# sigma1s_temp = []
@@ -675,22 +675,22 @@ class smearingDist():
 				print("smearing with {:.3f}".format(sigma2))
 
 				#performing smearing
-				self.SmearingV1(dvcsSimInbCDFT, 0.01*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))
+				self.SmearingV1(dvcsSimInbCDFT, 0.01*(1/(1+np.exp(-(dvcsSimInbCDFT.Pp-0.3)/0.1))-0.5))*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
 				dvcsSimInbCDFT_smeared = self.df_epg
 
-				self.SmearingV1(bkgSimInbCDFT, 0.01*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))
+				self.SmearingV1(bkgSimInbCDFT, 0.01*(1/(1+np.exp(-(bkgSimInbCDFT.Pp-0.3)/0.1))-0.5))*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
 				bkgSimInbCDFT_smeared = self.df_epg
 
-				self.SmearingV1(dvcsSimOutbCDFT, 0.01*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))
+				self.SmearingV1(dvcsSimOutbCDFT, 0.01*(1/(1+np.exp(-(dvcsSimOutbCDFT.Pp-0.3)/0.1))-0.5))*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "outbending")
 				dvcsSimOutbCDFT_smeared = self.df_epg
 
-				self.SmearingV1(bkgSimOutbCDFT, 0.01*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))
+				self.SmearingV1(bkgSimOutbCDFT, 0.01*(1/(1+np.exp(-(bkgSimOutbCDFT.Pp-0.3)/0.1))-0.5))*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "outbending")
 				bkgSimOutbCDFT_smeared = self.df_epg
@@ -719,22 +719,22 @@ class smearingDist():
 			# sigma3_opt = sigma3s_temp[np.argmin(distances3)]
 			# sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
 			sigmas_opt.append(sigma2_opt)#, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, 0.01*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))#, sigma3_opt)
+			self.SmearingV1(dvcsSimInbCDFT, 0.01*(1/(1+np.exp(-(dvcsSimInbCDFT.Pp-0.3)/0.1))-0.5))*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimInbCDFT, 0.01*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))#, sigma3_opt)
+			self.SmearingV1(bkgSimInbCDFT, 0.01*(1/(1+np.exp(-(bkgSimInbCDFT.Pp-0.3)/0.1))-0.5)*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			bkgSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, 0.01*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))#sigma3_opt)
+			self.SmearingV1(dvcsSimOutbCDFT, 0.01*(1/(1+np.exp(-(dvcsSimOutbCDFT.Pp-0.3)/0.1))-0.5)*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimOutbCDFT, 0.01*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))#sigma3_opt)
+			self.SmearingV1(bkgSimOutbCDFT, 0.01*(1/(1+np.exp(-(bkgSimOutbCDFT.Pp-0.3)/0.1))-0.5)*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			bkgSimOutbCDFT_opt = self.df_epg
