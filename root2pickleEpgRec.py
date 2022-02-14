@@ -493,7 +493,7 @@ class root2pickle():
 
         #smearing proton
         #CD proton
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, 0.01*2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5)*(-2.768*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**3 + 12.549*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**2 - 15.192*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] + 9.934), len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, np.abs(0.01*2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5)*(-2.768*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**3 + 12.549*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**2 - 15.192*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] + 9.934)), len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.7, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 0.8 + 2.2/(1+np.exp(5.518*(df_protonRec.loc[df_protonRec.Psector>7, "Pp"]-0.625))), len(df_protonRec.loc[df_protonRec.Psector>7])) 
         # #FD proton
