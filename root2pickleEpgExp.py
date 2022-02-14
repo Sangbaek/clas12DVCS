@@ -320,7 +320,7 @@ class root2pickle():
             print("correction applied for " + pol)
 
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.5
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.5 + 0.8/(1+np.exp(58.657*(CorrectedPp_CD-0.41)))
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
@@ -787,7 +787,7 @@ class root2pickle():
             cut_cone1_CDFT = df_dvcs["coneAngle"] < 0.133 * df_dvcs.Gp**2 + 1.140*df_dvcs.Gp + 10.129  # coneangle
             cut_cone2_CDFT = df_dvcs["coneAngle"] > 0.115 * df_dvcs.Gp**2 + 0.702*df_dvcs.Gp + 5.359 #12.159  # coneangle
             cut_mpt_CDFT = df_dvcs["MPt"] < 0.0958  # mpt
-            cut_recon_CDFT = df_dvcs["reconGam"] < 0.659  # recon gam angle
+            cut_recon_CDFT = df_dvcs["reconGam"] < 1.5#0.659  # recon gam angle
             cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.251  # coplanarity angle
             cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0122  # mmepg
             cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0151  # mmepg
@@ -815,7 +815,7 @@ class root2pickle():
             cut_cone1_CD = df_dvcs["coneAngle"] < 32.817  # coneangle
             cut_cone2_CD = df_dvcs["coneAngle"] > 5#12.791  # coneangle
             cut_mpt_CD = df_dvcs["MPt"] < 0.182  # mpt
-            cut_recon_CD = df_dvcs["reconGam"] < 0.876  # recon gam angle
+            cut_recon_CD = df_dvcs["reconGam"] < 1.5#0.876  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.352  # coplanarity angle
             cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0241  # mmepg
             cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0275  # mmepg

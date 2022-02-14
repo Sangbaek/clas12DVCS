@@ -930,7 +930,7 @@ class root2pickle():
             cut_cone1_CDFT = df_dvcs["coneAngle"] < 0.133 * df_dvcs.Gp**2 + 1.140*df_dvcs.Gp + 10.129  # coneangle
             cut_cone2_CDFT = df_dvcs["coneAngle"] > 0.115 * df_dvcs.Gp**2 + 0.702*df_dvcs.Gp + 5.359 #12.159  # coneangle
             cut_mpt_CDFT = df_dvcs["MPt"] < 0.0958  # mpt
-            cut_recon_CDFT = df_dvcs["reconGam"] < 0.659  # recon gam angle
+            cut_recon_CDFT = df_dvcs["reconGam"] < 1.5#0.659  # recon gam angle
             cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.251  # coplanarity angle
             cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0122  # mmepg
             cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0151  # mmepg
@@ -1007,7 +1007,7 @@ class root2pickle():
             cut_cone1_CDFT = df_dvcs["coneAngle"] < 0.133 * df_dvcs.Gp**2 + 1.140*df_dvcs.Gp + 10.129  # coneangle
             cut_cone2_CDFT = df_dvcs["coneAngle"] > 0.115 * df_dvcs.Gp**2 + 0.702*df_dvcs.Gp + 5.359 #12.159  # coneangle
             cut_mpt_CDFT = df_dvcs["MPt"] < 0.100  # mpt
-            cut_recon_CDFT = df_dvcs["reconGam"] < 0.697  # recon gam angle
+            cut_recon_CDFT = df_dvcs["reconGam"] < 1.5#0.697  # recon gam angle
             cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.479  # coplanarity angle
             cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0128  # mmepg
             cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0155  # mmepg
