@@ -731,7 +731,7 @@ class smearingDist():
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_selected), len(epgExpOutbCDFT_selected))
 			print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
-			print(PpMin, PpMax, sigma1_opt, sigma2_opt, sigma3_opt, correction_opt) 
+			print(PpMin, PpMax, sigma1_opt, sigma2_opt, sigma3_opt)#, correction_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
@@ -784,7 +784,7 @@ class smearingDist():
 			plt.tight_layout()
 			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 
-		print(sigmas_opt, corrections)
+		print(sigmas_opt)#, corrections)
 
 	def SmearingV1(self, df, sigma1, sigma2, sigma3):
 		df_epg = copy(df)
