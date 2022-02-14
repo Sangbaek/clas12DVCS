@@ -393,11 +393,11 @@ class smearingDist():
 			#performing correcting
 			self.CorrectionV0(epgExpOutbCDFT, correction, mode = "epg")
 			self.saveDVCSvars()
-			self.makeDVCS()
+			self.makeDVCS(pol = "outbending")
 			epgExpOutbCDFT_corrected = self.df_epg
 			self.CorrectionV0(pi0ExpOutbCDFT, correction, mode = "epgg")
 			self.saveDVCSvars()
-			self.makeDVCS()
+			self.makeDVCS(pol = "outbending")
 			pi0ExpOutbCDFT_corrected = self.df_epg
 
 			epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ge>GeMin) & (epgExpInbCDFT_corrected.Ge<GeMax)]
@@ -575,13 +575,13 @@ class smearingDist():
 
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = [0.08]#np.linspace(0.05, 0.1, 6)
-		sigma2s = [0.8]#np.linspace(0.5, 1, 6)
-		sigma3s = np.linspace(0, 3, 31)
+		sigma1s = np.linspace(0.0, 0.1, 11)
+		sigma2s = np.linspace(0, 2, 11)
+		# sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		sigma1s_temp = []
 		sigma2s_temp = []
-		sigma3s_temp = []
+		# sigma3s_temp = []
 
 		sigmas_opt = []
 
@@ -606,7 +606,7 @@ class smearingDist():
 
 			distances1 = []
 			distances2 = []
-			distances3 = []
+			# distances3 = []
 			PpMin = PpEdges[i]
 			PpMax = PpEdges[i+1]
 
@@ -654,84 +654,99 @@ class smearingDist():
 			# correction_opt = correction_all[np.argmin(scores)]
 			# corrections.append(correction_opt)
 
-			self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpInbCDFT_corrected = self.df_epg
+			# self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpInbCDFT_corrected = self.df_epg
 
-			self.CorrectionV1(epgExpOutbCDFT, 0.8/(1+np.exp(58.657*(epgExpOutbCDFT.Pp-0.41))))
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpOutbCDFT_corrected = self.df_epg
+			# self.CorrectionV1(epgExpOutbCDFT, 0.8/(1+np.exp(58.657*(epgExpOutbCDFT.Pp-0.41))))
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpOutbCDFT_corrected = self.df_epg
 
-			epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-			epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
 			for sigma1 in sigma1s:
 				for sigma2 in sigma2s:
-					for sigma3 in sigma3s:
+					# for sigma3 in sigma3s:
 
-						print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
+						# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
+					print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
 
-						#performing smearing
-						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, sigma3)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "inbending")
-						dvcsSimInbCDFT_smeared = self.df_epg
+					#performing smearing
+					self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))
+					self.saveDVCSvars()
+					self.makeDVCS(pol = "inbending")
+					dvcsSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, sigma3)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "inbending")
-						bkgSimInbCDFT_smeared = self.df_epg
+					self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))
+					self.saveDVCSvars()
+					self.makeDVCS(pol = "inbending")
+					bkgSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, sigma3)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "outbending")
-						dvcsSimOutbCDFT_smeared = self.df_epg
+					self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))
+					self.saveDVCSvars()
+					self.makeDVCS(pol = "outbending")
+					dvcsSimOutbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, sigma3)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "outbending")
-						bkgSimOutbCDFT_smeared = self.df_epg
+					self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))
+					self.saveDVCSvars()
+					self.makeDVCS(pol = "outbending")
+					bkgSimOutbCDFT_smeared = self.df_epg
 
-						dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Pp>PpMin) & (dvcsSimInbCDFT_smeared.Pp<PpMax)]
-						dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Pp>PpMin) & (dvcsSimOutbCDFT_smeared.Pp<PpMax)]
+					dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Pp>PpMin) & (dvcsSimInbCDFT_smeared.Pp<PpMax)]
+					dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Pp>PpMin) & (dvcsSimOutbCDFT_smeared.Pp<PpMax)]
 
-						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
-						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
-						distances1.append(( distance1+ distance2 )/2) 
+					distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
+					distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
+					distances1.append(( distance1+ distance2 )/2) 
 
-						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
-						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
-						distances2.append(( distance1+ distance2 )/2) 
+					distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
+					distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
+					distances2.append(( distance1+ distance2 )/2) 
 
-						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
-						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
-						distances3.append(( distance1+ distance2 )/2) 
+					# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
+					# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
+					# distances3.append(( distance1+ distance2 )/2) 
 
-						sigma1s_temp.append(sigma1) 
-						sigma2s_temp.append(sigma2) 
-						sigma3s_temp.append(sigma3) 
+					sigma1s_temp.append(sigma1) 
+					sigma2s_temp.append(sigma2) 
+					# sigma3s_temp.append(sigma3) 
 
 			sigma1_opt = sigma1s_temp[np.argmin(distances1)]
 			sigma2_opt = sigma2s_temp[np.argmin(distances2)]
-			sigma3_opt = sigma3s_temp[np.argmin(distances3)]
-			sigmas_opt.append([sigma1_opt, sigma2_opt, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, sigma3_opt)
+			# sigma3_opt = sigma3s_temp[np.argmin(distances3)]
+			sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
+			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimInbCDFT.Pp-0.625))))#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, sigma3_opt)
+			self.SmearingV1(bkgSimInbCDFT, sigma1_opt, sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimInbCDFT.Pp-0.625))))#, sigma3_opt)
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "inbending")
+			bkgSimInbCDFT_opt = self.df_epg
+
+			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(dvcsSimOutbCDFT.Pp-0.625))))#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
+
+			self.SmearingV1(bkgSimOutbCDFT, sigma1_opt, sigma2_opt, 0.8 + 2.2/(1+np.exp(5.518*(bkgSimOutbCDFT.Pp-0.625))))#sigma3_opt)
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "outbending")
+			bkgSimOutbCDFT_opt = self.df_epg
+
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Pp>PpMin) & (dvcsSimInbCDFT_opt.Pp<PpMax)]
+			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Pp>PpMin) & (bkgSimInbCDFT_opt.Pp<PpMax)]
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Pp>PpMin) & (dvcsSimOutbCDFT_opt.Pp<PpMax)]
+			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Pp>PpMin) & (bkgSimOutbCDFT_opt.Pp<PpMax)]
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_selected), len(epgExpOutbCDFT_selected))
-			print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
-			print(PpMin, PpMax, sigma1_opt, sigma2_opt, sigma3_opt)#, correction_opt) 
+			# print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
+			print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2]).T)
+			print(PpMin, PpMax, sigma1_opt, sigma2_opt)#, sigma3_opt)#, correction_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
@@ -747,7 +762,7 @@ class smearingDist():
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], 100, density = True)
-			        simDist_dvpi0, bins = np.histogram(bkgSimInbCDFT[varstoplot[ind]], bins, density = True)
+			        simDist_dvpi0, bins = np.histogram(bkgSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
@@ -759,7 +774,8 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(3, 3, figsize = (15,15))
@@ -770,7 +786,7 @@ class smearingDist():
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], 100, density = True)
-			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCDFT[varstoplot[ind]], bins, density = True)
+			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
@@ -782,7 +798,8 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
 
 		print(sigmas_opt)#, corrections)
 
@@ -999,21 +1016,22 @@ class smearingDist():
 	        cut_Psector_CDFT = df_dvcs.Psector>7
 	        cut_Ptheta_CDFT = df_dvcs.Ptheta<60
 	        cut_Gsector_CDFT = df_dvcs.Gsector>7
+	        cut_GFid_CDFT = df_dvcs.GFid==1
 	        cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.601  # mmep
 	        cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.528  # mmep
 	        cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.569  # mmeg
 	        cut_mmeg2_CDFT = df_dvcs["MM2_eg"] > 0.246  # mmeg
 	        cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.484 # meepg
 	        cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.439  # meepg
-	        cut_cone1_CDFT = df_dvcs["coneAngle"] < 29.652  # coneangle
-	        cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.159  # coneangle
+	        cut_cone1_CDFT = df_dvcs["coneAngle"] < 0.133 * df_dvcs.Gp**2 + 1.140*df_dvcs.Gp + 10.129  # coneangle
+	        cut_cone2_CDFT = df_dvcs["coneAngle"] > 0.115 * df_dvcs.Gp**2 + 0.702*df_dvcs.Gp + 5.359 #12.159  # coneangle
 	        cut_mpt_CDFT = df_dvcs["MPt"] < 0.0958  # mpt
-	        cut_recon_CDFT = df_dvcs["reconGam"] < 0.659  # recon gam angle
+	        cut_recon_CDFT = df_dvcs["reconGam"] < 1.5#0.659  # recon gam angle
 	        cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.251  # coplanarity angle
 	        cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0122  # mmepg
 	        cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0151  # mmepg
 
-	        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+	        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT &
 	                    cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
 	                    cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
 	                    cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
@@ -1031,10 +1049,12 @@ class smearingDist():
 	        cut_mmeg2_CD = df_dvcs["MM2_eg"] > -0.428 # mmeg
 	        cut_meepg1_CD = df_dvcs["ME_epg"] < 1.045  # meepg
 	        cut_meepg2_CD = df_dvcs["ME_epg"] > -0.922  # meepg
+	        cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
+	        cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
 	        cut_cone1_CD = df_dvcs["coneAngle"] < 32.817  # coneangle
-	        cut_cone2_CD = df_dvcs["coneAngle"] > 12.791  # coneangle
+	        cut_cone2_CD = df_dvcs["coneAngle"] > 5#12.791  # coneangle
 	        cut_mpt_CD = df_dvcs["MPt"] < 0.182  # mpt
-	        cut_recon_CD = df_dvcs["reconGam"] < 0.876  # recon gam angle
+	        cut_recon_CD = df_dvcs["reconGam"] < 1.5#0.876  # recon gam angle
 	        cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.352  # coplanarity angle
 	        cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0241  # mmepg
 	        cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0275  # mmepg
@@ -1056,10 +1076,10 @@ class smearingDist():
 	        cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.166  # mmeg
 	        cut_meepg1_FD = df_dvcs["ME_epg"] < 0.996  # meepg
 	        cut_meepg2_FD = df_dvcs["ME_epg"] > -0.864 # meepg
-	        cut_cone1_FD = df_dvcs["coneAngle"] < 35.794  # coneangle
-	        cut_cone2_FD = df_dvcs["coneAngle"] > 23.175  # coneangle
+	        cut_cone1_FD = df_dvcs["coneAngle"] < 0.0673 * df_dvcs.Gp**2 - 0.752*df_dvcs.Gp + 41.678  # coneangle
+	        cut_cone2_FD = df_dvcs["coneAngle"] > 0.712 * df_dvcs.Gp**2 - 7.676*df_dvcs.Gp + 46.720  # coneangle
 	        cut_mpt_FD = df_dvcs["MPt"] < 0.184  # mpt
-	        cut_recon_FD = df_dvcs["reconGam"] < 1.181  # recon gam angle
+	        cut_recon_FD = df_dvcs["reconGam"] < 2.5#1.181  # recon gam angle
 	        cut_coplanarity_FD = df_dvcs["coplanarity"] < 13.178  # coplanarity angle - no cut
 	        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0267  # mmepg
 	        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0302  # mmepg
@@ -1075,21 +1095,22 @@ class smearingDist():
 	        cut_Psector_CDFT = df_dvcs.Psector>7
 	        cut_Ptheta_CDFT = df_dvcs.Ptheta<60
 	        cut_Gsector_CDFT = df_dvcs.Gsector>7
+	        cut_GFid_CDFT = df_dvcs.GFid==1
 	        cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.567  # mmep
 	        cut_mmep2_CDFT = df_dvcs["MM2_ep"] > -0.479  # mmep
 	        cut_mmeg1_CDFT = df_dvcs["MM2_eg"] < 1.602  # mmeg
 	        cut_mmeg2_CDFT = df_dvcs["MM2_eg"] > 0.223  # mmeg
 	        cut_meepg1_CDFT = df_dvcs["ME_epg"] < 0.481 # meepg
 	        cut_meepg2_CDFT = df_dvcs["ME_epg"] > -0.436  # meepg
-	        cut_cone1_CDFT = df_dvcs["coneAngle"] < 28.800  # coneangle
-	        cut_cone2_CDFT = df_dvcs["coneAngle"] > 12.573  # coneangle
+	        cut_cone1_CDFT = df_dvcs["coneAngle"] < 0.133 * df_dvcs.Gp**2 + 1.140*df_dvcs.Gp + 10.129  # coneangle
+	        cut_cone2_CDFT = df_dvcs["coneAngle"] > 0.115 * df_dvcs.Gp**2 + 0.702*df_dvcs.Gp + 5.359 #12.159  # coneangle
 	        cut_mpt_CDFT = df_dvcs["MPt"] < 0.100  # mpt
-	        cut_recon_CDFT = df_dvcs["reconGam"] < 0.697  # recon gam angle
+	        cut_recon_CDFT = df_dvcs["reconGam"] < 1.5#0.697  # recon gam angle
 	        cut_coplanarity_CDFT = df_dvcs["coplanarity"] < 8.479  # coplanarity angle
 	        cut_mmepg1_CDFT = np.abs(df_dvcs["MM2_epg"]) < 0.0128  # mmepg
 	        cut_mmepg2_CDFT = np.abs(df_dvcs["MM2_epg"]) > -0.0155  # mmepg
 
-	        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT &
+	        cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT &
 	                    cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
 	                    cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CDFT & cut_cone2_CDFT &
 	                    cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
@@ -1107,10 +1128,10 @@ class smearingDist():
 	        cut_mmeg2_CD = df_dvcs["MM2_eg"] > -0.387 # mmeg
 	        cut_meepg1_CD = df_dvcs["ME_epg"] < 0.888  # meepg
 	        cut_meepg2_CD = df_dvcs["ME_epg"] > -0.825  # meepg
-	        cut_cone1_CD = df_dvcs["coneAngle"] < 29.471  # coneangle
-	        cut_cone2_CD = df_dvcs["coneAngle"] > 7.591  # coneangle
+	        cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
+	        cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
 	        cut_mpt_CD = df_dvcs["MPt"] < 0.183  # mpt
-	        cut_recon_CD = df_dvcs["reconGam"] < 0.954  # recon gam angle
+	        cut_recon_CD = df_dvcs["reconGam"] < 1.5#0.954  # recon gam angle
 	        cut_coplanarity_CD = df_dvcs["coplanarity"] < 7.347  # coplanarity angle
 	        cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0211  # mmepg
 	        cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0241  # mmepg
@@ -1132,10 +1153,10 @@ class smearingDist():
 	        cut_mmeg2_FD = df_dvcs["MM2_eg"] > -0.205  # mmeg
 	        cut_meepg1_FD = df_dvcs["ME_epg"] < 0.947  # meepg
 	        cut_meepg2_FD = df_dvcs["ME_epg"] > -0.796  # meepg
-	        cut_cone1_FD = df_dvcs["coneAngle"] < 34.592  # coneangle
-	        cut_cone2_FD = df_dvcs["coneAngle"] > 24.390  # coneangle
+	        cut_cone1_FD = df_dvcs["coneAngle"] < 0.0673 * df_dvcs.Gp**2 - 0.752*df_dvcs.Gp + 41.678  # coneangle
+	        cut_cone2_FD = df_dvcs["coneAngle"] > 0.712 * df_dvcs.Gp**2 - 7.676*df_dvcs.Gp + 46.720  # coneangle
 	        cut_mpt_FD = df_dvcs["MPt"] < 0.186  # mpt
-	        cut_recon_FD = df_dvcs["reconGam"] < 1.662  # recon gam angle
+	        cut_recon_FD = df_dvcs["reconGam"] < 2.5#1.662  # recon gam angle
 	        cut_coplanarity_FD = df_dvcs["coplanarity"] < 11.685  # coplanarity angle - no cut
 	        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0294  # mmepg
 	        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0346  # mmepg
