@@ -55,12 +55,12 @@ def nphistmean(hist, bins):
 
 class smearingDist():
 
-	def __init__(self, version, exp, params = None):
+	def __init__(self, version, exp, outDir = "SimtoDat/v0/"):
 		self.GetVersion(version)
 		if version == "v0":
-			self.MakeV0()
+			self.MakeV0(outDir = outDir)
 		if version == "v1":
-			self.MakeV1(exp = exp, sigma = params)
+			self.MakeV1(exp = exp)
 
 	def GetVersion(self, version):
 		self.version = version
@@ -243,7 +243,7 @@ class smearingDist():
 		epgExpOutbCDFT10.to_pickle(outDir+ "epgExpOutbCDFT10")
 		epgExpOutbCDFT11.to_pickle(outDir+ "epgExpOutbCDFT11")
 
-	def MakeV1(self, inDir = "SimtoDat/v0/", outDir = "SimtoDat/v1/", exp = None, sigma = 0.014):
+	def MakeV1(self, inDir = "SimtoDat/v0/", outDir = "SimtoDat/v1/", exp = None):
 
 		if exp:
 			self.MakeV1Exp(inDir, outDir)
@@ -1116,9 +1116,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-v","--version", help="version", default="v0")
-    parser.add_argument("-p","--parameters", help="parameters for smearing", default=None)
+    parser.add_argument("-o","--outDir", help="output directory", default="/SimtoDat/v0")
     parser.add_argument("-e","--makeExp", help="makeExp or not", action= "store_true")
+
     
     args = parser.parse_args()
 
-    smearingDist = smearingDist(version = args.version, exp = args.makeExp, params = args.parameters)
+    smearingDist = smearingDist(version = args.version, exp = args.makeExp, outDir = args.outDir)
