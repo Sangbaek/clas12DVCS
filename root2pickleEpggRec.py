@@ -635,7 +635,7 @@ class root2pickle():
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.799  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.792  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.189  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.468  # recon gam angle
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 2.5#1.468  # recon gam angle
             cut_coplanarity_CDFT = df_dvpi0p["coplanarity"] < 15.431  # coplanarity angle
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0440  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0478  # mmepgg
@@ -664,7 +664,7 @@ class root2pickle():
             cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.822  # meepgg
             cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.677  # meepgg
             cut_mpt_CD = df_dvpi0p["MPt"] < 0.176  # mpt
-            cut_recon_CD = df_dvpi0p["reconPi"] < 1.476  # recon gam angle
+            cut_recon_CD = df_dvpi0p["reconPi"] < 2.5#1.476  # recon gam angle
             cut_coplanarity_CD = df_dvpi0p["coplanarity"] < 10.203  # coplanarity angle
             cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0208  # mmepgg
             cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0250  # mmepgg
@@ -692,7 +692,7 @@ class root2pickle():
             cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.816 # meepgg
             cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.685  # meepgg
             cut_mpt_FD = df_dvpi0p["MPt"] < 0.180  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 1.363  # recon gam angle
+            cut_recon_FD = df_dvpi0p["reconPi"] < 2.5#1.363  # recon gam angle
             cut_coplanarity_FD = df_dvpi0p["coplanarity"] < 9.190  # coplanarity angle
             cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0189  # mmepgg
             cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0224  # mmepgg
@@ -720,7 +720,7 @@ class root2pickle():
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.844  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.806  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.210  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.630  # recon gam angle
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 2.5#1.630  # recon gam angle
             cut_coplanarity_CDFT = df_dvpi0p["coplanarity"] < 17.817  # coplanarity angle
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0549  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0575  # mmepgg
@@ -749,7 +749,7 @@ class root2pickle():
             cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.700  # meepgg
             cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.597  # meepgg
             cut_mpt_CD = df_dvpi0p["MPt"] < 0.194  # mpt
-            cut_recon_CD = df_dvpi0p["reconPi"] < 1.761  # recon gam angle
+            cut_recon_CD = df_dvpi0p["reconPi"] < 2.5#1.761  # recon gam angle
             cut_coplanarity_CD = df_dvpi0p["coplanarity"] < 9.530  # coplanarity angle
             cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0182  # mmepgg
             cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0219  # mmepgg
@@ -777,7 +777,7 @@ class root2pickle():
             cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.754  # meepgg
             cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.583  # meepgg
             cut_mpt_FD = df_dvpi0p["MPt"] < 0.177  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 1.940  # recon gam angle
+            cut_recon_FD = df_dvpi0p["reconPi"] < 2.5#1.940  # recon gam angle
             cut_coplanarity_FD = df_dvpi0p["coplanarity"] < 7.498  # coplanarity angle
             cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0195  # mmepgg
             cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0240  # mmepgg
