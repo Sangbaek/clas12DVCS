@@ -575,9 +575,9 @@ class smearingDist():
 
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = np.linspace(0.05, 0.1, 11)
-		sigma2s = np.linspace(0.5, 1, 11)
-		sigma3s = np.linspace(1.8, 2.5, 11)
+		sigma1s = np.linspace(0.05, 0.1, 6)
+		sigma2s = np.linspace(0.5, 1, 6)
+		sigma3s = np.linspace(1.8, 2.5, 8)
 		# corrections = []
 		sigma1s_temp = []
 		sigma2s_temp = []
@@ -630,7 +630,7 @@ class smearingDist():
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
 			scores = []
-			correction_all = np.linspace(-0.5, 0.5, 11)
+			correction_all = np.linspace(-2, 2, 11)
 			for correction_temp in correction_all:
 				#performing correcting
 				self.CorrectionV1(epgExpInbCDFT, correction_temp)
@@ -650,6 +650,7 @@ class smearingDist():
 				score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
 				score = score1**2 +score2**2
 				scores.append(score)
+			print(scores)
 			correction_opt = correction_all[np.argmin(scores)]
 			corrections.append(correction_opt)
 
