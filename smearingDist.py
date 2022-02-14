@@ -739,7 +739,7 @@ class smearingDist():
 			fig, axs = plt.subplots(3, 3, figsize = (15,15))
 			for yind in range(0, 3):
 			    for xind in range(0,3):
-			        ind = 5*yind + xind
+			        ind = 3*yind + xind
 			        # start = binstarts[ind]
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
@@ -762,7 +762,7 @@ class smearingDist():
 			fig, axs = plt.subplots(3, 3, figsize = (15,15))
 			for yind in range(0, 3):
 			    for xind in range(0,3):
-			        ind = 5*yind + xind
+			        ind = 3*yind + xind
 			        # start = binstarts[ind]
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
