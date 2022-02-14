@@ -756,7 +756,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(3, 3, figsize = (15,15))
@@ -779,7 +779,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 
 		print(sigmas_opt)
 
