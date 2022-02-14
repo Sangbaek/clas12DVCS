@@ -680,22 +680,22 @@ class smearingDist():
 						print("smearing with {:.3f}".format(sigma))
 
 						#performing smearing
-						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, sigma3, mode = "epg")
+						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, sigma3)
 						self.saveDVCSvars()
 						self.makeDVCS(pol = "inbending")
 						dvcsSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, sigma3, mode = "epg")
+						self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, sigma3)
 						self.saveDVCSvars()
 						self.makeDVCS(pol = "inbending")
 						bkgSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, sigma3, mode = "epg")
+						self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, sigma3)
 						self.saveDVCSvars()
 						self.makeDVCS(pol = "outbending")
 						dvcsSimOutbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, sigma3, mode = "epg")
+						self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, sigma3)
 						self.saveDVCSvars()
 						self.makeDVCS(pol = "outbending")
 						bkgSimOutbCDFT_smeared = self.df_epg
@@ -715,12 +715,12 @@ class smearingDist():
 			sigma2_opt = sigma2s_temp[np.argmin(distances)]
 			sigma3_opt = sigma3s_temp[np.argmin(distances)]
 			sigmas_opt.append([sigma1_opt, sigma2_opt, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, sigma3_opt, mode = "epg")
+			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, sigma3_opt, mode = "epg")
+			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
