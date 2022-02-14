@@ -728,7 +728,7 @@ class smearingDist():
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Pp>PpMin) & (dvcsSimOutbCDFT_opt.Pp<PpMax)]
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_selected), len(epgExpOutbCDFT_selected))
-			print(PpMin, PpMax, distances, sigma1_opt, sigma2_opt, sigma3_opt, correction) 
+			print(PpMin, PpMax, distances, sigma1_opt, sigma2_opt, sigma3_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
