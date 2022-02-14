@@ -552,9 +552,9 @@ class smearingDist():
 	def MakeV2(self, inDir = "SimtoDat/v1/", outDir = "SimtoDat/v2/"):
 
 		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg"):
-			hist1, bins = np.histogram(df1.loc[:, var], bins = 101)
+			hist_exp, bins = np.histogram(df_exp.loc[:, var], bins = bins)
+			hist1, _ = np.histogram(df1.loc[:, var], bins = 101)
 			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
-			hist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
 			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
 			unchist2, _ = np.histogram(df2.loc[:, var], bins = bins)
 			unchist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
@@ -576,7 +576,7 @@ class smearingDist():
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
 		# sigma1s = np.linspace(0.02, 0.09, 8)
-		sigma2s = np.linspace(0.3, 1.0, 8)
+		sigma2s = np.linspace(0.7, 1.5, 8)
 		# sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		# sigma1s_temp = []
