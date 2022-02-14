@@ -732,13 +732,13 @@ class smearingDist():
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
-			unit = [GeV2, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
+			unit = [GeV2, degree, degree, degree, degree, GeV, GeV2, GeV2, GeV2, GeVc]
 			# binstarts = [PpMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
 			# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
-			fig, axs = plt.subplots(2, 5, figsize = (15,10))
-			for yind in range(0, 2):
-			    for xind in range(0,5):
+			fig, axs = plt.subplots(3, 3, figsize = (15,15))
+			for yind in range(0, 3):
+			    for xind in range(0,3):
 			        ind = 5*yind + xind
 			        # start = binstarts[ind]
 			        # end = binends[ind]
@@ -759,9 +759,9 @@ class smearingDist():
 			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 			plt.clf()
 
-			fig, axs = plt.subplots(2, 5, figsize = (15,10))
-			for yind in range(0, 2):
-			    for xind in range(0,5):
+			fig, axs = plt.subplots(3, 3, figsize = (15,15))
+			for yind in range(0, 3):
+			    for xind in range(0,3):
 			        ind = 5*yind + xind
 			        # start = binstarts[ind]
 			        # end = binends[ind]
