@@ -765,7 +765,7 @@ class smearingDist():
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], 100, density = True)
-			        simDist_dvpi0, bins = np.histogram(bkgSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
+			        simDist_dvpi0, _ = np.histogram(bkgSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
@@ -790,7 +790,7 @@ class smearingDist():
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
 			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], 100, density = True)
-			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
+			        simDist_dvpi0, _ = np.histogram(bkgSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
