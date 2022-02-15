@@ -355,7 +355,7 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
-            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] -0.00164 * df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.04377 * df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where((-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25>0, (-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25, 0)
             df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))

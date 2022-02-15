@@ -361,7 +361,7 @@ class root2pickle():
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
 
         if correction:
-            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] -0.00164 * df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.04377 * df_gg.loc[df_gg["Gsector"]>7, "Gp"]
+            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where((-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25>0, (-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25, 0)
             # df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
 
             df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
