@@ -672,6 +672,7 @@ class smearingDist():
 			print(scores)
 			correction_opt = correction_all[np.argmin(scores)]
 			corrections.append(correction_opt)
+			print(correction_opt)
 
 			# self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
 			# self.saveDVCSvars()
