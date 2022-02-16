@@ -659,8 +659,11 @@ class smearingDist():
 				self.makeDVCS()
 				epgExpOutbCDFT_corrected = self.df_epg
 
-				epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-				epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+				# epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+				# epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+
+				epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
+				epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
 
 				score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
 				score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
@@ -690,8 +693,11 @@ class smearingDist():
 			self.makeDVCS()
 			epgExpOutbCDFT_corrected = self.df_epg
 
-			epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-			epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+
+			epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
+			epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
 
 			for sigma1 in sigma1s:
 				for sigma2 in sigma2s:
@@ -775,7 +781,8 @@ class smearingDist():
 			# print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
 			print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2, distances]).T)
 			# print(np.array([sigma2s_temp, distances2]).T)
-			print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
+			# print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
+			print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
 			# print(PthetaMin, PthetaMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
