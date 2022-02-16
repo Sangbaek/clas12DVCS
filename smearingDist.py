@@ -611,8 +611,8 @@ class smearingDist():
 			# distances3 = []
 			# PpMin = PpEdges[i]
 			# PpMax = PpEdges[i+1]
-			# PthetaMin = PthetaEdges[i]
-			# PthetaMax = PthetaEdges[i+1]
+			PthetaMin = PthetaEdges[i]
+			PthetaMax = PthetaEdges[i+1]
 
 			# epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Pp>PpMin) & (epgExpInbCDFT.Pp<PpMax)]
 			# pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Pp>PpMin) & (pi0ExpInbCDFT.Pp<PpMax)]
