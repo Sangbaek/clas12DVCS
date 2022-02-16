@@ -574,12 +574,13 @@ class smearingDist():
 			return distance
 
 
-		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		# sigma1s = np.linspace(0.02, 0.09, 8)
-		sigma2s = np.linspace(0.7, 1.5, 17)
+		# PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+		sigma1s = [0, 0.01, 0.02, 0.03, 0.04, 0.05]
+		sigma2s = np.linspace(0.5, 1.5, 11)
+		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55,57.5, 60, 62.5, 65]
 		# sigma3s = np.linspace(0, 3, 31)
-		# corrections = []
-		# sigma1s_temp = []
+		corrections = []
+		sigma1s_temp = []
 		sigma2s_temp = []
 		# sigma3s_temp = []
 
@@ -602,25 +603,40 @@ class smearingDist():
 
 		corrections = []
 
-		for i in range(len(PpEdges)-1):
+		# for i in range(len(PpEdges)-1):
+		for i in range(len(PthetaEdges)-1):
 
 			distances1 = []
 			distances2 = []
 			# distances3 = []
-			PpMin = PpEdges[i]
-			PpMax = PpEdges[i+1]
+			# PpMin = PpEdges[i]
+			# PpMax = PpEdges[i+1]
+			# PthetaMin = PthetaEdges[i]
+			# PthetaMax = PthetaEdges[i+1]
 
-			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Pp>PpMin) & (epgExpInbCDFT.Pp<PpMax)]
-			pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Pp>PpMin) & (pi0ExpInbCDFT.Pp<PpMax)]
-			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Pp>PpMin) & (dvcsSimInbCDFT.Pp<PpMax)]
-			pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Pp>PpMin) & (pi0SimInbCDFT.Pp<PpMax)]
-			bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Pp>PpMin) & (bkgSimInbCDFT.Pp<PpMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Pp>PpMin) & (epgExpInbCDFT.Pp<PpMax)]
+			# pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Pp>PpMin) & (pi0ExpInbCDFT.Pp<PpMax)]
+			# dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Pp>PpMin) & (dvcsSimInbCDFT.Pp<PpMax)]
+			# pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Pp>PpMin) & (pi0SimInbCDFT.Pp<PpMax)]
+			# bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Pp>PpMin) & (bkgSimInbCDFT.Pp<PpMax)]
 
-			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Pp>PpMin) & (epgExpOutbCDFT.Pp<PpMax)]
-			pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Pp>PpMin) & (pi0ExpOutbCDFT.Pp<PpMax)]
-			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Pp>PpMin) & (dvcsSimOutbCDFT.Pp<PpMax)]
-			pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Pp>PpMin) & (pi0SimOutbCDFT.Pp<PpMax)]
-			bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Pp>PpMin) & (bkgSimOutbCDFT.Pp<PpMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Pp>PpMin) & (epgExpOutbCDFT.Pp<PpMax)]
+			# pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Pp>PpMin) & (pi0ExpOutbCDFT.Pp<PpMax)]
+			# dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Pp>PpMin) & (dvcsSimOutbCDFT.Pp<PpMax)]
+			# pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Pp>PpMin) & (pi0SimOutbCDFT.Pp<PpMax)]
+			# bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Pp>PpMin) & (bkgSimOutbCDFT.Pp<PpMax)]
+
+			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ptheta>PthetaMin) & (epgExpInbCDFT.Ptheta<PthetaMax)]
+			pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Ptheta>PthetaMin) & (pi0ExpInbCDFT.Ptheta<PthetaMax)]
+			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ptheta>PthetaMin) & (dvcsSimInbCDFT.Ptheta<PthetaMax)]
+			pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Ptheta>PthetaMin) & (pi0SimInbCDFT.Ptheta<PthetaMax)]
+			bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Ptheta>PthetaMin) & (bkgSimInbCDFT.Ptheta<PthetaMax)]
+
+			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ptheta>PthetaMin) & (epgExpOutbCDFT.Ptheta<PthetaMax)]
+			pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Ptheta>PthetaMin) & (pi0ExpOutbCDFT.Ptheta<PthetaMax)]
+			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ptheta>PthetaMin) & (dvcsSimOutbCDFT.Ptheta<PthetaMax)]
+			pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Ptheta>PthetaMin) & (pi0SimOutbCDFT.Ptheta<PthetaMax)]
+			bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Ptheta>PthetaMin) & (bkgSimOutbCDFT.Ptheta<PthetaMax)]
 
 			contInb = 0
 			contOutb = 0
@@ -629,30 +645,30 @@ class smearingDist():
 			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_selected) > 0:
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			# scores = []
-			# correction_all = np.linspace(-2, 2, 11)
-			# for correction_temp in correction_all:
-			# 	#performing correcting
-			# 	self.CorrectionV1(epgExpInbCDFT, correction_temp)
-			# 	self.saveDVCSvars()
-			# 	self.makeDVCS()
-			# 	epgExpInbCDFT_corrected = self.df_epg
+			scores = []
+			correction_all = np.linspace(-0.8, 0, 17)
+			for correction_temp in correction_all:
+				#performing correcting
+				self.CorrectionV1(epgExpInbCDFT, correction_temp)
+				self.saveDVCSvars()
+				self.makeDVCS()
+				epgExpInbCDFT_corrected = self.df_epg
 
-			# 	self.CorrectionV1(epgExpOutbCDFT, correction_temp)
-			# 	self.saveDVCSvars()
-			# 	self.makeDVCS()
-			# 	epgExpOutbCDFT_corrected = self.df_epg
+				self.CorrectionV1(epgExpOutbCDFT, correction_temp)
+				self.saveDVCSvars()
+				self.makeDVCS()
+				epgExpOutbCDFT_corrected = self.df_epg
 
-			# 	epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-			# 	epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+				epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+				epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
-			# 	score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
-			# 	score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
-			# 	score = score1**2 +score2**2
-			# 	scores.append(score)
-			# print(scores)
-			# correction_opt = correction_all[np.argmin(scores)]
-			# corrections.append(correction_opt)
+				score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
+				score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
+				score = score1**2 +score2**2
+				scores.append(score)
+			print(scores)
+			correction_opt = correction_all[np.argmin(scores)]
+			corrections.append(correction_opt)
 
 			# self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
 			# self.saveDVCSvars()
@@ -664,92 +680,103 @@ class smearingDist():
 			# self.makeDVCS()
 			# epgExpOutbCDFT_corrected = self.df_epg
 
-			# epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+			self.CorrectionV1(epgExpInbCDFT, correction_opt)
+			self.saveDVCSvars()
+			self.makeDVCS()
+			epgExpInbCDFT_corrected = self.df_epg
 
-			# for sigma1 in sigma1s:
-			for sigma2 in sigma2s:
-				# for sigma3 in sigma3s:
-						# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
-					# print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
-				print("smearing with {:.3f}".format(sigma2))
+			self.CorrectionV1(epgExpOutbCDFT, correction_opt)
+			self.saveDVCSvars()
+			self.makeDVCS()
+			epgExpOutbCDFT_corrected = self.df_epg
 
-				#performing smearing
-				self.SmearingV1(dvcsSimInbCDFT, 0.01*2*(1/(1+np.exp(-(dvcsSimInbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2, 0)
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "inbending")
-				dvcsSimInbCDFT_smeared = self.df_epg
+			epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+			epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
-				self.SmearingV1(bkgSimInbCDFT, 0.01*2*(1/(1+np.exp(-(bkgSimInbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2, 0)
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "inbending")
-				bkgSimInbCDFT_smeared = self.df_epg
+			for sigma1 in sigma1s:
+				for sigma2 in sigma2s:
+					# for sigma3 in sigma3s:
+							# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
+						print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
+				# print("smearing with {:.3f}".format(sigma2))
 
-				self.SmearingV1(dvcsSimOutbCDFT, 0.01*2*(1/(1+np.exp(-(dvcsSimOutbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2, 0)
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "outbending")
-				dvcsSimOutbCDFT_smeared = self.df_epg
+						#performing smearing
+						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, 0)
+						self.saveDVCSvars()
+						self.makeDVCS(pol = "inbending")
+						dvcsSimInbCDFT_smeared = self.df_epg
 
-				self.SmearingV1(bkgSimOutbCDFT, 0.01*2*(1/(1+np.exp(-(bkgSimOutbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2, 0)
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "outbending")
-				bkgSimOutbCDFT_smeared = self.df_epg
+						self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, 0)
+						self.saveDVCSvars()
+						self.makeDVCS(pol = "inbending")
+						bkgSimInbCDFT_smeared = self.df_epg
 
-				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Pp>PpMin) & (dvcsSimInbCDFT_smeared.Pp<PpMax)]
-				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Pp>PpMin) & (dvcsSimOutbCDFT_smeared.Pp<PpMax)]
+						self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, 0)
+						self.saveDVCSvars()
+						self.makeDVCS(pol = "outbending")
+						dvcsSimOutbCDFT_smeared = self.df_epg
 
-				# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
-				# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
-				# distances1.append(( distance1+ distance2 )/2) 
+						self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, 0)
+						self.saveDVCSvars()
+						self.makeDVCS(pol = "outbending")
+						bkgSimOutbCDFT_smeared = self.df_epg
 
-				distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
-				distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
-				distances2.append(( distance1+ distance2 )/2) 
+						dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
+						dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PthetaMax)]
 
-				# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
-				# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
-				# distances3.append(( distance1+ distance2 )/2) 
+						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
+						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
+						distances1.append(( distance1+ distance2 )/2) 
 
-				# sigma1s_temp.append(sigma1) 
-				sigma2s_temp.append(sigma2) 
-				# sigma3s_temp.append(sigma3) 
+						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
+						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
+						distances2.append(( distance1+ distance2 )/2) 
 
-			# sigma1_opt = sigma1s_temp[np.argmin(distances1)]
-			sigma2_opt = sigma2s_temp[np.argmin(distances2)]
+						# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
+						# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
+						# distances3.append(( distance1+ distance2 )/2) 
+
+						sigma1s_temp.append(sigma1) 
+						sigma2s_temp.append(sigma2) 
+						# sigma3s_temp.append(sigma3) 
+
+			distances = ((np.array(distances1) - np.min(distances1))/np.std(distances1))**2 + ((np.array(distances2) - np.min(distances2))/np.std(distances2))**2
+			sigma1_opt = sigma1s_temp[np.argmin(distances)]
+			sigma2_opt = sigma2s_temp[np.argmin(distances)]
 			# sigma3_opt = sigma3s_temp[np.argmin(distances3)]
-			# sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
-			sigmas_opt.append(sigma2_opt)#, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, 0.01*2*(1/(1+np.exp(-(dvcsSimInbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*dvcsSimInbCDFT.Pp**3 + 12.549*dvcsSimInbCDFT.Pp**2 - 15.192*dvcsSimInbCDFT.Pp + 9.934), sigma2_opt, 0)#, sigma3_opt)
+			sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
+			# sigmas_opt.append(sigma2_opt)#, sigma3_opt])
+			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimInbCDFT, 0.01*2*(1/(1+np.exp(-(bkgSimInbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*bkgSimInbCDFT.Pp**3 + 12.549*bkgSimInbCDFT.Pp**2 - 15.192*bkgSimInbCDFT.Pp + 9.934), sigma2_opt, 0)#, sigma3_opt)
+			self.SmearingV1(bkgSimInbCDFT, sigma1_opt, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			bkgSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, 0.01*2*(1/(1+np.exp(-(dvcsSimOutbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*dvcsSimOutbCDFT.Pp**3 + 12.549*dvcsSimOutbCDFT.Pp**2 - 15.192*dvcsSimOutbCDFT.Pp + 9.934), sigma2_opt, 0)#sigma3_opt)
+			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimOutbCDFT, 0.01*2*(1/(1+np.exp(-(bkgSimOutbCDFT.Pp-0.3)/0.01))-0.5)*(-2.768*bkgSimOutbCDFT.Pp**3 + 12.549*bkgSimOutbCDFT.Pp**2 - 15.192*bkgSimOutbCDFT.Pp + 9.934), sigma2_opt, 0)#sigma3_opt)
+			self.SmearingV1(bkgSimOutbCDFT, sigma1_opt, sigma2_opt, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			bkgSimOutbCDFT_opt = self.df_epg
 
-			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Pp>PpMin) & (dvcsSimInbCDFT_opt.Pp<PpMax)]
-			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Pp>PpMin) & (bkgSimInbCDFT_opt.Pp<PpMax)]
-			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Pp>PpMin) & (dvcsSimOutbCDFT_opt.Pp<PpMax)]
-			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Pp>PpMin) & (bkgSimOutbCDFT_opt.Pp<PpMax)]
+			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimInbCDFT_opt.Ptheta<PthetaMax)]
+			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Ptheta>PthetaMin) & (bkgSimInbCDFT_opt.Ptheta<PthetaMax)]
+			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_opt.Ptheta<PthetaMax)]
+			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Ptheta>PthetaMin) & (bkgSimOutbCDFT_opt.Ptheta<PthetaMax)]
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_selected), len(epgExpOutbCDFT_selected))
 			# print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
-			# print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2]).T)
-			print(np.array([sigma2s_temp, distances2]).T)
-			# print(PpMin, PpMax, sigma1_opt, sigma2_opt)#, sigma3_opt)#, correction_opt) 
-			print(PpMin, PpMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
+			print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2, distances]).T)
+			# print(np.array([sigma2s_temp, distances2]).T)
+			print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
+			# print(PthetaMin, PthetaMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
@@ -778,8 +805,9 @@ class smearingDist():
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
 			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
 			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
+			# plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(3, 3, figsize = (15,15))
@@ -802,9 +830,10 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
+			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 
 		print(sigmas_opt)#, corrections)
 
