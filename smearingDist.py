@@ -576,8 +576,8 @@ class smearingDist():
 
 		# PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
 		sigma1s = [0, 0.01, 0.02, 0.03, 0.04, 0.05]
-		sigma2s = np.linspace(0.5, 1.5, 11)
-		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55,57.5, 60, 62.5, 65]
+		sigma2s = np.linspace(0.3, 0.8, 11)
+		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		# sigma3s = np.linspace(0, 3, 31)
 		corrections = []
 		sigma1s_temp = []
@@ -843,7 +843,7 @@ class smearingDist():
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 
-		print(sigmas_opt)#, corrections)
+		print(sigmas_opt, corrections)
 
 	def SmearingV1(self, df, sigma1, sigma2, sigma3):
 		df_epg = copy(df)
