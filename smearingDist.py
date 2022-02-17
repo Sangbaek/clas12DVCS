@@ -972,7 +972,8 @@ class smearingDist():
 		# pi0ExpOutbCD.to_pickle(outDir+"/pi0ExpOutbCD")
 
 
-		for i in range(len(GeEdges)-1):
+		# for i in range(len(GeEdges)-1):
+		for i in range(len(GthetaEdges)-1):
 
 			distances = []
 			# GeMin = GeEdges[i]
