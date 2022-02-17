@@ -1128,12 +1128,12 @@ class smearingDist():
 				self.SmearingV2(pi0SimInbCD, sigma_opt, mode = "epgg")
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "inbending")
-				pi0SimInbCD_opt = self.df_epgg
+				pi0SimInbCD_opt = self.df_epg
 
 				self.SmearingV2(pi0SimOutbCD, sigma_opt, mode = "epgg")
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "outbending")
-				pi0SimOutbCD_opt = self.df_epgg
+				pi0SimOutbCD_opt = self.df_epg
 
 				dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Ge>GeMin) & (dvcsSimInbCD_opt.Ge<GeMax) & (dvcsSimInbCD_opt.Gsector == sector)]
 				dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Ge>GeMin) & (dvcsSimOutbCD_opt.Ge<GeMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
@@ -1336,7 +1336,7 @@ class smearingDist():
 
 	def saveDVpi0Pvars(self):
 	    #set up pi0 variables
-	    df_epgg = self.df_epgg
+	    df_epgg = copy(self.df_epg)
 
 	    # useful objects
 	    ele = [df_epgg['Epx'], df_epgg['Epy'], df_epgg['Epz']]
@@ -1412,7 +1412,7 @@ class smearingDist():
 	    
 	    df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
 
-	    self.df_epgg = df_epgg
+	    self.df_epg = df_epgg
 
 	def makeDVCS(self, pol = "inbending"):
 	    #make dvcs pairs
@@ -1616,7 +1616,7 @@ class smearingDist():
 
 	def makeDVpi0P(self, pol = "inbending"):
 	    #make dvpi0 pairs
-	    df_dvpi0p = self.df_epgg
+	    df_dvpi0p = copy(self.df_epg)
 
 	    #common cuts
 	    cut_xBupper = df_dvpi0p.loc[:, "xB"] < 1  # xB
@@ -1820,7 +1820,7 @@ class smearingDist():
 	    df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
 	    df_dvpi0p = df_dvpi0p.loc[~df_dvpi0p.event.duplicated(), :]
 	    df_dvpi0p = df_dvpi0p.sort_values(by='event')        
-	    self.df_epgg = df_dvpi0p #done with saving x
+	    self.df_epg = df_dvpi0p #done with saving x
 
 
 
