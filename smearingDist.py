@@ -974,6 +974,7 @@ class smearingDist():
 
 
 		for sector in range(1, 7):
+			correction_s = []
 			for i in range(len(GeEdges)-1):
 			# for i in range(len(GthetaEdges)-1):
 
@@ -981,17 +982,17 @@ class smearingDist():
 				GeMin = GeEdges[i]
 				GeMax = GeEdges[i+1]
 
-				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
-				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax)]
-				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax)]
-				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax)]
-				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax)]
+				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax) & (epgExpInbCD.Gsector<sector)]
+				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax) & (pi0ExpInbCD.Gsector<sector)]
+				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax) & (dvcsSimInbCD.Gsector<sector)]
+				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax) & (pi0SimInbCD.Gsector<sector)]
+				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax) & (bkgSimInbCD.Gsector<sector)]
 
-				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
-				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax)]
-				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax)]
-				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax)]
-				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax)]
+				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax) & (epgExpInbCD.Gsector<sector)]
+				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax) & (pi0ExpOutbCD.Gsector<sector)]
+				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax) & (dvcsSimOutbCD.Gsector<sector)]
+				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax) & (pi0SimOutbCD.Gsector<sector)]
+				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax) & (bkgSimOutbCD.Gsector<sector)]
 
 				# GthetaMin = GthetaEdges[i]
 				# GthetaMax = GthetaEdges[i+1]
@@ -1022,6 +1023,7 @@ class smearingDist():
 				correction = (correction1+correction2)/2
 				print(correction1, contInb, correction2, contOutb)
 				corrections.append(correction)
+				correction_s.append(correction)
 
 				#performing correcting
 				self.CorrectionV2(epgExpInbCD, correction, mode = "epg")
@@ -1043,8 +1045,8 @@ class smearingDist():
 				self.makeDVCS(pol = "outbending")
 				pi0ExpOutbCD_corrected = self.df_epg
 
-				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax)]
-				epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax)]
+				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax) & (epgExpInbCD_corrected.Gsector == sector)]
+				epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax) & (epgExpOutbCD_corrected.Gsector == sector)]
 
 				pi0ExpInbCD_corrected = pi0ExpInbCD_corrected.loc[(pi0ExpInbCD_corrected.Ge>GeMin) & (pi0ExpInbCD_corrected.Ge<GeMax) & (pi0ExpInbCD_corrected.Gsector == sector)]
 				pi0ExpOutbCD_corrected = pi0ExpOutbCD_corrected.loc[(pi0ExpOutbCD_corrected.Ge>GeMin) & (pi0ExpOutbCD_corrected.Ge<GeMax) & (pi0ExpOutbCD_corrected.Gsector == sector)]
@@ -1221,6 +1223,7 @@ class smearingDist():
 				plt.tight_layout()
 				plt.savefig(outDir+"OutbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
 				plt.clf()
+			print("correction in sector{}".format(sector), correction_s)
 
 		print(sigmas_opt, corrections, sectors)
 
