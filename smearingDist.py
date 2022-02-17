@@ -295,8 +295,8 @@ class smearingDist():
 			expPeak = bincenters[np.argmax(expDist)]
 			return expPeak - simPeak
 
-		if isinstance(sigma, str):
-			sigma = float(sigma)
+		# if isinstance(sigma, str):
+		# 	sigma = float(sigma)
 
 		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 		sigmas = np.linspace(0.013, 0.018, 6)
@@ -917,11 +917,11 @@ class smearingDist():
 			expPeak = bincenters[np.argmax(expDist)]
 			return expPeak - simPeak
 
-		if isinstance(sigma, str):
-			sigma = float(sigma)
+		# if isinstance(sigma, str):
+		# 	sigma = float(sigma)
 
 		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		sigmas = np.linspace(0.013, 0.018, 6)
+		sigmas = np.linspace(0.01, 0.04, 7)
 		corrections = []
 		sigmas_opt = []
 
