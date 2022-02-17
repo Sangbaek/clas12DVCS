@@ -1175,9 +1175,10 @@ class smearingDist():
 				for yind in range(0, 3):
 				    for xind in range(0,5):
 				        ind = 5*yind + xind
-				        # start = binstarts[ind]
-				        # end = binends[ind]
-				        # bins = np.linspace(start, end, 101)
+				        if varstoplot[ind]:
+				            pass
+				        else:
+				            continue
 				        simDist_dvcs, bins = np.histogram(dvcsSimInbCD_opt[varstoplot[ind]], 100, density = True)
 				        simDist_dvpi0, bins = np.histogram(bkgSimInbCD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
@@ -1201,6 +1202,10 @@ class smearingDist():
 				        # start = binstarts[ind]
 				        # end = binends[ind]
 				        # bins = np.linspace(start, end, 101)
+				        if varstoplot[ind]:
+				            pass
+				        else:
+				            continue
 				        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD_opt[varstoplot[ind]], 100, density = True)
 				        simDist_dvpi0, bins = np.histogram(bkgSimOutbCD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
