@@ -575,11 +575,11 @@ class smearingDist():
 
 
 		# PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = [0, 0.01, 0.02, 0.03, 0.04, 0.05]
-		sigma2s = np.linspace(0.3, 0.8, 11)
+		sigma1s = np.linspace(0.5, 0.9, 5)
+		sigma2s = np.linspace(0.3, 0.8, 6)
 		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		# sigma3s = np.linspace(0, 3, 31)
-		corrections = []
+		# corrections = []
 		sigma1s_temp = []
 		sigma2s_temp = []
 		# sigma3s_temp = []
@@ -601,7 +601,7 @@ class smearingDist():
 		pi0SimInbCDFT = pd.read_pickle(inDir+"/pi0SimInbCDFT")
 		pi0SimOutbCDFT = pd.read_pickle(inDir+"/pi0SimOutbCDFT")
 
-		corrections = []
+		# corrections = []
 
 		# for i in range(len(PpEdges)-1):
 		for i in range(len(PthetaEdges)-1):
@@ -646,33 +646,33 @@ class smearingDist():
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
 			scores = []
-			correction_all = np.linspace(-0.8, 0, 17)
-			for correction_temp in correction_all:
-				#performing correcting
-				self.CorrectionV1(epgExpInbCDFT, correction_temp)
-				self.saveDVCSvars()
-				self.makeDVCS()
-				epgExpInbCDFT_corrected = self.df_epg
+			# correction_all = np.linspace(-0.8, 0, 17)
+			# for correction_temp in correction_all:
+			# 	#performing correcting
+			# 	self.CorrectionV1(epgExpInbCDFT, correction_temp)
+			# 	self.saveDVCSvars()
+			# 	self.makeDVCS()
+			# 	epgExpInbCDFT_corrected = self.df_epg
 
-				self.CorrectionV1(epgExpOutbCDFT, correction_temp)
-				self.saveDVCSvars()
-				self.makeDVCS()
-				epgExpOutbCDFT_corrected = self.df_epg
+			# 	self.CorrectionV1(epgExpOutbCDFT, correction_temp)
+			# 	self.saveDVCSvars()
+			# 	self.makeDVCS()
+			# 	epgExpOutbCDFT_corrected = self.df_epg
 
-				# epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
-				# epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
+			# 	# epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
+			# 	# epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
-				epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
-				epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
+			# 	epgExpInbCDFT_corrected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
+			# 	epgExpOutbCDFT_corrected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
 
-				score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
-				score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
-				score = score1**2 +score2**2
-				scores.append(score)
-			print(scores)
-			correction_opt = correction_all[np.argmin(scores)]
-			corrections.append(correction_opt)
-			print(correction_opt)
+			# 	score1 = epgExpInbCDFT_corrected.MM2_ep.mean() - (1-contInb)*dvcsSimInbCDFT_selected.MM2_ep.mean() - contInb*bkgSimInbCDFT_selected.MM2_ep.mean()
+			# 	score2 = epgExpOutbCDFT_corrected.MM2_ep.mean() - (1-contOutb)*dvcsSimOutbCDFT_selected.MM2_ep.mean() - contOutb*bkgSimOutbCDFT_selected.MM2_ep.mean()
+			# 	score = score1**2 +score2**2
+			# 	scores.append(score)
+			# print(scores)
+			# correction_opt = correction_all[np.argmin(scores)]
+			# corrections.append(correction_opt)
+			# print(correction_opt)
 
 			# self.CorrectionV1(epgExpInbCDFT, 0.8/(1+np.exp(58.657*(epgExpInbCDFT.Pp-0.41))))
 			# self.saveDVCSvars()
@@ -684,21 +684,21 @@ class smearingDist():
 			# self.makeDVCS()
 			# epgExpOutbCDFT_corrected = self.df_epg
 
-			self.CorrectionV1(epgExpInbCDFT, correction_opt)
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpInbCDFT_corrected = self.df_epg
+			# self.CorrectionV1(epgExpInbCDFT, correction_opt)
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpInbCDFT_corrected = self.df_epg
 
-			self.CorrectionV1(epgExpOutbCDFT, correction_opt)
-			self.saveDVCSvars()
-			self.makeDVCS()
-			epgExpOutbCDFT_corrected = self.df_epg
+			# self.CorrectionV1(epgExpOutbCDFT, correction_opt)
+			# self.saveDVCSvars()
+			# self.makeDVCS()
+			# epgExpOutbCDFT_corrected = self.df_epg
 
 			# epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Pp>PpMin) & (epgExpInbCDFT_corrected.Pp<PpMax)]
 			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Pp>PpMin) & (epgExpOutbCDFT_corrected.Pp<PpMax)]
 
-			epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
-			epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT_corrected.loc[(epgExpInbCDFT_corrected.Ptheta>PthetaMin) & (epgExpInbCDFT_corrected.Ptheta<PthetaMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
 
 			for sigma1 in sigma1s:
 				for sigma2 in sigma2s:
@@ -783,7 +783,7 @@ class smearingDist():
 			print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2, distances]).T)
 			# print(np.array([sigma2s_temp, distances2]).T)
 			# print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
-			print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
+			print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt)#, correction_opt) #, sigma3_opt)#, correction_opt) 
 			# print(PthetaMin, PthetaMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
 
 			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
@@ -813,8 +813,8 @@ class smearingDist():
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
 			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
-			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
+			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
 			# plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 			plt.clf()
 
@@ -838,16 +838,18 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
+			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
-			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
 			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 
-		print(sigmas_opt, corrections)
+		print(sigmas_opt)#, corrections)
+
 
 	def SmearingV1(self, df, sigma1, sigma2, sigma3):
 		df_epg = copy(df)
-		df_epg.loc[df_epg["Psector"]>7, "Pp"] = df_epg.loc[df_epg["Psector"]>7, "Pp"]*np.random.normal(1, sigma1, len(df_epg.loc[df_epg.Psector>7]))
+		regulator = np.abs(2*(1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
+		df_epg.loc[df_epg["Psector"]>7, "Pp"] = df_epg.loc[df_epg["Psector"]>7, "Pp"]*np.random.normal(1, regulator*sigma1, len(df_epg.loc[df_epg.Psector>7]))
 		df_epg.loc[df_epg["Psector"]>7, "Ptheta"] = df_epg.loc[df_epg["Psector"]>7, "Ptheta"] + np.random.normal(0, sigma2, len(df_epg.loc[df_epg.Psector>7]))
 		df_epg.loc[df_epg["Psector"]>7, "Pphi"] = df_epg.loc[df_epg["Psector"]>7, "Pphi"] + np.random.normal(0, sigma3, len(df_epg.loc[df_epg.Psector>7])) 
 		df_epg.loc[:, 'Pe'] = np.sqrt( df_epg.Pp**2 + M**2)
@@ -868,6 +870,308 @@ class smearingDist():
 		df_epg.loc[:, "Ppz"] = df_epg.loc[:, "Pp"]*np.cos(np.radians(df_epg.loc[:, "Ptheta"]))
 
 		self.df_epg = df_epg
+
+	def MakeV3(self, inDir = "SimtoDat/v2/", outDir = "SimtoDat/v3/"):
+
+		# binsMEepgInb = np.linspace(-0.439, 0.484, 101)
+		# binsMM2egInb = np.linspace(0.246, 1.569, 101)
+		# binsMEepgOutb = np.linspace(-0.436, 0.481, 101) 
+		# binsMM2egOutb = np.linspace(0.223, 1.602, 101) 
+
+		def distance(df1, df2, df_exp, cont = 0, var = "ME_epg"):
+			hist1, bins = np.histogram(df1.loc[:, var], bins = 101)
+			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
+			hist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
+			unchist1, _ = np.histogram(df1.loc[:, var], bins = bins)
+			unchist2, _ = np.histogram(df2.loc[:, var], bins = bins)
+			unchist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
+			unchist1 = np.sqrt(unchist1)
+			unchist2 = np.sqrt(unchist2)
+			unchist_exp = np.sqrt(unchist_exp)
+			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters)[0])
+			uncdist1 = unchist1/np.sum(hist1)/(np.diff(bincenters)[0])
+			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			uncdist2 = unchist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			dist_exp = hist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
+			uncdist_exp = unchist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
+			uncdist = np.sqrt((1-cont)**2 * uncdist1**2 + cont**2 * uncdist2 **2 + unchist_exp**2)
+			uncdist = np.where(uncdist>0, uncdist, np.inf)
+			distance = np.sum(((1-cont)*dist1 + cont*dist2 -dist_exp)**2)
+			return distance
+
+
+		def corr(df1, df2, df_exp, cont = 0, var = "ME_epg"):
+			hist1, bins = np.histogram(df1.loc[:, var], bins = 101)
+			hist2, _ = np.histogram(df2.loc[:, var], bins = bins)
+			hist_exp, _ = np.histogram(df_exp.loc[:, var], bins = bins)
+			bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			dist1 = hist1/np.sum(hist1)/(np.diff(bincenters)[0])
+			dist2 = hist2/np.sum(hist2)/(np.diff(bincenters)[0])
+			dist_exp = hist_exp/np.sum(hist_exp)/(np.diff(bincenters)[0])
+			simDist = (1-cont)*dist1 + cont*dist2
+			expDist = dist_exp
+			simPeak = bincenters[np.argmax(simDist)]
+			expPeak = bincenters[np.argmax(expDist)]
+			return expPeak - simPeak
+
+		if isinstance(sigma, str):
+			sigma = float(sigma)
+
+		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		sigmas = np.linspace(0.013, 0.018, 6)
+		corrections = []
+		sigmas_opt = []
+
+		epgExpInbCD = pd.read_pickle(inDir + "/epgExpInbCD")
+		epgExpOutbCD = pd.read_pickle(inDir + "/epgExpOutbCD")
+
+		pi0ExpInbCD = pd.read_pickle(inDir+"/pi0ExpInbCD")
+		pi0ExpOutbCD = pd.read_pickle(inDir+"/pi0ExpOutbCD")
+
+		dvcsSimInbCD = pd.read_pickle(inDir+"/dvcsSimInbCD")
+		dvcsSimOutbCD = pd.read_pickle(inDir+"/dvcsSimOutbCD")
+
+		bkgSimInbCD = pd.read_pickle(inDir+"/bkgSimInbCD")
+		bkgSimOutbCD = pd.read_pickle(inDir+"/bkgSimOutbCD")
+
+		pi0SimInbCD = pd.read_pickle(inDir+"/pi0SimInbCD")
+		pi0SimOutbCD = pd.read_pickle(inDir+"/pi0SimOutbCD")
+
+
+		# #performing correcting
+		# correction = 0.186/(1+np.exp(1.254*(epgExpInbCD.Gp-4.5)))
+		# self.CorrectionV2(epgExpInbCD, correction, mode = "epg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "inbending")
+		# epgExpInbCD = self.df_epg
+		# correction = 0.186/(1+np.exp(1.254*(pi0ExpInbCD.Gp-4.5)))
+		# self.CorrectionV2(pi0ExpInbCD, correction, mode = "epgg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "inbending")
+		# pi0ExpInbCD = self.df_epg
+		# #performing correcting
+		# correction = 0.186/(1+np.exp(1.254*(epgExpOutbCD.Gp-4.5)))
+		# self.CorrectionV2(epgExpOutbCD, correction, mode = "epg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "outbending")
+		# epgExpOutbCD = self.df_epg
+		# correction = 0.186/(1+np.exp(1.254*(pi0ExpOutbCD.Gp-4.5)))
+		# self.CorrectionV2(pi0ExpOutbCD, correction, mode = "epgg")
+		# self.saveDVCSvars()
+		# self.makeDVCS(pol = "outbending")
+		# pi0ExpOutbCD = self.df_epg
+
+		# epgExpInbCD.to_pickle(outDir + "/epgExpInbCD")
+		# epgExpOutbCD.to_pickle(outDir + "/epgExpOutbCD")
+
+		# pi0ExpInbCD.to_pickle(outDir+"/pi0ExpInbCD")
+		# pi0ExpOutbCD.to_pickle(outDir+"/pi0ExpOutbCD")
+
+
+		for i in range(len(GeEdges)-1):
+
+			distances = []
+			GeMin = GeEdges[i]
+			GeMax = GeEdges[i+1]
+
+			epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
+			pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax)]
+			dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax)]
+			pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax)]
+			bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax)]
+
+			epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
+			pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax)]
+			dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax)]
+			pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax)]
+			bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax)]
+
+			contInb = 0
+			contOutb = 0
+			if len(epgExpInbCD_selected)*len(pi0SimInbCD_selected) > 0:
+				contInb = len(bkgSimInbCD_selected)/len(pi0SimInbCD_selected)*len(pi0ExpInbCD_selected)/len(epgExpInbCD_selected)
+			if len(epgExpInbCD_selected)*len(pi0SimOutbCD_selected) > 0:
+				contOutb = len(bkgSimOutbCD_selected)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_selected)/len(epgExpOutbCD_selected)
+
+			correction1 = epgExpInbCD_selected.ME_epg.mean() - (1-contInb)*dvcsSimInbCD_selected.ME_epg.mean() - contInb*bkgSimInbCD_selected.ME_epg.mean()
+			correction2 = epgExpOutbCD_selected.ME_epg.mean() - (1-contOutb)*dvcsSimOutbCD_selected.ME_epg.mean() - contOutb*bkgSimOutbCD_selected.ME_epg.mean()
+			# correction1 = corr(dvcsSimInbCD_selected, bkgSimInbCD_selected, epgExpInbCD_selected, cont = contInb, var = "ME_epg")
+			# correction2 = corr(dvcsSimOutbCD_selected, bkgSimOutbCD_selected, epgExpOutbCD_selected, cont = contOutb, var = "ME_epg")
+			correction = (correction1+correction2)/2
+			print(correction1, contInb, correction2, contOutb)
+			corrections.append(correction)
+
+			#performing correcting
+			self.CorrectionV2(epgExpInbCD, correction, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			epgExpInbCD_corrected = self.df_epg
+			self.CorrectionV2(pi0ExpInbCD, correction, mode = "epgg")
+			self.saveDVCSvars()
+			self.makeDVCS()
+			pi0ExpInbCD_corrected = self.df_epg
+
+			#performing correcting
+			self.CorrectionV2(epgExpOutbCD, correction, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "outbending")
+			epgExpOutbCD_corrected = self.df_epg
+			self.CorrectionV2(pi0ExpOutbCD, correction, mode = "epgg")
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "outbending")
+			pi0ExpOutbCD_corrected = self.df_epg
+
+			epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax)]
+			epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax)]
+
+			# epgExpInbCD_corrected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
+			# epgExpOutbCD_corrected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
+
+
+			for sigma in sigmas:
+
+				print("smearing with {:.3f}".format(sigma))
+
+				#performing smearing
+				self.SmearingV2(dvcsSimInbCD, sigma, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "inbending")
+				dvcsSimInbCD_smeared = self.df_epg
+
+				self.SmearingV2(bkgSimInbCD, sigma, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "inbending")
+				bkgSimInbCD_smeared = self.df_epg
+
+				self.SmearingV2(dvcsSimOutbCD, sigma, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "outbending")
+				dvcsSimOutbCD_smeared = self.df_epg
+
+				self.SmearingV2(bkgSimOutbCD, sigma, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "outbending")
+				bkgSimOutbCD_smeared = self.df_epg
+
+				dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Ge>GeMin) & (dvcsSimInbCD_smeared.Ge<GeMax)]
+				dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Ge>GeMin) & (dvcsSimOutbCD_smeared.Ge<GeMax)]
+
+				distance1 = distance(dvcsSimInbCD_smeared, bkgSimInbCD_smeared, epgExpInbCD_corrected, cont = contInb, var = "ME_epg")
+				distance2 = distance(dvcsSimOutbCD_smeared, bkgSimOutbCD_smeared, epgExpOutbCD_corrected, cont = contOutb, var = "ME_epg")
+
+				distances.append(( distance1+ distance2 )/2) 
+
+			sigma_opt = sigmas[np.argmin(distances)]
+			sigmas_opt.append(sigma_opt)
+			self.SmearingV2(dvcsSimInbCD, sigma_opt, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "inbending")
+			dvcsSimInbCD_opt = self.df_epg
+
+			self.SmearingV2(dvcsSimOutbCD, sigma_opt, mode = "epg")
+			self.saveDVCSvars()
+			self.makeDVCS(pol = "outbending")
+			dvcsSimOutbCD_opt = self.df_epg
+			dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Ge>GeMin) & (dvcsSimInbCD_opt.Ge<GeMax)]
+			dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Ge>GeMin) & (dvcsSimOutbCD_opt.Ge<GeMax)]
+			print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
+			print(len(epgExpInbCD_corrected), len(epgExpOutbCD_corrected))
+			print(GeMin, GeMax, distances, sigma_opt, correction) 
+
+			varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
+			title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
+			unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
+			# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
+
+			fig, axs = plt.subplots(2, 5, figsize = (15,10))
+			for yind in range(0, 2):
+			    for xind in range(0,5):
+			        ind = 5*yind + xind
+			        # start = binstarts[ind]
+			        # end = binends[ind]
+			        # bins = np.linspace(start, end, 101)
+			        simDist_dvcs, bins = np.histogram(dvcsSimInbCD_opt[varstoplot[ind]], 100, density = True)
+			        simDist_dvpi0, bins = np.histogram(bkgSimInbCD[varstoplot[ind]], bins, density = True)
+			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
+			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+			        axs[yind, xind].hist(epgExpInbCD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].set_title(title[ind])
+			        # axs[yind, xind].set_xlim([start, end])
+			        if (unit[ind]):
+			            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			        else:
+			            axs[yind, xind].set_xlabel(title[ind])
+			plt.tight_layout()
+			plt.savefig(outDir+"InbCD{}_{:.3f}.pdf".format(i, sigma_opt))
+			plt.clf()
+
+			fig, axs = plt.subplots(2, 5, figsize = (15,10))
+			for yind in range(0, 2):
+			    for xind in range(0,5):
+			        ind = 5*yind + xind
+			        # start = binstarts[ind]
+			        # end = binends[ind]
+			        # bins = np.linspace(start, end, 101)
+			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD_opt[varstoplot[ind]], 100, density = True)
+			        simDist_dvpi0, bins = np.histogram(bkgSimOutbCD[varstoplot[ind]], bins, density = True)
+			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
+			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+			        axs[yind, xind].hist(epgExpOutbCD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].set_title(title[ind])
+			        # axs[yind, xind].set_xlim([start, end])
+			        if (unit[ind]):
+			            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			        else:
+			            axs[yind, xind].set_xlabel(title[ind])
+			plt.tight_layout()
+			plt.savefig(outDir+"OutbCD{}_{:.3f}.pdf".format(i, sigma_opt))
+
+		print(sigmas_opt, corrections)
+
+
+	def CorrectionV2(self, df, correction, mode = "epg"):
+		df_epg = copy(df)
+		if mode == "epg":
+			df_epg.loc[df_epg.Gsector<7, 'Gp'] = df_epg.Gp + correction
+			df_epg.loc[df_epg.Gsector<7, 'Ge'] = df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
+		elif mode == "epgg":
+			df_epg.loc[df_epg.Gsector<7, 'Gp'] = df_epg.Gp + correction
+			df_epg.loc[df_epg.Gsector<7, 'Ge'] = df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))			
+		self.df_epg = df_epg
+
+	def SmearingV2(self, df, sigma, mode = "epg"):
+		df_epg = copy(df)
+		if mode == "epg":
+			df_epg.loc[df_epg.Gsector<7, 'Gp'] = np.random.normal(1, sigma, len(df_epg.loc[df_epg.Gsector<7]))*df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[df_epg.Gsector<7, 'Ge'] = df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
+		if mode == "epgg":
+			df_epg.loc[df_epg.Gsector<7, 'Gp'] = np.random.normal(1, sigma, len(df_epg.loc[df_epg.Gsector<7]))*df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[df_epg.Gsector<7, 'Ge'] = df_epg.loc[df_epg.Gsector<7, 'Gp']
+			df_epg.loc[:, "Gpx"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.cos(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpy"] = df_epg.loc[:, "Gp"]*np.sin(np.radians(df_epg.loc[:, "Gtheta"]))*np.sin(np.radians(df_epg.loc[:, "Gphi"]))
+			df_epg.loc[:, "Gpz"] = df_epg.loc[:, "Gp"]*np.cos(np.radians(df_epg.loc[:, "Gtheta"]))
+
+			df_epg.loc[df_epg.Gsector<7, 'Gp2'] = np.random.normal(1, 0.035, len(df_epg.loc[df_epg.Gsector<7]))*df_epg.loc[df_epg.Gsector<7, 'Gp2']
+			df_epg.loc[df_epg.Gsector<7, 'Ge2'] = df_epg.loc[df_epg.Gsector<7, 'Gp2']
+			df_epg.loc[:, "Gpx2"] = df_epg.loc[:, "Gp2"]*np.sin(np.radians(df_epg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_epg.loc[:, "Gphi2"]))
+			df_epg.loc[:, "Gpy2"] = df_epg.loc[:, "Gp2"]*np.sin(np.radians(df_epg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_epg.loc[:, "Gphi2"]))
+			df_epg.loc[:, "Gpz2"] = df_epg.loc[:, "Gp2"]*np.cos(np.radians(df_epg.loc[:, "Gtheta2"]))
+
+		self.df_epg = df_epg
+
 	def saveDVCSvars(self):
 	    #set up dvcs variables
 	    df_epg = self.df_epg
@@ -1437,8 +1741,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-v","--version", help="version", default="v0")
-    parser.add_argument("-o","--outDir", help="output directory", default="/SimtoDat/v0")
+    parser.add_argument("-v","--version", help="version", default="v2")
+    parser.add_argument("-o","--outDir", help="output directory", default="/SimtoDat/v2")
     
     args = parser.parse_args()
 
