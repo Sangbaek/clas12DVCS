@@ -222,7 +222,7 @@ class root2pickle():
         # df_protonRec = df_protonRec.astype({"PCvt5Hitx": float, "PCvt5Hity": float, "PCvt5Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt7Hitx": float, "PCvt7Hity": float, "PCvt7Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt12Hitx": float, "PCvt12Hity": float, "PCvt12Hitz": float})
-        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "GcX": float, "GcY": float})
+        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
 
         #photon fiducial cuts by F.X. Girod
         df_gammaRec.loc[:, "GFid"] = 0
@@ -485,11 +485,13 @@ class root2pickle():
         #FT photon
         df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]*np.random.normal(1, 0.013 + 0.003/(1+np.exp(0.761*(df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]-6))), len(df_gammaRec.loc[df_gammaRec.Gsector>7]))
         #FD photon
-        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, 0.025 + 0.015/(1+np.exp((df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]-18.75))), len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
+        df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, 0.025 + 0.015/(1+np.exp((df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gtheta"]-18.75))), len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
 
         df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
         df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
+
+        df_gammaRec.loc[:,'SamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
 
         #smearing proton
         #CD proton

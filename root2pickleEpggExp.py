@@ -81,7 +81,7 @@ class root2pickle():
         # df_protonRec = df_protonRec.astype({"PCvt5Hitx": float, "PCvt5Hity": float, "PCvt5Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt7Hitx": float, "PCvt7Hity": float, "PCvt7Hitz": float})
         # df_protonRec = df_protonRec.astype({"PCvt12Hitx": float, "PCvt12Hity": float, "PCvt12Hitz": float})
-        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "GcX": float, "GcY": float})
+        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
 
         #photon FD fiducial cuts by F.X. Girod
         df_gammaRec.loc[:, "GFid"] = 0
@@ -351,26 +351,31 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
+            FT_corr = (-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where(FT_corr>0, FT_corr, 0)
             df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]# + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+
+            df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
         if detRes:
             df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
+
+        df_gammaRec.loc[:,'SamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
                          how='outer', on='event', suffixes=("", "2"))
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
 
-        if correction:
-            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where((-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25>0, (-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25, 0)
-            # df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] = df_gg.loc[(df_gg["Gsector"]<7)&(df_gg["Gsector2"]>7), "Gp2"] + 0.25
+        # if correction:
+        #     df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
+        #     df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
+        #     df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
 
-            df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
-            df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
-            df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
-
-            df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
-            df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
-            df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
+        #     df_gg.loc[:, "Gpx2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.cos(np.radians(df_gg.loc[:, "Gphi2"]))
+        #     df_gg.loc[:, "Gpy2"] = df_gg.loc[:, "Gp2"]*np.sin(np.radians(df_gg.loc[:, "Gtheta2"]))*np.sin(np.radians(df_gg.loc[:, "Gphi2"]))
+        #     df_gg.loc[:, "Gpz2"] = df_gg.loc[:, "Gp2"]*np.cos(np.radians(df_gg.loc[:, "Gtheta2"]))
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
