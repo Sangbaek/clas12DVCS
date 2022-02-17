@@ -1015,7 +1015,6 @@ class smearingDist():
 					contInb = len(bkgSimInbCD_selected)/len(pi0SimInbCD_selected)*len(pi0ExpInbCD_selected)/len(epgExpInbCD_selected)
 				if len(epgExpOutbCD_selected)*len(pi0SimOutbCD_selected) > 0:
 					contOutb = len(bkgSimOutbCD_selected)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_selected)/len(epgExpOutbCD_selected)
-				print(len(bkgSimInbCD_selected), len(pi0SimInbCD_selected), len(pi0ExpInbCD_selected),len(epgExpInbCD_selected))
 
 				correction1 = epgExpInbCD_selected.ME_epg.mean() - (1-contInb)*dvcsSimInbCD_selected.ME_epg.mean() - contInb*bkgSimInbCD_selected.ME_epg.mean()
 				correction2 = epgExpOutbCD_selected.ME_epg.mean() - (1-contOutb)*dvcsSimOutbCD_selected.ME_epg.mean() - contOutb*bkgSimOutbCD_selected.ME_epg.mean()
@@ -1032,8 +1031,8 @@ class smearingDist():
 				self.makeDVCS()
 				epgExpInbCD_corrected = self.df_epg
 				self.CorrectionV2(pi0ExpInbCD, correction, mode = "epgg")
-				self.saveDVCSvars()
-				self.makeDVCS()
+				self.saveDVpi0Pvars()
+				self.makeDVpi0P()
 				pi0ExpInbCD_corrected = self.df_epg
 
 				#performing correcting
@@ -1042,8 +1041,8 @@ class smearingDist():
 				self.makeDVCS(pol = "outbending")
 				epgExpOutbCD_corrected = self.df_epg
 				self.CorrectionV2(pi0ExpOutbCD, correction, mode = "epgg")
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "outbending")
+				self.saveDVpi0Pvars()
+				self.makeDVpi0P(pol = "outbending")
 				pi0ExpOutbCD_corrected = self.df_epg
 
 				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax) & (epgExpInbCD_corrected.Gsector == sector)]
@@ -1163,7 +1162,6 @@ class smearingDist():
 				if len(epgExpOutbCD_corrected)*len(pi0SimOutbCD_opt) > 0:
 					contOutb = len(bkgSimOutbCD_opt)/len(pi0SimOutbCD_opt)*len(pi0ExpOutbCD_corrected)/len(epgExpOutbCD_corrected)
 
-				print(len(bkgSimInbCD_opt), len(pi0SimInbCD_opt), len(pi0ExpInbCD_corrected),len(epgExpInbCD_corrected))
 				print(contInb, contOutb)
 
 				print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
