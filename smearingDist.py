@@ -1015,6 +1015,7 @@ class smearingDist():
 					contInb = len(bkgSimInbCD_selected)/len(pi0SimInbCD_selected)*len(pi0ExpInbCD_selected)/len(epgExpInbCD_selected)
 				if len(epgExpOutbCD_selected)*len(pi0SimOutbCD_selected) > 0:
 					contOutb = len(bkgSimOutbCD_selected)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_selected)/len(epgExpOutbCD_selected)
+				print(len(bkgSimInbCD_selected), len(pi0SimInbCD_selected), len(pi0ExpInbCD_selected),len(epgExpInbCD_selected))
 
 				correction1 = epgExpInbCD_selected.ME_epg.mean() - (1-contInb)*dvcsSimInbCD_selected.ME_epg.mean() - contInb*bkgSimInbCD_selected.ME_epg.mean()
 				correction2 = epgExpOutbCD_selected.ME_epg.mean() - (1-contOutb)*dvcsSimOutbCD_selected.ME_epg.mean() - contOutb*bkgSimOutbCD_selected.ME_epg.mean()
@@ -1160,8 +1161,9 @@ class smearingDist():
 				if len(epgExpInbCD_corrected)*len(pi0SimInbCD_opt) > 0:
 					contInb = len(bkgSimInbCD_opt)/len(pi0SimInbCD_opt)*len(pi0ExpInbCD_corrected)/len(epgExpInbCD_corrected)
 				if len(epgExpOutbCD_corrected)*len(pi0SimOutbCD_opt) > 0:
-					contOutb = len(bkgSimOutbCD_opt)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_corrected)/len(epgExpOutbCD_corrected)
+					contOutb = len(bkgSimOutbCD_opt)/len(pi0SimOutbCD_opt)*len(pi0ExpOutbCD_corrected)/len(epgExpOutbCD_corrected)
 
+				print(len(bkgSimInbCD_opt), len(pi0SimInbCD_opt), len(pi0ExpInbCD_corrected),len(epgExpInbCD_corrected))
 				print(contInb, contOutb)
 
 				print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
