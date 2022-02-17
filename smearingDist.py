@@ -1162,6 +1162,8 @@ class smearingDist():
 				if len(epgExpOutbCD_corrected)*len(pi0SimOutbCD_opt) > 0:
 					contOutb = len(bkgSimOutbCD_opt)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_corrected)/len(epgExpOutbCD_corrected)
 
+				print(contInb, contOutb)
+
 				print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
 				print(len(epgExpInbCD_corrected), len(epgExpOutbCD_corrected))
 				print(GeMin, GeMax, distances, sigma_opt, correction) 
@@ -1182,7 +1184,7 @@ class smearingDist():
 				        else:
 				            continue
 				        simDist_dvcs, bins = np.histogram(dvcsSimInbCD_opt[varstoplot[ind]], 100, density = True)
-				        simDist_dvpi0, bins = np.histogram(bkgSimInbCD_opt[varstoplot[ind]], bins, density = True)
+				        simDist_dvpi0, _ = np.histogram(bkgSimInbCD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 				        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
@@ -1209,7 +1211,7 @@ class smearingDist():
 				        else:
 				            continue
 				        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD_opt[varstoplot[ind]], 100, density = True)
-				        simDist_dvpi0, bins = np.histogram(bkgSimOutbCD_opt[varstoplot[ind]], bins, density = True)
+				        simDist_dvpi0, _ = np.histogram(bkgSimOutbCD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 				        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
