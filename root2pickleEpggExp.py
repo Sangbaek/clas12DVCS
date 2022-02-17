@@ -351,7 +351,7 @@ class root2pickle():
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
             df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
-            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]# + 0.0045*df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]**2
 
         if detRes:
             df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
