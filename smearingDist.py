@@ -920,8 +920,8 @@ class smearingDist():
 		# if isinstance(sigma, str):
 		# 	sigma = float(sigma)
 
-		# GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
-		GthetaEdges = [5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35]
+		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		# GthetaEdges = [5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35]
 		sigmas = [0.02, 0.025, 0.03, 0.035, 0.04]
 		corrections = []
 		sigmas_opt = []
@@ -973,40 +973,40 @@ class smearingDist():
 		# pi0ExpOutbCD.to_pickle(outDir+"/pi0ExpOutbCD")
 
 
-		# for i in range(len(GeEdges)-1):
 		for sector in range(1, 7):
-			for i in range(len(GthetaEdges)-1):
+			for i in range(len(GeEdges)-1):
+			# for i in range(len(GthetaEdges)-1):
 
 				distances = []
-				# GeMin = GeEdges[i]
-				# GeMax = GeEdges[i+1]
+				GeMin = GeEdges[i]
+				GeMax = GeEdges[i+1]
 
-				# epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
-				# pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax)]
-				# dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax)]
-				# pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax)]
-				# bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax)]
+				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
+				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax)]
+				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax)]
+				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax)]
+				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax)]
 
-				# epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
-				# pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax)]
-				# dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax)]
-				# pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax)]
-				# bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax)]
+				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
+				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax)]
+				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax)]
+				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax)]
+				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax)]
 
-				GthetaMin = GthetaEdges[i]
-				GthetaMax = GthetaEdges[i+1]
+				# GthetaMin = GthetaEdges[i]
+				# GthetaMax = GthetaEdges[i+1]
 
-				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Gtheta>GthetaMin) & (epgExpInbCD.Gtheta<GthetaMax) & (epgExpInbCD.Gsector == sector)]
-				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Gtheta>GthetaMin) & (pi0ExpInbCD.Gtheta<GthetaMax) & (pi0ExpInbCD.Gsector == sector)]
-				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Gtheta>GthetaMin) & (dvcsSimInbCD.Gtheta<GthetaMax) & (dvcsSimInbCD.Gsector == sector)]
-				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Gtheta>GthetaMin) & (pi0SimInbCD.Gtheta<GthetaMax) & (pi0SimInbCD.Gsector == sector)]
-				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Gtheta>GthetaMin) & (bkgSimInbCD.Gtheta<GthetaMax) & (bkgSimInbCD.Gsector == sector)]
+				# epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Gtheta>GthetaMin) & (epgExpInbCD.Gtheta<GthetaMax) & (epgExpInbCD.Gsector == sector)]
+				# pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Gtheta>GthetaMin) & (pi0ExpInbCD.Gtheta<GthetaMax) & (pi0ExpInbCD.Gsector == sector)]
+				# dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Gtheta>GthetaMin) & (dvcsSimInbCD.Gtheta<GthetaMax) & (dvcsSimInbCD.Gsector == sector)]
+				# pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Gtheta>GthetaMin) & (pi0SimInbCD.Gtheta<GthetaMax) & (pi0SimInbCD.Gsector == sector)]
+				# bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Gtheta>GthetaMin) & (bkgSimInbCD.Gtheta<GthetaMax) & (bkgSimInbCD.Gsector == sector)]
 
-				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Gtheta>GthetaMin) & (epgExpOutbCD.Gtheta<GthetaMax) & (epgExpOutbCD.Gsector == sector)]
-				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Gtheta>GthetaMin) & (pi0ExpOutbCD.Gtheta<GthetaMax) & (pi0ExpOutbCD.Gsector == sector)]
-				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Gtheta>GthetaMin) & (dvcsSimOutbCD.Gtheta<GthetaMax) & (dvcsSimOutbCD.Gsector == sector)]
-				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Gtheta>GthetaMin) & (pi0SimOutbCD.Gtheta<GthetaMax) & (pi0SimOutbCD.Gsector == sector)]
-				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Gtheta>GthetaMin) & (bkgSimOutbCD.Gtheta<GthetaMax) & (bkgSimOutbCD.Gsector == sector)]
+				# epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Gtheta>GthetaMin) & (epgExpOutbCD.Gtheta<GthetaMax) & (epgExpOutbCD.Gsector == sector)]
+				# pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Gtheta>GthetaMin) & (pi0ExpOutbCD.Gtheta<GthetaMax) & (pi0ExpOutbCD.Gsector == sector)]
+				# dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Gtheta>GthetaMin) & (dvcsSimOutbCD.Gtheta<GthetaMax) & (dvcsSimOutbCD.Gsector == sector)]
+				# pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Gtheta>GthetaMin) & (pi0SimOutbCD.Gtheta<GthetaMax) & (pi0SimOutbCD.Gsector == sector)]
+				# bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Gtheta>GthetaMin) & (bkgSimOutbCD.Gtheta<GthetaMax) & (bkgSimOutbCD.Gsector == sector)]
 
 				contInb = 0
 				contOutb = 0
@@ -1043,11 +1043,11 @@ class smearingDist():
 				self.makeDVCS(pol = "outbending")
 				pi0ExpOutbCD_corrected = self.df_epg
 
-				# epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax)]
-				# epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax)]
+				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax)]
+				epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax)]
 
-				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Gtheta>GthetaMin) & (epgExpInbCD_corrected.Gtheta<GthetaMax) & (epgExpInbCD_corrected.Gsector == sector)]
-				epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Gtheta>GthetaMin) & (epgExpOutbCD_corrected.Gtheta<GthetaMax) & (epgExpOutbCD_corrected.Gsector == sector)]
+				# epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Gtheta>GthetaMin) & (epgExpInbCD_corrected.Gtheta<GthetaMax) & (epgExpInbCD_corrected.Gsector == sector)]
+				# epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Gtheta>GthetaMin) & (epgExpOutbCD_corrected.Gtheta<GthetaMax) & (epgExpOutbCD_corrected.Gsector == sector)]
 
 				# epgExpInbCD_corrected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
 				# epgExpOutbCD_corrected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
@@ -1078,8 +1078,17 @@ class smearingDist():
 					self.makeDVCS(pol = "outbending")
 					bkgSimOutbCD_smeared = self.df_epg
 
-					dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Gtheta>GthetaMin) & (dvcsSimInbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimInbCD_smeared.Gsector == sector)]
-					dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Gtheta>GthetaMin) & (dvcsSimOutbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimOutbCD_smeared.Gsector == sector)]
+					dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Ge>GeMin) & (dvcsSimInbCD_smeared.Ge<GeMax) & ( dvcsSimInbCD_smeared.Gsector == sector)]
+					dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Ge>GeMin) & (dvcsSimOutbCD_smeared.Ge<GeMax) & ( dvcsSimOutbCD_smeared.Gsector == sector)]
+
+					bkgSimInbCD_smeared = bkgSimInbCD_smeared.loc[(bkgSimInbCD_smeared.Ge>GeMin) & (bkgSimInbCD_smeared.Ge<GeMax) & ( bkgSimInbCD_smeared.Gsector == sector)]
+					bkgSimOutbCD_smeared = bkgSimOutbCD_smeared.loc[(bkgSimOutbCD_smeared.Ge>GeMin) & (bkgSimOutbCD_smeared.Ge<GeMax) & ( bkgSimOutbCD_smeared.Gsector == sector)]
+
+					# dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Gtheta>GthetaMin) & (dvcsSimInbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimInbCD_smeared.Gsector == sector)]
+					# dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Gtheta>GthetaMin) & (dvcsSimOutbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimOutbCD_smeared.Gsector == sector)]
+
+					# bkgSimInbCD_smeared = bkgSimInbCD_smeared.loc[(bkgSimInbCD_smeared.Gtheta>GthetaMin) & (bkgSimInbCD_smeared.Gtheta<GthetaMax) & ( bkgSimInbCD_smeared.Gsector == sector)]
+					# bkgSimOutbCD_smeared = bkgSimOutbCD_smeared.loc[(bkgSimOutbCD_smeared.Gtheta>GthetaMin) & (bkgSimOutbCD_smeared.Gtheta<GthetaMax) & ( bkgSimOutbCD_smeared.Gsector == sector)]
 
 					distance1 = distance(dvcsSimInbCD_smeared, bkgSimInbCD_smeared, epgExpInbCD_corrected, cont = contInb, var = "ME_epg")
 					distance2 = distance(dvcsSimOutbCD_smeared, bkgSimOutbCD_smeared, epgExpOutbCD_corrected, cont = contOutb, var = "ME_epg")
@@ -1088,6 +1097,7 @@ class smearingDist():
 
 				sigma_opt = sigmas[np.argmin(distances)]
 				sigmas_opt.append(sigma_opt)
+
 				self.SmearingV2(dvcsSimInbCD, sigma_opt, mode = "epg")
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
@@ -1097,11 +1107,33 @@ class smearingDist():
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "outbending")
 				dvcsSimOutbCD_opt = self.df_epg
-				dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Gtheta>GthetaMin) & (dvcsSimInbCD_opt.Gtheta<GthetaMax) & (dvcsSimInbCD_opt.Gsector == sector)]
-				dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Gtheta>GthetaMin) & (dvcsSimOutbCD_opt.Gtheta<GthetaMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
+
+				self.SmearingV2(bkgSimInbCD, sigma_opt, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "inbending")
+				bkgSimInbCD_opt = self.df_epg
+
+				self.SmearingV2(bkgSimOutbCD, sigma_opt, mode = "epg")
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "outbending")
+				bkgSimOutbCD_opt = self.df_epg
+
+				dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Ge>GeMin) & (dvcsSimInbCD_opt.Ge<GeMax) & (dvcsSimInbCD_opt.Gsector == sector)]
+				dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Ge>GeMin) & (dvcsSimOutbCD_opt.Ge<GeMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
+
+				bkgSimInbCD_opt = bkgSimInbCD_opt.loc[(bkgSimInbCD_opt.Ge>GeMin) & (bkgSimInbCD_opt.Ge<GeMax) & (bkgSimInbCD_opt.Gsector == sector)]
+				bkgSimOutbCD_opt = bkgSimOutbCD_opt.loc[(bkgSimOutbCD_opt.Ge>GeMin) & (bkgSimOutbCD_opt.Ge<GeMax) & (bkgSimOutbCD_opt.Gsector == sector)]
+
+				# dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Gtheta>GthetaMin) & (dvcsSimInbCD_opt.Gtheta<GthetaMax) & (dvcsSimInbCD_opt.Gsector == sector)]
+				# dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Gtheta>GthetaMin) & (dvcsSimOutbCD_opt.Gtheta<GthetaMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
+
+				# bkgSimInbCD_opt = bkgSimInbCD_opt.loc[(bkgSimInbCD_opt.Gtheta>GthetaMin) & (bkgSimInbCD_opt.Gtheta<GthetaMax) & (bkgSimInbCD_opt.Gsector == sector)]
+				# bkgSimOutbCD_opt = bkgSimOutbCD_opt.loc[(bkgSimOutbCD_opt.Gtheta>GthetaMin) & (bkgSimOutbCD_opt.Gtheta<GthetaMax) & (bkgSimOutbCD_opt.Gsector == sector)]
+
 				print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
 				print(len(epgExpInbCD_corrected), len(epgExpOutbCD_corrected))
-				print(GthetaMin, GthetaMax, distances, sigma_opt, correction) 
+				print(GeMin, GeMax, distances, sigma_opt, correction) 
+				# print(GthetaMin, GthetaMax, distances, sigma_opt, correction) 
 
 				varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
 				title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
