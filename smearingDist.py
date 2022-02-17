@@ -1165,14 +1165,14 @@ class smearingDist():
 				print(GeMin, GeMax, distances, sigma_opt, correction) 
 				# print(GthetaMin, GthetaMax, distances, sigma_opt, correction) 
 
-				varstoplot = ["Gp", "Gtheta", "Gphi", "coneAngle",  "reconGam", "MPt", "ME_epg", "MM2_epg", "MM2_eg", "coplanarity"]
-				title = [r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", "MPt"+r"${}_{epg}$", "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{eg}$", r"$\Delta \phi$"]
-				unit = [GeV, degree, degree, degree, degree, GeV, GeV, GeV2, GeV2, degree]
+				varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+				title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+				unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, "", GeV2, degree, degree, degree, degree, GeV, GeV2, GeV2, GeV2, GeVc]
 				# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
 				# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
-				fig, axs = plt.subplots(2, 5, figsize = (15,10))
-				for yind in range(0, 2):
+				fig, axs = plt.subplots(3, 5, figsize = (15,10))
+				for yind in range(0, 3):
 				    for xind in range(0,5):
 				        ind = 5*yind + xind
 				        # start = binstarts[ind]
@@ -1194,8 +1194,8 @@ class smearingDist():
 				plt.savefig(outDir+"InbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
 				plt.clf()
 
-				fig, axs = plt.subplots(2, 5, figsize = (15,10))
-				for yind in range(0, 2):
+				fig, axs = plt.subplots(3, 5, figsize = (15,10))
+				for yind in range(0, 3):
 				    for xind in range(0,5):
 				        ind = 5*yind + xind
 				        # start = binstarts[ind]
@@ -1215,6 +1215,7 @@ class smearingDist():
 				            axs[yind, xind].set_xlabel(title[ind])
 				plt.tight_layout()
 				plt.savefig(outDir+"OutbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
+				plt.clf()
 
 		print(sigmas_opt, corrections, sectors)
 
