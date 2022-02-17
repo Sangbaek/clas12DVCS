@@ -920,7 +920,7 @@ class smearingDist():
 		# if isinstance(sigma, str):
 		# 	sigma = float(sigma)
 
-		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 		# GthetaEdges = [5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35]
 		sigmas = [0]
 		corrections = []
@@ -982,17 +982,17 @@ class smearingDist():
 				GeMin = GeEdges[i]
 				GeMax = GeEdges[i+1]
 
-				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax) & (epgExpInbCD.Gsector<sector)]
-				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax) & (pi0ExpInbCD.Gsector<sector)]
-				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax) & (dvcsSimInbCD.Gsector<sector)]
-				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax) & (pi0SimInbCD.Gsector<sector)]
-				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax) & (bkgSimInbCD.Gsector<sector)]
+				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax) & (epgExpInbCD.Gsector==sector)]
+				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax) & (pi0ExpInbCD.Gsector==sector)]
+				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax) & (dvcsSimInbCD.Gsector==sector)]
+				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax) & (pi0SimInbCD.Gsector==sector)]
+				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax) & (bkgSimInbCD.Gsector==sector)]
 
-				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax) & (epgExpInbCD.Gsector<sector)]
-				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax) & (pi0ExpOutbCD.Gsector<sector)]
-				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax) & (dvcsSimOutbCD.Gsector<sector)]
-				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax) & (pi0SimOutbCD.Gsector<sector)]
-				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax) & (bkgSimOutbCD.Gsector<sector)]
+				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax) & (epgExpInbCD.Gsector==sector)]
+				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax) & (pi0ExpOutbCD.Gsector==sector)]
+				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax) & (dvcsSimOutbCD.Gsector==sector)]
+				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax) & (pi0SimOutbCD.Gsector==sector)]
+				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax) & (bkgSimOutbCD.Gsector==sector)]
 
 				# GthetaMin = GthetaEdges[i]
 				# GthetaMax = GthetaEdges[i+1]
