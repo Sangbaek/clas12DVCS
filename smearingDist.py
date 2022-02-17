@@ -974,8 +974,8 @@ class smearingDist():
 
 
 		for sector in range(1, 7):
-			# for i in range(len(GeEdges)-1):
-			for i in range(len(GthetaEdges)-1):
+			for i in range(len(GeEdges)-1):
+			# for i in range(len(GthetaEdges)-1):
 
 				distances = []
 				GeMin = GeEdges[i]
