@@ -920,7 +920,7 @@ class smearingDist():
 		# if isinstance(sigma, str):
 		# 	sigma = float(sigma)
 
-		GeEdges = [2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
+		GeEdges = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 9]
 		# GthetaEdges = [5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35]
 		sigmas = [0]
 		corrections = []
