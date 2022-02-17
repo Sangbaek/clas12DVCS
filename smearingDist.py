@@ -1126,14 +1126,14 @@ class smearingDist():
 				bkgSimOutbCD_opt = self.df_epg
 
 				self.SmearingV2(pi0SimInbCD, sigma_opt, mode = "epgg")
-				self.saveDVCSvars()
+				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "inbending")
-				pi0SimInbCD_opt = self.df_epg
+				pi0SimInbCD_opt = self.df_epgg
 
 				self.SmearingV2(pi0SimOutbCD, sigma_opt, mode = "epgg")
-				self.saveDVCSvars()
+				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "outbending")
-				pi0SimOutbCD_opt = self.df_epg
+				pi0SimOutbCD_opt = self.df_epgg
 
 				dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Ge>GeMin) & (dvcsSimInbCD_opt.Ge<GeMax) & (dvcsSimInbCD_opt.Gsector == sector)]
 				dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Ge>GeMin) & (dvcsSimOutbCD_opt.Ge<GeMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
@@ -1334,7 +1334,7 @@ class smearingDist():
 
 	    self.df_epg = df_epg
 
-	def saveDVpi0vars(self):
+	def saveDVpi0Pvars(self):
 	    #set up pi0 variables
 	    df_epgg = self.df_epgg
 
