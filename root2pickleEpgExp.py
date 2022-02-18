@@ -377,7 +377,7 @@ class root2pickle():
                 funcs = [quintic, quintic, quintic, cubic, cubic, quintic]
                 cond = df_gammaRec.Gsector == sector
 
-                FD_phot_corr_sector = funcs[i](args[i], df_gammaRec.loc[cond, "Gp"])
+                FD_phot_corr_sector = funcs[sector-1](args[sector-1], df_gammaRec.loc[cond, "Gp"])
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
