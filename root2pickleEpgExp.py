@@ -368,10 +368,6 @@ class root2pickle():
                     return 0*x
                 return a*x*(x-b)**3 * (x-c)
 
-            def quintic2(args, x):
-                a, b, c, d, e = args
-                return a*x**5 + b*x**4 + c*x**3 + d*x**2 + e*x
-
             for sector in range(1, 7):
                 args = [[-0.0000732, 1.480, 9.344], [-0.000135, 3.070, 9.248], [-0.0000437, 0.719, 9.873], [-0.0000428, 0.00234, 0.0103], [0.000250, -0.00314, 0.0232], [-0.0000454, 0.517, 9.447]]
                 funcs = [quintic, quintic, quintic, cubic, cubic, quintic]
@@ -379,9 +375,10 @@ class root2pickle():
                 FD_phot_corr_sector = funcs[sector-1](args[sector-1], df_gammaRec.loc[cond, "Gp"])
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
-                # args_minor = [[-0.000272, 0.00517, -0.0338, 0.0928, -0.113 ], [-0.000217, 0.00434, -0.0299, 0.0872, -0.113 ], [-0.000196, 0.00349, -0.0195, 0.0384, -0.0383  ], [-0.000227, 0.00461, -0.0321, 0.0924, -0.113  ], [-0.000156, 0.00327, -0.0243, 0.0764, -0.0937 ], [-0.000351, 0.00674, -0.0439, 0.115, -0.117 ]]
-                # FD_phot_corr_minor_sector = quintic2(args_minor[sector-1], df_gammaRec.loc[cond, "Gp"])
-                # df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
+                funcs_minor = [quintic, quintic, quintic, cubic, cubic, cubic]
+                args_minor = [[-0.0000168, 0.821, 8.894], [-0.000135, 3.070, 9.248], [-0.0000620, 2.793, 8.865], [ 0.000132, -0.00162,  0.00978], [-0.000135,  0.000282, 0.00650], [ 0.000263,  -0.00293,   0.0139]]
+                FD_phot_corr_minor_sector = funcs[sector-1](args_minor[sector-1], df_gammaRec.loc[cond, "Gp"])
+                df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
