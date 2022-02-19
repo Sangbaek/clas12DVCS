@@ -468,8 +468,8 @@ class root2pickle():
 
         #smearing proton
         #CD proton
-        regulator = 1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.38)/0.02))
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, regulator*0.08, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        # regulator = np.abs(2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
+        # df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, regulator*0, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, 0.6, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 0.8 + 2.2/(1+np.exp(5.518*(df_protonRec.loc[df_protonRec.Psector>7, "Pp"]-0.625))), len(df_protonRec.loc[df_protonRec.Psector>7])) 
         # #FD proton
@@ -608,8 +608,8 @@ class root2pickle():
         cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
         cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
         cut_Ppmax = df_dvpi0p.Pp < 2  # Pp
-        # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax
+        cut_Pthetamin = df_dvpi0p.Ptheta > 0  # Ptheta
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
 
         df_dvpi0p = df_dvpi0p[cut_common]
 
@@ -820,8 +820,9 @@ class root2pickle():
             cut_Esector = (df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
             cut_Psector = ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"]) ) & ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector2"]) )
             cut_Ppmax = df_Rec.Pp < 2  # Pp
+            cut_Pthetamin = df_Rec.Ptheta > 0  # Ptheta
             # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
             df_Rec = df_Rec[cut_common]
 
             #CDFT
@@ -879,8 +880,9 @@ class root2pickle():
             cut_Esector = 1#(df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
             cut_Psector = 1#~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"])) & ~( ((df_Rec["Pstat"]//10)%10>0) & df_Rec["Psector"]!=df_Rec["Gsector2"])
             cut_Ppmax = df_Rec.Pp < 2  # Pp
+            cut_Pthetamin = df_Rec.Ptheta > 0  # Ptheta
             # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
-            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
 
             df_Rec = df_Rec[cut_common]
 
