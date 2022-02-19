@@ -55,7 +55,7 @@ def nphistmean(hist, bins):
 
 class smearingDist():
 
-	def __init__(self, version, outDir = "SimtoDat/v0/"):
+	def __init__(self, version, outDir = "SimtoDat/v0/", pol = "inbending"):
 		self.GetVersion(version)
 		if version == "v0":
 			self.MakeV0(outDir = outDir)
@@ -65,6 +65,8 @@ class smearingDist():
 			self.MakeV2()
 		if version == "v3":
 			self.MakeV3()
+		if version == "v4":
+			self.MakeV4(pol = pol)
 
 	def GetVersion(self, version):
 		self.version = version
@@ -576,14 +578,14 @@ class smearingDist():
 			return distance
 
 
-		# PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = np.linspace(0.02, 0.09, 8)
-		sigma2s = np.linspace(0.3, 0.8, 6)
-		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
+		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+		sigma1s = [0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
+		# sigma2s = np.linspace(0.3, 0.8, 6)
+		# PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		# sigma3s = np.linspace(0, 3, 31)
 		# corrections = []
 		sigma1s_temp = []
-		sigma2s_temp = []
+		# sigma2s_temp = []
 		# sigma3s_temp = []
 
 		sigmas_opt = []
@@ -605,40 +607,40 @@ class smearingDist():
 
 		# corrections = []
 
-		# for i in range(len(PpEdges)-1):
-		for i in range(len(PthetaEdges)-1):
+		for i in range(len(PpEdges)-1):
+		# for i in range(len(PthetaEdges)-1):
 
 			distances1 = []
-			distances2 = []
+			# distances2 = []
 			# distances3 = []
-			# PpMin = PpEdges[i]
-			# PpMax = PpEdges[i+1]
-			PthetaMin = PthetaEdges[i]
-			PthetaMax = PthetaEdges[i+1]
+			PpMin = PpEdges[i]
+			PpMax = PpEdges[i+1]
+			# PthetaMin = PthetaEdges[i]
+			# PthetaMax = PthetaEdges[i+1]
 
-			# epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Pp>PpMin) & (epgExpInbCDFT.Pp<PpMax)]
-			# pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Pp>PpMin) & (pi0ExpInbCDFT.Pp<PpMax)]
-			# dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Pp>PpMin) & (dvcsSimInbCDFT.Pp<PpMax)]
-			# pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Pp>PpMin) & (pi0SimInbCDFT.Pp<PpMax)]
-			# bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Pp>PpMin) & (bkgSimInbCDFT.Pp<PpMax)]
+			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Pp>PpMin) & (epgExpInbCDFT.Pp<PpMax)]
+			pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Pp>PpMin) & (pi0ExpInbCDFT.Pp<PpMax)]
+			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Pp>PpMin) & (dvcsSimInbCDFT.Pp<PpMax)]
+			pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Pp>PpMin) & (pi0SimInbCDFT.Pp<PpMax)]
+			bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Pp>PpMin) & (bkgSimInbCDFT.Pp<PpMax)]
 
-			# epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Pp>PpMin) & (epgExpOutbCDFT.Pp<PpMax)]
-			# pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Pp>PpMin) & (pi0ExpOutbCDFT.Pp<PpMax)]
-			# dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Pp>PpMin) & (dvcsSimOutbCDFT.Pp<PpMax)]
-			# pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Pp>PpMin) & (pi0SimOutbCDFT.Pp<PpMax)]
-			# bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Pp>PpMin) & (bkgSimOutbCDFT.Pp<PpMax)]
+			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Pp>PpMin) & (epgExpOutbCDFT.Pp<PpMax)]
+			pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Pp>PpMin) & (pi0ExpOutbCDFT.Pp<PpMax)]
+			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Pp>PpMin) & (dvcsSimOutbCDFT.Pp<PpMax)]
+			pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Pp>PpMin) & (pi0SimOutbCDFT.Pp<PpMax)]
+			bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Pp>PpMin) & (bkgSimOutbCDFT.Pp<PpMax)]
 
-			epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ptheta>PthetaMin) & (epgExpInbCDFT.Ptheta<PthetaMax)]
-			pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Ptheta>PthetaMin) & (pi0ExpInbCDFT.Ptheta<PthetaMax)]
-			dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ptheta>PthetaMin) & (dvcsSimInbCDFT.Ptheta<PthetaMax)]
-			pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Ptheta>PthetaMin) & (pi0SimInbCDFT.Ptheta<PthetaMax)]
-			bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Ptheta>PthetaMin) & (bkgSimInbCDFT.Ptheta<PthetaMax)]
+			# epgExpInbCDFT_selected = epgExpInbCDFT.loc[(epgExpInbCDFT.Ptheta>PthetaMin) & (epgExpInbCDFT.Ptheta<PthetaMax)]
+			# pi0ExpInbCDFT_selected = pi0ExpInbCDFT.loc[(pi0ExpInbCDFT.Ptheta>PthetaMin) & (pi0ExpInbCDFT.Ptheta<PthetaMax)]
+			# dvcsSimInbCDFT_selected = dvcsSimInbCDFT.loc[(dvcsSimInbCDFT.Ptheta>PthetaMin) & (dvcsSimInbCDFT.Ptheta<PthetaMax)]
+			# pi0SimInbCDFT_selected = pi0SimInbCDFT.loc[(pi0SimInbCDFT.Ptheta>PthetaMin) & (pi0SimInbCDFT.Ptheta<PthetaMax)]
+			# bkgSimInbCDFT_selected = bkgSimInbCDFT.loc[(bkgSimInbCDFT.Ptheta>PthetaMin) & (bkgSimInbCDFT.Ptheta<PthetaMax)]
 
-			epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ptheta>PthetaMin) & (epgExpOutbCDFT.Ptheta<PthetaMax)]
-			pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Ptheta>PthetaMin) & (pi0ExpOutbCDFT.Ptheta<PthetaMax)]
-			dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ptheta>PthetaMin) & (dvcsSimOutbCDFT.Ptheta<PthetaMax)]
-			pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Ptheta>PthetaMin) & (pi0SimOutbCDFT.Ptheta<PthetaMax)]
-			bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Ptheta>PthetaMin) & (bkgSimOutbCDFT.Ptheta<PthetaMax)]
+			# epgExpOutbCDFT_selected = epgExpOutbCDFT.loc[(epgExpOutbCDFT.Ptheta>PthetaMin) & (epgExpOutbCDFT.Ptheta<PthetaMax)]
+			# pi0ExpOutbCDFT_selected = pi0ExpOutbCDFT.loc[(pi0ExpOutbCDFT.Ptheta>PthetaMin) & (pi0ExpOutbCDFT.Ptheta<PthetaMax)]
+			# dvcsSimOutbCDFT_selected = dvcsSimOutbCDFT.loc[(dvcsSimOutbCDFT.Ptheta>PthetaMin) & (dvcsSimOutbCDFT.Ptheta<PthetaMax)]
+			# pi0SimOutbCDFT_selected = pi0SimOutbCDFT.loc[(pi0SimOutbCDFT.Ptheta>PthetaMin) & (pi0SimOutbCDFT.Ptheta<PthetaMax)]
+			# bkgSimOutbCDFT_selected = bkgSimOutbCDFT.loc[(bkgSimOutbCDFT.Ptheta>PthetaMin) & (bkgSimOutbCDFT.Ptheta<PthetaMax)]
 
 			contInb = 0
 			contOutb = 0
@@ -647,7 +649,7 @@ class smearingDist():
 			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_selected) > 0:
 				contOutb = len(bkgSimOutbCDFT_selected)/len(pi0SimOutbCDFT_selected)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			scores = []
+			# scores = []
 			# correction_all = np.linspace(-0.8, 0, 17)
 			# for correction_temp in correction_all:
 			# 	#performing correcting
@@ -703,110 +705,159 @@ class smearingDist():
 			# epgExpOutbCDFT_selected = epgExpOutbCDFT_corrected.loc[(epgExpOutbCDFT_corrected.Ptheta>PthetaMin) & (epgExpOutbCDFT_corrected.Ptheta<PthetaMax)]
 
 			for sigma1 in sigma1s:
-				for sigma2 in sigma2s:
+				# for sigma2 in sigma2s:
 					# for sigma3 in sigma3s:
 							# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
-						print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
-				# print("smearing with {:.3f}".format(sigma2))
+						# print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
+				print("smearing with {:.3f}".format(sigma1))
 
-						#performing smearing
-						self.SmearingV1(dvcsSimInbCDFT, sigma1, sigma2, 0)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "inbending")
-						dvcsSimInbCDFT_smeared = self.df_epg
+				#performing smearing
+				self.SmearingV1(dvcsSimInbCDFT, sigma1, 0, 0)
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "inbending")
+				dvcsSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimInbCDFT, sigma1, sigma2, 0)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "inbending")
-						bkgSimInbCDFT_smeared = self.df_epg
+				self.SmearingV1(bkgSimInbCDFT, sigma1, 0, 0)
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "inbending")
+				bkgSimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(dvcsSimOutbCDFT, sigma1, sigma2, 0)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "outbending")
-						dvcsSimOutbCDFT_smeared = self.df_epg
+				self.SmearingV1(pi0SimInbCDFT, sigma1, 0, 0)
+				self.saveDVpi0Pvars()
+				self.makeDVCS(pol = "inbending")
+				pi0SimInbCDFT_smeared = self.df_epg
 
-						self.SmearingV1(bkgSimOutbCDFT, sigma1, sigma2, 0)
-						self.saveDVCSvars()
-						self.makeDVCS(pol = "outbending")
-						bkgSimOutbCDFT_smeared = self.df_epg
+				self.SmearingV1(dvcsSimOutbCDFT, sigma1, 0, 0)
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "outbending")
+				dvcsSimOutbCDFT_smeared = self.df_epg
 
-						dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
-						dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PthetaMax)]
+				self.SmearingV1(bkgSimOutbCDFT, sigma1, 0, 0)
+				self.saveDVCSvars()
+				self.makeDVCS(pol = "outbending")
+				bkgSimOutbCDFT_smeared = self.df_epg
 
-						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
-						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
-						distances1.append(( distance1+ distance2 )/2) 
+				self.SmearingV1(pi0SimOutbCDFT, sigma1, 0, 0)
+				self.saveDVpi0Pvars()
+				self.makeDVCS(pol = "outbending")
+				pi0SimOutbCDFT_smeared = self.df_epg
 
-						distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
-						distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
-						distances2.append(( distance1+ distance2 )/2) 
+				# dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
+				# dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PthetaMax)]
 
-						# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
-						# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
-						# distances3.append(( distance1+ distance2 )/2) 
+				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PpMin) & (dvcsSimInbCDFT_smeared.Ptheta<PpMax)]
+				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PpMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PpMax)]
 
-						sigma1s_temp.append(sigma1) 
-						sigma2s_temp.append(sigma2) 
-						# sigma3s_temp.append(sigma3) 
+				bkgSimInbCDFT_smeared = bkgSimInbCDFT_smeared.loc[(bkgSimInbCDFT_smeared.Ptheta>PpMin) & (bkgSimInbCDFT_smeared.Ptheta<PpMax)]
+				bkgSimOutbCDFT_smeared = bkgSimOutbCDFT_smeared.loc[(bkgSimOutbCDFT_smeared.Ptheta>PpMin) & (bkgSimOutbCDFT_smeared.Ptheta<PpMax)]
+				
+				contInb = 0
+				contOutb = 0
+				if len(epgExpInbCDFT_selected)*len(pi0SimInbCDFT_smeared) > 0:
+					contInb = len(bkgSimInbCDFT_smeared)/len(pi0SimInbCDFT_smeared)*len(pi0ExpInbCDFT_selected)/len(epgExpInbCDFT_selected)
+				if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_smeared) > 0:
+					contOutb = len(bkgSimOutbCDFT_smeared)/len(pi0SimOutbCDFT_smeared)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
 
-			distances = ((np.array(distances1) - np.min(distances1))/np.std(distances1))**2 + ((np.array(distances2) - np.min(distances2))/np.std(distances2))**2
-			sigma1_opt = sigma1s_temp[np.argmin(distances)]
-			sigma2_opt = sigma2s_temp[np.argmin(distances)]
+				distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "MM2_ep")
+				distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "MM2_ep")
+				distances1.append(( distance1+ distance2 )/2) 
+
+				# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "reconGam")
+				# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "reconGam")
+				# distances2.append(( distance1+ distance2 )/2) 
+
+				# distance1 = distance(dvcsSimInbCDFT_smeared, bkgSimInbCDFT_smeared, epgExpInbCDFT_selected, cont = contInb, var = "coplanarity")
+				# distance2 = distance(dvcsSimOutbCDFT_smeared, bkgSimOutbCDFT_smeared, epgExpOutbCDFT_selected, cont = contOutb, var = "coplanarity")
+				# distances3.append(( distance1+ distance2 )/2) 
+
+				sigma1s_temp.append(sigma1) 
+				# sigma2s_temp.append(sigma2) 
+				# sigma3s_temp.append(sigma3) 
+
+			# distances = ((np.array(distances1) - np.min(distances1))/np.std(distances1))**2 + ((np.array(distances2) - np.min(distances2))/np.std(distances2))**2
+			sigma1_opt = sigma1s_temp[np.argmin(distance1)]
+			# sigma2_opt = sigma2s_temp[np.argmin(distances)]
 			# sigma3_opt = sigma3s_temp[np.argmin(distances3)]
-			sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
+			# sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
 			# sigmas_opt.append(sigma2_opt)#, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, sigma2_opt, 0)#, sigma3_opt)
+			sigmas_opt.append(sigma1_opt)#, sigma3_opt])
+			self.SmearingV1(dvcsSimInbCDFT, sigma1_opt, 0, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimInbCDFT, sigma1_opt, sigma2_opt, 0)#, sigma3_opt)
+			self.SmearingV1(bkgSimInbCDFT, sigma1_opt, 0, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			bkgSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, sigma2_opt, 0)#sigma3_opt)
+			self.SmearingV1(pi0SimInbCDFT, sigma1_opt, 0, 0)#, sigma3_opt)
+			self.saveDVpi0Pvars()
+			self.makeDVpi0P(pol = "inbending")
+			pi0SimInbCDFT_opt = self.df_epg
+
+			self.SmearingV1(dvcsSimOutbCDFT, sigma1_opt, 0, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimOutbCDFT, sigma1_opt, sigma2_opt, 0)#sigma3_opt)
+			self.SmearingV1(bkgSimOutbCDFT, sigma1_opt, 0, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			bkgSimOutbCDFT_opt = self.df_epg
 
+			self.SmearingV1(pi0SimOutbCDFT, sigma1_opt, 0, 0)#, sigma3_opt)
+			self.saveDVpi0Pvars()
+			self.makeDVpi0P(pol = "inbending")
+			pi0SimOutbCDFT_opt = self.df_epg
+
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimInbCDFT_opt.Ptheta<PthetaMax)]
 			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Ptheta>PthetaMin) & (bkgSimInbCDFT_opt.Ptheta<PthetaMax)]
+			pi0SimInbCDFT_opt = pi0SimInbCDFT_opt.loc[(pi0SimInbCDFT_opt.Ptheta>PthetaMin) & (pi0SimInbCDFT_opt.Ptheta<PthetaMax)]
 			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_opt.Ptheta<PthetaMax)]
 			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Ptheta>PthetaMin) & (bkgSimOutbCDFT_opt.Ptheta<PthetaMax)]
+			pi0SimOutbCDFT_opt = pi0SimOutbCDFT_opt.loc[(pi0SimOutbCDFT_opt.Ptheta>PthetaMin) & (pi0SimOutbCDFT_opt.Ptheta<PthetaMax)]
+
+			contInb = 0
+			contOutb = 0
+			if len(epgExpInbCDFT_selected)*len(pi0SimInbCDFT_opt) > 0:
+				contInb = len(bkgSimInbCDFT_opt)/len(pi0SimInbCDFT_opt)*len(pi0ExpInbCDFT_selected)/len(epgExpInbCDFT_selected)
+			if len(epgExpInbCDFT_selected)*len(pi0SimOutbCDFT_opt) > 0:
+				contOutb = len(bkgSimOutbCDFT_opt)/len(pi0SimOutbCDFT_opt)*len(pi0ExpOutbCDFT_selected)/len(epgExpOutbCDFT_selected)
+
 			print(len(dvcsSimInbCDFT_opt), len(dvcsSimOutbCDFT_opt))
 			print(len(epgExpInbCDFT_selected), len(epgExpOutbCDFT_selected))
 			# print(np.array([sigma1s_temp, sigma2s_temp, sigma3s_temp, distances1, distances2, distances3]).T)
-			print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2, distances]).T)
+			# print(np.array([sigma1s_temp, sigma2s_temp, distances1, distances2, distances]).T)
 			# print(np.array([sigma2s_temp, distances2]).T)
+			print(np.array([sigma1s_temp, distances1]).T)
 			# print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
-			print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt)#, correction_opt) #, sigma3_opt)#, correction_opt) 
+			# print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt)#, correction_opt) #, sigma3_opt)#, correction_opt) 
 			# print(PthetaMin, PthetaMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
+			# print(PthetaMin, PthetaMax, sigma1_opt)#, sigma3_opt)#, correction_opt) 
+			print(PpMin, PpMax, sigma1_opt)#, sigma3_opt)#, correction_opt) 
+##
 
-			varstoplot = ["t1", "Ptheta", "Pphi",  "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
-			title = [r"$|t|$", r"$\theta_{p}$", r"$\phi_{p}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
-			unit = [GeV2, degree, degree, degree, degree, GeV, GeV2, GeV2, GeV2, GeVc]
-			# binstarts = [PpMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+			varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+			title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+			unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, "", GeV2, degree, degree, degree, degree, GeV, GeV2, GeV2, GeV2, GeVc]
+			# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
 			# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
-			fig, axs = plt.subplots(3, 3, figsize = (15,15))
-			for yind in range(0, 3):
-			    for xind in range(0,3):
+			fig, axs = plt.subplots(5, 3, figsize = (15,25))
+			for yind in range(0, 5):
+			    for xind in range(0, 3):
 			        ind = 3*yind + xind
-			        # start = binstarts[ind]
-			        # end = binends[ind]
-			        # bins = np.linspace(start, end, 101)
+			        if varstoplot[ind]:
+			            pass
+			        else:
+			            continue
 			        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT_opt[varstoplot[ind]], 100, density = True)
 			        simDist_dvpi0, _ = np.histogram(bkgSimInbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-			        axs[yind, xind].hist(epgExpInbCDFT_selected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].hist(epgExpInbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
 			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
@@ -814,25 +865,26 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
-			# plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
-			# plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma1_opt))
 			plt.clf()
 
-			fig, axs = plt.subplots(3, 3, figsize = (15,15))
-			for yind in range(0, 3):
-			    for xind in range(0,3):
+			fig, axs = plt.subplots(5, 3, figsize = (15,25))
+			for yind in range(0, 5):
+			    for xind in range(0, 3):
 			        ind = 3*yind + xind
 			        # start = binstarts[ind]
 			        # end = binends[ind]
 			        # bins = np.linspace(start, end, 101)
+			        if varstoplot[ind]:
+			            pass
+			        else:
+			            continue
 			        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT_opt[varstoplot[ind]], 100, density = True)
 			        simDist_dvpi0, _ = np.histogram(bkgSimOutbCDFT_opt[varstoplot[ind]], bins, density = True)
 			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-			        axs[yind, xind].hist(epgExpOutbCDFT_selected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].hist(epgExpOutbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
 			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
@@ -840,10 +892,8 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, correction_opt))
-			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt, sigma3_opt))
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}_{:.3f}.pdf".format(i, sigma1_opt, sigma2_opt))
-			# plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma1_opt))
+			plt.clf()
 
 		print(sigmas_opt)#, corrections)
 
@@ -1177,10 +1227,10 @@ class smearingDist():
 				# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
 				# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
-				fig, axs = plt.subplots(3, 5, figsize = (15,10))
-				for yind in range(0, 3):
-				    for xind in range(0,5):
-				        ind = 5*yind + xind
+				fig, axs = plt.subplots(5, 3, figsize = (15,25))
+				for yind in range(0, 5):
+				    for xind in range(0, 3):
+				        ind = 3*yind + xind
 				        if varstoplot[ind]:
 				            pass
 				        else:
@@ -1201,10 +1251,10 @@ class smearingDist():
 				plt.savefig(outDir+"InbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
 				plt.clf()
 
-				fig, axs = plt.subplots(3, 5, figsize = (15,10))
-				for yind in range(0, 3):
-				    for xind in range(0,5):
-				        ind = 5*yind + xind
+				fig, axs = plt.subplots(5, 3, figsize = (15,25))
+				for yind in range(0, 5):
+				    for xind in range(0, 3):
+				        ind = 3*yind + xind
 				        # start = binstarts[ind]
 				        # end = binends[ind]
 				        # bins = np.linspace(start, end, 101)
@@ -1272,7 +1322,7 @@ class smearingDist():
 
 		self.df_epg = df_epg
 
-	def MakeV4(self, inDir = "SimtoDat/v3/", outDir = "SimtoDat/v4/"):
+	def MakeV4(self, inDir = "SimtoDat/v3/", outDir = "SimtoDat/v4/", pol = "inbending"):
 
 		# binsMEepgInb = np.linspace(-0.439, 0.484, 101)
 		# binsMM2egInb = np.linspace(0.246, 1.569, 101)
@@ -1320,158 +1370,91 @@ class smearingDist():
 		# 	sigma = float(sigma)
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigmas = np.linspace(0.5, 0.9, 5)
-		PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
+		sigmas = [0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
+		# PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		sigmas_temp = []
 		corrections = []
 		sigmas_opt = []
 		sectors = []
 
-		epgExpInbFD = pd.read_pickle(inDir + "/epgExpInbFD")
-		epgExpOutbFD = pd.read_pickle(inDir + "/epgExpOutbFD")
-
-		pi0ExpInbFD = pd.read_pickle(inDir+"/pi0ExpInbFD")
-		pi0ExpOutbFD = pd.read_pickle(inDir+"/pi0ExpOutbFD")
-
-		dvcsSimInbFD = pd.read_pickle(inDir+"/dvcsSimInbFD")
-		dvcsSimOutbFD = pd.read_pickle(inDir+"/dvcsSimOutbFD")
-
-		bkgSimInbFD = pd.read_pickle(inDir+"/bkgSimInbFD")
-		bkgSimOutbFD = pd.read_pickle(inDir+"/bkgSimOutbFD")
-
-		pi0SimInbFD = pd.read_pickle(inDir+"/pi0SimInbFD")
-		pi0SimOutbFD = pd.read_pickle(inDir+"/pi0SimOutbFD")
-
+		if pol == "inbending":
+			print("FD inbending proton correction/ smearing...")
+			epgExpFD = pd.read_pickle(inDir + "/epgExpInbFD")
+			pi0ExpFD = pd.read_pickle(inDir+"/pi0ExpInbFD")
+			dvcsSimFD = pd.read_pickle(inDir+"/dvcsSimInbFD")
+			bkgSimFD = pd.read_pickle(inDir+"/bkgSimInbFD")
+			pi0SimFD = pd.read_pickle(inDir+"/pi0SimInbFD")
+		elif pol == "outbending":
+			print("FD outbending proton correction/ smearing...")
+			epgExpFD = pd.read_pickle(inDir + "/epgExpOutbFD")
+			pi0ExpFD = pd.read_pickle(inDir+"/pi0ExpOutbFD")
+			dvcsSimFD = pd.read_pickle(inDir+"/dvcsSimOutbFD")
+			bkgSimFD = pd.read_pickle(inDir+"/bkgSimOutbFD")
+			pi0SimFD = pd.read_pickle(inDir+"/pi0SimOutbFD")
 
 		for sector in range(1, 7):
 			correction_s = []
 			sigmas_opt_s = []
-			for i in range(len(GeEdges)-1):
-			# for i in range(len(GthetaEdges)-1):
+			for i in range(len(PpEdges)-1):
+			# for i in range(len(PthetaEdges)-1):
 
 				distances = []
-				GeMin = GeEdges[i]
-				GeMax = GeEdges[i+1]
+				PpMin = PpEdges[i]
+				PpMax = PpEdges[i+1]
 
-				epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax) & (epgExpInbCD.Gsector==sector)]
-				pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Ge>GeMin) & (pi0ExpInbCD.Ge<GeMax) & (pi0ExpInbCD.Gsector==sector)]
-				dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Ge>GeMin) & (dvcsSimInbCD.Ge<GeMax) & (dvcsSimInbCD.Gsector==sector)]
-				pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Ge>GeMin) & (pi0SimInbCD.Ge<GeMax) & (pi0SimInbCD.Gsector==sector)]
-				bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Ge>GeMin) & (bkgSimInbCD.Ge<GeMax) & (bkgSimInbCD.Gsector==sector)]
+				epgExpFD_selected = epgExpFD.loc[(epgExpFD.Pp>PpMin) & (epgExpFD.Pp<PpMax) & (epgExpFD.Psector==sector)]
+				pi0ExpFD_selected = pi0ExpFD.loc[(pi0ExpFD.Pp>PpMin) & (pi0ExpFD.Pp<PpMax) & (pi0ExpFD.Psector==sector)]
+				dvcsSimFD_selected = dvcsSimFD.loc[(dvcsSimFD.Pp>PpMin) & (dvcsSimFD.Pp<PpMax) & (dvcsSimFD.Psector==sector)]
+				pi0SimFD_selected = pi0SimFD.loc[(pi0SimFD.Pp>PpMin) & (pi0SimFD.Pp<PpMax) & (pi0SimFD.Psector==sector)]
+				bkgSimFD_selected = bkgSimFD.loc[(bkgSimFD.Pp>PpMin) & (bkgSimFD.Pp<PpMax) & (bkgSimFD.Psector==sector)]
 
-				epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax) & (epgExpOutbCD.Gsector==sector)]
-				pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Ge>GeMin) & (pi0ExpOutbCD.Ge<GeMax) & (pi0ExpOutbCD.Gsector==sector)]
-				dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Ge>GeMin) & (dvcsSimOutbCD.Ge<GeMax) & (dvcsSimOutbCD.Gsector==sector)]
-				pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Ge>GeMin) & (pi0SimOutbCD.Ge<GeMax) & (pi0SimOutbCD.Gsector==sector)]
-				bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Ge>GeMin) & (bkgSimOutbCD.Ge<GeMax) & (bkgSimOutbCD.Gsector==sector)]
-
-				# GthetaMin = GthetaEdges[i]
-				# GthetaMax = GthetaEdges[i+1]
-
-				# epgExpInbCD_selected = epgExpInbCD.loc[(epgExpInbCD.Gtheta>GthetaMin) & (epgExpInbCD.Gtheta<GthetaMax) & (epgExpInbCD.Gsector == sector)]
-				# pi0ExpInbCD_selected = pi0ExpInbCD.loc[(pi0ExpInbCD.Gtheta>GthetaMin) & (pi0ExpInbCD.Gtheta<GthetaMax) & (pi0ExpInbCD.Gsector == sector)]
-				# dvcsSimInbCD_selected = dvcsSimInbCD.loc[(dvcsSimInbCD.Gtheta>GthetaMin) & (dvcsSimInbCD.Gtheta<GthetaMax) & (dvcsSimInbCD.Gsector == sector)]
-				# pi0SimInbCD_selected = pi0SimInbCD.loc[(pi0SimInbCD.Gtheta>GthetaMin) & (pi0SimInbCD.Gtheta<GthetaMax) & (pi0SimInbCD.Gsector == sector)]
-				# bkgSimInbCD_selected = bkgSimInbCD.loc[(bkgSimInbCD.Gtheta>GthetaMin) & (bkgSimInbCD.Gtheta<GthetaMax) & (bkgSimInbCD.Gsector == sector)]
-
-				# epgExpOutbCD_selected = epgExpOutbCD.loc[(epgExpOutbCD.Gtheta>GthetaMin) & (epgExpOutbCD.Gtheta<GthetaMax) & (epgExpOutbCD.Gsector == sector)]
-				# pi0ExpOutbCD_selected = pi0ExpOutbCD.loc[(pi0ExpOutbCD.Gtheta>GthetaMin) & (pi0ExpOutbCD.Gtheta<GthetaMax) & (pi0ExpOutbCD.Gsector == sector)]
-				# dvcsSimOutbCD_selected = dvcsSimOutbCD.loc[(dvcsSimOutbCD.Gtheta>GthetaMin) & (dvcsSimOutbCD.Gtheta<GthetaMax) & (dvcsSimOutbCD.Gsector == sector)]
-				# pi0SimOutbCD_selected = pi0SimOutbCD.loc[(pi0SimOutbCD.Gtheta>GthetaMin) & (pi0SimOutbCD.Gtheta<GthetaMax) & (pi0SimOutbCD.Gsector == sector)]
-				# bkgSimOutbCD_selected = bkgSimOutbCD.loc[(bkgSimOutbCD.Gtheta>GthetaMin) & (bkgSimOutbCD.Gtheta<GthetaMax) & (bkgSimOutbCD.Gsector == sector)]
-
-				contInb = 0
-				contOutb = 0
-				if len(epgExpInbCD_selected)*len(pi0SimInbCD_selected) > 0:
-					contInb = len(bkgSimInbCD_selected)/len(pi0SimInbCD_selected)*len(pi0ExpInbCD_selected)/len(epgExpInbCD_selected)
-				if len(epgExpOutbCD_selected)*len(pi0SimOutbCD_selected) > 0:
-					contOutb = len(bkgSimOutbCD_selected)/len(pi0SimOutbCD_selected)*len(pi0ExpOutbCD_selected)/len(epgExpOutbCD_selected)
-
-				correction1 = epgExpInbCD_selected.ME_epg.mean() - (1-contInb)*dvcsSimInbCD_selected.ME_epg.mean() - contInb*bkgSimInbCD_selected.ME_epg.mean()
-				correction2 = epgExpOutbCD_selected.ME_epg.mean() - (1-contOutb)*dvcsSimOutbCD_selected.ME_epg.mean() - contOutb*bkgSimOutbCD_selected.ME_epg.mean()
-				# correction1 = corr(dvcsSimInbCD_selected, bkgSimInbCD_selected, epgExpInbCD_selected, cont = contInb, var = "ME_epg")
-				# correction2 = corr(dvcsSimOutbCD_selected, bkgSimOutbCD_selected, epgExpOutbCD_selected, cont = contOutb, var = "ME_epg")
-				correction = (correction1+correction2)/2
-				print(correction1, contInb, correction2, contOutb)
-				corrections.append(correction)
-				correction_s.append(correction)
+				cont = 0
+				if len(epgExpFD_selected)*len(pi0SimFD_selected) > 0:
+					cont = len(bkgSimFD_selected)/len(pi0SimFD_selected)*len(pi0ExpFD_selected)/len(epgExpFD_selected)
 
 				#performing correcting
-				self.CorrectionV2(epgExpInbCD, correction, mode = "epg")
+				self.CorrectionV3(epgExpFD, correction, mode = "epg")
 				self.saveDVCSvars()
 				self.makeDVCS()
-				epgExpInbCD_corrected = self.df_epg
-				self.CorrectionV2(pi0ExpInbCD, correction, mode = "epgg")
+				epgExpFD_corrected = self.df_epg
+				self.CorrectionV3(pi0ExpFD, correction, mode = "epgg")
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P()
-				pi0ExpInbCD_corrected = self.df_epg
-
-				#performing correcting
-				self.CorrectionV2(epgExpOutbCD, correction, mode = "epg")
-				self.saveDVCSvars()
-				self.makeDVCS(pol = "outbending")
-				epgExpOutbCD_corrected = self.df_epg
-				self.CorrectionV2(pi0ExpOutbCD, correction, mode = "epgg")
-				self.saveDVpi0Pvars()
-				self.makeDVpi0P(pol = "outbending")
-				pi0ExpOutbCD_corrected = self.df_epg
-
-				epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Ge>GeMin) & (epgExpInbCD_corrected.Ge<GeMax) & (epgExpInbCD_corrected.Gsector == sector)]
-				epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Ge>GeMin) & (epgExpOutbCD_corrected.Ge<GeMax) & (epgExpOutbCD_corrected.Gsector == sector)]
-
-				pi0ExpInbCD_corrected = pi0ExpInbCD_corrected.loc[(pi0ExpInbCD_corrected.Ge>GeMin) & (pi0ExpInbCD_corrected.Ge<GeMax) & (pi0ExpInbCD_corrected.Gsector == sector)]
-				pi0ExpOutbCD_corrected = pi0ExpOutbCD_corrected.loc[(pi0ExpOutbCD_corrected.Ge>GeMin) & (pi0ExpOutbCD_corrected.Ge<GeMax) & (pi0ExpOutbCD_corrected.Gsector == sector)]
-
-				# epgExpInbCD_corrected = epgExpInbCD_corrected.loc[(epgExpInbCD_corrected.Gtheta>GthetaMin) & (epgExpInbCD_corrected.Gtheta<GthetaMax) & (epgExpInbCD_corrected.Gsector == sector)]
-				# epgExpOutbCD_corrected = epgExpOutbCD_corrected.loc[(epgExpOutbCD_corrected.Gtheta>GthetaMin) & (epgExpOutbCD_corrected.Gtheta<GthetaMax) & (epgExpOutbCD_corrected.Gsector == sector)]
-
-				# pi0ExpInbCD_corrected = pi0ExpInbCD_corrected.loc[(pi0ExpInbCD_corrected.Gtheta>GthetaMin) & (pi0ExpInbCD_corrected.Gtheta<GthetaMax) & (pi0ExpInbCD_corrected.Gsector == sector)]
-				# pi0ExpOutbCD_corrected = pi0ExpOutbCD_corrected.loc[(pi0ExpOutbCD_corrected.Gtheta>GthetaMin) & (pi0ExpOutbCD_corrected.Gtheta<GthetaMax) & (pi0ExpOutbCD_corrected.Gsector == sector)]
+				pi0ExpFD_corrected = self.df_epg
 
 
-				# epgExpInbCD_corrected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
-				# epgExpOutbCD_corrected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
-
+				epgExpFD_corrected = epgExpFD_corrected.loc[(epgExpFD_corrected.Pp>PpMin) & (epgExpFD_corrected.Pp<PpMax) & (epgExpFD_corrected.Psector == sector)]
+				pi0ExpFD_corrected = pi0ExpFD_corrected.loc[(pi0ExpFD_corrected.Pp>PpMin) & (pi0ExpFD_corrected.Pp<PpMax) & (pi0ExpFD_corrected.Psector == sector)]
 
 				for sigma in sigmas:
 
 					print("smearing with {:.3f}".format(sigma))
 
 					#performing smearing
-					self.SmearingV2(dvcsSimInbCD, sigma, mode = "epg")
+					self.SmearingV3(dvcsSimInbFD, sigma, mode = "epg", pol = pol)
 					self.saveDVCSvars()
 					self.makeDVCS(pol = "inbending")
-					dvcsSimInbCD_smeared = self.df_epg
+					dvcsSimInbFD_smeared = self.df_epg
 
-					self.SmearingV2(bkgSimInbCD, sigma, mode = "epg")
+					self.SmearingV3(bkgSimInbFD, sigma, mode = "epg", pol = pol)
 					self.saveDVCSvars()
 					self.makeDVCS(pol = "inbending")
-					bkgSimInbCD_smeared = self.df_epg
+					bkgSimInbFD_smeared = self.df_epg
 
-					self.SmearingV2(dvcsSimOutbCD, sigma, mode = "epg")
-					self.saveDVCSvars()
-					self.makeDVCS(pol = "outbending")
-					dvcsSimOutbCD_smeared = self.df_epg
+					dvcsSimInbFD_smeared = dvcsSimInbFD_smeared.loc[(dvcsSimInbFD_smeared.Pp>PpMin) & (dvcsSimInbFD_smeared.Pp<PpMax) & ( dvcsSimInbFD_smeared.Psector == sector)]
+					dvcsSimOutbFD_smeared = dvcsSimOutbFD_smeared.loc[(dvcsSimOutbFD_smeared.Pp>PpMin) & (dvcsSimOutbFD_smeared.Pp<PpMax) & ( dvcsSimOutbFD_smeared.Psector == sector)]
 
-					self.SmearingV2(bkgSimOutbCD, sigma, mode = "epg")
-					self.saveDVCSvars()
-					self.makeDVCS(pol = "outbending")
-					bkgSimOutbCD_smeared = self.df_epg
+					bkgSimInbFD_smeared = bkgSimInbFD_smeared.loc[(bkgSimInbFD_smeared.Pp>PpMin) & (bkgSimInbFD_smeared.Pp<PpMax) & ( bkgSimInbFD_smeared.Psector == sector)]
+					bkgSimOutbFD_smeared = bkgSimOutbFD_smeared.loc[(bkgSimOutbFD_smeared.Pp>PpMin) & (bkgSimOutbFD_smeared.Pp<PpMax) & ( bkgSimOutbFD_smeared.Psector == sector)]
 
-					dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Ge>GeMin) & (dvcsSimInbCD_smeared.Ge<GeMax) & ( dvcsSimInbCD_smeared.Gsector == sector)]
-					dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Ge>GeMin) & (dvcsSimOutbCD_smeared.Ge<GeMax) & ( dvcsSimOutbCD_smeared.Gsector == sector)]
+					# dvcsSimInbFD_smeared = dvcsSimInbFD_smeared.loc[(dvcsSimInbFD_smeared.Ptheta>PthetaMin) & (dvcsSimInbFD_smeared.Ptheta<PthetaMax) & ( dvcsSimInbFD_smeared.Psector == sector)]
+					# dvcsSimOutbFD_smeared = dvcsSimOutbFD_smeared.loc[(dvcsSimOutbFD_smeared.Ptheta>PthetaMin) & (dvcsSimOutbFD_smeared.Ptheta<PthetaMax) & ( dvcsSimOutbFD_smeared.Psector == sector)]
 
-					bkgSimInbCD_smeared = bkgSimInbCD_smeared.loc[(bkgSimInbCD_smeared.Ge>GeMin) & (bkgSimInbCD_smeared.Ge<GeMax) & ( bkgSimInbCD_smeared.Gsector == sector)]
-					bkgSimOutbCD_smeared = bkgSimOutbCD_smeared.loc[(bkgSimOutbCD_smeared.Ge>GeMin) & (bkgSimOutbCD_smeared.Ge<GeMax) & ( bkgSimOutbCD_smeared.Gsector == sector)]
+					# bkgSimInbFD_smeared = bkgSimInbFD_smeared.loc[(bkgSimInbFD_smeared.Ptheta>PthetaMin) & (bkgSimInbFD_smeared.Ptheta<PthetaMax) & ( bkgSimInbFD_smeared.Psector == sector)]
+					# bkgSimOutbFD_smeared = bkgSimOutbFD_smeared.loc[(bkgSimOutbFD_smeared.Ptheta>PthetaMin) & (bkgSimOutbFD_smeared.Ptheta<PthetaMax) & ( bkgSimOutbFD_smeared.Psector == sector)]
 
-					# dvcsSimInbCD_smeared = dvcsSimInbCD_smeared.loc[(dvcsSimInbCD_smeared.Gtheta>GthetaMin) & (dvcsSimInbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimInbCD_smeared.Gsector == sector)]
-					# dvcsSimOutbCD_smeared = dvcsSimOutbCD_smeared.loc[(dvcsSimOutbCD_smeared.Gtheta>GthetaMin) & (dvcsSimOutbCD_smeared.Gtheta<GthetaMax) & ( dvcsSimOutbCD_smeared.Gsector == sector)]
-
-					# bkgSimInbCD_smeared = bkgSimInbCD_smeared.loc[(bkgSimInbCD_smeared.Gtheta>GthetaMin) & (bkgSimInbCD_smeared.Gtheta<GthetaMax) & ( bkgSimInbCD_smeared.Gsector == sector)]
-					# bkgSimOutbCD_smeared = bkgSimOutbCD_smeared.loc[(bkgSimOutbCD_smeared.Gtheta>GthetaMin) & (bkgSimOutbCD_smeared.Gtheta<GthetaMax) & ( bkgSimOutbCD_smeared.Gsector == sector)]
-
-					distance1 = distance(dvcsSimInbCD_smeared, bkgSimInbCD_smeared, epgExpInbCD_corrected, cont = contInb, var = "ME_epg")
-					distance2 = distance(dvcsSimOutbCD_smeared, bkgSimOutbCD_smeared, epgExpOutbCD_corrected, cont = contOutb, var = "ME_epg")
+					distance1 = distance(dvcsSimInbFD_smeared, bkgSimInbFD_smeared, epgExpInbFD_corrected, cont = contInb, var = "MM2_ep")
+					distance2 = distance(dvcsSimOutbFD_smeared, bkgSimOutbFD_smeared, epgExpOutbFD_corrected, cont = contOutb, var = "MM2_ep")
 
 					distances.append(( distance1+ distance2 )/2) 
 
@@ -1479,88 +1462,88 @@ class smearingDist():
 				sigmas_opt.append(sigma_opt)
 				sigmas_opt_s.append(sigma_opt)
 
-				self.SmearingV2(dvcsSimInbCD, sigma_opt, mode = "epg")
+				self.SmearingV3(dvcsSimInbFD, sigma_opt, mode = "epg", pol = pol)
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
-				dvcsSimInbCD_opt = self.df_epg
+				dvcsSimInbFD_opt = self.df_epg
 
-				self.SmearingV2(dvcsSimOutbCD, sigma_opt, mode = "epg")
+				self.SmearingV3(dvcsSimOutbFD, sigma_opt, mode = "epg", pol = pol)
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "outbending")
-				dvcsSimOutbCD_opt = self.df_epg
+				dvcsSimOutbFD_opt = self.df_epg
 
-				self.SmearingV2(bkgSimInbCD, sigma_opt, mode = "epg")
+				self.SmearingV3(bkgSimInbFD, sigma_opt, mode = "epg", pol = pol)
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
-				bkgSimInbCD_opt = self.df_epg
+				bkgSimInbFD_opt = self.df_epg
 
-				self.SmearingV2(bkgSimOutbCD, sigma_opt, mode = "epg")
+				self.SmearingV3(bkgSimOutbFD, sigma_opt, mode = "epg", pol = pol)
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "outbending")
-				bkgSimOutbCD_opt = self.df_epg
+				bkgSimOutbFD_opt = self.df_epg
 
-				self.SmearingV2(pi0SimInbCD, sigma_opt, mode = "epgg")
+				self.SmearingV3(pi0SimInbFD, sigma_opt, mode = "epgg", pol = pol)
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "inbending")
-				pi0SimInbCD_opt = self.df_epg
+				pi0SimInbFD_opt = self.df_epg
 
-				self.SmearingV2(pi0SimOutbCD, sigma_opt, mode = "epgg")
+				self.SmearingV3(pi0SimOutbFD, sigma_opt, mode = "epgg", pol = pol)
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "outbending")
-				pi0SimOutbCD_opt = self.df_epg
+				pi0SimOutbFD_opt = self.df_epg
 
-				dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Ge>GeMin) & (dvcsSimInbCD_opt.Ge<GeMax) & (dvcsSimInbCD_opt.Gsector == sector)]
-				dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Ge>GeMin) & (dvcsSimOutbCD_opt.Ge<GeMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
+				dvcsSimInbFD_opt = dvcsSimInbFD_opt.loc[(dvcsSimInbFD_opt.Pp>PpMin) & (dvcsSimInbFD_opt.Pp<PpMax) & (dvcsSimInbFD_opt.Psector == sector)]
+				dvcsSimOutbFD_opt = dvcsSimOutbFD_opt.loc[(dvcsSimOutbFD_opt.Pp>PpMin) & (dvcsSimOutbFD_opt.Pp<PpMax) & (dvcsSimOutbFD_opt.Psector == sector)]
 
-				bkgSimInbCD_opt = bkgSimInbCD_opt.loc[(bkgSimInbCD_opt.Ge>GeMin) & (bkgSimInbCD_opt.Ge<GeMax) & (bkgSimInbCD_opt.Gsector == sector)]
-				bkgSimOutbCD_opt = bkgSimOutbCD_opt.loc[(bkgSimOutbCD_opt.Ge>GeMin) & (bkgSimOutbCD_opt.Ge<GeMax) & (bkgSimOutbCD_opt.Gsector == sector)]
+				bkgSimInbFD_opt = bkgSimInbFD_opt.loc[(bkgSimInbFD_opt.Pp>PpMin) & (bkgSimInbFD_opt.Pp<PpMax) & (bkgSimInbFD_opt.Psector == sector)]
+				bkgSimOutbFD_opt = bkgSimOutbFD_opt.loc[(bkgSimOutbFD_opt.Pp>PpMin) & (bkgSimOutbFD_opt.Pp<PpMax) & (bkgSimOutbFD_opt.Psector == sector)]
 
-				pi0SimInbCD_opt = pi0SimInbCD_opt.loc[(pi0SimInbCD_opt.Ge>GeMin) & (pi0SimInbCD_opt.Ge<GeMax) & (pi0SimInbCD_opt.Gsector == sector)]
-				pi0SimOutbCD_opt = pi0SimOutbCD_opt.loc[(pi0SimOutbCD_opt.Ge>GeMin) & (pi0SimOutbCD_opt.Ge<GeMax) & (pi0SimOutbCD_opt.Gsector == sector)]
+				pi0SimInbFD_opt = pi0SimInbFD_opt.loc[(pi0SimInbFD_opt.Pp>PpMin) & (pi0SimInbFD_opt.Pp<PpMax) & (pi0SimInbFD_opt.Psector == sector)]
+				pi0SimOutbFD_opt = pi0SimOutbFD_opt.loc[(pi0SimOutbFD_opt.Pp>PpMin) & (pi0SimOutbFD_opt.Pp<PpMax) & (pi0SimOutbFD_opt.Psector == sector)]
 
-				# dvcsSimInbCD_opt = dvcsSimInbCD_opt.loc[(dvcsSimInbCD_opt.Gtheta>GthetaMin) & (dvcsSimInbCD_opt.Gtheta<GthetaMax) & (dvcsSimInbCD_opt.Gsector == sector)]
-				# dvcsSimOutbCD_opt = dvcsSimOutbCD_opt.loc[(dvcsSimOutbCD_opt.Gtheta>GthetaMin) & (dvcsSimOutbCD_opt.Gtheta<GthetaMax) & (dvcsSimOutbCD_opt.Gsector == sector)]
+				# dvcsSimInbFD_opt = dvcsSimInbFD_opt.loc[(dvcsSimInbFD_opt.Ptheta>PthetaMin) & (dvcsSimInbFD_opt.Ptheta<PthetaMax) & (dvcsSimInbFD_opt.Psector == sector)]
+				# dvcsSimOutbFD_opt = dvcsSimOutbFD_opt.loc[(dvcsSimOutbFD_opt.Ptheta>PthetaMin) & (dvcsSimOutbFD_opt.Ptheta<PthetaMax) & (dvcsSimOutbFD_opt.Psector == sector)]
 
-				# bkgSimInbCD_opt = bkgSimInbCD_opt.loc[(bkgSimInbCD_opt.Gtheta>GthetaMin) & (bkgSimInbCD_opt.Gtheta<GthetaMax) & (bkgSimInbCD_opt.Gsector == sector)]
-				# bkgSimOutbCD_opt = bkgSimOutbCD_opt.loc[(bkgSimOutbCD_opt.Gtheta>GthetaMin) & (bkgSimOutbCD_opt.Gtheta<GthetaMax) & (bkgSimOutbCD_opt.Gsector == sector)]
+				# bkgSimInbFD_opt = bkgSimInbFD_opt.loc[(bkgSimInbFD_opt.Ptheta>PthetaMin) & (bkgSimInbFD_opt.Ptheta<PthetaMax) & (bkgSimInbFD_opt.Psector == sector)]
+				# bkgSimOutbFD_opt = bkgSimOutbFD_opt.loc[(bkgSimOutbFD_opt.Ptheta>PthetaMin) & (bkgSimOutbFD_opt.Ptheta<PthetaMax) & (bkgSimOutbFD_opt.Psector == sector)]
 
-				# pi0SimInbCD_opt = pi0SimInbCD_opt.loc[(pi0SimInbCD_opt.Gtheta>GthetaMin) & (pi0SimInbCD_opt.Gtheta<GthetaMax) & (pi0SimInbCD_opt.Gsector == sector)]
-				# pi0SimOutbCD_opt = pi0SimOutbCD_opt.loc[(pi0SimOutbCD_opt.Gtheta>GthetaMin) & (pi0SimOutbCD_opt.Gtheta<GthetaMax) & (pi0SimOutbCD_opt.Gsector == sector)]
+				# pi0SimInbFD_opt = pi0SimInbFD_opt.loc[(pi0SimInbFD_opt.Ptheta>PthetaMin) & (pi0SimInbFD_opt.Ptheta<PthetaMax) & (pi0SimInbFD_opt.Psector == sector)]
+				# pi0SimOutbFD_opt = pi0SimOutbFD_opt.loc[(pi0SimOutbFD_opt.Ptheta>PthetaMin) & (pi0SimOutbFD_opt.Ptheta<PthetaMax) & (pi0SimOutbFD_opt.Psector == sector)]
 
 				contInb = 0
 				contOutb = 0
-				if len(epgExpInbCD_corrected)*len(pi0SimInbCD_opt) > 0:
-					contInb = len(bkgSimInbCD_opt)/len(pi0SimInbCD_opt)*len(pi0ExpInbCD_corrected)/len(epgExpInbCD_corrected)
-				if len(epgExpOutbCD_corrected)*len(pi0SimOutbCD_opt) > 0:
-					contOutb = len(bkgSimOutbCD_opt)/len(pi0SimOutbCD_opt)*len(pi0ExpOutbCD_corrected)/len(epgExpOutbCD_corrected)
+				if len(epgExpInbFD_corrected)*len(pi0SimInbFD_opt) > 0:
+					contInb = len(bkgSimInbFD_opt)/len(pi0SimInbFD_opt)*len(pi0ExpInbFD_corrected)/len(epgExpInbFD_corrected)
+				if len(epgExpOutbFD_corrected)*len(pi0SimOutbFD_opt) > 0:
+					contOutb = len(bkgSimOutbFD_opt)/len(pi0SimOutbFD_opt)*len(pi0ExpOutbFD_corrected)/len(epgExpOutbFD_corrected)
 
 				print(contInb, contOutb)
 
-				print(len(dvcsSimInbCD_opt), len(dvcsSimOutbCD_opt))
-				print(len(epgExpInbCD_corrected), len(epgExpOutbCD_corrected))
-				print(GeMin, GeMax, distances, sigma_opt, correction) 
-				# print(GthetaMin, GthetaMax, distances, sigma_opt, correction) 
+				print(len(dvcsSimInbFD_opt), len(dvcsSimOutbFD_opt))
+				print(len(epgExpInbFD_corrected), len(epgExpOutbFD_corrected))
+				print(PpMin, PpMax, distances, sigma_opt, correction) 
+				# print(PthetaMin, PthetaMax, distances, sigma_opt, correction) 
 
-				varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+				varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Ptheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 				title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
 				unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, "", GeV2, degree, degree, degree, degree, GeV, GeV2, GeV2, GeV2, GeVc]
-				# binstarts = [GeMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
-				# binends = [GeMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
+				# binstarts = [PpMin, 0, -180, 0, 0, 0, -0.5, -0.01, 0.1, 0]
+				# binends = [PpMax, 7, 180, 30, 0.8, .1, 1.2, 0.01, 1.7, 10]
 
-				fig, axs = plt.subplots(3, 5, figsize = (15,10))
-				for yind in range(0, 3):
-				    for xind in range(0,5):
-				        ind = 5*yind + xind
+				fig, axs = plt.subplots(5, 3 figsize = (15,25))
+				for yind in range(0, 5):
+				    for xind in range(0, 3):
+				        ind = 3*yind + xind
 				        if varstoplot[ind]:
 				            pass
 				        else:
 				            continue
-				        simDist_dvcs, bins = np.histogram(dvcsSimInbCD_opt[varstoplot[ind]], 100, density = True)
-				        simDist_dvpi0, _ = np.histogram(bkgSimInbCD_opt[varstoplot[ind]], bins, density = True)
+				        simDist_dvcs, bins = np.histogram(dvcsSimInbFD_opt[varstoplot[ind]], 100, density = True)
+				        simDist_dvpi0, _ = np.histogram(bkgSimInbFD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 				        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-				        axs[yind, xind].hist(epgExpInbCD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				        axs[yind, xind].hist(epgExpInbFD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 				        axs[yind, xind].set_title(title[ind])
 				        # axs[yind, xind].set_xlim([start, end])
 				        if (unit[ind]):
@@ -1568,13 +1551,13 @@ class smearingDist():
 				        else:
 				            axs[yind, xind].set_xlabel(title[ind])
 				plt.tight_layout()
-				plt.savefig(outDir+"InbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
+				plt.savefig(outDir+"InbFD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
 				plt.clf()
 
-				fig, axs = plt.subplots(3, 5, figsize = (15,10))
-				for yind in range(0, 3):
-				    for xind in range(0,5):
-				        ind = 5*yind + xind
+				fig, axs = plt.subplots(5, 3 figsize = (15,25))
+				for yind in range(0, 5):
+				    for xind in range(0, 3):
+				        ind = 3*yind + xind
 				        # start = binstarts[ind]
 				        # end = binends[ind]
 				        # bins = np.linspace(start, end, 101)
@@ -1582,12 +1565,12 @@ class smearingDist():
 				            pass
 				        else:
 				            continue
-				        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD_opt[varstoplot[ind]], 100, density = True)
-				        simDist_dvpi0, _ = np.histogram(bkgSimOutbCD_opt[varstoplot[ind]], bins, density = True)
+				        simDist_dvcs, bins = np.histogram(dvcsSimOutbFD_opt[varstoplot[ind]], 100, density = True)
+				        simDist_dvpi0, _ = np.histogram(bkgSimOutbFD_opt[varstoplot[ind]], bins, density = True)
 				        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 				        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-				        axs[yind, xind].hist(epgExpOutbCD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				        axs[yind, xind].hist(epgExpOutbFD_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 				        axs[yind, xind].set_title(title[ind])
 				        # axs[yind, xind].set_xlim([start, end])
 				        if (unit[ind]):
@@ -1595,7 +1578,7 @@ class smearingDist():
 				        else:
 				            axs[yind, xind].set_xlabel(title[ind])
 				plt.tight_layout()
-				plt.savefig(outDir+"OutbCD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
+				plt.savefig(outDir+"OutbFD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
 				plt.clf()
 			# print("correction in sector{}".format(sector), correction_s)
 			print("smearings in sector{}".format(sector), sigmas_opt_s)
@@ -1603,12 +1586,15 @@ class smearingDist():
 		print(sigmas_opt, corrections, sectors)
 
 
-	def SmearingV3(self, df, sigma1, sigma2, sigma3):
+	def SmearingV3(self, df, sigma1, pol):
 		df_epg = copy(df)
-		regulator = np.abs(2*(1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
-		df_epg.loc[df_epg["Psector"]>7, "Pp"] = df_epg.loc[df_epg["Psector"]>7, "Pp"]*np.random.normal(1, regulator*sigma1, len(df_epg.loc[df_epg.Psector>7]))
-		df_epg.loc[df_epg["Psector"]>7, "Ptheta"] = df_epg.loc[df_epg["Psector"]>7, "Ptheta"] + np.random.normal(0, sigma2, len(df_epg.loc[df_epg.Psector>7]))
-		df_epg.loc[df_epg["Psector"]>7, "Pphi"] = df_epg.loc[df_epg["Psector"]>7, "Pphi"] + np.random.normal(0, sigma3, len(df_epg.loc[df_epg.Psector>7])) 
+        if pol == "inbending":
+            regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.5)/0.05)))
+        elif pol == "outbending":
+            regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.6)/0.05)))
+		df_epg.loc[df_epg["Psector"]<7, "Pp"] = df_epg.loc[df_epg["Psector"]<7, "Pp"]*np.random.normal(1, regulator*sigma1, len(df_epg.loc[df_epg.Psector<7]))
+		df_epg.loc[df_epg["Psector"]<7, "Ptheta"] = df_epg.loc[df_epg["Psector"]<7, "Ptheta"] + np.random.normal(0, sigma2, len(df_epg.loc[df_epg.Psector<7]))
+		df_epg.loc[df_epg["Psector"]<7, "Pphi"] = df_epg.loc[df_epg["Psector"]<7, "Pphi"] + np.random.normal(0, sigma3, len(df_epg.loc[df_epg.Psector<7])) 
 		df_epg.loc[:, 'Pe'] = np.sqrt( df_epg.Pp**2 + M**2)
 		df_epg.loc[:, "Ppx"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.cos(np.radians(df_epg.loc[:, "Pphi"]))
 		df_epg.loc[:, "Ppy"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.sin(np.radians(df_epg.loc[:, "Pphi"]))
@@ -1618,9 +1604,7 @@ class smearingDist():
 
 	def CorrectionV3(self, df, correction):
 		df_epg = copy(df)
-		# df_epg.loc[df_epg["Psector"]>7, "Pp"] = df_epg.loc[df_epg["Psector"]>7, "Pp"] + correction
-		df_epg.loc[df_epg["Psector"]>7, "Ptheta"] = df_epg.loc[df_epg["Psector"]>7, "Ptheta"] + correction
-		# df_epg.loc[df_epg["Psector"]>7, "Pphi"] = df_epg.loc[df_epg["Psector"]>7, "Pphi"] + correction
+		df_epg.loc[df_epg["Psector"]<7, "Pp"] = df_epg.loc[df_epg["Psector"]<7, "Pp"] + correction
 		df_epg.loc[:, 'Pe'] = np.sqrt( df_epg.Pp**2 + M**2)
 		df_epg.loc[:, "Ppx"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.cos(np.radians(df_epg.loc[:, "Pphi"]))
 		df_epg.loc[:, "Ppy"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.sin(np.radians(df_epg.loc[:, "Pphi"]))
@@ -1644,7 +1628,7 @@ class smearingDist():
 	    gam = [df_epg['Gpx'], df_epg['Gpy'], df_epg['Gpz']]
 	    df_epg.loc[:, 'Gp'] = mag(gam)
 	    df_epg.loc[:, 'Ge'] = getEnergy(gam, 0)
-	    df_epg.loc[:, 'Gtheta'] = getTheta(gam)
+	    df_epg.loc[:, 'Ptheta'] = getTheta(gam)
 	    df_epg.loc[:, 'Gphi'] = getPhi(gam)
 
 	    Ppt = mag([df_epg['Ppx'], df_epg['Ppy'], 0])
@@ -1720,13 +1704,13 @@ class smearingDist():
 	    gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
 	    df_epgg.loc[:, 'Gp'] = mag(gam)
 	    df_epgg.loc[:, 'Ge'] = getEnergy(gam, 0)
-	    df_epgg.loc[:, 'Gtheta'] = getTheta(gam)
+	    df_epgg.loc[:, 'Ptheta'] = getTheta(gam)
 	    df_epgg.loc[:, 'Gphi'] = getPhi(gam)
 
 	    gam2 = [df_epgg['Gpx2'], df_epgg['Gpy2'], df_epgg['Gpz2']]
 	    df_epgg.loc[:, 'Gp2'] = mag(gam2)
 	    df_epgg.loc[:,'Ge2'] = getEnergy(gam2, 0)
-	    df_epgg.loc[:, 'Gtheta2'] = getTheta(gam2)
+	    df_epgg.loc[:, 'Ptheta2'] = getTheta(gam2)
 	    df_epgg.loc[:, 'Gphi2'] = getPhi(gam2)
 
 	    pi0 = vecAdd(gam, gam2)
@@ -2200,7 +2184,8 @@ if __name__ == "__main__":
 
     parser.add_argument("-v","--version", help="version", default="v2")
     parser.add_argument("-o","--outDir", help="output directory", default="/SimtoDat/v2")
+    parser.add_argument("-p","--polarity", help="polarity", default="inbending")
     
     args = parser.parse_args()
 
-    smearingDist = smearingDist(version = args.version, outDir = args.outDir)
+    smearingDist = smearingDist(version = args.version, outDir = args.outDir, pol = args.polarity)
