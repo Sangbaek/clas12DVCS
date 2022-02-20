@@ -745,11 +745,11 @@ class smearingDist():
 				# dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
 				# dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PthetaMax)]
 
-				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PpMin) & (dvcsSimInbCDFT_smeared.Ptheta<PpMax)]
-				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PpMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PpMax)]
+				dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Pp>PpMin) & (dvcsSimInbCDFT_smeared.Pp<PpMax)]
+				dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Pp>PpMin) & (dvcsSimOutbCDFT_smeared.Pp<PpMax)]
 
-				bkgSimInbCDFT_smeared = bkgSimInbCDFT_smeared.loc[(bkgSimInbCDFT_smeared.Ptheta>PpMin) & (bkgSimInbCDFT_smeared.Ptheta<PpMax)]
-				bkgSimOutbCDFT_smeared = bkgSimOutbCDFT_smeared.loc[(bkgSimOutbCDFT_smeared.Ptheta>PpMin) & (bkgSimOutbCDFT_smeared.Ptheta<PpMax)]
+				bkgSimInbCDFT_smeared = bkgSimInbCDFT_smeared.loc[(bkgSimInbCDFT_smeared.Pp>PpMin) & (bkgSimInbCDFT_smeared.Pp<PpMax)]
+				bkgSimOutbCDFT_smeared = bkgSimOutbCDFT_smeared.loc[(bkgSimOutbCDFT_smeared.Pp>PpMin) & (bkgSimOutbCDFT_smeared.Pp<PpMax)]
 				
 				contInb = 0
 				contOutb = 0
@@ -811,12 +811,12 @@ class smearingDist():
 			self.makeDVpi0P(pol = "inbending")
 			pi0SimOutbCDFT_opt = self.df_epg
 
-			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimInbCDFT_opt.Ptheta<PthetaMax)]
-			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Ptheta>PthetaMin) & (bkgSimInbCDFT_opt.Ptheta<PthetaMax)]
-			pi0SimInbCDFT_opt = pi0SimInbCDFT_opt.loc[(pi0SimInbCDFT_opt.Ptheta>PthetaMin) & (pi0SimInbCDFT_opt.Ptheta<PthetaMax)]
-			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_opt.Ptheta<PthetaMax)]
-			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Ptheta>PthetaMin) & (bkgSimOutbCDFT_opt.Ptheta<PthetaMax)]
-			pi0SimOutbCDFT_opt = pi0SimOutbCDFT_opt.loc[(pi0SimOutbCDFT_opt.Ptheta>PthetaMin) & (pi0SimOutbCDFT_opt.Ptheta<PthetaMax)]
+			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Pp>PpMin) & (dvcsSimInbCDFT_opt.Pp<PpMax)]
+			bkgSimInbCDFT_opt = bkgSimInbCDFT_opt.loc[(bkgSimInbCDFT_opt.Pp>PpMin) & (bkgSimInbCDFT_opt.Pp<PpMax)]
+			pi0SimInbCDFT_opt = pi0SimInbCDFT_opt.loc[(pi0SimInbCDFT_opt.Pp>PpMin) & (pi0SimInbCDFT_opt.Pp<PpMax)]
+			dvcsSimOutbCDFT_opt = dvcsSimOutbCDFT_opt.loc[(dvcsSimOutbCDFT_opt.Pp>PpMin) & (dvcsSimOutbCDFT_opt.Pp<PpMax)]
+			bkgSimOutbCDFT_opt = bkgSimOutbCDFT_opt.loc[(bkgSimOutbCDFT_opt.Pp>PpMin) & (bkgSimOutbCDFT_opt.Pp<PpMax)]
+			pi0SimOutbCDFT_opt = pi0SimOutbCDFT_opt.loc[(pi0SimOutbCDFT_opt.Pp>PpMin) & (pi0SimOutbCDFT_opt.Pp<PpMax)]
 
 			contInb = 0
 			contOutb = 0
@@ -857,7 +857,7 @@ class smearingDist():
 			        simDist = (1-contInb)*simDist_dvcs + contInb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-			        axs[yind, xind].hist(epgExpInbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].hist(epgExpInbCDFT_selected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
 			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
@@ -884,7 +884,7 @@ class smearingDist():
 			        simDist = (1-contOutb)*simDist_dvcs + contOutb*simDist_dvpi0
 			        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 			        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-			        axs[yind, xind].hist(epgExpOutbCDFT_corrected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+			        axs[yind, xind].hist(epgExpOutbCDFT_selected[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
 			        axs[yind, xind].set_title(title[ind])
 			        # axs[yind, xind].set_xlim([start, end])
 			        if (unit[ind]):
