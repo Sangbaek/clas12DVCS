@@ -10,7 +10,7 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
-
+from scipy.stats import skewnorm
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
@@ -332,7 +332,7 @@ class root2pickle():
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
             if pol == "inbending":
-                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 58.62412832*(df_protonRecFD.Pp-0.42)**4.35483964*np.exp(-10.03753023*(df_protonRecFD.Pp-0.42))
+                df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp + 0.0101*skewnorm.pdf(df_protonRecFD.Pp, -8.792, 1.117, 0.351)
             if pol == "outbending":
                 df_protonRecFD.loc[:, "Pp"] = df_protonRecFD.Pp - 0.02
                 df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
