@@ -707,8 +707,8 @@ class smearingDist():
 			for sigma1 in sigma1s:
 				for sigma2 in sigma2s:
 						# for sigma3 in sigma3s:
-								# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
-						print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
+							# print("smearing with {:.3f}, {:.3f}, {:.3f}".format(sigma1, sigma2, sigma3))
+					print("smearing with {:.3f}, {:.3f}".format(sigma1, sigma2))
 					# print("smearing with {:.3f}".format(sigma1))
 					# print("smearing with {:.3f}".format(sigma2))
 
