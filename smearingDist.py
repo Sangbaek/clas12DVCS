@@ -724,7 +724,7 @@ class smearingDist():
 
 				self.SmearingV1(pi0SimInbCDFT, sigma1, 0, 0)
 				self.saveDVpi0Pvars()
-				self.makeDVCS(pol = "inbending")
+				self.makeDVpi0P(pol = "inbending")
 				pi0SimInbCDFT_smeared = self.df_epg
 
 				self.SmearingV1(dvcsSimOutbCDFT, sigma1, 0, 0)
@@ -739,7 +739,7 @@ class smearingDist():
 
 				self.SmearingV1(pi0SimOutbCDFT, sigma1, 0, 0)
 				self.saveDVpi0Pvars()
-				self.makeDVCS(pol = "outbending")
+				self.makeDVpi0P(pol = "outbending")
 				pi0SimOutbCDFT_smeared = self.df_epg
 
 				# dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
@@ -808,7 +808,7 @@ class smearingDist():
 
 			self.SmearingV1(pi0SimOutbCDFT, sigma1_opt, 0, 0)#, sigma3_opt)
 			self.saveDVpi0Pvars()
-			self.makeDVpi0P(pol = "inbending")
+			self.makeDVpi0P(pol = "outbending")
 			pi0SimOutbCDFT_opt = self.df_epg
 
 			dvcsSimInbCDFT_opt = dvcsSimInbCDFT_opt.loc[(dvcsSimInbCDFT_opt.Pp>PpMin) & (dvcsSimInbCDFT_opt.Pp<PpMax)]
