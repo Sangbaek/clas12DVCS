@@ -611,7 +611,7 @@ class smearingDist():
 		# for i in range(len(PthetaEdges)-1):
 
 			distances1 = []
-			# distances2 = []
+			distances2 = []
 			# distances3 = []
 			PpMin = PpEdges[i]
 			PpMax = PpEdges[i+1]
@@ -786,32 +786,32 @@ class smearingDist():
 			# sigmas_opt.append([sigma1_opt, sigma2_opt])#, sigma3_opt])
 			sigmas_opt.append(sigma2_opt)#, sigma3_opt])
 			# sigmas_opt.append(sigma1_opt)#, sigma3_opt])
-			self.SmearingV1(dvcsSimInbCDFT, 0, sigma1_opt, 0)#, sigma3_opt)
+			self.SmearingV1(dvcsSimInbCDFT, 0, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			dvcsSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimInbCDFT, 0, sigma1_opt, 0)#, sigma3_opt)
+			self.SmearingV1(bkgSimInbCDFT, 0, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "inbending")
 			bkgSimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(pi0SimInbCDFT, 0, sigma1_opt, 0)#, sigma3_opt)
+			self.SmearingV1(pi0SimInbCDFT, 0, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVpi0Pvars()
 			self.makeDVpi0P(pol = "inbending")
 			pi0SimInbCDFT_opt = self.df_epg
 
-			self.SmearingV1(dvcsSimOutbCDFT, 0, sigma1_opt, 0)#sigma3_opt)
+			self.SmearingV1(dvcsSimOutbCDFT, 0, sigma2_opt, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			dvcsSimOutbCDFT_opt = self.df_epg
 
-			self.SmearingV1(bkgSimOutbCDFT, 0, sigma1_opt, 0)#sigma3_opt)
+			self.SmearingV1(bkgSimOutbCDFT, 0, sigma2_opt, 0)#sigma3_opt)
 			self.saveDVCSvars()
 			self.makeDVCS(pol = "outbending")
 			bkgSimOutbCDFT_opt = self.df_epg
 
-			self.SmearingV1(pi0SimOutbCDFT, 0, sigma1_opt, 0)#, sigma3_opt)
+			self.SmearingV1(pi0SimOutbCDFT, 0, sigma2_opt, 0)#, sigma3_opt)
 			self.saveDVpi0Pvars()
 			self.makeDVpi0P(pol = "outbending")
 			pi0SimOutbCDFT_opt = self.df_epg
@@ -870,7 +870,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma1_opt))
+			plt.savefig(outDir+"InbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 			plt.clf()
 
 			fig, axs = plt.subplots(5, 3, figsize = (15,25))
@@ -897,7 +897,7 @@ class smearingDist():
 			        else:
 			            axs[yind, xind].set_xlabel(title[ind])
 			plt.tight_layout()
-			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma1_opt))
+			plt.savefig(outDir+"OutbCDFT{}_{:.3f}.pdf".format(i, sigma2_opt))
 			plt.clf()
 
 		print(sigmas_opt)#, corrections)
@@ -1374,10 +1374,10 @@ class smearingDist():
 		# 	sigma = float(sigma)
 
 		PpEdges = [0.42, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigmas = [0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
+		sigmas = [0]#0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
 		# PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		sigmas_temp = []
-		corrections = np.linspace(-0.04, 0.04, 11)
+		corrections = np.linspace(-0.04, 0.04, 21)
 		sigmas_opt = []
 		corrections_opt = []
 
