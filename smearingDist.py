@@ -1480,10 +1480,10 @@ class smearingDist():
 
 	def SmearingV3(self, df, sigma1, pol):
 		df_epg = copy(df)
-        if pol == "inbending":
-            regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.5)/0.05)))
-        elif pol == "outbending":
-            regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.6)/0.05)))
+		if pol == "inbending":
+			regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.5)/0.05)))
+		elif pol == "outbending":
+			regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.6)/0.05)))
 		df_epg.loc[df_epg["Psector"]<7, "Pp"] = df_epg.loc[df_epg["Psector"]<7, "Pp"]*np.random.normal(1, regulator*sigma1, len(df_epg.loc[df_epg.Psector<7]))
 		df_epg.loc[df_epg["Psector"]<7, "Ptheta"] = df_epg.loc[df_epg["Psector"]<7, "Ptheta"] + np.random.normal(0, sigma2, len(df_epg.loc[df_epg.Psector<7]))
 		df_epg.loc[df_epg["Psector"]<7, "Pphi"] = df_epg.loc[df_epg["Psector"]<7, "Pphi"] + np.random.normal(0, sigma3, len(df_epg.loc[df_epg.Psector<7])) 
