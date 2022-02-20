@@ -579,7 +579,7 @@ class smearingDist():
 
 
 		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
-		sigma1s = [0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
+		sigma1s = [0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
 		# sigma2s = np.linspace(0.3, 0.8, 6)
 		# PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		# sigma3s = np.linspace(0, 3, 31)
@@ -716,7 +716,6 @@ class smearingDist():
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
 				dvcsSimInbCDFT_smeared = self.df_epg
-
 				self.SmearingV1(bkgSimInbCDFT, sigma1, 0, 0)
 				self.saveDVCSvars()
 				self.makeDVCS(pol = "inbending")
@@ -742,6 +741,8 @@ class smearingDist():
 				self.makeDVpi0P(pol = "outbending")
 				pi0SimOutbCDFT_smeared = self.df_epg
 
+				print(len(dvcsSimInbCDFT_smeared), len(bkgSimInbCDFT_smeared), len(pi0SimInbCDFT_smeared), len(epgExpInbCDFT_selected))
+				print(len(dvcsSimOutbCDFT_smeared), len(bkgSimOutbCDFT_smeared), len(pi0SimOutbCDFT_smeared), len(epgExpOutbCDFT_selected))
 				# dvcsSimInbCDFT_smeared = dvcsSimInbCDFT_smeared.loc[(dvcsSimInbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimInbCDFT_smeared.Ptheta<PthetaMax)]
 				# dvcsSimOutbCDFT_smeared = dvcsSimOutbCDFT_smeared.loc[(dvcsSimOutbCDFT_smeared.Ptheta>PthetaMin) & (dvcsSimOutbCDFT_smeared.Ptheta<PthetaMax)]
 
@@ -754,8 +755,6 @@ class smearingDist():
 				pi0SimInbCDFT_smeared = pi0SimInbCDFT_smeared.loc[(pi0SimInbCDFT_smeared.Pp>PpMin) & (pi0SimInbCDFT_smeared.Pp<PpMax)]
 				pi0SimOutbCDFT_smeared = pi0SimOutbCDFT_smeared.loc[(pi0SimOutbCDFT_smeared.Pp>PpMin) & (pi0SimOutbCDFT_smeared.Pp<PpMax)]
 				
-				print(len(dvcsSimInbCDFT_smeared), len(bkgSimInbCDFT_smeared), len(pi0SimInbCDFT_smeared), len(epgExpInbCDFT_selected))
-				print(len(dvcsSimOutbCDFT_smeared), len(bkgSimOutbCDFT_smeared), len(pi0SimOutbCDFT_smeared), len(epgExpOutbCDFT_selected))
 				contInb = 0
 				contOutb = 0
 				if len(epgExpInbCDFT_selected)*len(pi0SimInbCDFT_smeared) > 0:
@@ -1373,7 +1372,7 @@ class smearingDist():
 		# if isinstance(sigma, str):
 		# 	sigma = float(sigma)
 
-		PpEdges = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+		PpEdges = [0.42, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
 		sigmas = [0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]
 		# PthetaEdges = [40, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65]
 		sigmas_temp = []
@@ -1384,6 +1383,7 @@ class smearingDist():
 		polarity = "Inb"
 		if pol == "outbending":
 			polarity = "Outb"
+			PpEdges = PpEdges[1:]
 
 		print("FD {} proton correction/ smearing...".format(pol))
 		pi0ExpFD = pd.read_pickle(inDir+"/pi0Exp{}FD".format(polarity))
@@ -1404,18 +1404,18 @@ class smearingDist():
 				for correction in corrections:
 					print("adding momentum {}".format(correction))
 
-					self.CorrectionV3(pi0ExpFD, correction, mode = "epgg")
+					self.CorrectionV3(pi0ExpFD, correction)
 					self.saveDVpi0Pvars()
 					self.makeDVpi0P(pol = pol)
 					pi0ExpFD_corrected = self.df_epg
 					pi0ExpFD_corrected = pi0ExpFD_corrected.loc[(pi0ExpFD_corrected.Pp>PpMin) & (pi0ExpFD_corrected.Pp<PpMax) & ( pi0ExpFD_corrected.Psector == sector)]
 					scores.append(np.abs(pi0SimFD_selected.MM2_ep.mean() - pi0ExpFD_corrected.MM2_ep.mean()))
-
+				print(scores)
 				correction_opt = corrections[np.argmin(scores)]
-				corrections_opt.apend(correction_opt)
-				correction_s.apend(correction_opt)
+				corrections_opt.append(correction_opt)
+				correction_s.append(correction_opt)
 				print("the additional, optimal momentum correction is {}".format(correction_opt))
-				self.CorrectionV3(pi0ExpFD, correction_opt, mode = "epgg")
+				self.CorrectionV3(pi0ExpFD, correction_opt)
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = pol)
 				pi0ExpFD_corrected = self.df_epg
@@ -1426,20 +1426,20 @@ class smearingDist():
 					print("smearing with {:.3f}".format(sigma))
 
 					#performing smearing
-					self.SmearingV3(pi0SimFD, sigma, mode = "epg", pol = pol)
+					self.SmearingV3(pi0SimFD, sigma, pol = pol)
 					self.saveDVpi0Pvars()
 					self.makeDVpi0P(pol = pol)
 					pi0SimFD_smeared = self.df_epg
 					pi0SimFD_smeared = pi0SimFD_smeared.loc[(pi0SimFD_smeared.Pp>PpMin) & (pi0SimFD_smeared.Pp<PpMax) & ( pi0SimFD_smeared.Psector == sector)]
 
-					distance = distance(pi0SimFD_selected, pi0SimFD_selected, pi0ExpFD_corrected, cont = 0, var = "MM2_ep")
-					distances.append(distance) 
+					distance1 = distance(pi0SimFD_smeared, pi0SimFD_smeared, pi0ExpFD_corrected, cont = 0, var = "MM2_ep")
+					distances.append(distance1) 
 
 				sigma_opt = sigmas[np.argmin(distances)]
 				sigmas_opt.append(sigma_opt)
 				sigmas_opt_s.append(sigma_opt)
 
-				self.SmearingV3(pi0SimFD, sigma_opt, mode = "epgg", pol = pol)
+				self.SmearingV3(pi0SimFD, sigma_opt, pol = pol)
 				self.saveDVpi0Pvars()
 				self.makeDVpi0P(pol = "inbending")
 				pi0SimFD_opt = self.df_epg
@@ -1490,8 +1490,6 @@ class smearingDist():
 		elif pol == "outbending":
 			regulator = (1/(1+np.exp(-(df_epg.loc[df_epg["Psector"]<7, "Pp"]-0.6)/0.05)))
 		df_epg.loc[df_epg["Psector"]<7, "Pp"] = df_epg.loc[df_epg["Psector"]<7, "Pp"]*np.random.normal(1, regulator*sigma1, len(df_epg.loc[df_epg.Psector<7]))
-		df_epg.loc[df_epg["Psector"]<7, "Ptheta"] = df_epg.loc[df_epg["Psector"]<7, "Ptheta"] + np.random.normal(0, sigma2, len(df_epg.loc[df_epg.Psector<7]))
-		df_epg.loc[df_epg["Psector"]<7, "Pphi"] = df_epg.loc[df_epg["Psector"]<7, "Pphi"] + np.random.normal(0, sigma3, len(df_epg.loc[df_epg.Psector<7])) 
 		df_epg.loc[:, 'Pe'] = np.sqrt( df_epg.Pp**2 + M**2)
 		df_epg.loc[:, "Ppx"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.cos(np.radians(df_epg.loc[:, "Pphi"]))
 		df_epg.loc[:, "Ppy"] = df_epg.loc[:, "Pp"]*np.sin(np.radians(df_epg.loc[:, "Ptheta"]))*np.sin(np.radians(df_epg.loc[:, "Pphi"]))
@@ -1525,7 +1523,7 @@ class smearingDist():
 	    gam = [df_epg['Gpx'], df_epg['Gpy'], df_epg['Gpz']]
 	    df_epg.loc[:, 'Gp'] = mag(gam)
 	    df_epg.loc[:, 'Ge'] = getEnergy(gam, 0)
-	    df_epg.loc[:, 'Ptheta'] = getTheta(gam)
+	    df_epg.loc[:, 'Gtheta'] = getTheta(gam)
 	    df_epg.loc[:, 'Gphi'] = getPhi(gam)
 
 	    Ppt = mag([df_epg['Ppx'], df_epg['Ppy'], 0])
@@ -1699,7 +1697,7 @@ class smearingDist():
 	        cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
 	        cut_Psector_CDFT = df_dvcs.Psector>7
 	        cut_Ptheta1_CDFT = df_dvcs.Ptheta<65
-	        cut_Ptheta2_CDFT = df_dvcs.Ptheta>40
+	        cut_Ptheta2_CDFT = df_dvcs.Ptheta>30
 	        cut_Gsector_CDFT = df_dvcs.Gsector>7
 	        cut_GFid_CDFT = df_dvcs.GFid==1
 	        cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.601  # mmep
