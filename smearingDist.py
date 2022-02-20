@@ -750,7 +750,12 @@ class smearingDist():
 
 				bkgSimInbCDFT_smeared = bkgSimInbCDFT_smeared.loc[(bkgSimInbCDFT_smeared.Pp>PpMin) & (bkgSimInbCDFT_smeared.Pp<PpMax)]
 				bkgSimOutbCDFT_smeared = bkgSimOutbCDFT_smeared.loc[(bkgSimOutbCDFT_smeared.Pp>PpMin) & (bkgSimOutbCDFT_smeared.Pp<PpMax)]
+
+				pi0SimInbCDFT_smeared = pi0SimInbCDFT_smeared.loc[(pi0SimInbCDFT_smeared.Pp>PpMin) & (pi0SimInbCDFT_smeared.Pp<PpMax)]
+				pi0SimOutbCDFT_smeared = pi0SimOutbCDFT_smeared.loc[(pi0SimOutbCDFT_smeared.Pp>PpMin) & (pi0SimOutbCDFT_smeared.Pp<PpMax)]
 				
+				print(len(dvcsSimInbCDFT_smeared), len(bkgSimInbCDFT_smeared), len(pi0SimInbCDFT_smeared), len(epgExpInbCDFT_selected))
+				print(len(dvcsSimOutbCDFT_smeared), len(bkgSimOutbCDFT_smeared), len(pi0SimOutbCDFT_smeared), len(epgExpOutbCDFT_selected))
 				contInb = 0
 				contOutb = 0
 				if len(epgExpInbCDFT_selected)*len(pi0SimInbCDFT_smeared) > 0:
