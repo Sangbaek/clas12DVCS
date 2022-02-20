@@ -837,7 +837,7 @@ class smearingDist():
 			# print(np.array([sigma2s_temp, distances2]).T)
 			# print(np.array([sigma1s_temp, distances1]).T)
 			# print(PpMin, PpMax, sigma1_opt, sigma2_opt, correction_opt) #, sigma3_opt)#, correction_opt) 
-			print(PthetaMin, PthetaMax, sigma1_opt, sigma2_opt)#, correction_opt) #, sigma3_opt)#, correction_opt) 
+			print(PpMin, PpMax, sigma1_opt, sigma2_opt)#, correction_opt) #, sigma3_opt)#, correction_opt) 
 			# print(PthetaMin, PthetaMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
 			# print(PthetaMin, PthetaMax, sigma1_opt)#, sigma3_opt)#, correction_opt) 
 			# print(PpMin, PpMax, sigma2_opt)#, sigma3_opt)#, correction_opt) 
