@@ -475,14 +475,25 @@ class root2pickle():
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, regulator*sigma1_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, sigma2_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
         df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, sigma3_CD, len(df_protonRec.loc[df_protonRec.Psector>7])) 
-        # #FD proton
-        # if pol == "inbending":
-        #     regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.5)/0.05)))
-        #     sigmas_FD = np.select([df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<1.3, (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>=1.3) & (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<1.9), df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>=1.9], [0.06, -(0.06-0.04)/(1.9-1.3)*df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]+(0.06-0.04)/(1.9-1.3)*1.9+0.04, 0.04])
-        # elif pol == "outbending":
-        #     regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.6)/0.05)))
-        #     sigmas_FD = np.select([df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<.95, (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>=.95) & (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<1.2), (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>=1.2)&(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<1.575), (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>=1.575) & (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]<1.9), (df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]>1.9)], [0.08, -0.025/(1.2-.95)*df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]+1.2*0.025/(1.2-.95) + 0.055, 0.055, -0.015/(1.9-1.575)*df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]+1.9*0.015/(1.9-1.575) + 0.04,0.04])
-        # df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]*np.random.normal(1, regulator*sigmas_FD, len(df_protonRec.loc[df_protonRec.Psector<7]))
+        #FD proton
+        args_sigmas_FD_inb = [[-0.233, 1.216, -2.279, 1.812, -0.445], [ 0.277, -1.366, 2.318, -1.619,  0.466 ],[ 0.0728, -0.223, 0.0888,  0.225, -0.0889],[-0.204, 0.977, -1.766, 1.411, -0.342], [ 0.277, -1.059, 1.362, -0.641, 0.137], [-0.219, 1.132, -2.153, 1.763, -0.447]]
+        args_sigmas_FD_outb = [[0.481,-1.548, 1.524,-0.415, 0.0277], [1.872, -8.054, 12.536, -8.358,  2.083], [-0.0656, 0.480, -1.191, 1.169, -0.315], [-1.559, 7.356, -12.639, 9.312,  -2.405], [ 0.189, -0.344, -0.253,  0.717, -0.238], [0.466, -1.560, 1.622, -0.485, 0.0322]]
+        def quartic(mom, sector, pol = "inbending"):
+            if pol == "inbending":
+                a, b, c, d, e = args_sigmas_FD_inb[sector - 1]
+                return np.select( [x<0.55, (x>=0.55)& (x < 1.55), x>=1.55], [a*0.55**4+b*0.55**3+c*0.55**2+d*0.55+e, a*x**4 +b*x**3 + c*x**2 + d*x + e, a*1.55**4 + b*1.55**3 + c*1.55**2+d*1.55 +e])
+            if pol == "outbending":
+                a, b, c, d, e = args_sigmas_FD_outb[sector - 1]
+                return np.select( [x<0.65, (x>=0.65)& (x < 1.55), x>=1.55], [a*0.65**4+b*0.65**3+c*0.65**2+d*0.65+e, a*x**4 +b*x**3 + c*x**2 + d*x + e, a*1.55**4 + b*1.55**3 + c*1.55**2+d*1.55 +e])
+
+        if pol == "inbending":
+            regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.5)/0.05)))
+        elif pol == "outbending":
+            regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.6)/0.05)))
+
+        for sector in range(1, 7):
+            sigmas_FD = quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
+            df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]*np.random.normal(1, regulator*sigmas_FD, len(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]))
 
         #moduli proton phi
         df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
