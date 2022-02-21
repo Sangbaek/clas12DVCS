@@ -183,7 +183,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
@@ -192,7 +192,7 @@ class root2pickle():
         if detRes:
             eleKeysRec.extend(["Evx", "Evy", "Evz"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
-            eleKeysRec.extend(["Eedep", "Eedep1", "Eedep2", "Eedep3"])
+            eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
             proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
