@@ -469,10 +469,12 @@ class root2pickle():
         #smearing proton
         #CD proton
         regulator = np.abs(2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
-        sigmas_CD = np.maximum(-2.768*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**3 + 12.549*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]**2 - 15.192*df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] + 9.934, 0)
-        # df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, regulator*sigmas_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] #+ np.random.normal(0, 0, len(df_protonRec.loc[df_protonRec.Psector>7]))
-        df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, 0.8 + 2.2/(1+np.exp(5.518*(df_protonRec.loc[df_protonRec.Psector>7, "Pp"]-0.625))), len(df_protonRec.loc[df_protonRec.Psector>7])) 
+        sigma1_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<0.85, cubic([0.0926, 0.137, -0.230, 0.139], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.1)
+        sigma2_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<1.34, cubic([-2.797, 9.351, -9.488, 3.503], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.85)
+        sigma3_CD = 0.8 + 2.2/(1+np.exp(5.518*(df_protonRec.loc[df_protonRec.Psector>7, "Pp"]-0.625)))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, regulator*sigma1_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, sigma2_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
+        df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, sigma3_CD, len(df_protonRec.loc[df_protonRec.Psector>7])) 
         # #FD proton
         # if pol == "inbending":
         #     regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]<7, "Pp"]-0.5)/0.05)))
@@ -628,7 +630,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvpi0p.Psector>7
-            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<90
+            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<65
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
             cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
@@ -641,7 +643,7 @@ class root2pickle():
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.799  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.792  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.189  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 2.5#1.468  # recon gam angle
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.468  # recon gam angle
             cut_coplanarity_CDFT = df_dvpi0p["coplanarity"] < 15.431  # coplanarity angle
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0440  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0478  # mmepgg
@@ -656,7 +658,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvpi0p.Psector>7
-            cut_Ptheta_CD = df_dvpi0p.Ptheta<90
+            cut_Ptheta_CD = df_dvpi0p.Ptheta<65
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_Gsector2_CD = df_dvpi0p.Gsector2<7
             cut_GFid_CD = df_dvpi0p.GFid==1
@@ -670,7 +672,7 @@ class root2pickle():
             cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.822  # meepgg
             cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.677  # meepgg
             cut_mpt_CD = df_dvpi0p["MPt"] < 0.176  # mpt
-            cut_recon_CD = df_dvpi0p["reconPi"] < 2.5#1.476  # recon gam angle
+            cut_recon_CD = df_dvpi0p["reconPi"] < 1.476  # recon gam angle
             cut_coplanarity_CD = df_dvpi0p["coplanarity"] < 10.203  # coplanarity angle
             cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0208  # mmepgg
             cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0250  # mmepgg
@@ -684,7 +686,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.42  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta_FD = df_dvpi0p.Ptheta>2.477
+            cut_Ptheta_FD = df_dvpi0p.Ptheta>5
             cut_Gsector_FD = df_dvpi0p.Gsector<7
             cut_Gsector2_FD = df_dvpi0p.Gsector2<7
             cut_GFid_FD = df_dvpi0p.GFid==1
@@ -698,7 +700,7 @@ class root2pickle():
             cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.816 # meepgg
             cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.685  # meepgg
             cut_mpt_FD = df_dvpi0p["MPt"] < 0.180  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 2.5#1.363  # recon gam angle
+            cut_recon_FD = df_dvpi0p["reconPi"] < 1.363  # recon gam angle
             cut_coplanarity_FD = df_dvpi0p["coplanarity"] < 9.190  # coplanarity angle
             cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0189  # mmepgg
             cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0224  # mmepgg
@@ -713,7 +715,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvpi0p.Psector>7
-            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<90
+            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<65
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
             cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_GFid2_CDFT = df_dvpi0p.GFid2==1
@@ -726,7 +728,7 @@ class root2pickle():
             cut_meepgg1_CDFT = df_dvpi0p["ME_epgg"] < 0.844  # meepgg
             cut_meepgg2_CDFT = df_dvpi0p["ME_epgg"] > -0.806  # meepgg
             cut_mpt_CDFT = df_dvpi0p["MPt"] < 0.210  # mpt
-            cut_recon_CDFT = df_dvpi0p["reconPi"] < 2.5#1.630  # recon gam angle
+            cut_recon_CDFT = df_dvpi0p["reconPi"] < 1.630  # recon gam angle
             cut_coplanarity_CDFT = df_dvpi0p["coplanarity"] < 17.817  # coplanarity angle
             cut_mmepgg1_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0549  # mmepgg
             cut_mmepgg2_CDFT = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0575  # mmepgg
@@ -741,7 +743,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvpi0p.Psector>7
-            cut_Ptheta_CD = df_dvpi0p.Ptheta<90
+            cut_Ptheta_CD = df_dvpi0p.Ptheta<65
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_Gsector2_CD = df_dvpi0p.Gsector2<7
             cut_GFid_CD = df_dvpi0p.GFid==1
@@ -755,7 +757,7 @@ class root2pickle():
             cut_meepgg1_CD = df_dvpi0p["ME_epgg"] < 0.700  # meepgg
             cut_meepgg2_CD = df_dvpi0p["ME_epgg"] > -0.597  # meepgg
             cut_mpt_CD = df_dvpi0p["MPt"] < 0.194  # mpt
-            cut_recon_CD = df_dvpi0p["reconPi"] < 2.5#1.761  # recon gam angle
+            cut_recon_CD = df_dvpi0p["reconPi"] < 1.761  # recon gam angle
             cut_coplanarity_CD = df_dvpi0p["coplanarity"] < 9.530  # coplanarity angle
             cut_mmepgg1_CD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0182  # mmepgg
             cut_mmepgg2_CD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0219  # mmepgg
@@ -769,7 +771,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.5  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta_FD = df_dvpi0p.Ptheta>2.477
+            cut_Ptheta_FD = df_dvpi0p.Ptheta>17
             cut_Gsector_FD = df_dvpi0p.Gsector<7
             cut_Gsector2_FD = df_dvpi0p.Gsector2<7
             cut_GFid_FD = df_dvpi0p.GFid==1
@@ -783,7 +785,7 @@ class root2pickle():
             cut_meepgg1_FD = df_dvpi0p["ME_epgg"] < 0.754  # meepgg
             cut_meepgg2_FD = df_dvpi0p["ME_epgg"] > -0.583  # meepgg
             cut_mpt_FD = df_dvpi0p["MPt"] < 0.177  # mpt
-            cut_recon_FD = df_dvpi0p["reconPi"] < 2.5#1.940  # recon gam angle
+            cut_recon_FD = df_dvpi0p["reconPi"] < 1.940  # recon gam angle
             cut_coplanarity_FD = df_dvpi0p["coplanarity"] < 7.498  # coplanarity angle
             cut_mmepgg1_FD = np.abs(df_dvpi0p["MM2_epgg"]) < 0.0195  # mmepgg
             cut_mmepgg2_FD = np.abs(df_dvpi0p["MM2_epgg"]) > -0.0240  # mmepgg
@@ -831,7 +833,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
-            cut_Ptheta_CDFT = df_Rec.Ptheta<90
+            cut_Ptheta_CDFT = df_Rec.Ptheta<65
             cut_Gsector_CDFT = df_Rec.Gsector>7
             cut_Gsector2_CDFT = df_Rec.Gsector2<7
             cut_GFid_CDFT = df_Rec.GFid==1
@@ -839,7 +841,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
-            cut_Ptheta_CD = df_Rec.Ptheta<90
+            cut_Ptheta_CD = df_Rec.Ptheta<65
             cut_Gsector_CD = df_Rec.Gsector<7
             cut_Gsector2_CD = df_Rec.Gsector2<7
             cut_GFid_CD = df_Rec.GFid==1
@@ -850,7 +852,7 @@ class root2pickle():
             elif pol == "outbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
             cut_Psector_FD = df_Rec.Psector<7
-            cut_Ptheta_FD = df_Rec.Ptheta>2.477
+            cut_Ptheta_FD = df_Rec.Ptheta>5
             cut_Gsector_FD = df_Rec.Gsector<7
             cut_Gsector2_FD = df_Rec.Gsector2<7
             cut_GFid_FD = df_Rec.GFid==1
@@ -892,7 +894,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
-            cut_Ptheta_CDFT = df_Rec.Ptheta<90
+            cut_Ptheta_CDFT = df_Rec.Ptheta<65
             cut_Gsector_CDFT = df_Rec.Gsector>7
             cut_Gsector2_CDFT = df_Rec.Gsector2<7
             cut_GFid_CDFT = df_Rec.GFid==1
@@ -907,7 +909,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
-            cut_Ptheta_CD = df_Rec.Ptheta<90
+            cut_Ptheta_CD = df_Rec.Ptheta<65
             cut_Gsector_CD = df_Rec.Gsector<7
             cut_Gsector2_CD = df_Rec.Gsector2<7
             cut_GFid_CD = df_Rec.GFid==1
@@ -921,7 +923,7 @@ class root2pickle():
 
             #FD
             cut_Psector_FD = df_Rec.Psector<7
-            cut_Ptheta_FD = df_Rec.Ptheta>2.477
+            cut_Ptheta_FD = df_Rec.Ptheta>5
             cut_Gsector_FD = df_Rec.Gsector<7
             cut_Gsector2_FD = df_Rec.Gsector2<7
             cut_GFid_FD = df_Rec.GFid==1
