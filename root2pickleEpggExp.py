@@ -313,6 +313,7 @@ class root2pickle():
             print("no correction applied")
 
         if correction:
+            #proton correction
             print("correction applied for " + pol)
 
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
@@ -363,6 +364,10 @@ class root2pickle():
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
+            #moduli proton phi
+            df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
+            df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]<-180, df_protonRec.loc[:, "Pphi"] + 360, df_protonRec.loc[:, "Pphi"]) 
+
             df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
@@ -370,6 +375,7 @@ class root2pickle():
 
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
+            #photon correction
             gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
             df_gammaRec.loc[:, 'Gp'] = mag(gam)
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)

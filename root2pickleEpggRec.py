@@ -444,22 +444,7 @@ class root2pickle():
             df_protonRecFD_2.loc[:, "Pband"] = "upper"
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
-
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
-
-            #smearing photon
-            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
-            df_gammaRec.loc[:, 'Gp'] = mag(gam)
-            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
-            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
-            #FT photon
-            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]*np.random.normal(1, 0.013 + 0.003/(1+np.exp(0.761*(df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]-6))), len(df_gammaRec.loc[df_gammaRec.Gsector>7]))
-            #FD photon
-            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, 0.0395/(1+np.exp(5.308*(df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gtheta"]- 8.005))), len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
-
-            df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
-            df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
-            df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
             #smearing proton
             #CD proton
@@ -500,6 +485,20 @@ class root2pickle():
 
             pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+
+            #smearing photon
+            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
+            df_gammaRec.loc[:, 'Gp'] = mag(gam)
+            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
+            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
+            #FT photon
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]*np.random.normal(1, 0.013 + 0.003/(1+np.exp(0.761*(df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]-6))), len(df_gammaRec.loc[df_gammaRec.Gsector>7]))
+            #FD photon
+            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, 0.0395/(1+np.exp(5.308*(df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gtheta"]- 8.005))), len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
+
+            df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
+            df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
 
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
         df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp

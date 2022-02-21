@@ -318,7 +318,7 @@ class root2pickle():
 
         if correction:
             print("correction applied for " + pol)
-
+            #proton correction
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
             df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
@@ -378,6 +378,7 @@ class root2pickle():
 
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
+            #photon correction
             gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
             df_gammaRec.loc[:, 'Gp'] = mag(gam)
             df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
