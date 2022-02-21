@@ -1602,13 +1602,13 @@ class smearingDist():
 	    gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
 	    df_epgg.loc[:, 'Gp'] = mag(gam)
 	    df_epgg.loc[:, 'Ge'] = getEnergy(gam, 0)
-	    df_epgg.loc[:, 'Ptheta'] = getTheta(gam)
+	    df_epgg.loc[:, 'Gtheta'] = getTheta(gam)
 	    df_epgg.loc[:, 'Gphi'] = getPhi(gam)
 
 	    gam2 = [df_epgg['Gpx2'], df_epgg['Gpy2'], df_epgg['Gpz2']]
 	    df_epgg.loc[:, 'Gp2'] = mag(gam2)
 	    df_epgg.loc[:,'Ge2'] = getEnergy(gam2, 0)
-	    df_epgg.loc[:, 'Ptheta2'] = getTheta(gam2)
+	    df_epgg.loc[:, 'Gtheta2'] = getTheta(gam2)
 	    df_epgg.loc[:, 'Gphi2'] = getPhi(gam2)
 
 	    pi0 = vecAdd(gam, gam2)
