@@ -320,7 +320,7 @@ class root2pickle():
             print("correction applied for " + pol)
             #proton correction
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.25/(1+np.exp((CorrectedPp_CD-0.518)/(-0.025)))
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.2/(1+np.exp((CorrectedPp_CD-0.55)/(-0.05)))
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
@@ -866,7 +866,7 @@ class root2pickle():
             cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
             cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
             cut_mpt_CD = df_dvcs["MPt"] < 0.182  # mpt
-            cut_recon_CD = df_dvcs["reconGam"] < 0.876  # recon gam angle
+            cut_recon_CD = df_dvcs["reconGam"] < 2.5#0.876  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.352  # coplanarity angle
             cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0241  # mmepg
             cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0275  # mmepg
@@ -943,7 +943,7 @@ class root2pickle():
             cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
             cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
             cut_mpt_CD = df_dvcs["MPt"] < 0.183  # mpt
-            cut_recon_CD = df_dvcs["reconGam"] < 0.954  # recon gam angle
+            cut_recon_CD = df_dvcs["reconGam"] < 2.5#0.954  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 7.347  # coplanarity angle
             cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0211  # mmepg
             cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0241  # mmepg

@@ -317,7 +317,7 @@ class root2pickle():
             print("correction applied for " + pol)
 
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.25/(1+np.exp((CorrectedPp_CD-0.518)/(-0.025)))
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.2/(1+np.exp((CorrectedPp_CD-0.55)/(-0.05)))
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
@@ -351,15 +351,14 @@ class root2pickle():
                 if pol == "outbending":
                     return cubicsigmoid2(args_corrections_FD_outb[sector-1], mom)
 
-            if pol == "inbending":
-                for sector in range(1, 7):
-                    FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "inbending", sector)
-                    df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
+            # if pol == "inbending":
+            #     for sector in range(1, 7):
+            #         FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "inbending", sector)
+            #         df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
             if pol == "outbending":
-                for sector in range(1, 7):
-                    FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "outbending", sector)
-                    df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
-
+                # for sector in range(1, 7):
+                #     FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "outbending", sector)
+                #     df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
                 df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
