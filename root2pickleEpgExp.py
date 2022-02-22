@@ -335,34 +335,12 @@ class root2pickle():
 
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
-            args_corrections_FD_inb = [[ 0.225, -0.359,  0.173,  1.153,  0.0377], [ 0.241, -0.388, 0.180, 1.202, 0.0366], [0.323, -0.501, 0.208, 1.201, 0.0475], [0.390, -0.604, 0.243, 1.177, 0.0297],[ 0.293, -0.416, 0.170,  1.130,  0.0430], [ 0.352, -0.554, 0.248, 1.130, 0.0448]]
-            args_corrections_FD_outb = [[-0.0345,  0.169, -0.217, 0.899, -0.0124] , [-0.0254, 0.149, -0.204,  0.907, -0.0203] , [-0.0421, 0.183, -0.221,  0.933, -0.0204 ] , [-0.0925,  0.317, -0.294,  0.921, -0.0295] , [-0.128, 0.392, -0.325, 0.861, -0.00389] , [-0.0315, 0.179, -0.223, 0.886, -0.00124]]
-
-            def cubicsigmoid(args, x):
-                a, b, c, d, e = args
-                x=np.array(x)
-                return (a*x**3 + b*x**2 + c*x + 0.04) /(1+np.exp((x-d)/e)) - 0.04
-
-            def cubicsigmoid2(args, x):
-                a, b, c, d, e = args
-                x=np.array(x)
-                return np.where(x>1.55, (a*1.55**3 + b*1.55**2 + c*1.55)* (1/(1+np.exp((1.55-d)/e)) - 0.5), (a*x**3 + b*x**2 + c*x)* (1/(1+np.exp((x-d)/e)) - 0.5))
-
-            def correction_proton_FD(mom, pol = "inbending", sector = 1):
-                if pol == "inbending":
-                    return cubicsigmoid(args_corrections_FD_inb[sector-1], mom)
-                if pol == "outbending":
-                    return cubicsigmoid2(args_corrections_FD_outb[sector-1], mom)
-
-            # if pol == "inbending":
-            #     for sector in range(1, 7):
-            #         FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "inbending", sector)
-            #         df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
+            if pol == "inbending":
+                corr = np.poly1d([1.671, -4.918, 5.151, -2.434])(df_protonRecFD.Pp)       
+                corr = np.where(corr<0, corr, 0)
+                df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + corr #corr scale -1 to -0.3 degrees
             if pol == "outbending":
-                # for sector in range(1, 7):
-                #     FD_prot_corr = correction_proton_FD(df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"], "outbending", sector)
-                #     df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector == sector, "Pp"] + FD_prot_corr
-
+                df_protonRecFD.loc[df_protonRecFD.Psector<7, "Pp"] = df_protonRecFD.loc[df_protonRecFD.Psector<7, "Pp"] - 0.02
                 df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
@@ -408,6 +386,10 @@ class root2pickle():
                 args_minor = [[-0.0000168, 0.821, 8.894], [-0.000135, 3.070, 9.248], [-0.0000620, 2.793, 8.865], [ 0.000132, -0.00162,  0.00978], [-0.000135,  0.000282, 0.00650], [ 0.000263,  -0.00293,   0.0139]]
                 FD_phot_corr_minor_sector = funcs[sector-1](args_minor[sector-1], df_gammaRec.loc[cond, "Gp"])
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
+
+            if pol == "outbending":
+                FD_phot_corr_marginal = np.where(-(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5)>0, -0.05*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5), 0)
+                df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_marginal
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
