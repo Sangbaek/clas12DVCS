@@ -499,9 +499,10 @@ class root2pickle():
             for sector in range(1, 7):
                 if pol == "inbending":
                     regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]-0.5)/0.05)))
+                    sigmas_FD = quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
                 elif pol == "outbending":
                     regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]-0.6)/0.05)))
-                sigmas_FD = quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
+                    sigmas_FD = 0#quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
                 df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]*np.random.normal(1, regulator*sigmas_FD, len(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]))
 
             #moduli proton phi
@@ -981,7 +982,7 @@ class root2pickle():
             cut_meepg2_CD = df_dvcs["ME_epg"] > -0.922  # meepg
             cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
             cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
-            cut_mpt_CD = df_dvcs["MPt"] < 0.182  # mpt
+            cut_mpt_CD = df_dvcs["MPt"] < 0.124#0.182  # mpt
             cut_recon_CD = df_dvcs["reconGam"] < 0.876  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 8.352  # coplanarity angle
             cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0241  # mmepg
@@ -1058,8 +1059,8 @@ class root2pickle():
             cut_meepg2_CD = df_dvcs["ME_epg"] > -0.825  # meepg
             cut_cone1_CD = df_dvcs["coneAngle"] < 0.416 * df_dvcs.Gp**2 - 5.401*df_dvcs.Gp + 50.980  # coneangle
             cut_cone2_CD = df_dvcs["coneAngle"] > 0.278 * df_dvcs.Gp**2 - 2.711*df_dvcs.Gp + 23.021  # coneangle
-            cut_mpt_CD = df_dvcs["MPt"] < 0.183  # mpt
-            cut_recon_CD = df_dvcs["reconGam"] < 0.954  # recon gam angle
+            cut_mpt_CD = df_dvcs["MPt"] < 0.164#0.183  # mpt
+            cut_recon_CD = df_dvcs["reconGam"] < 1.005#0.954  # recon gam angle
             cut_coplanarity_CD = df_dvcs["coplanarity"] < 7.347  # coplanarity angle
             cut_mmepg1_CD = np.abs(df_dvcs["MM2_epg"]) < 0.0211  # mmepg
             cut_mmepg2_CD = np.abs(df_dvcs["MM2_epg"]) > -0.0241  # mmepg
@@ -1083,8 +1084,8 @@ class root2pickle():
             cut_meepg2_FD = df_dvcs["ME_epg"] > -0.796  # meepg
             cut_cone1_FD = df_dvcs["coneAngle"] < 0.0673 * df_dvcs.Gp**2 - 0.752*df_dvcs.Gp + 41.678  # coneangle
             cut_cone2_FD = df_dvcs["coneAngle"] > 0.712 * df_dvcs.Gp**2 - 7.676*df_dvcs.Gp + 46.720  # coneangle
-            cut_mpt_FD = df_dvcs["MPt"] < 0.186  # mpt
-            cut_recon_FD = df_dvcs["reconGam"] < 1.662  # recon gam angle
+            cut_mpt_FD = df_dvcs["MPt"] < 0.269#0.186  # mpt
+            cut_recon_FD = df_dvcs["reconGam"] < 1.786#1.662  # recon gam angle
             cut_coplanarity_FD = df_dvcs["coplanarity"] < 11.685  # coplanarity angle - no cut
             cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0294  # mmepg
             cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0346  # mmepg
