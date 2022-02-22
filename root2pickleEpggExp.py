@@ -317,7 +317,7 @@ class root2pickle():
             print("correction applied for " + pol)
 
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762
+            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.25/(1+np.exp((CorrectedPp_CD-0.518)/(-0.025)))
             df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
