@@ -386,7 +386,7 @@ class root2pickle():
 
             if pol == "outbending":
                 FD_phot_corr_marginal = np.where(-(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5)>0, -0.05*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5), 0)
-                df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_marginal
+                df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] = df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] + FD_phot_corr_marginal
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
