@@ -343,8 +343,7 @@ class root2pickle():
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
             #moduli proton phi
-            df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]>180, df_protonRec.loc[:, "Pphi"] - 360, df_protonRec.loc[:, "Pphi"]) 
-            df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]<-180, df_protonRec.loc[:, "Pphi"] + 360, df_protonRec.loc[:, "Pphi"]) 
+            df_protonRec.loc[:, "Pphi"] = df_protonRec.loc[:, "Pphi"]%360
 
             df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
             df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
@@ -385,7 +384,7 @@ class root2pickle():
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
 
             if pol == "outbending":
-                FD_phot_corr_marginal = np.where(-(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5)>0, -0.05*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5), 0)
+                FD_phot_corr_marginal = (0.1-0.1/5*df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"])*df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]/(1+np.exp((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-5)/0.25))
                 df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] = df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] + FD_phot_corr_marginal
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
