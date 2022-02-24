@@ -402,9 +402,9 @@ if __name__ == "__main__":
     parser.add_argument("-g","--gen", help="gen or rec", action = "store_true")
     parser.add_argument("-i","--inglobal", help="a single pickle file name as an input", default="df_global_Feb.pkl")
     parser.add_argument("-o","--outglobal", help="a single pickle file name as an output", default="df_global_Feb_out.pkl")
-    parser.add_argument("-n","--nonrad", help="to make fractional", action="store_true")
-    parser.add_argument("-s","--speak", help="to make fractional", action="store_true")
-    parser.add_argument("-p","--ppeak", help="to make fractional", action="store_true")
+    parser.add_argument("-N","--nonrad", help="to make fractional", action="store_true")
+    parser.add_argument("-S","--speak", help="to make fractional", action="store_true")
+    parser.add_argument("-P","--ppeak", help="to make fractional", action="store_true")
     parser.add_argument("-c","--colName", help="columnName", default="dvcsSimInb50nA")
     
     args = parser.parse_args()
