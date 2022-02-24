@@ -126,7 +126,7 @@ dvcsBHSimInb = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSi
 print("counting inb bin volumes")
 TrueVolInb = []
 for i in range(len(df_global)):
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], i, dvcsBHSimInb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolInb"] = TrueVolInb
 local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_inb.pkl")
 
@@ -156,6 +156,6 @@ dvcsBHSimOutb = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvc
 print("counting outb bin volumes")
 TrueVolOutb = []
 for i in range(len(phibin_i)):
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], i, dvcsBHSimInb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolOutb"] = TrueVolOutb
 local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_outb.pkl")
