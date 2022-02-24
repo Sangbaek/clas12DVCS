@@ -414,6 +414,7 @@ if __name__ == "__main__":
         df = pd.read_pickle(args.ifname)
         print("done with reading..")
         if args.gen:
+            df.loc[:, "event"] = df.index
             df = df.rename(columns ={"phi2": "phi1", "t2": "t1"})
         print("numbering..")
         df = numberingDF(df)
@@ -431,10 +432,13 @@ if __name__ == "__main__":
             df_global.to_pickle(args.outglobal)
         else:
             if args.nonrad:
+                print("select non rad events only")
                 df = df.loc[df.radMode == 1, :]
             if args.speak:
+                print("select s-peak events only")
                 df = df.loc[df.radMode == 2, :]
             if args.ppeak:
+                print("select p-peak events only")
                 df = df.loc[df.radMode == 3, :]
             print("count Rec..")
             df_global = countDF(df, df_global, args.colName)
