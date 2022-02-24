@@ -153,27 +153,35 @@ df_4249_Gen = pd.read_pickle(parent_bhGen + "4249.pkl")
 df_4249_Gen.loc[:, "event"] = df_4249_Gen.index
 
 #bkg1g outb 50 nA
+print("reading pi0->dvcs outb 50 nA")
 df_4243_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 df_4271_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4271.pkl")
 df_4290_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4290.pkl")
 #bkg2g outb 50 nA
+print("reading pi0->pi0 outb 50 nA")
 df_4243_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 df_4271_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4271.pkl")
 df_4290_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4290.pkl")
 
 #bkg1g outb 40 nA
+print("reading pi0->dvcs outb 40 nA")
 df_4293_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4293.pkl")
 #bkg2g outb 40 nA
+print("reading pi0->pi0 outb 40 nA")
 df_4293_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4293.pkl")
 
 #bkg1g outb 0 nA
+print("reading pi0->dvcs outb 0 nA")
 df_4304_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4304.pkl")
 #bkg2g outb 0 nA
+print("reading pi0->pi0 outb 0 nA")
 df_4304_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4304.pkl")
 
 #bkg1g outb 40 nA torus+1.01
+print("reading pi0->dvcs outb 40 nA torus+1.01")
 df_4306_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4306.pkl")
 #bkg2g outb 40 nA torus+1.01
+print("reading pi0->pi0 outb 40 nA torus+1.01")
 df_4306_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4306.pkl")
 
 #Exp

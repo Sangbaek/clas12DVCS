@@ -165,24 +165,24 @@ df_4202_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4202.pkl")
 df_4209_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4209.pkl")
 
 #bkg1g inb 55 nA
-print("reading pi0->dvcs inb 50 nA")
+print("reading pi0->dvcs inb 55 nA")
 df_4212_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4212.pkl")
 #bkg2g inb 55 nA
-print("reading pi0->pi0 inb 50 nA")
+print("reading pi0->pi0 inb 55 nA")
 df_4212_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4212.pkl")
 
 #bkg1g inb 45 nA
-print("reading pi0->dvcs inb 50 nA")
+print("reading pi0->dvcs inb 45 nA")
 df_4217_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4217.pkl")
 #bkg2g inb 45 nA
-print("reading pi0->pi0 inb 50 nA")
+print("reading pi0->pi0 inb 45 nA")
 df_4217_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4217.pkl")
 
 #bkg1g inb 0 nA
-print("reading pi0->dvcs inb 50 nA")
+print("reading pi0->dvcs inb 0 nA")
 df_4231_1g_corr = pd.read_pickle(parent_MC_bkg1g + "4231.pkl")
 #bkg2g inb 0 nA
-print("reading pi0->pi0 inb 50 nA")
+print("reading pi0->pi0 inb 0 nA")
 df_4231_2g_corr = pd.read_pickle(parent_MC_bkg2g + "4231.pkl")
 
 #Exp
