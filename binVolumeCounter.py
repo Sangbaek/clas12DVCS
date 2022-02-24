@@ -78,12 +78,10 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphi, df, N1=10, N2=10, N3=10, N4
                     tmax = t_i + (t_f - t_i)*(tind+1)/N3
                     pmin = phi_i + (phi_f - phi_i)*phiind/N4
                     pmax = phi_i + (phi_f - phi_i)*(phiind+1)/N4
-                    local2 = local.loc[(local.Q2>=qmin) & (local.Q2<qmax)]
-                    local2 = local2.loc[(local2.xB>=xmin) & (local2.xB<xmax)]
-                    local2 = local2.loc[(local2.t1>=tmin) & (local2.t1<tmax)]
-                    local2 = local2.loc[(local2.phi1>=pmin) & (local2.phi1<pmax)]
+                    local2 = local.loc[(local.Q2>=qmin) & (local.Q2<qmax) & (local.xB>=xmin) & (local.xB<xmax) & (local.t1>=tmin) & (local.t1<tmax) & (local.phi1>=pmin) & (local.phi1<pmax)]
                     if(len(local2)):
                         count += 1
+    local2 = 0                                                                                     
     return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i)
 
 
@@ -105,7 +103,7 @@ if args.polarity == "inbending":
     df_3987_corr = pd.read_pickle(parent_MC + "3987.pkl")
     df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
     df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
-    df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")
+    df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")       
     df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
     df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
 
