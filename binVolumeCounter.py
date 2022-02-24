@@ -1,53 +1,50 @@
 import pandas as pd
 import numpy as np
-
+import argparse
 M = 0.938272081 # target mass
 
-k= 2*M*(np.sqrt(0.8**2+M**2)-M)
 x1 = 1/2/M/8.604
-x2 = 1/2/M/3
-x3 = 1-(4-M**2)/2/M/3
-x4 = 2*(1-np.sqrt((k-M**4+4*M**2)/k))/(M**4/k - 4*M**2/k)
-x5 = (-1+np.sqrt(1+4*M**2/k*(1+M/8.604/2)))/2/M**2*k
+x2 = 1/(5-M**2)
+x3 = (10.604/8.604-1)/M*10.604* (1-np.cos(np.radians(35)))
+x4 = (1-(4-M**2)/2/10.604/M)/(1+(4-M**2)/2/10.604**2/(1-np.cos(np.radians(35))))
+
 y1 = 1
 y2 = 1.456
-y3 = 6*M*x3
-y4 = (4-M**2)*x4/(1-x4)
-y5 = 2*M*8.604*x5
+y3 = 2.510
+y4 = 4.326
+y5 = 7.671
 
 c0 = y2/2/M/8.604
-d0 = y2/2/M/3
+d0 = 1/(1+(4-M*M)/y2)
 c1 = np.sqrt(y2*y3)/2/M/8.604
-d1 = np.sqrt(y2*y3)/2/M/3
+d1 = 1/(1+(4-M*M)/np.sqrt(y2*y3))
 c2 = y3/2/M/8.604
-d2 = x3
+d2 =  1/(1+(4-M*M)/y3)
 c3 = np.sqrt(y3*y4)/2/M/8.604
 d3 = 1/(1+(4-M*M)/np.sqrt(y3*y4))
 c4 = y4/2/M/8.604
-d4 = x5
+d4 = 1/(1+(4-M*M)/y4)
 c5 = np.sqrt(y4*y5)/2/M/8.604
-d5 = x5
+d5 = 1/(1+(4-M*M)/np.sqrt(y4*y5))
+c6 = y5/2/M/8.604
+d6 = 1/(1+(4-M*M)/y5)
 
-tbin0 = 0.088#2*M*(np.sqrt(0.3**2+M**2)-M)
-tbin1 = 0.168#2*M*(np.sqrt(0.42**2+M**2)-M)
-tbin2 = 0.234#2*M*(np.sqrt(0.5**2+M**2)-M)
-tbin3 = 0.414#2*M*(np.sqrt(0.68**2+M**2)-M)
-tbin4 = 0.553#2*M*(np.sqrt(0.8**2+M**2)-M)
-
-Q2bin_i = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5)]
-Q2bin_f = [y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), y5]
-xBbin_i = {0:[[x1, c0], c1, c2], 1: [[c0, c1], c2, c3], 2: [[c1, c2], c2, c3, c4], 3: [[c2, c3], c3, c4, c5], 4: [[c3, c4], c4, c5], 5: [[c4, c5], c5], 6: [[c5, x5]]}
-xBbin_f = {0: [c1, c2, [x2, d0]], 1: [c2, c3, [x2, d1]], 2: [c2, c3, c4, [d1, d2]], 3: [c3, c4, c5, [d2, d3]], 4: [c4, c5, [d3, d4]], 5: [c5, x5], 6: [x5]}
-tbin_i = [tbin0, tbin1, tbin2, tbin3]
-tbin_f = [tbin1, tbin2, tbin3, tbin4]
+Q2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), y5]
+Q2bin_i = Q2bins[:-1]
+Q2bin_f = Q2bins[1:]
+xBbin_i = {0:[[x1, c0], c0, c1, c2, c3], 1: [[c0, c1], c1, c2, c3, c4], 2: [[c1, c2], c2, c3, c4, d1], 3: [[c2, c3], c3, c4, d1], 4: [[c3, c4], c4, d1], 5: [[c4, c5], d1], 6: [[c5, c6]]}
+xBbin_f = {0: [c0, c1, c2, c3, [x2, d0]], 1: [c1, c2, c3, c4, [d0, d1]], 2: [c2, c3, c4, d1, [d1, d2]], 3: [c3, c4, d1, [d2, d3]], 4: [c4, d1, [d3, d4]], 5: [d1, [d4, d5]], 6: [[d5, d6]]}
+tbins = [0.088, 0.177, 0.321, 0.523, 0.813, 1.187, 1.46, 1.72]
+tbin_i = tbins[:-1]
+tbin_f = tbins[1:]
 phibin = [0, 12, 24, 36, 48, 60, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 300, 312, 324, 336, 348, 360]
 phibin_i = phibin[:-1]
 phibin_f = phibin[1:]
 
-goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '020', '021', '022', '023', '100', '101', '102', '103', '110', '111', '112', '113', '120', '121', '122', '123', '200', '201', '202', '203', '210', '211', '212', '213', '220', '221', '222', '223', '231', '232', '233', '300', '301', '302', '303', '310', '311', '312', '313', '321', '322', '323', '332', '333', '400', '401', '402', '403', '411', '412', '413', '422', '423', '502', '503', '512', '513']
-badBins = ['230', '320', '330', '331', '410', '420', '421', '500', '501', '510', '511', '600', '601', '602', '603']
+badBins = ['004', '005', '006', '015', '016', '026', '045', '046', '104', '105', '106', '115', '116', '126', '146', '205', '206', '216', '240', '245', '246', '306', '320', '330', '406', '410', '420', '500', '505', '506', '510', '600', '601']
+goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020', '021', '022', '023', '024', '025', '030', '031', '032', '033', '034', '035', '036', '040', '041', '042', '043', '044', '100', '101', '102', '103', '110', '111', '112', '113', '114', '120', '121', '122', '123', '124', '125', '130', '131', '132', '133', '134', '135', '136', '140', '141', '142', '143', '144', '145', '200', '201', '202', '203', '204', '210', '211', '212', '213', '214', '215', '220', '221', '222', '223', '224', '225', '226', '230', '231', '232', '233', '234', '235', '236', '241', '242', '243', '244', '300', '301', '302', '303', '304', '305', '310', '311', '312', '313', '314', '315', '316', '321', '322', '323', '324', '325', '326', '331', '332', '333', '334', '335', '336', '400', '401', '402', '403', '404', '405', '411', '412', '413', '414', '415', '416', '421', '422', '423', '424', '425', '426', '501', '502', '503', '504', '511', '512', '513', '514', '515', '516', '602', '603', '604', '605', '606']
 
-local502 = pd.read_pickle("local502_outb.pkl")
+df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Feb.pkl")
 
 def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
     
@@ -111,8 +108,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
                         count += 1
     return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i)
 
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl/bh/"
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
+parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
 
 
 #dvcs inb 50 nA
@@ -122,6 +119,7 @@ df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
 df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
 df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")
 df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
+df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
 
 #dvcs inb 55 nA
 print("reading dvcs inb 55 nA")
@@ -139,7 +137,7 @@ df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
 print("reading bh inb 50 nA")
 df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
 
-dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr])
+dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr])
 dvcsSimInb55nA = df_4186_corr
 dvcsSimInb45nA = df_4188_corr
 dvcsSimInb0nA = df_4192_corr
@@ -149,16 +147,16 @@ dvcsBHSimInb = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSi
 
 print("counting inb bin volumes")
 TrueVolInb = []
-for i in range(len(phibin_i)):
+for i in range(len(df_global)):
     print(i)
-    TrueVolInb.append(TruebinVol(5, 0, 2, i, dvcsBHSimInb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2, df_global.xB, df_global.t, df_global.phi, dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolInb"] = TrueVolInb
-local502.to_pickle("truebinVol_inb.pkl")
+local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_inb.pkl")
 
 # local502 = pd.read_pickle("truebinVol_inb.pkl")
 
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_outb/bh/"
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
+parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
 
 df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
 df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
@@ -182,6 +180,6 @@ print("counting outb bin volumes")
 TrueVolOutb = []
 for i in range(len(phibin_i)):
     print(i)
-    TrueVolOutb.append(TruebinVol(5, 0, 2, i, dvcsBHSimOutb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2, df_global.xB, df_global.t, df_global.phi, dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolOutb"] = TrueVolOutb
-local502.to_pickle("truebinVol_outb.pkl")
+local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_outb.pkl")
