@@ -46,7 +46,7 @@ goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020'
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Feb.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphi, df, N1=10, N2=10, N3=10, N4=10):
     
     count = 0 
     
@@ -59,30 +59,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, df, N1=10, N2=10, N3=10, N4=10):
     phi_i = phibin_i[phibin]
     phi_f = phibin_f[phibin]
     
-    local = df
-    #cut by Q2
-    if Q2bin == len(Q2bin_i)-1:
-        local = local.loc[(local.Q2>=Q2_i) & (local.Q2<=Q2_f)]
-    else:
-        local = local.loc[(local.Q2>=Q2_i) & (local.Q2<Q2_f)]
-    #cut by xB
-    #xB lower bound
-    if xBbin == 0:
-        local = local.loc[local.Q2<=2*M*(10.604-2)*local.xB, :]
-    else:
-        local = local.loc[local.xB>=xB_i] 
-    #xB upper bound
-    if (xBbin == len(xBbin_i[Q2bin])-1) & (Q2bin < 3):
-        local = local.loc[local.Q2>=2*M*3*local.xB]
-    elif (xBbin == len(xBbin_i[Q2bin])-1) & (Q2bin < 5):
-        local = local.loc[local.Q2>=(4 - M*M)*local.xB/(1 - local.xB)]
-    else:
-        local = local.loc[local.xB<xB_f]
-    #cut by t
-    if tbin == len(tbin_i)-1:
-        local = local.loc[(local.t1>=t_i) & (local.t1<=t_f)]
-    else:
-        local = local.loc[(local.t1>=t_i) & (local.t1<t_f)]
+    local = df.loc[df.Q2xBtphi == Q2xBtphi]
+    print(Q2xBtphi, len(local))
                 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -148,8 +126,7 @@ dvcsBHSimInb = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSi
 print("counting inb bin volumes")
 TrueVolInb = []
 for i in range(len(df_global)):
-    print(i)
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], dvcsBHSimInb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], i, dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolInb"] = TrueVolInb
 local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_inb.pkl")
 
@@ -179,7 +156,6 @@ dvcsBHSimOutb = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvc
 print("counting outb bin volumes")
 TrueVolOutb = []
 for i in range(len(phibin_i)):
-    print(i)
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], dvcsBHSimInb, 6, 6, 6, 6))
+    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], i, dvcsBHSimInb, 6, 6, 6, 6))
 local502.loc[:, "binVolOutb"] = TrueVolOutb
 local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_outb.pkl")
