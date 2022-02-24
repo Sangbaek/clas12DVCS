@@ -401,8 +401,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-f","--ifname", help="a single pickle to be numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
-    parser.add_argument("-f","--ofname", help="output with numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
+    parser.add_argument("-if","--ifname", help="a single pickle to be numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
+    parser.add_argument("-of","--ofname", help="output with numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-n","--numbering", help="numbering only", action = "store_true")
     parser.add_argument("-g","--gen", help="gen or rec", action = "store_true")
     parser.add_argument("-i","--in", help="a single pickle file name as an input", default="df_global_Feb.pkl")
@@ -412,13 +412,13 @@ if __name__ == "__main__":
 
     if args.numbering:
         print("reading..")
-        df = pd.read_pickle(ifname)
+        df = pd.read_pickle(args.ifname)
         print("done reading..")
         if args.gen:
             df = df.rename(columns ={"phi2": "phi1", "t2": "t1"})
         print("numbering..")
         df = numberingDF(df)
         print("saving..")
-        df.to_pickle(ofname)
+        df.to_pickle(args.ofname)
     else:
         pass
