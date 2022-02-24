@@ -427,6 +427,15 @@ if __name__ == "__main__":
         df_global = pd.read_pickle(args.inglobal)
         if args.gen:
             print("count Gen..")
+            if args.nonrad:
+                print("select non rad events only")
+                df = df.loc[df.radMode == 1, :]
+            if args.speak:
+                print("select s-peak events only")
+                df = df.loc[df.radMode == 2, :]
+            if args.ppeak:
+                print("select p-peak events only")
+                df = df.loc[df.radMode == 3, :]
             df_global = countGenDF(df, df_global, args.colName)
             print("done with counting..")
             df_global.to_pickle(args.outglobal)
