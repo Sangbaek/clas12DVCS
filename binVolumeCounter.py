@@ -86,76 +86,89 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphi, df, N1=10, N2=10, N3=10, N4
                         count += 1
     return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i)
 
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
+
+import argparse
+parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+parser.add_argument("-c","--config", help="config", default="1")
+parser.add_argument("-p","--polarity", help="polarity", default="inbending")
+
+if args.polarity == "inbending":
+    print("inbending")
+    parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
+    parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
 
 
-#dvcs inb 50 nA
-print("reading dvcs inb 50 nA")
-df_3987_corr = pd.read_pickle(parent_MC + "3987.pkl")
-df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
-df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
-df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")
-df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
-df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
+    #dvcs inb 50 nA
+    print("reading dvcs inb 50 nA")
+    df_3987_corr = pd.read_pickle(parent_MC + "3987.pkl")
+    df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
+    df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
+    df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")
+    df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
+    df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
 
-#dvcs inb 55 nA
-print("reading dvcs inb 55 nA")
-df_4186_corr = pd.read_pickle(parent_MC + "4186.pkl")
+    #dvcs inb 55 nA
+    print("reading dvcs inb 55 nA")
+    df_4186_corr = pd.read_pickle(parent_MC + "4186.pkl")
 
-#dvcs inb 45 nA
-print("reading dvcs inb 45 nA")
-df_4188_corr = pd.read_pickle(parent_MC + "4188.pkl")
+    #dvcs inb 45 nA
+    print("reading dvcs inb 45 nA")
+    df_4188_corr = pd.read_pickle(parent_MC + "4188.pkl")
 
-#dvcs inb 0 nA
-print("reading dvcs inb 0 nA")
-df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
+    #dvcs inb 0 nA
+    print("reading dvcs inb 0 nA")
+    df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
 
-#bh inb 50 nA
-print("reading bh inb 50 nA")
-df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
+    #bh inb 50 nA
+    print("reading bh inb 50 nA")
+    df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
 
-dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr])
-dvcsSimInb55nA = df_4186_corr
-dvcsSimInb45nA = df_4188_corr
-dvcsSimInb0nA = df_4192_corr
-bhSimInb50nA = df_4238_corr
+    dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr])
+    dvcsSimInb55nA = df_4186_corr
+    dvcsSimInb45nA = df_4188_corr
+    dvcsSimInb0nA = df_4192_corr
+    bhSimInb50nA = df_4238_corr
 
-dvcsBHSimInb = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
+    dvcsBHSim = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
 
-print("counting inb bin volumes")
-TrueVolInb = []
+else:
+    print("outbending")
+    parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
+    parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
+
+    df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
+    df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
+    df_4251_corr = pd.read_pickle(parent_MC + "4251.pkl")
+    df_4252_corr = pd.read_pickle(parent_MC + "4252.pkl")
+    df_4255_corr = pd.read_pickle(parent_MC + "4255.pkl")
+    df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
+    df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
+    df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
+    df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
+
+    dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr])
+    dvcsSimOutb40nA = df_4263_corr
+    dvcsSimOutb0nA = df_4262_corr
+    dvcsSimOutb40nAT = df_4266_corr
+    bhSimOutb50nA = df_4249_corr
+
+    dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
+
+if args.config == "0":
+    print("counting inb bin volumes for All configs")
+if args.config == "1":
+    print("counting inb bin volumes for FD")
+    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 1]
+if args.config == "2":
+    print("counting inb bin volumes for CD")
+    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 2]
+if args.config == "3":
+    print("counting inb bin volumes for CDFT")
+    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 3]
+
+TrueVol = []
 for i in range(len(df_global)):
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSimInb, 6, 6, 6, 6))
-local502.loc[:, "binVolInb"] = TrueVolInb
-local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_inb.pkl")
-
-# local502 = pd.read_pickle("truebinVol_inb.pkl")
-
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
-
-df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
-df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
-df_4251_corr = pd.read_pickle(parent_MC + "4251.pkl")
-df_4252_corr = pd.read_pickle(parent_MC + "4252.pkl")
-df_4255_corr = pd.read_pickle(parent_MC + "4255.pkl")
-df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
-df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
-df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
-df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
-
-dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr])
-dvcsSimOutb40nA = df_4263_corr
-dvcsSimOutb0nA = df_4262_corr
-dvcsSimOutb40nAT = df_4266_corr
-bhSimOutb50nA = df_4249_corr
-
-dvcsBHSimOutb = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
-
-print("counting outb bin volumes")
-TrueVolOutb = []
-for i in range(len(phibin_i)):
-    TrueVolInb.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSimInb, 6, 6, 6, 6))
-local502.loc[:, "binVolOutb"] = TrueVolOutb
-local502.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_outb.pkl")
+    TrueVol.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSim, 6, 6, 6, 6))
+df_global.loc[:, "binVolInb"] = TrueVolInb
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_{}{}.pkl".format(args.polarity, args.config))
