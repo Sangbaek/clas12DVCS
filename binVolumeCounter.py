@@ -92,6 +92,7 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 
 parser.add_argument("-c","--config", help="config", default="1")
 parser.add_argument("-p","--polarity", help="polarity", default="inbending")
+args = parser.parse_args()
 
 if args.polarity == "inbending":
     print("inbending")
