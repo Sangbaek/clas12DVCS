@@ -95,8 +95,6 @@ def countDF(total, df_global, colName = "new"):
     numbers1 = []
     numbers2 = []
     numbers3 = []
-    if 'Q2xBtphi' not in total:
-        total = numberingDF(total, Q2bin_i, Q2bin_f, xBbin_i, xBbin_f, tbin_i, tbin_f, goodBins, badBins, df_global)
     for i in range(len(df_global)):
         if i%50 == 0:
             print(i)
@@ -113,9 +111,6 @@ def countDF(total, df_global, colName = "new"):
 
 def countGenDF(total, df_global, colName = "new"):
     numbers = []
-    if 'Q2xBtphi' not in total:
-        print("invalid df input.")
-        return df_global
     for i in range(len(df_global)):
         if i%10==0:
             print(i)
@@ -405,15 +400,19 @@ if __name__ == "__main__":
     parser.add_argument("-of","--ofname", help="output with numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-n","--numbering", help="numbering only", action = "store_true")
     parser.add_argument("-g","--gen", help="gen or rec", action = "store_true")
-    parser.add_argument("-i","--in", help="a single pickle file name as an input", default="df_global_Feb.pkl")
-    parser.add_argument("-o","--out", help="a single pickle file name as an output", default="df_global_Feb_out.pkl")
+    parser.add_argument("-i","--inglobal", help="a single pickle file name as an input", default="df_global_Feb.pkl")
+    parser.add_argument("-o","--outglobal", help="a single pickle file name as an output", default="df_global_Feb_out.pkl")
+    parser.add_argument("-n","--nonrad", help="to make fractional", action="store_true")
+    parser.add_argument("-s","--speak", help="to make fractional", action="store_true")
+    parser.add_argument("-p","--ppeak", help="to make fractional", action="store_true")
+    parser.add_argument("-c","--colName", help="columnName", default="dvcsSimInb50nA")
     
     args = parser.parse_args()
 
     if args.numbering:
         print("reading..")
         df = pd.read_pickle(args.ifname)
-        print("done reading..")
+        print("done with reading..")
         if args.gen:
             df = df.rename(columns ={"phi2": "phi1", "t2": "t1"})
         print("numbering..")
@@ -421,4 +420,23 @@ if __name__ == "__main__":
         print("saving..")
         df.to_pickle(args.ofname)
     else:
-        pass
+        print("reading..")
+        df = pd.read_pickle(args.ifname)
+        print("reading seed..")
+        df_global = pd.read_pickle(args.inglobal)
+        if args.gen:
+            print("count Gen..")
+            df_global = countGenDF(df, df_global, colName)
+            print("done with counting..")
+            df_global.to_pickle(args.outglobal)
+        else:
+            if args.nonrad:
+                df = df.loc[df.radMode == 1, :]
+            if args.speak:
+                df = df.loc[df.radMode == 2, :]
+            if args.ppeak:
+                df = df.loc[df.radMode == 3, :]
+            print("count Rec..")
+            df_global = countDF(df, df_global, colName)
+            print("done with counting..")
+        df_global.to_pickle(args.outglobal)
