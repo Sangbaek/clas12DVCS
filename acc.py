@@ -77,6 +77,9 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
 
                 if Q2xBtbin in badBins:
                     continue
+                if (len(local)==0):
+                    print(Q2xBtbin, Q2xBtphi, xB_i)#continue
+                    continue
                     
                 for phi_ind in range(0, len(phibin_i)):
                     local.loc[:, "xBbin"] = xBbin
