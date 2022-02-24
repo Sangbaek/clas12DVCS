@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+import argparse
 M = 0.938272081 # target mass
 
 x1 = 1/2/M/8.604
@@ -411,10 +411,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.numbering:
+        print("reading..")
         df = pd.read_pickle(ifname)
+        print("done reading..")
         if args.gen:
             df = df.rename(columns ={"phi2": "phi1", "t2": "t1"})
+        print("numbering..")
         df = numberingDF(df)
+        print("saving..")
         df.to_pickle(ofname)
     else:
         pass
