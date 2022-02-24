@@ -426,7 +426,7 @@ if __name__ == "__main__":
         df_global = pd.read_pickle(args.inglobal)
         if args.gen:
             print("count Gen..")
-            df_global = countGenDF(df, df_global, colName)
+            df_global = countGenDF(df, df_global, args.colName)
             print("done with counting..")
             df_global.to_pickle(args.outglobal)
         else:
@@ -437,6 +437,6 @@ if __name__ == "__main__":
             if args.ppeak:
                 df = df.loc[df.radMode == 3, :]
             print("count Rec..")
-            df_global = countDF(df, df_global, colName)
+            df_global = countDF(df, df_global, args.colName)
             print("done with counting..")
         df_global.to_pickle(args.outglobal)
