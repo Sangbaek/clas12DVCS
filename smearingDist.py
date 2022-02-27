@@ -130,13 +130,13 @@ class smearingDist():
 		dvcsSimInb = dvcsSimInb.loc[:, DVCSvars]
 		bkgSimInb = bkgSimInb.loc[:, DVCSvars]
 		pi0ExpInb = pi0ExpInb.loc[:, DVpi0Pvars]
-		piSimInb = piSimInb.loc[:, DVpi0Pvars]
+		pi0SimInb = pi0SimInb.loc[:, DVpi0Pvars]
 
 		epgExpOutb = epgExpOutb.loc[:, DVCSvars]
 		dvcsSimOutb = dvcsSimOutb.loc[:, DVCSvars]
 		bkgSimOutb = bkgSimOutb.loc[:, DVCSvars]
 		pi0ExpOutb = pi0ExpOutb.loc[:, DVpi0Pvars]
-		piSimOutb = piSimOutb.loc[:, DVpi0Pvars]
+		pi0SimOutb = pi0SimOutb.loc[:, DVpi0Pvars]
 
 		#CDFT
 		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
