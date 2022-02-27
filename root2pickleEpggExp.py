@@ -383,9 +383,9 @@ class root2pickle():
                 FD_phot_corr_minor_sector = funcs[sector-1](args_minor[sector-1], df_gammaRec.loc[cond, "Gp"])
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
 
-            if pol == "outbending":
-                FD_phot_corr_marginal =-0.003*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]+10)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-6)/(1+np.exp((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-4.8)/0.25))/(1+np.exp(-(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2.2)/0.15))
-                df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] = df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] + FD_phot_corr_marginal
+            # if pol == "outbending":
+            #     FD_phot_corr_marginal =-0.003*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]+10)*(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-6)/(1+np.exp((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-4.8)/0.25))/(1+np.exp(-(df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"]-2.2)/0.15))
+            #     df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] = df_gammaRec.loc[df_gammaRec.Gsector<7, "Gp"] + FD_phot_corr_marginal
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))

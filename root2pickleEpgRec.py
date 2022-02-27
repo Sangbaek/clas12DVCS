@@ -656,7 +656,7 @@ class root2pickle():
         cut_Q2 = df_dvpi0p["Q2"] > 1  # Q2
         cut_W = df_dvpi0p["W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
-        cut_Ge = df_dvpi0p["Ge"] > 1.8  # Ge
+        cut_Ge = df_dvpi0p["Ge"] > 2  # Ge
         cut_Esector = 1#(df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
         cut_Psector = 1#~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"])) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & df_dvpi0p["Psector"]!=df_dvpi0p["Gsector2"])
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
@@ -922,7 +922,7 @@ class root2pickle():
         cut_Q2 = df_dvcs["Q2"] > 1  # Q2
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
-        cut_Ge = df_dvcs["Ge"] > 1.8  # Ge
+        cut_Ge = df_dvcs["Ge"] > 2  # Ge
         cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
         cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp
