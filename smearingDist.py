@@ -118,7 +118,7 @@ class smearingDist():
 		pi0SimOutb = pd.concat(df)
 
 		ParticleVars1 = ["Epx", "Epy", "Epz", "Ep", "Etheta", "Ephi", "Esector"]
-		ParticleVars2 = ["Ppx", "Ppy", "Ppz", "Pp", "Ptheta", "Pphi", "Psector"]
+		ParticleVars2 = ["Ppx", "Ppy", "Ppz", "Pp", "Ptheta", "Pphi", "Psector", "Pstat"]
 		ParticleVars3 = ["Gpx", "Gpy", "Gpz", "Gp", "Gtheta", "Gphi", "Gsector"]
 		ParticleVars4 = ["Gpx2", "Gpy2", "Gpz2", "Gp2", "Gtheta2", "Gphi2", "Gsector2"]
 		Exclvars1 = ['Mpx', 'Mpy', 'Mpz','Q2','nu','y','xB','t1','t2','W','phi1','phi2','MM2_epg','ME_epg','MM2_ep','MM2_eg','MPt','coneAngle','reconGam','coplanarity', 'config']
