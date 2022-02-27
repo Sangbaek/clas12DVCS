@@ -75,11 +75,8 @@ class smearingDist():
 	def MakeV0(self, outDir = "SimtoDat/v0/"):
 
 		if self.version == "v0":
-			inDirInb = "../nov2021/convPkl/"
-			inDirOutb = "../nov2021/convPkl_outb/"
-		else:
-			inDirInb = "SimtoDat/v0/inb/"
-			inDirOutb = "SimtoDat/v0/outb/"
+			inDirInb = "../nov2021/convPkl_full/inb/"
+			inDirOutb = "../nov2021/convPkl_full/outb/"
 
 		dvcsInbJobs = [	3987]#, 4124, 4139, 4181, 4182, 4186, 4188, 4192 ]#, 4397 ]
 		dvcsOutbJobs = [ 4240]#, 4250, 4251, 4252, 4255, 4263, 4262, 4266 ]#, 4398 ]
