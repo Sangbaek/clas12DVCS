@@ -372,7 +372,7 @@ class root2pickle():
             for sector in range(1, 7):
                 args = args_phot_FD[sector-1]
                 cond = df_gammaRec.Gsector == sector
-                FD_phot_corr_sector = quartic(args, df_gammaRec.loc[cond, "Gp"])
+                FD_phot_corr_sector = quartic(args, df_gammaRec.loc[cond, "Gp"])/(1+np.exp(-(df_gammaRec.loc[cond, "Gp"]2.2)/0.15))
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
 
@@ -799,7 +799,7 @@ class root2pickle():
         cut_Q2 = df_dvcs["Q2"] > 1  # Q2
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
-        cut_Ge = df_dvcs["Ge"] > 1.5  # Ge
+        cut_Ge = df_dvcs["Ge"] > 2  # Ge
         cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
         cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp

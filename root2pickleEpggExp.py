@@ -369,7 +369,7 @@ class root2pickle():
             for sector in range(1, 7):
                 args = args_phot_FD[sector-1]
                 cond = df_gammaRec.Gsector == sector
-                FD_phot_corr_sector = quartic(args, df_gammaRec.loc[cond, "Gp"])
+                FD_phot_corr_sector = quartic(args, df_gammaRec.loc[cond, "Gp"])/(1+np.exp(-(df_gammaRec.loc[cond, "Gp"]2.2)/0.15))
                 df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
 
