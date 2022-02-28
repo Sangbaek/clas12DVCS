@@ -471,6 +471,7 @@ class root2pickle():
         df_epgg.loc[:,'Q2'] = -((ebeam - df_epgg['Ee'])**2 - mag2(VGS))
         df_epgg.loc[:,'nu'] = (ebeam - df_epgg['Ee'])
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
+        df_epgg.loc[:,'y'] = df_epgg['nu']/ebeam
         df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
         df_epgg.loc[:,'t2'] = (M * df_epgg['Q2'] + 2 * M * df_epgg['nu'] * (df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta))\
         / (M + df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta)
