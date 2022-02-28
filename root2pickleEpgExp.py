@@ -358,6 +358,8 @@ class root2pickle():
         ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
         df_electronRec.loc[:, 'Ep'] = mag(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
+        gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
+        df_gammaRec.loc[:, 'Gp'] = mag(gam)
         df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
 
         df_gg = pd.merge(df_gammaRec, df_gammaRec,
