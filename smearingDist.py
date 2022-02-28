@@ -121,8 +121,8 @@ class smearingDist():
 		ParticleVars2 = ["Ppx", "Ppy", "Ppz", "Pp", "Ptheta", "Pphi", "Psector", "Pstat"]
 		ParticleVars3 = ["Gpx", "Gpy", "Gpz", "Gp", "Gtheta", "Gphi", "Gsector", "GFid"]
 		ParticleVars4 = ["Gpx2", "Gpy2", "Gpz2", "Gp2", "Gtheta2", "Gphi2", "Gsector2", "GFid2"]
-		Exclvars1 = ['Mpx', 'Mpy', 'Mpz','Q2','nu','y','xB','t1','t2','W','phi1','phi2','MM2_epg','ME_epg','MM2_ep','MM2_eg','MPt','coneAngle','reconGam','coplanarity', 'config']
-		Exclvars2 = ['Mpx', 'Mpy', 'Mpz','Q2','nu','xB','t1','t2','W','phi1','phi2','MPt', 'MM2_ep', 'MM2_egg', 'MM2_epgg', 'ME_epgg', 'Mpi0', 'reconPi', "Pie", 'coplanarity', 'coneAngle1', 'coneAngle2', 'closeness', 'config']
+		Exclvars1 = ['event', 'Mpx', 'Mpy', 'Mpz','Q2','nu','y','xB','t1','t2','W','phi1','phi2','MM2_epg','ME_epg','MM2_ep','MM2_eg','MPt','coneAngle','reconGam','coplanarity', 'config']
+		Exclvars2 = ['event', 'Mpx', 'Mpy', 'Mpz','Q2','nu','xB','t1','t2','W','phi1','phi2','MPt', 'MM2_ep', 'MM2_egg', 'MM2_epgg', 'ME_epgg', 'Mpi0', 'reconPi', "Pie", 'coplanarity', 'coneAngle1', 'coneAngle2', 'closeness', 'config']
 		DVCSvars = ParticleVars1 + ParticleVars2+ ParticleVars3 + Exclvars1
 		DVpi0Pvars = ParticleVars1 + ParticleVars2 + ParticleVars3 + ParticleVars4 + Exclvars2
 
