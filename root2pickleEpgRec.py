@@ -694,7 +694,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvpi0p.Psector>7
-            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<65
+            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
             cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 0.6  # mmep
@@ -720,7 +720,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvpi0p.Psector>7
-            cut_Ptheta_CD = df_dvpi0p.Ptheta<65
+            cut_Ptheta_CD = df_dvpi0p.Ptheta<60
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_GFid_CD = df_dvpi0p.GFid==1
             cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.6  # mmep
@@ -772,7 +772,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvpi0p.Psector>7
-            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<65
+            cut_Ptheta_CDFT = df_dvpi0p.Ptheta<60
             cut_Gsector_CDFT = df_dvpi0p.Gsector>7
             cut_GFid_CDFT = df_dvpi0p.GFid==1
             cut_mmep1_CDFT = df_dvpi0p["MM2_ep"] < 0.6  # mmep
@@ -798,7 +798,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvpi0p.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvpi0p.Psector>7
-            cut_Ptheta_CD = df_dvpi0p.Ptheta<65
+            cut_Ptheta_CD = df_dvpi0p.Ptheta<60
             cut_Gsector_CD = df_dvpi0p.Gsector<7
             cut_GFid_CD = df_dvpi0p.GFid==1
             cut_mmep1_CD = df_dvpi0p["MM2_ep"] < 0.6  # mmep
@@ -966,7 +966,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
-            cut_Ptheta_CDFT = df_dvcs.Ptheta<65
+            cut_Ptheta_CDFT = df_dvcs.Ptheta<60
             cut_Gsector_CDFT = df_dvcs.Gsector>7
             cut_GFid_CDFT = df_dvcs.GFid==1
             cut_mmep1_CDFT = df_dvcs["MM2_ep"] < cuts_dvcs_CDFT_Inb["MM2_ep_ub"]  # mmep
@@ -992,7 +992,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvcs.Psector>7
-            cut_Ptheta_CD = df_dvcs.Ptheta<65
+            cut_Ptheta_CD = df_dvcs.Ptheta<60
             cut_Gsector_CD = df_dvcs.Gsector<7
             cut_GFid_CD = df_dvcs.GFid==1
             cut_mmep1_CD = df_dvcs["MM2_ep"] < cuts_dvcs_CD_Inb["MM2_ep_ub"]  # mmep
@@ -1043,7 +1043,7 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
-            cut_Ptheta_CDFT = df_dvcs.Ptheta<65
+            cut_Ptheta_CDFT = df_dvcs.Ptheta<60
             cut_Gsector_CDFT = df_dvcs.Gsector>7
             cut_GFid_CDFT = df_dvcs.GFid==1
             cut_mmep1_CDFT = df_dvcs["MM2_ep"] < 0.567  # mmep
@@ -1069,7 +1069,7 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvcs.Psector>7
-            cut_Ptheta_CD = df_dvcs.Ptheta<65
+            cut_Ptheta_CD = df_dvcs.Ptheta<60
             cut_Gsector_CD = df_dvcs.Gsector<7
             cut_GFid_CD = df_dvcs.GFid==1
             cut_mmep1_CD = df_dvcs["MM2_ep"] < 0.358  # mmep
@@ -1159,13 +1159,13 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
-            cut_Ptheta_CDFT = df_Rec.Ptheta<65
+            cut_Ptheta_CDFT = df_Rec.Ptheta<60
             cut_Gsector_CDFT = df_Rec.Gsector>7
             cut_GFid_CDFT = df_Rec.GFid==1
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
-            cut_Ptheta_CD = df_Rec.Ptheta<65
+            cut_Ptheta_CD = df_Rec.Ptheta<60
             cut_Gsector_CD = df_Rec.Gsector<7
             cut_GFid_CD = df_Rec.GFid==1
             #FD
