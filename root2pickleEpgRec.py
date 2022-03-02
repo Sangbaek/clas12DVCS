@@ -37,6 +37,21 @@ class root2pickle():
         self.file = None
         self.tree = None
 
+    def determineWidth(self, width = "mid"):
+        print("determine width level: {}".format(width))
+        if width == "mid":
+            self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_3sigma
+            self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_3sigma
+            self.cuts_dvcs_FD_Inb = cuts_dvcs_FD_Inb_3sigma
+        if width == "tight":
+            self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_2sigma
+            self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_2sigma
+            self.cuts_dvcs_FD_Inb = cuts_dvcs_FD_Inb_2sigma
+        if width == "wide":
+            self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_4sigma
+            self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_4sigma
+            self.cuts_dvcs_FD_Inb = cuts_dvcs_FD_Inb_4sigma
+
     def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", detRes = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()

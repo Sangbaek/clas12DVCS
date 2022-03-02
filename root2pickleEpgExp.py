@@ -36,7 +36,8 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def determineWidth(width = "mid"):
+    def determineWidth(self, width = "mid"):
+        print("determine width level: {}".format(width))
         if width == "mid":
             self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_3sigma
             self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_3sigma
