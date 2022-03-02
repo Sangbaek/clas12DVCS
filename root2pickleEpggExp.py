@@ -365,45 +365,72 @@ class root2pickle():
         df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
         if correction:
-            #photon correction
+            #photon correction of df_gg
             gam = [df_gg['Gpx'], df_gg['Gpy'], df_gg['Gpz']]
             df_gg.loc[:, 'Gp'] = mag(gam)
             df_gg.loc[:, 'Gtheta'] = getTheta(gam)
             df_gg.loc[:, 'Gphi'] = getPhi(gam)
-            #FT
-            FT_phot_corr = (-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
-            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
-            #FD
+            #photon correction of df_gamma
+            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
+            df_gammaRec.loc[:, 'Gp'] = mag(gam)
+            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
+            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
+
+            def cubic(args, x):
+                a, b, c = args
+                return a*x**3 + b*x**2 + c*x
+
+            def quintic(args, x):
+                a, b, c = args
+                if b < 0:
+                    return 0*x
+                return a*x*(x-b)**3 * (x-c)
+
             def quartic(args, x):
                 a, b, c, d = args
                 x = np.array(x)
                 return a*x**4 + b*x**3 + c*x**2 + d*x**1
-            args_phot_FD = [[-0.000615,  0.0113, -0.0600,   0.115],[-0.000334,  0.00656, -0.0383,  0.0934],[-0.000911,  0.0157, -0.0806,  0.154],[ 0.000117, -0.000905,  0.00215,  0.0331],[-0.000119,  0.000979, -0.00400,  0.0499],[-0.000893,  0.0131, -0.0580,  0.111]]
-            for sector in range(1, 7):
-                args = args_phot_FD[sector-1]
-                cond = df_gg.Gsector == sector
-                FD_phot_corr_sector = quartic(args, df_gg.loc[cond, "Gp"])/(1+np.exp(-(df_gg.loc[cond, "Gp"]-2.2)/0.15))
-                df_gg.loc[cond, "Gp"] = df_gg.loc[cond, "Gp"] + FD_phot_corr_sector
+            #FT - df_gg: perform correction for only one photon
+            FT_phot_corr = (-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
+            df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
+            #FT - df_gammaRec: perform every photon
+            FT_phot_corr = (-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
+            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
+
+            #FD
+            if pol == "inbending":
+                args = [[-0.0000732, 1.480, 9.344], [-0.000135, 3.070, 9.248], [-0.0000437, 0.719, 9.873], [-0.0000428, 0.00234, 0.0103], [0.000250, -0.00314, 0.0232], [-0.0000454, 0.517, 9.447]]
+                funcs = [quintic, quintic, quintic, cubic, cubic, quintic]
+                funcs_minor = [quintic, quintic, quintic, cubic, cubic, cubic]
+                args_minor = [[-0.0000168, 0.821, 8.894], [-0.0000340, 2.720, 8.419], [-0.0000620, 2.793, 8.865], [ 0.000132, -0.00162,  0.00978], [-0.000135,  0.000282, 0.00650], [ 0.000263,  -0.00293,   0.0139]]
+                for sector in range(1, 7):
+                    cond = df_gg.Gsector == sector
+                    FD_phot_corr_sector = funcs[sector-1](args[sector-1], df_gg.loc[cond, "Gp"])
+                    df_gg.loc[cond, "Gp"] = df_gg.loc[cond, "Gp"] + FD_phot_corr_sector
+                    FD_phot_corr_minor_sector = funcs_minor[sector-1](args_minor[sector-1], df_gg.loc[cond, "Gp"])
+                    df_gg.loc[cond, "Gp"] = df_gg.loc[cond, "Gp"] + FD_phot_corr_minor_sector
+
+                    cond = df_gammaRec.Gsector == sector
+                    FD_phot_corr_sector = funcs[sector-1](args[sector-1], df_gammaRec.loc[cond, "Gp"])
+                    df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
+                    FD_phot_corr_minor_sector = funcs_minor[sector-1](args_minor[sector-1], df_gammaRec.loc[cond, "Gp"])
+                    df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_minor_sector
+
+            if pol == "outbending":
+                args = [[-0.000615,  0.0113, -0.0600,   0.115],[-0.000334,  0.00656, -0.0383,  0.0934],[-0.000911,  0.0157, -0.0806,  0.154],[ 0.000117, -0.000905,  0.00215,  0.0331],[-0.000119,  0.000979, -0.00400,  0.0499],[-0.000893,  0.0131, -0.0580,  0.111]]
+                for sector in range(1, 7):
+                    cond = df_gg.Gsector == sector
+                    FD_phot_corr_sector = quartic(args[sector-1], df_gg.loc[cond, "Gp"])/(1+np.exp(-(df_gg.loc[cond, "Gp"]-2.2)/0.15))
+                    df_gg.loc[cond, "Gp"] = df_gg.loc[cond, "Gp"] + FD_phot_corr_sector
+
+                    cond = df_gammaRec.Gsector == sector
+                    FD_phot_corr_sector = quartic(args[sector-1], df_gammaRec.loc[cond, "Gp"])/(1+np.exp(-(df_gammaRec.loc[cond, "Gp"]-2.2)/0.15))
+                    df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
             df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
             df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
             df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
             df_gg.loc[:,'GSamplFrac'] = df_gg.Gedep/ df_gg.Gp
-
-            #photon correction
-            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
-            df_gammaRec.loc[:, 'Gp'] = mag(gam)
-            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
-            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
-            #FT
-            FT_phot_corr = (-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
-            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
-            #FD
-            for sector in range(1, 7):
-                args = args_phot_FD[sector-1]
-                cond = df_gammaRec.Gsector == sector
-                FD_phot_corr_sector = quartic(args, df_gammaRec.loc[cond, "Gp"])/(1+np.exp(-(df_gammaRec.loc[cond, "Gp"]-2.2)/0.15))
-                df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
 
             df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
