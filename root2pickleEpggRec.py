@@ -447,6 +447,7 @@ class root2pickle():
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
             #smearing proton
+            print("smearing factor {} from nominal".format(smearing))
             #CD proton
             def cubic(args, x): #equivalent to poly1d
                 a, b, c, d = args
