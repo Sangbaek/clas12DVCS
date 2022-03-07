@@ -953,12 +953,12 @@ class root2pickle():
         df_epg.loc[:,'tcol'] = df_epg.Q2*(df_epg.Q2-2*df_epg.xB*M*ebeam)/df_epg.xB/(df_epg.Q2-2*M*ebeam)
 
         # assign bin numbers
-        for Q2bin in len(Q2bin_i):
+        for Q2bin in range(len(Q2bin_i)):
             #square Q2 binning
             df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
             #xB (the only adaptive binning)
             df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*xB_condlist.xB) & (df_epg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = 0
-            for xBbin in len(xBbin_i[Q2bin]):
+            for xBbin in range(len(xBbin_i[Q2bin])):
                 if xBbin == 0:
                     df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB) & (df_epg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = xBbin #0
                 elif xBbin < len(xBbin_i[Q2bin])-1:
@@ -967,10 +967,10 @@ class root2pickle():
                     df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epg.Q2>=(4-M*M)*df_epg.xB/(1-df_epg.xB)), "xBbin"] = xBbin
 
         #square t binning
-        for tbin in len(tbin_i):
+        for tbin in range(len(tbin_i)):
             df_epg.loc[(df_epg.t1>=tbin_i[tbin]) & (df_epg.t1<tbin_f[tbin]), "tbin"] = tbin
         #square phi binning
-        for phibin in len(phibin_i):
+        for phibin in range(len(phibin_i)):
             df_epg.loc[(df_epg.phi1>=phibin_i[phibin]) & (df_epg.phi1<phibin_f[phibin]), "phibin"] = phibin
 
 
