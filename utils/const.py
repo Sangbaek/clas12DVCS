@@ -19,6 +19,100 @@ target = [0, 0, 0] # target vector
 #sigmas: 2, 3, 4
 # total: 2*2*3*3=36
 
+#binning variables
+x1 = 1/2/M/8.604
+x2 = 1/(5-M**2)
+x3 = (10.604/8.604-1)/M*10.604* (1-np.cos(np.radians(35)))
+x4 = (1-(4-M**2)/2/10.604/M)/(1+(4-M**2)/2/10.604**2/(1-np.cos(np.radians(35))))
+
+y1 = 1
+y2 = 1.456
+y3 = 2.510
+y4 = 4.326
+y5 = 7.671
+
+c0 = y2/2/M/8.604
+d0 = 1/(1+(4-M*M)/y2)
+c1 = np.sqrt(y2*y3)/2/M/8.604
+d1 = 1/(1+(4-M*M)/np.sqrt(y2*y3))
+c2 = y3/2/M/8.604
+d2 =  1/(1+(4-M*M)/y3)
+c3 = np.sqrt(y3*y4)/2/M/8.604
+d3 = 1/(1+(4-M*M)/np.sqrt(y3*y4))
+c4 = y4/2/M/8.604
+d4 = 1/(1+(4-M*M)/y4)
+c5 = np.sqrt(y4*y5)/2/M/8.604
+d5 = 1/(1+(4-M*M)/np.sqrt(y4*y5))
+c6 = y5/2/M/8.604
+d6 = 1/(1+(4-M*M)/y5)
+
+Q2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), y5]
+Q2bin_i = Q2bins[:-1]
+Q2bin_f = Q2bins[1:]
+xBbin_i = {0:[[x1, c0], c0, c1, c2, c3], 1: [[c0, c1], c1, c2, c3, c4], 2: [[c1, c2], c2, c3, c4, d1], 3: [[c2, c3], c3, c4, d1], 4: [[c3, c4], c4, d1], 5: [[c4, c5], d1], 6: [[c5, c6]]}
+xBbin_f = {0: [c0, c1, c2, c3, [x2, d0]], 1: [c1, c2, c3, c4, [d0, d1]], 2: [c2, c3, c4, d1, [d1, d2]], 3: [c3, c4, d1, [d2, d3]], 4: [c4, d1, [d3, d4]], 5: [d1, [d4, d5]], 6: [[d5, d6]]}
+tbins = [0.088, 0.177, 0.321, 0.523, 0.813, 1.187, 1.46, 1.72]
+tbin_i = tbins[:-1]
+tbin_f = tbins[1:]
+phibin = [0, 12, 24, 36, 48, 60, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 300, 312, 324, 336, 348, 360]
+phibin_i = phibin[:-1]
+phibin_f = phibin[1:]
+
+badBins = ['004', '005', '006', '015', '016', '026', '045', '046', '104', '105', '106', '115', '116', '126', '146', '205', '206', '216', '240', '245', '246', '306', '320', '330', '406', '410', '420', '500', '505', '506', '510', '600', '601']
+goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020', '021', '022', '023', '024', '025', '030', '031', '032', '033', '034', '035', '036', '040', '041', '042', '043', '044', '100', '101', '102', '103', '110', '111', '112', '113', '114', '120', '121', '122', '123', '124', '125', '130', '131', '132', '133', '134', '135', '136', '140', '141', '142', '143', '144', '145', '200', '201', '202', '203', '204', '210', '211', '212', '213', '214', '215', '220', '221', '222', '223', '224', '225', '226', '230', '231', '232', '233', '234', '235', '236', '241', '242', '243', '244', '300', '301', '302', '303', '304', '305', '310', '311', '312', '313', '314', '315', '316', '321', '322', '323', '324', '325', '326', '331', '332', '333', '334', '335', '336', '400', '401', '402', '403', '404', '405', '411', '412', '413', '414', '415', '416', '421', '422', '423', '424', '425', '426', '501', '502', '503', '504', '511', '512', '513', '514', '515', '516', '602', '603', '604', '605', '606']
+
+
+def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins):
+    df_allBins = {}
+    Q2xBtphi = 0
+
+    for Q2bin in range(0, len(Q2bin_i)):#Q2 bin
+        for xBbin in range(0, len(xBbin_i[Q2bin])):
+            for tbin in range(0, len(tbin_i)):
+                local = total
+                Q2_i = Q2bin_i[Q2bin]
+                Q2_f = Q2bin_f[Q2bin]
+                xB_i = xBbin_i[Q2bin][xBbin]
+                xB_f = xBbin_f[Q2bin][xBbin]
+                t_i = tbin_i[tbin]
+                t_f = tbin_f[tbin]
+                #cut by Q2
+                local = local.loc[(local.Q2>=Q2_i) & (local.Q2<Q2_f)]
+                #cut by xB
+                #xB lower bound
+                if xBbin == 0:
+                    local = local.loc[local.Q2<=2*M*(10.604-2)*local.xB, :]
+                else:
+                    local = local.loc[local.xB>=xB_i] 
+                #xB upper bound
+                if (xBbin == len(xBbin_i[Q2bin])-1):
+                    local = local.loc[local.Q2>=(4 - M*M)*local.xB/(1 - local.xB)]
+                else:
+                    local = local.loc[local.xB<xB_f]
+                #cut by t
+                local = local.loc[(local.t1>=t_i) & (local.t1<t_f)]
+                Q2xBtbin = "{}{}{}".format(Q2bin,xBbin,tbin)
+
+                # if Q2xBtbin in badBins:
+                #     continue
+                if (len(local)==0):
+                    print(Q2xBtbin, Q2xBtphi, xB_i)#continue
+                    continue
+                    
+                for phi_ind in range(0, len(phibin_i)):
+                    local.loc[:, "xBbin"] = xBbin
+                    local.loc[:, "Q2bin"] = Q2bin
+                    local.loc[:, "tbin"] = tbin
+                    local.loc[:, "phibin"] = phi_ind
+                    local.loc[:, "Q2xBtbin"] = Q2xBtbin
+                    local.loc[:, "Q2xBtphi"] = Q2xBtphi
+                    df_allBins[Q2xBtphi] = local.loc[(local.phi1>=phibin_i[phi_ind])&(local.phi1<phibin_f[phi_ind])]
+                    Q2xBtphi += 1
+
+    total = pd.concat(df_allBins.values()).sort_values( by = 'event')
+    return total
+
+
 cuts_dvcs_CDFT_Inb_3sigma = {}
 cuts_dvcs_CDFT_Inb_3sigma["MM2_ep_ub"] = 0.391
 cuts_dvcs_CDFT_Inb_3sigma["MM2_ep_lb"] = -0.365
