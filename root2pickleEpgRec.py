@@ -672,7 +672,7 @@ class root2pickle():
 
         for Q2bin in range(len(Q2bin_i)):
             df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
-            df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*xB_condlist.xB) & (df_epgg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = 0
+            df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB) & (df_epgg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = 0
             for xBbin in range(len(xBbin_i[Q2bin])):
                 if xBbin == 0:
                     df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB) & (df_epgg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = xBbin #0
@@ -957,7 +957,7 @@ class root2pickle():
             #square Q2 binning
             df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
             #xB (the only adaptive binning)
-            df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*xB_condlist.xB) & (df_epg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = 0
+            df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB) & (df_epg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = 0
             for xBbin in range(len(xBbin_i[Q2bin])):
                 if xBbin == 0:
                     df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB) & (df_epg.xB<xBbin_f[Q2bin][Q2bin]), "xBbin"] = xBbin #0
