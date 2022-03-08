@@ -550,6 +550,7 @@ class root2pickle():
         df_epgg.loc[:, "Q2xBbin"] = -1
         df_epgg.loc[:, "Q2xBtbin"] = -1
         # df_epgg.loc[:, "Q2xBtbin2"] = -1
+        df_epgg.loc[:, "Q2xBtphibin"] = -1
         Q2xBbin = 0
 
         # encode all binning
