@@ -1982,7 +1982,7 @@ class smearingDist():
 	        #CDFT
 	        cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
 	        cut_Psector_CDFT = df_dvcs.Psector>7
-	        cut_Ptheta1_CDFT = df_dvcs.Ptheta<65
+	        cut_Ptheta1_CDFT = df_dvcs.Ptheta<60
 	        cut_Ptheta2_CDFT = df_dvcs.Ptheta>30
 	        cut_Gsector_CDFT = df_dvcs.Gsector>7
 	        cut_GFid_CDFT = df_dvcs.GFid==1
@@ -2062,7 +2062,7 @@ class smearingDist():
 	        #CDFT
 	        cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
 	        cut_Psector_CDFT = df_dvcs.Psector>7
-	        cut_Ptheta1_CDFT = df_dvcs.Ptheta<65
+	        cut_Ptheta1_CDFT = df_dvcs.Ptheta<60
 	        cut_Ptheta2_CDFT = df_dvcs.Ptheta>40
 	        cut_Gsector_CDFT = df_dvcs.Gsector>7
 	        cut_GFid_CDFT = df_dvcs.GFid==1
