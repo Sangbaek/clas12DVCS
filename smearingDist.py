@@ -67,6 +67,8 @@ class smearingDist():
 			self.MakeV3()
 		if version == "v4":
 			self.MakeV4(pol = pol)
+		if version == "v5":
+			self.MakeV5()
 
 	def GetVersion(self, version):
 		self.version = version
@@ -117,10 +119,10 @@ class smearingDist():
 			df.append(pd.read_pickle(inDirOutb+"/bkg_2g/{}.pkl".format(job)))
 		pi0SimOutb = pd.concat(df)
 
-		ParticleVars1 = ["Epx", "Epy", "Epz", "Ep", "Etheta", "Ephi", "Esector"]
-		ParticleVars2 = ["Ppx", "Ppy", "Ppz", "Pp", "Ptheta", "Pphi", "Psector", "Pstat"]
-		ParticleVars3 = ["Gpx", "Gpy", "Gpz", "Gp", "Gtheta", "Gphi", "Gsector", "GFid"]
-		ParticleVars4 = ["Gpx2", "Gpy2", "Gpz2", "Gp2", "Gtheta2", "Gphi2", "Gsector2", "GFid2"]
+		ParticleVars1 = ["Epx", "Epy", "Epz", "Ep", "Ee", "Etheta", "Ephi", "Esector"]
+		ParticleVars2 = ["Ppx", "Ppy", "Ppz", "Pp", "Pe", "Ptheta", "Pphi", "Psector", "Pstat"]
+		ParticleVars3 = ["Gpx", "Gpy", "Gpz", "Gp", "Ge", "Gtheta", "Gphi", "Gsector", "GFid"]
+		ParticleVars4 = ["Gpx2", "Gpy2", "Gpz2", "Gp2", "Ge2", "Gtheta2", "Gphi2", "Gsector2", "GFid2"]
 		Exclvars1 = ['event', 'Mpx', 'Mpy', 'Mpz','Q2','nu','y','xB','t1','t2','W','phi1','phi2','MM2_epg','ME_epg','MM2_ep','MM2_eg','MPt','coneAngle','reconGam','coplanarity', 'config']
 		Exclvars2 = ['event', 'Mpx', 'Mpy', 'Mpz','Q2','nu','xB','t1','t2','W','phi1','phi2','MPt', 'MM2_ep', 'MM2_egg', 'MM2_epgg', 'ME_epgg', 'Mpi0', 'reconPi', "Pie", 'coplanarity', 'coneAngle1', 'coneAngle2', 'closeness', 'config']
 		DVCSvars = ParticleVars1 + ParticleVars2+ ParticleVars3 + Exclvars1
@@ -1135,8 +1137,8 @@ class smearingDist():
 
 				epgExpInbCD_corrected = epgExpInbCD_selected
 				epgExpOutbCD_corrected = epgExpOutbCD_selected
-				pi0ExpInbCD_corrected = pi0ExpInbCDFT_selected
-				pi0ExpOutbCD_corrected = pi0ExpOutbCDFT_selected
+				pi0ExpInbCD_corrected = pi0ExpInbCD_selected
+				pi0ExpOutbCD_corrected = pi0ExpOutbCD_selected
 
 				# epgExpInbCD_corrected = epgExpInbCD.loc[(epgExpInbCD.Ge>GeMin) & (epgExpInbCD.Ge<GeMax)]
 				# epgExpOutbCD_corrected = epgExpOutbCD.loc[(epgExpOutbCD.Ge>GeMin) & (epgExpOutbCD.Ge<GeMax)]
@@ -1362,10 +1364,10 @@ class smearingDist():
 		# if isinstance(sigma, str):
 		# 	sigma = float(sigma)
 
-		GeEdges = [2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6]
+		GeEdges = [2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 7.5, 8, 8.5]
 		# GthetaEdges = [5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35]
 		# sigmas = [0, 0.01, 0.02, 0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06]
-		# corrections = []
+		corrections = []
 		# sigmas_opt = []
 
 		epgExpInbFD = pd.read_pickle(inDir + "/epgExpInbFD")
@@ -1407,20 +1409,20 @@ class smearingDist():
 				pi0SimOutbFD_selected = pi0SimOutbFD.loc[(pi0SimOutbFD.Ge>GeMin) & (pi0SimOutbFD.Ge<GeMax) & (pi0SimOutbFD.Gsector==sector)]
 				bkgSimOutbFD_selected = bkgSimOutbFD.loc[(bkgSimOutbFD.Ge>GeMin) & (bkgSimOutbFD.Ge<GeMax) & (bkgSimOutbFD.Gsector==sector)]
 
-				GthetaMin = GthetaEdges[i]
-				GthetaMax = GthetaEdges[i+1]
+				#GthetaMin = GthetaEdges[i]
+				#GthetaMax = GthetaEdges[i+1]
 
-				epgExpInbFD_selected = epgExpInbFD.loc[(epgExpInbFD.Gtheta>GthetaMin) & (epgExpInbFD.Gtheta<GthetaMax) & (epgExpInbFD.Gsector == sector)]
-				pi0ExpInbFD_selected = pi0ExpInbFD.loc[(pi0ExpInbFD.Gtheta>GthetaMin) & (pi0ExpInbFD.Gtheta<GthetaMax) & (pi0ExpInbFD.Gsector == sector)]
-				dvcsSimInbFD_selected = dvcsSimInbFD.loc[(dvcsSimInbFD.Gtheta>GthetaMin) & (dvcsSimInbFD.Gtheta<GthetaMax) & (dvcsSimInbFD.Gsector == sector)]
-				pi0SimInbFD_selected = pi0SimInbFD.loc[(pi0SimInbFD.Gtheta>GthetaMin) & (pi0SimInbFD.Gtheta<GthetaMax) & (pi0SimInbFD.Gsector == sector)]
-				bkgSimInbFD_selected = bkgSimInbFD.loc[(bkgSimInbFD.Gtheta>GthetaMin) & (bkgSimInbFD.Gtheta<GthetaMax) & (bkgSimInbFD.Gsector == sector)]
+				#epgExpInbFD_selected = epgExpInbFD.loc[(epgExpInbFD.Gtheta>GthetaMin) & (epgExpInbFD.Gtheta<GthetaMax) & (epgExpInbFD.Gsector == sector)]
+				#pi0ExpInbFD_selected = pi0ExpInbFD.loc[(pi0ExpInbFD.Gtheta>GthetaMin) & (pi0ExpInbFD.Gtheta<GthetaMax) & (pi0ExpInbFD.Gsector == sector)]
+				#dvcsSimInbFD_selected = dvcsSimInbFD.loc[(dvcsSimInbFD.Gtheta>GthetaMin) & (dvcsSimInbFD.Gtheta<GthetaMax) & (dvcsSimInbFD.Gsector == sector)]
+				#pi0SimInbFD_selected = pi0SimInbFD.loc[(pi0SimInbFD.Gtheta>GthetaMin) & (pi0SimInbFD.Gtheta<GthetaMax) & (pi0SimInbFD.Gsector == sector)]
+				#bkgSimInbFD_selected = bkgSimInbFD.loc[(bkgSimInbFD.Gtheta>GthetaMin) & (bkgSimInbFD.Gtheta<GthetaMax) & (bkgSimInbFD.Gsector == sector)]
 
-				epgExpOutbFD_selected = epgExpOutbFD.loc[(epgExpOutbFD.Gtheta>GthetaMin) & (epgExpOutbFD.Gtheta<GthetaMax) & (epgExpOutbFD.Gsector == sector)]
-				pi0ExpOutbFD_selected = pi0ExpOutbFD.loc[(pi0ExpOutbFD.Gtheta>GthetaMin) & (pi0ExpOutbFD.Gtheta<GthetaMax) & (pi0ExpOutbFD.Gsector == sector)]
-				dvcsSimOutbFD_selected = dvcsSimOutbFD.loc[(dvcsSimOutbFD.Gtheta>GthetaMin) & (dvcsSimOutbFD.Gtheta<GthetaMax) & (dvcsSimOutbFD.Gsector == sector)]
-				pi0SimOutbFD_selected = pi0SimOutbFD.loc[(pi0SimOutbFD.Gtheta>GthetaMin) & (pi0SimOutbFD.Gtheta<GthetaMax) & (pi0SimOutbFD.Gsector == sector)]
-				bkgSimOutbFD_selected = bkgSimOutbFD.loc[(bkgSimOutbFD.Gtheta>GthetaMin) & (bkgSimOutbFD.Gtheta<GthetaMax) & (bkgSimOutbFD.Gsector == sector)]
+				#epgExpOutbFD_selected = epgExpOutbFD.loc[(epgExpOutbFD.Gtheta>GthetaMin) & (epgExpOutbFD.Gtheta<GthetaMax) & (epgExpOutbFD.Gsector == sector)]
+				#pi0ExpOutbFD_selected = pi0ExpOutbFD.loc[(pi0ExpOutbFD.Gtheta>GthetaMin) & (pi0ExpOutbFD.Gtheta<GthetaMax) & (pi0ExpOutbFD.Gsector == sector)]
+				#dvcsSimOutbFD_selected = dvcsSimOutbFD.loc[(dvcsSimOutbFD.Gtheta>GthetaMin) & (dvcsSimOutbFD.Gtheta<GthetaMax) & (dvcsSimOutbFD.Gsector == sector)]
+				#pi0SimOutbFD_selected = pi0SimOutbFD.loc[(pi0SimOutbFD.Gtheta>GthetaMin) & (pi0SimOutbFD.Gtheta<GthetaMax) & (pi0SimOutbFD.Gsector == sector)]
+				#bkgSimOutbFD_selected = bkgSimOutbFD.loc[(bkgSimOutbFD.Gtheta>GthetaMin) & (bkgSimOutbFD.Gtheta<GthetaMax) & (bkgSimOutbFD.Gsector == sector)]
 
 				contInb = 0
 				contOutb = 0
@@ -1472,14 +1474,14 @@ class smearingDist():
 
 				# epgExpInbFD_corrected = epgExpInbFD_selected
 				# epgExpOutbFD_corrected = epgExpOutbFD_selected
-				# pi0ExpInbFD_corrected = pi0ExpInbFDFT_selected
-				# pi0ExpOutbFD_corrected = pi0ExpOutbFDFT_selected
+				# pi0ExpInbFD_corrected = pi0ExpInbFD_selected
+				# pi0ExpOutbFD_corrected = pi0ExpOutbFD_selected
 
 				# epgExpInbFD_corrected = epgExpInbFD.loc[(epgExpInbFD.Ge>GeMin) & (epgExpInbFD.Ge<GeMax)]
 				# epgExpOutbFD_corrected = epgExpOutbFD.loc[(epgExpOutbFD.Ge>GeMin) & (epgExpOutbFD.Ge<GeMax)]
 
 
-				dvcsSimInbFD_opt = dvcsSimInbCDFT_selected
+				dvcsSimInbFD_opt = dvcsSimInbFD_selected
 				dvcsSimOutbFD_opt = dvcsSimOutbFD_selected
 				bkgSimInbFD_opt = bkgSimInbFD_selected
 				bkgSimOutbFD_opt = bkgSimOutbFD_selected
@@ -1535,7 +1537,7 @@ class smearingDist():
 				        else:
 				            axs[yind, xind].set_xlabel(title[ind])
 				plt.tight_layout()
-				plt.savefig(outDir+"InbFD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
+				plt.savefig(outDir+"InbFD{}_{:.3f}_{:d}.pdf".format(i, correction, sector))
 				plt.clf()
 
 				fig, axs = plt.subplots(5, 3, figsize = (15,25))
@@ -1562,7 +1564,7 @@ class smearingDist():
 				        else:
 				            axs[yind, xind].set_xlabel(title[ind])
 				plt.tight_layout()
-				plt.savefig(outDir+"OutbFD{}_{:.3f}_{:.3f}_{:d}.pdf".format(i, sigma_opt, correction, sector))
+				plt.savefig(outDir+"OutbFD{}_{:.3f}_{:d}.pdf".format(i, correction, sector))
 				plt.clf()
 			print("correction in sector{}".format(sector), correction_s)
 			# print("smearings in sector{}".format(sector), sigmas_opt_s)
@@ -2034,7 +2036,7 @@ class smearingDist():
 	        #FD
 	        cut_Pp1_FD = df_dvcs.Pp > 0.42  # Pp
 	        cut_Psector_FD = df_dvcs.Psector<7
-	        cut_Ptheta_FD = df_dvcs.Ptheta>2.477
+	        cut_Ptheta_FD = df_dvcs.Ptheta>5
 	        cut_Gsector_FD = df_dvcs.Gsector<7
 	        cut_GFid_FD = df_dvcs.GFid==1
 	        cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.406  # mmep
@@ -2046,7 +2048,7 @@ class smearingDist():
 	        cut_cone1_FD = df_dvcs["coneAngle"] < 0.0673 * df_dvcs.Gp**2 - 0.752*df_dvcs.Gp + 41.678  # coneangle
 	        cut_cone2_FD = df_dvcs["coneAngle"] > 0.712 * df_dvcs.Gp**2 - 7.676*df_dvcs.Gp + 46.720  # coneangle
 	        cut_mpt_FD = df_dvcs["MPt"] < 0.184  # mpt
-	        cut_recon_FD = df_dvcs["reconGam"] < 2.5#1.181  # recon gam angle
+	        cut_recon_FD = df_dvcs["reconGam"] < 1.181  # recon gam angle
 	        cut_coplanarity_FD = df_dvcs["coplanarity"] < 13.178  # coplanarity angle - no cut
 	        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0267  # mmepg
 	        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0302  # mmepg
@@ -2112,7 +2114,7 @@ class smearingDist():
 	        #FD
 	        cut_Pp1_FD = df_dvcs.Pp > 0.5  # Pp
 	        cut_Psector_FD = df_dvcs.Psector<7
-	        cut_Ptheta_FD = df_dvcs.Ptheta>2.477
+	        cut_Ptheta_FD = df_dvcs.Ptheta>5
 	        cut_Gsector_FD = df_dvcs.Gsector<7
 	        cut_GFid_FD = df_dvcs.GFid==1
 	        cut_mmep1_FD = df_dvcs["MM2_ep"] < 0.439  # mmep
@@ -2123,8 +2125,8 @@ class smearingDist():
 	        cut_meepg2_FD = df_dvcs["ME_epg"] > -0.796  # meepg
 	        cut_cone1_FD = df_dvcs["coneAngle"] < 0.0673 * df_dvcs.Gp**2 - 0.752*df_dvcs.Gp + 41.678  # coneangle
 	        cut_cone2_FD = df_dvcs["coneAngle"] > 0.712 * df_dvcs.Gp**2 - 7.676*df_dvcs.Gp + 46.720  # coneangle
-	        cut_mpt_FD = df_dvcs["MPt"] < 0.186  # mpt
-	        cut_recon_FD = df_dvcs["reconGam"] < 2.5#1.662  # recon gam angle
+	        cut_mpt_FD = df_dvcs["MPt"] < 0.269  # mpt
+	        cut_recon_FD = df_dvcs["reconGam"] < 1.786#1.662  # recon gam angle
 	        cut_coplanarity_FD = df_dvcs["coplanarity"] < 11.685  # coplanarity angle - no cut
 	        cut_mmepg1_FD = np.abs(df_dvcs["MM2_epg"]) < 0.0294  # mmepg
 	        cut_mmepg2_FD = np.abs(df_dvcs["MM2_epg"]) > -0.0346  # mmepg
