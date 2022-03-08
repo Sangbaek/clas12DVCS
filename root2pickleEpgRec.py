@@ -720,9 +720,9 @@ class root2pickle():
             df_epgg.loc[(df_epgg.phi1>=phibin_i[phibin]) & (df_epgg.phi1<phibin_f[phibin]), "phibin"] = phibin
             # df_epgg.loc[(df_epgg.phi2>=phibin_i[phibin]) & (df_epgg.phi2<phibin_f[phibin]), "phibin2"] = phibin
 
-        df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtbin"] = len(tbin_i) * df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBbin"] + df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "tbin"]
+        df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtbin"] = len(tbin_i) * df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBbin"] + df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "tbin"]
         # df_epgg.loc[(df_epgg.Q2bin>0)&(df_epgg.xBbin>0)&(df_epgg.tbin2>0), "Q2xBtbin2"] = df_epgg.Q2bin.astype(str) + df_epgg.xBbin.astype(str) + df_epgg.tbin2.astype(str)
-        df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtphibin"] = len(phibin_i) * df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtbin"] + df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "phibin"]
+        df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtphibin"] = len(phibin_i) * df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtbin"] + df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "phibin"]
 
         df_epgg = df_epgg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": float, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
 
@@ -1040,9 +1040,9 @@ class root2pickle():
             df_epg.loc[(df_epg.phi1>=phibin_i[phibin]) & (df_epg.phi1<phibin_f[phibin]), "phibin"] = phibin
             # df_epg.loc[(df_epg.phi2>=phibin_i[phibin]) & (df_epg.phi2<phibin_f[phibin]), "phibin2"] = phibin
 
-        df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "Q2xBtbin"] = len(tbin_i) * df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "Q2xBbin"] + df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "tbin"]
+        df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtbin"] = len(tbin_i) * df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBbin"] + df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "tbin"]
         # df_epg.loc[(df_epg.Q2bin>0)&(df_epg.xBbin>0)&(df_epg.tbin2>0), "Q2xBtbin2"] = df_epg.Q2bin.astype(str) + df_epg.xBbin.astype(str) + df_epg.tbin2.astype(str)
-        df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "Q2xBtphibin"] = len(phibin_i) * df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "Q2xBtbin"] + df_epg.loc[(df_epg.Q2xBbin>0)&(df_epg.tbin>0), "phibin"]
+        df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtphibin"] = len(phibin_i) * df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtbin"] + df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "phibin"]
 
         df_epg = df_epg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": float, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
 
