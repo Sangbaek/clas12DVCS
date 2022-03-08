@@ -112,6 +112,26 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
     total = pd.concat(df_allBins.values()).sort_values( by = 'event')
     return total
 
+CD_Ptheta_ub = 80
+CD_Ptheta_lb = 30
+FD_Ptheta_ub = 45
+FD_Ptheta_lb = 5
+
+#the default compatible with F. X. Girod's dvcs wagon
+cuts_dvcs_default = {}
+cuts_dvcs_default["MM2_ep_ub"] = 0.6
+cuts_dvcs_default["MM2_ep_lb"] = -0.6
+cuts_dvcs_default["MM2_eg_ub"] = 2
+cuts_dvcs_default["MM2_eg_lb"] = 0.25
+cuts_dvcs_default["ME_epg_ub"] = 2
+cuts_dvcs_default["ME_epg_lb"] = -1
+cuts_dvcs_default["coplanarity_ub"] = 360
+cuts_dvcs_default["coneAngle_ub"] = [0, 0, 0]#[-0.106, 2.940, 5.527]
+cuts_dvcs_default["coneAngle_lb"] = [0, 0, 90]#[0.434, -3.766, 16.994]
+cuts_dvcs_default["MPt_ub"] = 0.75
+cuts_dvcs_default["reconGam_ub"] = 7.5
+cuts_dvcs_default["MM2_epg_ub"] = 0.1
+cuts_dvcs_default["MM2_epg_lb"] = -0.1
 
 cuts_dvcs_CDFT_Inb_3sigma = {}
 cuts_dvcs_CDFT_Inb_3sigma["MM2_ep_ub"] = 0.391
