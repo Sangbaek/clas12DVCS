@@ -540,7 +540,19 @@ class root2pickle():
         
         df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
 
-        # encode other binning
+        # encode unassigned bin as -1
+        df_epgg.loc["Q2bin"] = -1
+        df_epgg.loc["xBbin"] = -1
+        df_epgg.loc["tbin"] = -1
+        # df_epgg.loc["tbin2"] = -1
+        df_epgg.loc["phibin"] = -1
+        # df_epgg.loc["phibin2"] = -1
+        df_epgg.loc["Q2xBbin"] = -1
+        df_epgg.loc["Q2xBtbin"] = -1
+        # df_epgg.loc["Q2xBtbin2"] = -1
+        Q2xBbin = 0
+
+        # encode all binning
         for Q2bin in range(len(Q2bin_i)):
             #square Q2 binning
             df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
@@ -573,6 +585,8 @@ class root2pickle():
         df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtbin"] = len(tbin_i) * df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBbin"] + df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "tbin"]
         # df_epgg.loc[(df_epgg.Q2bin>0)&(df_epgg.xBbin>0)&(df_epgg.tbin2>0), "Q2xBtbin2"] = df_epgg.Q2bin.astype(str) + df_epgg.xBbin.astype(str) + df_epgg.tbin2.astype(str)
         df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtphibin"] = len(phibin_i) * df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "Q2xBtbin"] + df_epgg.loc[(df_epgg.Q2xBbin>0)&(df_epgg.tbin>0), "phibin"]
+
+        df_epgg = df_epgg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": float, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
 
         self.df_epgg = df_epgg
 
