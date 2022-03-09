@@ -38,7 +38,7 @@ class root2pickle():
         # data frames and their keys to read Z part
         df_epg = pd.DataFrame()
 
-        eleKeysGen = ["xB", "Q2", "t2", "phi2", "radMode"]
+        eleKeysGen = ["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"]
         # read keys
         for key in eleKeysGen:
             df_epg[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)

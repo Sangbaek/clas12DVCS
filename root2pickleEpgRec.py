@@ -84,7 +84,7 @@ class root2pickle():
         pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
 
         if gen == "dvcsrad":
-            eleKeysGen.extend(["GenxB", "GenQ2", "Gent2", "Genphi2", "radMode"])
+            eleKeysGen.extend(["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"])
 
         # read keys
         for key in eleKeysGen:
@@ -108,9 +108,9 @@ class root2pickle():
         #sort columns for readability
         if gen == "dvcsrad":
             if detRes:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent2", "Genphi2", "radMode"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"]]
             else:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenxB", "GenQ2", "Gent2", "Genphi2", "radMode"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"]]
         else:
             if detRes:
                 df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
@@ -231,6 +231,9 @@ class root2pickle():
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
+            proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
+            proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
+            proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
 
         # read them
