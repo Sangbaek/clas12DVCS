@@ -14,11 +14,11 @@ from scipy.stats import skewnorm
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, width = "mid"):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, width = "mid", nofid = False):
         self.fname = fname
 
         self.determineWidth(width = width)
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0P_DVCS(pol = pol)
@@ -67,7 +67,7 @@ class root2pickle():
             self.cuts_dvcs_CD_Outb = cuts_dvcs_CD_Outb_4sigma
             self.cuts_dvcs_FD_Outb = cuts_dvcs_FD_Outb_4sigma
 
-    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -85,12 +85,16 @@ class root2pickle():
             eleKeysRec.extend(["Evx", "Evy", "Evz"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
             eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
+            eleKeysRec.extend(["Enphe"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
             proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
+            proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
+            proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
+            proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         if logistics:
             eleKeysRec.extend(["Evx", "Evy"])
@@ -119,69 +123,72 @@ class root2pickle():
         # df_protonRec = df_protonRec.astype({"PCvt12Hitx": float, "PCvt12Hity": float, "PCvt12Hitz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
 
-        #photon fiducial cuts by F.X. Girod
-        df_gammaRec.loc[:, "GFid"] = 0
+        if nofid:
+            df_gammaRec.loc[:, "GFid"] = 1
+        else:
+            #photon FD fiducial cuts by F.X. Girod
+            df_gammaRec.loc[:, "GFid"] = 0
 
-        sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
-        psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
-        tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
-        tright = np.select(sector_cond, [58.7477, 51.2589, 59.2357, 56.2415, 60.8219, 49.8914])
-        sleft = np.select(sector_cond, [0.582053, 0.544976, 0.549788, 0.56899, 0.56414, 0.57343])
-        sright = np.select(sector_cond, [-0.591876, -0.562926, -0.562246, -0.563726, -0.568902, -0.550729])
-        rleft = np.select(sector_cond, [64.9348, 64.7541, 67.832, 55.9324, 55.9225, 60.0997])
-        rright = np.select(sector_cond, [65.424, 54.6992, 63.6628, 57.8931, 56.5367, 56.4641])
-        qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
-        qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
-        #first condition
-        ang = np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
-        GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
-        GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+            sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
+            psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
+            tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
+            tright = np.select(sector_cond, [58.7477, 51.2589, 59.2357, 56.2415, 60.8219, 49.8914])
+            sleft = np.select(sector_cond, [0.582053, 0.544976, 0.549788, 0.56899, 0.56414, 0.57343])
+            sright = np.select(sector_cond, [-0.591876, -0.562926, -0.562246, -0.563726, -0.568902, -0.550729])
+            rleft = np.select(sector_cond, [64.9348, 64.7541, 67.832, 55.9324, 55.9225, 60.0997])
+            rright = np.select(sector_cond, [65.424, 54.6992, 63.6628, 57.8931, 56.5367, 56.4641])
+            qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
+            qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
+            #first condition
+            ang = np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+            GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+            GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
 
-        df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
-        df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
+            df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
+            df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
 
-        cond1_1 = df_gammaRec.GcX >= psplit
-        cond1_2 = df_gammaRec.GcY < sleft * (df_gammaRec.GcX - tleft)
-        cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
-        cond1_4 = df_gammaRec.Gsector < 7
-        cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
-        df_gammaRec.loc[cond1, "GFid"] = 1
-        #second condition else if the first
-        # cond2_0 = df_gammaRec.GFid == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
-        cond2_1 = df_gammaRec.GcX < psplit
-        cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
-        cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
-        cond2_4 = df_gammaRec.Gsector < 7
-        cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
-        df_gammaRec.loc[cond2, "GFid"] = 1
+            cond1_1 = df_gammaRec.GcX >= psplit
+            cond1_2 = df_gammaRec.GcY < sleft * (df_gammaRec.GcX - tleft)
+            cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
+            cond1_4 = df_gammaRec.Gsector < 7
+            cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
+            df_gammaRec.loc[cond1, "GFid"] = 1
+            #second condition else if the first
+            # cond2_0 = df_gammaRec.GFid == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
+            cond2_1 = df_gammaRec.GcX < psplit
+            cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
+            cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
+            cond2_4 = df_gammaRec.Gsector < 7
+            cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
+            df_gammaRec.loc[cond2, "GFid"] = 1
 
-        df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
+            df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
 
-        circleCenterX1 = -8.419
-        circleCenterY1 = 9.889
-        circleRadius1 = 1.6
+            circleCenterX1 = -8.419
+            circleCenterY1 = 9.889
+            circleRadius1 = 1.6
 
-        circleCenterX2 = -9.89
-        circleCenterY2 = -5.327
-        circleRadius2 = 1.6
+            circleCenterX2 = -9.89
+            circleCenterY2 = -5.327
+            circleRadius2 = 1.6
 
-        circleCenterX3 = -6.15
-        circleCenterY3 = -13
-        circleRadius3 = 2.3
+            circleCenterX3 = -6.15
+            circleCenterY3 = -13
+            circleRadius3 = 2.3
 
-        circleCenterX4 = 3.7
-        circleCenterY4 = -6.5
-        circleRadius4 = 2
-        
-        circle1 = (df_gammaRec.GcX - circleCenterX1)**2 + (df_gammaRec.GcY - circleCenterY1)**2 < circleRadius1**2
-        circle2 = (df_gammaRec.GcX - circleCenterX2)**2 + (df_gammaRec.GcY - circleCenterY2)**2 < circleRadius2**2
-        circle3 = (df_gammaRec.GcX - circleCenterX3)**2 + (df_gammaRec.GcY - circleCenterY3)**2 < circleRadius3**2
-        circle4 = (df_gammaRec.GcX - circleCenterX4)**2 + (df_gammaRec.GcY - circleCenterY4)**2 < circleRadius4**2
+            circleCenterX4 = 3.7
+            circleCenterY4 = -6.5
+            circleRadius4 = 2
+            
+            circle1 = (df_gammaRec.GcX - circleCenterX1)**2 + (df_gammaRec.GcY - circleCenterY1)**2 < circleRadius1**2
+            circle2 = (df_gammaRec.GcX - circleCenterX2)**2 + (df_gammaRec.GcY - circleCenterY2)**2 < circleRadius2**2
+            circle3 = (df_gammaRec.GcX - circleCenterX3)**2 + (df_gammaRec.GcY - circleCenterY3)**2 < circleRadius3**2
+            circle4 = (df_gammaRec.GcX - circleCenterX4)**2 + (df_gammaRec.GcY - circleCenterY4)**2 < circleRadius4**2
 
-        df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle1, "GFid"] = 0
-        df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle2, "GFid"] = 0
-        df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle3, "GFid"] = 0
-        df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
+            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle1, "GFid"] = 0
+            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle2, "GFid"] = 0
+            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle3, "GFid"] = 0
+            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
@@ -1181,6 +1188,7 @@ if __name__ == "__main__":
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
     parser.add_argument("-l","--logistics", help="include logistics", action = "store_true")
     parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
+    parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
 
 
     args = parser.parse_args()
@@ -1190,7 +1198,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, width = args.width)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, width = args.width, nofid = args.nofid)
     df = converter.df
 
     df.to_pickle(args.out)
