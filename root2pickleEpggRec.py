@@ -32,7 +32,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending", detRes = False, smearing = 1, nofid = nofid):
+    def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending", detRes = False, smearing = 1, nofid = False):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
