@@ -49,6 +49,7 @@ class root2pickle():
             eleKeysRec.extend(["Evx", "Evy", "Evz"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
             eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
+            eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
             eleKeysRec.extend(["Enphe"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
             proKeysRec.extend(["Pvz"])
