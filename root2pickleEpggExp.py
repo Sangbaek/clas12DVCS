@@ -64,7 +64,7 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         if logistics:
-            eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
+            eleKeysRec.extend(["EventNum", "RunNum", "TriggerBit", "beamQ", "liveTime", "helicity"])
 
 
         # read them
