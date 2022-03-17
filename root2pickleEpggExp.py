@@ -458,7 +458,19 @@ class root2pickle():
         if nofid:
             df_protonRec.loc[:, "PFid"] = 1
         else:
-            df_protonRec.loc[:, "PFid"] = 1
+            df_protonRec.loc[:, "PFid"] = 0
+
+            df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
+
+            cut_CD = df_protonRec.Psectorr > 7
+            cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
+            cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
+            cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
+            cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
+
+            cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
+
+            df_protonRec.loc[cut_trapezoid, "PFid"] = 1 #CD fid
 
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
