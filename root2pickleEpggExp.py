@@ -52,6 +52,8 @@ class root2pickle():
             eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
             eleKeysRec.extend(["Enphe"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
+            gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
+            gamKeysRec.extend(["Gbeta"])
             proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
