@@ -39,7 +39,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Esector", "TriggerBit"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
         proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
@@ -64,7 +64,7 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         if logistics:
-            eleKeysRec.extend(["EventNum", "RunNum", "TriggerBit", "beamQ", "liveTime", "helicity"])
+            eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
 
         # read them
@@ -633,8 +633,9 @@ class root2pickle():
         cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvpi0p.Ptheta > 0  # Ptheta
+        cut_Trigger = df_dvpi0p.TriggerBit < 7
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin & cut_Trigger
 
         df_dvpi0p = df_dvpi0p[cut_common]
 
