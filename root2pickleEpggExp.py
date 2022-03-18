@@ -682,8 +682,8 @@ class root2pickle():
             cut_Psector_CD = df_dvpi0p.Psector>7
             cut_Ptheta1_CD = df_dvpi0p.Ptheta<CD_Ptheta_ub
             cut_Ptheta2_CD = df_dvpi0p.Ptheta>CD_Ptheta_lb
-            cut_Gsector_CD = df_dvpi0p.Gsector<7
-            cut_Gsector2_CD = df_dvpi0p.Gsector2<7
+            cut_Gsector_CD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
+            cut_Gsector2_CD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
             cut_GFid_CD = df_dvpi0p.GFid==1
             cut_GFid2_CD = df_dvpi0p.GFid2==1
             cut_PFid_CD = df_dvpi0p.PFid==1
@@ -712,8 +712,8 @@ class root2pickle():
             cut_Psector_FD = df_dvpi0p.Psector<7
             cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
-            cut_Gsector_FD = df_dvpi0p.Gsector<7
-            cut_Gsector2_FD = df_dvpi0p.Gsector2<7
+            cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
+            cut_Gsector2_FD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
             cut_GFid_FD = df_dvpi0p.GFid==1
             cut_GFid2_FD = df_dvpi0p.GFid2==1
             cut_PFid_FD = df_dvpi0p.PFid==1
@@ -773,8 +773,8 @@ class root2pickle():
             cut_Psector_CD = df_dvpi0p.Psector>7
             cut_Ptheta1_CD = df_dvpi0p.Ptheta<CD_Ptheta_ub
             cut_Ptheta2_CD = df_dvpi0p.Ptheta>CD_Ptheta_lb
-            cut_Gsector_CD = df_dvpi0p.Gsector<7
-            cut_Gsector2_CD = df_dvpi0p.Gsector2<7
+            cut_Gsector_CD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
+            cut_Gsector2_CD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
             cut_GFid_CD = df_dvpi0p.GFid==1
             cut_GFid2_CD = df_dvpi0p.GFid2==1
             cut_PFid_CD = df_dvpi0p.PFid==1
@@ -803,8 +803,8 @@ class root2pickle():
             cut_Psector_FD = df_dvpi0p.Psector<7
             cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
-            cut_Gsector_FD = df_dvpi0p.Gsector<7
-            cut_Gsector2_FD = df_dvpi0p.Gsector2<7
+            cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
+            cut_Gsector2_FD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
             cut_GFid_FD = df_dvpi0p.GFid==1
             cut_GFid2_FD = df_dvpi0p.GFid2==1
             cut_PFid_FD = df_dvpi0p.PFid==1
