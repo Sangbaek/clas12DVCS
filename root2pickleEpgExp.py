@@ -90,7 +90,7 @@ class root2pickle():
             self.cuts_dvcs_CDFT_Outb = cuts_dvcs_CDFT_Outb_2sigma
             self.cuts_dvcs_CD_Outb = cuts_dvcs_CD_Outb_2sigma
             self.cuts_dvcs_FD_Outb = cuts_dvcs_FD_Outb_2sigma
-        if width == "wide":
+        if width == "loose":
             self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_4sigma
             self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_4sigma
             self.cuts_dvcs_FD_Inb = cuts_dvcs_FD_Inb_4sigma

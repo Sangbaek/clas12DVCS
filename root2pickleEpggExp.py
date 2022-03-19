@@ -14,7 +14,7 @@ from scipy.stats import skewnorm
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, width = "mid", logistics = False, nofid = False):
         '''
             clas init.
             Args
@@ -44,6 +44,8 @@ class root2pickle():
             save: save output
         '''
         self.fname = fname
+ 
+        self.determineWidth(width = width)
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid)
         self.saveDVpi0vars()
         self.makeDVpi0P(pol = pol)
@@ -58,6 +60,42 @@ class root2pickle():
         '''close file for saving memory'''
         self.file = None
         self.tree = None
+
+    def determineWidth(self, width = "mid"):
+        '''determine event selection window'''
+        print("determine width level: {}".format(width))
+        if width == "default":
+            self.Ge2Threshold = Ge2Threshold_default
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_default
+        if width == "mid":
+            self.Ge2Threshold = Ge2Threshold_mid
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_3sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_3sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_3sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_3sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_3sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_3sigma
+        if width == "tight":
+            self.Ge2Threshold = Ge2Threshold_tight
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_2sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_2sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_2sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_2sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_2sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_2sigma
+        if width == "loose":
+            self.Ge2Threshold = Ge2Threshold_loose
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_4sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_4sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_4sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_4sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_4sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_4sigma
 
     def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False):
         '''save data into df_epg, df_epgg for parent class epg'''
@@ -661,7 +699,7 @@ class root2pickle():
         cut_Q2 = df_dvpi0p.loc[:, "Q2"] > 1  # Q2
         cut_W = df_dvpi0p.loc[:, "W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
-        cut_Ge2 = df_dvpi0p["Ge2"] > 0.6  # Ge cut. Ge>3 for DVCS module.
+        cut_Ge2 = df_dvpi0p["Ge2"] > self.Ge2Threshold  # Ge2 Threshold.
         cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
         cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
@@ -892,6 +930,7 @@ if __name__ == "__main__":
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
     parser.add_argument("-p","--polarity", help="polarity", default = "inbending")
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
+    parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
     parser.add_argument("-l","--logistics", help="include logistics", action = "store_true")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     
@@ -902,7 +941,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, nofid = args.nofid)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, width = args.width, logistics = args.logistics, nofid = args.nofid)
     df = converter.df
 
     df.to_pickle(args.out)

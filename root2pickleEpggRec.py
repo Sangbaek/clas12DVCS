@@ -14,7 +14,7 @@ from utils.physics import *
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, dvcs = False, smearing = 1, nofid = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, width = "mid", dvcs = False, smearing = 1, nofid = False):
         '''
             clas init.
             Args
@@ -59,6 +59,42 @@ class root2pickle():
         '''close file for saving memory'''
         self.file = None
         self.tree = None
+
+    def determineWidth(self, width = "mid"):
+        '''determine event selection window'''
+        print("determine width level: {}".format(width))
+        if width == "default":
+            self.Ge2Threshold = Ge2Threshold_default
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_default
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_default
+        if width == "mid":
+            self.Ge2Threshold = Ge2Threshold_mid
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_3sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_3sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_3sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_3sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_3sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_3sigma
+        if width == "tight":
+            self.Ge2Threshold = Ge2Threshold_tight
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_2sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_2sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_2sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_2sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_2sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_2sigma
+        if width == "loose":
+            self.Ge2Threshold = Ge2Threshold_loose
+            # self.cuts_dvpi0p_CDFT_Inb = cuts_dvpi0p_CDFT_Inb_4sigma
+            # self.cuts_dvpi0p_CD_Inb = cuts_dvpi0p_CD_Inb_4sigma
+            # self.cuts_dvpi0p_FD_Inb = cuts_dvpi0p_FD_Inb_4sigma
+            # self.cuts_dvpi0p_CDFT_Outb = cuts_dvpi0p_CDFT_Outb_4sigma
+            # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_4sigma
+            # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_4sigma
 
     def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending", detRes = False, smearing = 1, nofid = False):
         '''save data into df_epg, df_epgg for parent class epg'''
@@ -734,7 +770,7 @@ class root2pickle():
         cut_Q2 = df_dvpi0p.loc[:, "Q2"] > 1  # Q2
         cut_W = df_dvpi0p.loc[:, "W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
-        cut_Ge2 = df_dvpi0p["Ge2"] > 0.6  # Ge cut. Ge>3 for DVCS module.
+        cut_Ge2 = df_dvpi0p["Ge2"] > self.Ge2Threshold  # Ge cut. Ge>3 for DVCS module.
         cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
         cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
@@ -1114,6 +1150,7 @@ if __name__ == "__main__":
     parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "pi0norad")
     parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
+    parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
     parser.add_argument("-D","--dvcs", help="save dvcs overlap", action = "store_true")
     parser.add_argument("-sm","--smearing", help="save dvcs overlap", default = "1")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
@@ -1126,7 +1163,7 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
     smearingFactor = float(args.smearing)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, dvcs = args.dvcs, smearing = smearingFactor, nofid = args.nofid)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, dvcs = args.dvcs, smearing = smearingFactor, nofid = args.nofid)
     df = converter.df
 
     df.to_pickle(args.out)
