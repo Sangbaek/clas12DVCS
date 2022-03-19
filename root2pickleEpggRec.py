@@ -32,6 +32,7 @@ class root2pickle():
             Attributes
             --------------------
             fname: root file name to be read
+
             Methods
             --------------------
             determineWidth: to determine event selection window
@@ -44,6 +45,8 @@ class root2pickle():
             save: save output
         '''
         self.fname = fname
+
+        self.determineWidth(width = width)
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid)
         self.saveDVpi0vars()
         if not raw:
@@ -604,9 +607,9 @@ class root2pickle():
 
             cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
 
-            cut_gaps1 = ~((df_protoRec.PCvt12phi>-95) & (df_protoRec.PCvt12phi<-80))
-            cut_gaps2 = ~((df_protoRec.PCvt12phi>25) & (df_protoRec.PCvt12phi<40))
-            cut_gaps3 = ~((df_protoRec.PCvt12phi>143) & (df_protoRec.PCvt12phi<158))
+            cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
+            cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
+            cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
             cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
             cut_total = cut_gaps & cut_trapezoid
 
