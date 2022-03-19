@@ -32,6 +32,7 @@ class root2pickle():
             Attributes
             --------------------
             fname: root file name to be read
+
             Methods
             --------------------
             determineWidth: to determine event selection window

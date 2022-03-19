@@ -32,6 +32,7 @@ class root2pickle():
             Attributes
             --------------------
             fname: root file name to be read
+
             Methods
             --------------------
             determineWidth: to determine event selection window
@@ -44,6 +45,8 @@ class root2pickle():
             save: save output
         '''
         self.fname = fname
+
+        self.determineWidth(width = width)
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid)
         self.saveDVpi0vars()
         if not raw:
