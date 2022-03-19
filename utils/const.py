@@ -117,6 +117,11 @@ CD_Ptheta_lb = 30
 FD_Ptheta_ub = 45
 FD_Ptheta_lb = 5
 
+Ge2Threshold_default = 0
+Ge2Threshold_tight = 0.8
+Ge2Threshold_mid = 0.6
+Ge2Threshold_loose = 0.4
+
 #the default compatible with F. X. Girod's dvcs wagon
 cuts_dvcs_default = {}
 cuts_dvcs_default["MM2_ep_ub"] = 0.6
