@@ -13,8 +13,36 @@ from utils.physics import *
 
 
 class root2pickle():
-    #class to read root to make epg pairs, inherited from epg
+    '''class to read root to make epg pairs'''
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, dvcs = False, smearing = 1, nofid = False):
+        '''
+            clas init.
+            Args
+            --------------------
+            fname: root file name to be read
+            entry_start: the lower bound of root entry
+            entry_stop: the upper bound of root entry
+            pol: polarity
+            gen: generator
+            raw: no exclusivity cuts
+            detRes: include detector responses in the output (full skim)
+            width: data selection window width
+            nofid: do not apply fid cuts.
+
+            Attributes
+            --------------------
+            fname: root file name to be read
+            Methods
+            --------------------
+            determineWidth: to determine event selection window
+            readFile: read root file to pandas
+            closeFile: nullify the files to save memory
+            readEPGG: read and post-process data. fiducial cut/ proton energy loss correction/ smearing.
+            saveDVpi0vars: 4 momentum algebra to save DVpi0P vars
+            makeDVpi0P: select pi0->2g events.
+            makeDVpi0P: select DVpi0P candidates
+            save: save output
+        '''
         self.fname = fname
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid)
         self.saveDVpi0vars()
@@ -23,17 +51,17 @@ class root2pickle():
         self.save(raw = raw, dvcs = dvcs, pol = pol)
 
     def readFile(self):
-        #read root using uproot
+        '''read root using uproot'''
         self.file = uproot.open(self.fname)
         self.tree = self.file["T"]
 
     def closeFile(self):
-        #close file for saving memory
+        '''close file for saving memory'''
         self.file = None
         self.tree = None
 
     def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending", detRes = False, smearing = 1, nofid = False):
-        #save data into df_epg, df_epgg for parent class epg
+        '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
         # data frames and their keys to read Z part
@@ -191,19 +219,11 @@ class root2pickle():
         self.closeFile()
 
         #convert data type to standard double
-        # df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float, "Evx": float, "Evy": float, "Evz": float})
-        # df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float, "Pvz": float})
         df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
-        # df_protonRec = df_protonRec.astype({"PDc1Hitx": float, "PDc1Hity": float, "PDc1Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PDc3Hitx": float, "PDc3Hity": float, "PDc3Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PCvt1Hitx": float, "PCvt1Hity": float, "PCvt1Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PCvt3Hitx": float, "PCvt3Hity": float, "PCvt3Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PCvt5Hitx": float, "PCvt5Hity": float, "PCvt5Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PCvt7Hitx": float, "PCvt7Hity": float, "PCvt7Hitz": float})
-        # df_protonRec = df_protonRec.astype({"PCvt12Hitx": float, "PCvt12Hity": float, "PCvt12Hitz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
 
+        #apply photon fiducial cuts
         if nofid:
             df_gammaRec.loc[:, "GFid"] = 1
         else:
@@ -245,6 +265,7 @@ class root2pickle():
 
             df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
 
+            #FT fiducial cuts
             circleCenterX1 = -8.419
             circleCenterY1 = 9.889
             circleRadius1 = 1.6
@@ -277,9 +298,7 @@ class root2pickle():
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
-        #save only FD protons and photons
-        # df_protonRec = df_protonRec[df_protonRec["Psector"]<7]
-        #proton momentum correction
+        #prepare for proton energy loss corrections correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pp'] = mag(pro)
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
@@ -319,6 +338,7 @@ class root2pickle():
 
         correction = False
 
+        #two band criterion
         def corr(x, t):
             x0, x1, x2, x3 = x
             return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
@@ -351,7 +371,7 @@ class root2pickle():
             df_protonRecCD.loc[:, "PCvt12theta"] = getTheta([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
             df_protonRecCD.loc[:, "PCvt12phi"] = getPhi([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
 
-        #inbending
+        #inbending proton energy loss correction
         if pol == "inbending":
             const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
             coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
@@ -396,6 +416,7 @@ class root2pickle():
             CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
             correction = True
+        #outbending proton energy loss correction
         elif pol == "outbending":
             #FD part
             const_FD = 0.05083242 -0.00469777*df_protonRecFD_1.Ptheta + 0.0001082*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
@@ -443,7 +464,7 @@ class root2pickle():
             print("no correction applied")
 
         if correction:
-            print("correction applied for " + pol)
+            print("energy loss correction applied for " + pol)
 
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
             df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
@@ -462,7 +483,7 @@ class root2pickle():
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
-            #smearing proton
+            #smearing proton after the energy loss correction
             print("smearing factor {} from nominal".format(smearing))
             #CD proton
             def cubic(args, x): #equivalent to poly1d
@@ -531,6 +552,7 @@ class root2pickle():
         df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
         df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
+        # proton fiducial cuts
         if nofid:
             df_protonRec.loc[:, "PFid"] = 1
         else:
@@ -555,12 +577,8 @@ class root2pickle():
             df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
 
         if detRes:
-            # df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
             df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
-            # df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz", "EDc1theta", "EDc3theta"], axis = 1)
-            # df_protonRec = df_protonRec.drop(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
-            # df_protonRec = df_protonRec.drop(["PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc3theta"], axis = 1)
         else:
             df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz", "PCvt12theta", "PCvt12phi"], axis = 1)
             df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
@@ -573,7 +591,7 @@ class root2pickle():
         df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
         df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
 
-        self.df_epgg = df_epgg #temporarily save df_epgg
+        self.df_epgg = df_epgg #temporarily saves df_epgg
 
     def saveDVpi0vars(self):
         #set up pi0 variables
