@@ -41,8 +41,8 @@ class root2pickle():
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Esector", "TriggerBit"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
-        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz"])
-        proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
+        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
+        # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
 
         if detRes:
@@ -62,7 +62,7 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
             proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
-            # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
+            proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
@@ -193,6 +193,9 @@ class root2pickle():
             df_protonRec.loc[:, "PCvt7theta"] = -100000
             df_protonRec.loc[:, "PCvt7phi"] = -100000
             df_protonRec.loc[:, "PCvt12r"] = -100000
+            df_protonRec.loc[:, "PCvt12theta"] = -100000
+            df_protonRec.loc[:, "PCvt12phi"] = -100000
+        else:
             df_protonRec.loc[:, "PCvt12theta"] = -100000
             df_protonRec.loc[:, "PCvt12phi"] = -100000
 
@@ -447,16 +450,6 @@ class root2pickle():
             df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
             df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
 
-        if detRes:
-            # df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
-            df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
-            df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
-            # df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz", "EDc1theta", "EDc3theta"], axis = 1)
-            # df_protonRec = df_protonRec.drop(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
-            # df_protonRec = df_protonRec.drop(["PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc3theta"], axis = 1)
-        else:
-            df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta"], axis = 1)
-
         if nofid:
             df_protonRec.loc[:, "PFid"] = 1
         else:
@@ -472,7 +465,25 @@ class root2pickle():
 
             cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
 
-            df_protonRec.loc[cut_trapezoid, "PFid"] = 1 #CD fid
+            cut_gaps1 = ~((df_protoRec.PCvt12phi>-95) & (df_protoRec.PCvt12phi<-80))
+            cut_gaps2 = ~((df_protoRec.PCvt12phi>25) & (df_protoRec.PCvt12phi<40))
+            cut_gaps3 = ~((df_protoRec.PCvt12phi>143) & (df_protoRec.PCvt12phi<158))
+            cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
+            cut_total = cut_gaps & cut_trapezoid
+
+            df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
+
+        if detRes:
+            # df_protonRec.loc[:, "PAngleDiff"] = df_protonRec.loc[:, "PDc3theta"] - df_protonRec.loc[:, "PDc1theta"]
+            df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
+            df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
+            # df_electronRec = df_electronRec.drop(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz", "EDc1theta", "EDc3theta"], axis = 1)
+            # df_protonRec = df_protonRec.drop(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
+            # df_protonRec = df_protonRec.drop(["PDc3Hitx", "PDc3Hity", "PDc3Hitz", "PDc3theta"], axis = 1)
+        else:
+            df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz", "PCvt12theta", "PCvt12phi"], axis = 1)
+            df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
+            df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
 
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
