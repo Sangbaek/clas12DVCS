@@ -1029,8 +1029,8 @@ class root2pickle():
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
         cut_Ge = df_dvcs["Ge"] > 2  # Ge
-        cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
-        cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
+        cut_Esector = 1#(df_dvcs["Esector"]!=df_dvcs["Gsector"])
+        cut_Psector = 1#~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvcs.Ptheta > 0 #Ptheta
         cut_Trigger = ((df_dvcs.TriggerBit & 1 << 1) > 0) | ((df_dvcs.TriggerBit & 1 << 2) > 0) | ((df_dvcs.TriggerBit & 1 << 3) > 0) | ((df_dvcs.TriggerBit & 1 << 4) > 0) | ((df_dvcs.TriggerBit & 1 << 5) > 0) | ((df_dvcs.TriggerBit & 1 << 6) > 0)
