@@ -70,12 +70,12 @@ class root2pickle():
         '''determine event selection window'''
         print("determine width level: {}".format(width))
         if width == "default":
-            self.cuts_dvcs_CDFT_Inb = cuts_dvcs_default
-            self.cuts_dvcs_CD_Inb = cuts_dvcs_default
-            self.cuts_dvcs_FD_Inb = cuts_dvcs_default
-            self.cuts_dvcs_CDFT_Outb = cuts_dvcs_default
-            self.cuts_dvcs_CD_Outb = cuts_dvcs_default
-            self.cuts_dvcs_FD_Outb = cuts_dvcs_default
+            self.cuts_dvcs_CDFT_Inb = cuts_dvcs_default_CDFT
+            self.cuts_dvcs_CD_Inb = cuts_dvcs_default_CD
+            self.cuts_dvcs_FD_Inb = cuts_dvcs_default_FD
+            self.cuts_dvcs_CDFT_Outb = cuts_dvcs_default_CDFT
+            self.cuts_dvcs_CD_Outb = cuts_dvcs_default_CD
+            self.cuts_dvcs_FD_Outb = cuts_dvcs_default_FD
         if width == "mid":
             self.cuts_dvcs_CDFT_Inb = cuts_dvcs_CDFT_Inb_3sigma
             self.cuts_dvcs_CD_Inb = cuts_dvcs_CD_Inb_3sigma

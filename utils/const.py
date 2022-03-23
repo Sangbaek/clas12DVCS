@@ -4,6 +4,7 @@ Modules to define useful constants
 """
 
 import numpy as np
+from copy import copy
 
 M = 0.938272081 # target mass
 me = 0.5109989461 * 0.001 # electron mass
@@ -123,20 +124,54 @@ Ge2Threshold_mid = 0.4
 Ge2Threshold_loose = 0.3
 
 #the default compatible with F. X. Girod's dvcs wagon
-cuts_dvcs_default = {}
-cuts_dvcs_default["MM2_ep_ub"] = 0.6
-cuts_dvcs_default["MM2_ep_lb"] = -0.6
-cuts_dvcs_default["MM2_eg_ub"] = 2
-cuts_dvcs_default["MM2_eg_lb"] = 0.25
-cuts_dvcs_default["ME_epg_ub"] = 2
-cuts_dvcs_default["ME_epg_lb"] = -1
-cuts_dvcs_default["coplanarity_ub"] = 360
-cuts_dvcs_default["coneAngle_ub"] = [0, 0, 90]#[-0.106, 2.940, 5.527]
-cuts_dvcs_default["coneAngle_lb"] = [0, 0, 0]#[0.434, -3.766, 16.994]
-cuts_dvcs_default["MPt_ub"] = 0.75
-cuts_dvcs_default["reconGam_ub"] = 7.5
-cuts_dvcs_default["MM2_epg_ub"] = 0.1
-cuts_dvcs_default["MM2_epg_lb"] = -0.1
+cuts_dvcs_default_CDFT = {}
+cuts_dvcs_default_CDFT["MM2_ep_ub"] = 0.6
+cuts_dvcs_default_CDFT["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_CDFT["MM2_eg_ub"] = 2
+cuts_dvcs_default_CDFT["MM2_eg_lb"] = 0.25
+cuts_dvcs_default_CDFT["ME_epg_ub"] = 2
+cuts_dvcs_default_CDFT["ME_epg_lb"] = -1
+cuts_dvcs_default_CDFT["coplanarity_ub"] = 360
+cuts_dvcs_default_CDFT["coneAngle_ub"] = [-0.00221, 0.863, 10.287]
+cuts_dvcs_default_CDFT["coneAngle_lb"] = [0.0267, -0.0625, 7.730]
+cuts_dvcs_default_CDFT["coneAngleCR_ub"] = [-0.000382, 0.777, 0.867]
+cuts_dvcs_default_CDFT["coneAngleCR_lb"] = [0.0510, -0.0470, -0.492]
+cuts_dvcs_default_CDFT["MPt_ub"] = 0.75
+cuts_dvcs_default_CDFT["reconGam_ub"] = 7.5
+cuts_dvcs_default_CDFT["MM2_epg_ub"] = 0.1
+cuts_dvcs_default_CDFT["MM2_epg_lb"] = -0.1
+
+#the default compatible with F. X. Girod's dvcs wagon
+cuts_dvcs_default_CD = {}
+cuts_dvcs_default_CD["MM2_ep_ub"] = 0.6
+cuts_dvcs_default_CD["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_CD["MM2_eg_ub"] = 2
+cuts_dvcs_default_CD["MM2_eg_lb"] = 0.25
+cuts_dvcs_default_CD["ME_epg_ub"] = 2
+cuts_dvcs_default_CD["ME_epg_lb"] = -1
+cuts_dvcs_default_CD["coplanarity_ub"] = 360
+cuts_dvcs_default_CD["coneAngle_ub"] = [0.0470, -1.677, 46.014]
+cuts_dvcs_default_CD["coneAngle_lb"] = [0.0164, 0.408, 4.901]
+cuts_dvcs_default_CD["MPt_ub"] = 0.75
+cuts_dvcs_default_CD["reconGam_ub"] = 7.5
+cuts_dvcs_default_CD["MM2_epg_ub"] = 0.1
+cuts_dvcs_default_CD["MM2_epg_lb"] = -0.1
+
+#the default compatible with F. X. Girod's dvcs wagon
+cuts_dvcs_default_FD = {}
+cuts_dvcs_default_FD["MM2_ep_ub"] = 0.6
+cuts_dvcs_default_FD["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_FD["MM2_eg_ub"] = 2
+cuts_dvcs_default_FD["MM2_eg_lb"] = 0.25
+cuts_dvcs_default_FD["ME_epg_ub"] = 2
+cuts_dvcs_default_FD["ME_epg_lb"] = -1
+cuts_dvcs_default_FD["coplanarity_ub"] = 360
+cuts_dvcs_default_FD["coneAngle_ub"] = [0.0280, -1.001, 49.895]
+cuts_dvcs_default_FD["coneAngle_lb"] = [0.0214, -0.379, 21.998]
+cuts_dvcs_default_FD["MPt_ub"] = 0.75
+cuts_dvcs_default_FD["reconGam_ub"] = 7.5
+cuts_dvcs_default_FD["MM2_epg_ub"] = 0.1
+cuts_dvcs_default_FD["MM2_epg_lb"] = -0.1
 
 cuts_dvcs_CDFT_Inb_3sigma = {}
 cuts_dvcs_CDFT_Inb_3sigma["MM2_ep_ub"] = 0.391
