@@ -1085,6 +1085,14 @@ class root2pickle():
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
 
 
+            cut_cone1_CR = df_dvcs["coneAngle"] < np.poly1d(cuts_dvcs_CDFT_Inb["coneAngleCR_ub"])(df_dvcs.Etheta) # coneangle
+            cut_cone2_CR = df_dvcs["coneAngle"] > np.poly1d(cuts_dvcs_CDFT_Inb["coneAngleCR_lb"])(df_dvcs.Etheta) # coneangle
+
+            cut_CR = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT & 
+                        cut_PFid_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
+                        cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CR & cut_cone2_CR &
+                        cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
+
             #CD
             cut_Pp1_CD = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvcs.Psector>7
@@ -1168,6 +1176,14 @@ class root2pickle():
                         cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
 
 
+            cut_cone1_CR = df_dvcs["coneAngle"] < np.poly1d(cuts_dvcs_CDFT_Outb["coneAngleCR_ub"])(df_dvcs.Etheta) # coneangle
+            cut_cone2_CR = df_dvcs["coneAngle"] > np.poly1d(cuts_dvcs_CDFT_Outb["coneAngleCR_lb"])(df_dvcs.Etheta) # coneangle
+
+            cut_CR = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT & 
+                        cut_PFid_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT & cut_mmeg1_CDFT & cut_mmeg2_CDFT &
+                        cut_meepg1_CDFT & cut_meepg2_CDFT & cut_cone1_CR & cut_cone2_CR &
+                        cut_mpt_CDFT & cut_recon_CDFT & cut_coplanarity_CDFT & cut_mmepg1_CDFT & cut_mmepg2_CDFT)
+
             #CD
             cut_Pp1_CD = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CD = df_dvcs.Psector>7
@@ -1222,6 +1238,7 @@ class root2pickle():
                         cut_meepg1_FD & cut_meepg2_FD & cut_cone1_FD & cut_cone2_FD &
                         cut_mpt_FD & cut_recon_FD & cut_coplanarity_FD & cut_mmepg1_FD & cut_mmepg2_FD)            
 
+        df_dvcs.loc[cut_CR, "config"] = 4
         df_dvcs.loc[cut_CDFT, "config"] = 3
         df_dvcs.loc[cut_CD, "config"] = 2
         df_dvcs.loc[cut_FD, "config"] = 1
