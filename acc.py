@@ -12,9 +12,9 @@ def countDF(total, df_global, colName = "new"):
     for i in range(len(df_global)):
         if i%50 == 0:
             print(i)
-        number1 = sum((total.Q2xBtphi == i) & (total.config == 1))
-        number2 = sum((total.Q2xBtphi == i) & (total.config == 2))
-        number3 = sum((total.Q2xBtphi == i) & (total.config == 3))
+        number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
+        number2 = sum((total.Q2xBtphibin == i) & (total.config == 2))
+        number3 = sum((total.Q2xBtphibin == i) & (total.config == 3))
         numbers1.append(number1)
         numbers2.append(number2)
         numbers3.append(number3)
