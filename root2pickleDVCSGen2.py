@@ -43,7 +43,7 @@ class root2pickle():
         for key in eleKeysGen:
             df_epg[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
-        df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": : "phi1"})
+        df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1"})
         df_epg.loc[:, "event"] = df_epg.index
 
         # encode unassigned bin as -1
