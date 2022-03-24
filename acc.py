@@ -28,7 +28,7 @@ def countGenDF(total, df_global, colName = "new"):
     for i in range(len(df_global)):
         if i%10==0:
             print(i)
-        number = sum((total.Q2xBtphi == i))
+        number = sum((total.Q2xBtphibin == i))
         numbers.append(number)
     df_global.loc[:, colName] = numbers
     return df_global
