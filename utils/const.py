@@ -115,7 +115,8 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
 
 CD_Ptheta_ub = 80
 CD_Ptheta_lb = 30
-FD_Ptheta_ub = 45
+FD_Ptheta_inb_ub = 45#35
+FD_Ptheta_outb_ub = 45#40
 FD_Ptheta_lb = 5
 
 Ge2Threshold_default = 0

@@ -780,7 +780,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.42  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_inb_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
             cut_GFid_FD = df_dvpi0p.GFid==1
@@ -863,7 +863,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.5  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_outb_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
             cut_GFid_FD = df_dvpi0p.GFid==1
@@ -1123,7 +1123,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvcs.Pp > 0.42  # Pp
             cut_Psector_FD = df_dvcs.Psector<7
-            cut_Ptheta1_FD = df_dvcs.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvcs.Ptheta<FD_Ptheta_inb_ub
             cut_Ptheta2_FD = df_dvcs.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvcs.Gsector<7) & (df_dvcs.Gsector>0)
             cut_GFid_FD = df_dvcs.GFid==1
@@ -1214,7 +1214,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvcs.Pp > 0.5  # Pp
             cut_Psector_FD = df_dvcs.Psector<7
-            cut_Ptheta1_FD = df_dvcs.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvcs.Ptheta<FD_Ptheta_outb_ub
             cut_Ptheta2_FD = df_dvcs.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvcs.Gsector<7) & (df_dvcs.Gsector>0)
             cut_GFid_FD = df_dvcs.GFid==1

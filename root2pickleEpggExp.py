@@ -786,7 +786,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.42  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_inb_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
             cut_Gsector2_FD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
@@ -877,7 +877,7 @@ class root2pickle():
             #FD
             cut_Pp1_FD = df_dvpi0p.Pp > 0.5  # Pp
             cut_Psector_FD = df_dvpi0p.Psector<7
-            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_ub
+            cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_outb_ub
             cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_dvpi0p.Gsector<7) & (df_dvpi0p.Gsector>0)
             cut_Gsector2_FD = (df_dvpi0p.Gsector2<7) & (df_dvpi0p.Gsector2>0)
