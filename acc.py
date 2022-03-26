@@ -9,7 +9,7 @@ def countDF(total, df_global, colName = "new"):
     numbers1 = []
     numbers2 = []
     numbers3 = []
-    for i in range(len(df_global)):
+    for i in df_global.Q2xBtphibin:
         if i%50 == 0:
             print(i)
         number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
@@ -25,7 +25,7 @@ def countDF(total, df_global, colName = "new"):
 
 def countGenDF(total, df_global, colName = "new"):
     numbers = []
-    for i in range(len(df_global)):
+    for i in df_global.Q2xBtphibin:
         if i%10==0:
             print(i)
         number = sum((total.Q2xBtphibin == i))
