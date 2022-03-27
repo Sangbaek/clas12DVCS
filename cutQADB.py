@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-f","--fname", help="a single exp pickle file before clasqa", default="/volatile/clas12/sangbaek/nov2021/convPkl_full/exp/inb/dvcs.pkl")
+    parser.add_argument("-f","--fname", help="a single exp pickle file before clasqa", default="/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/dvcs.pkl")
     parser.add_argument("-q","--qadb", help="a qadb query", default="/volatile/clas12/sangbaek/clasqaDB/src/outs/qadb.pkl")
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="qadb_applied.pkl")
 
@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     qadb = pd.read_pickle(args.qadb)
     qadb = qadb.loc[qadb.QAresult == 1, ["EventNum", "RunNum", "beamCurrent", "runConfig"]]
-    exp = pd.read_pickle()
+    exp = pd.read_pickle(args.fname)
 
     exp = pd.mearge([exp, qadb], how = 'inner', on = ['RunNum', 'EventNum'])
 
