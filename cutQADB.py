@@ -25,6 +25,6 @@ if __name__ == "__main__":
     qadb = qadb.loc[qadb.QAresult == 1, ["EventNum", "RunNum", "beamCurrent", "runConfig"]]
     exp = pd.read_pickle(args.fname)
 
-    exp = pd.mearge([exp, qadb], how = 'inner', on = ['RunNum', 'EventNum'])
+    exp = pd.merge([exp, qadb], how = 'inner', on = ['RunNum', 'EventNum'])
 
     exp.to_pickle(args.out)
