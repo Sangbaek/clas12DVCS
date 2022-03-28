@@ -44,9 +44,9 @@ phibin_f = phibin[1:]
 badBins = ['004', '005', '006', '015', '016', '026', '045', '046', '104', '105', '106', '115', '116', '126', '146', '205', '206', '216', '240', '245', '246', '306', '320', '330', '406', '410', '420', '500', '505', '506', '510', '600', '601']
 goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020', '021', '022', '023', '024', '025', '030', '031', '032', '033', '034', '035', '036', '040', '041', '042', '043', '044', '100', '101', '102', '103', '110', '111', '112', '113', '114', '120', '121', '122', '123', '124', '125', '130', '131', '132', '133', '134', '135', '136', '140', '141', '142', '143', '144', '145', '200', '201', '202', '203', '204', '210', '211', '212', '213', '214', '215', '220', '221', '222', '223', '224', '225', '226', '230', '231', '232', '233', '234', '235', '236', '241', '242', '243', '244', '300', '301', '302', '303', '304', '305', '310', '311', '312', '313', '314', '315', '316', '321', '322', '323', '324', '325', '326', '331', '332', '333', '334', '335', '336', '400', '401', '402', '403', '404', '405', '411', '412', '413', '414', '415', '416', '421', '422', '423', '424', '425', '426', '501', '502', '503', '504', '511', '512', '513', '514', '515', '516', '602', '603', '604', '605', '606']
 
-df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Feb.pkl")
+df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Mar.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphi, df, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10, N4=10):
     
     count = 0 
     
@@ -59,8 +59,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphi, df, N1=10, N2=10, N3=10, N4
     phi_i = phibin_i[phibin]
     phi_f = phibin_f[phibin]
     
-    local = df.loc[df.Q2xBtphi == Q2xBtphi]
-    print(Q2xBtphi, len(local))
+    local = df.loc[df.Q2xBtphibin == Q2xBtphibin]
+    print(Q2xBtphibin, len(local))
                 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -106,28 +106,37 @@ if args.polarity == "inbending":
     df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")       
     df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
     df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
+    df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
+    df_4528_corr = pd.read_pickle(parent_MC + "4528.pkl")
+    df_4529_corr = pd.read_pickle(parent_MC + "4529.pkl")
+    df_4535_corr = pd.read_pickle(parent_MC + "4535.pkl")
+    df_4539_corr = pd.read_pickle(parent_MC + "4539.pkl")
 
     #dvcs inb 55 nA
     print("reading dvcs inb 55 nA")
     df_4186_corr = pd.read_pickle(parent_MC + "4186.pkl")
+    df_4545_corr = pd.read_pickle(parent_MC + "4545.pkl")
 
     #dvcs inb 45 nA
     print("reading dvcs inb 45 nA")
     df_4188_corr = pd.read_pickle(parent_MC + "4188.pkl")
+    df_4547_corr = pd.read_pickle(parent_MC + "4547.pkl")
 
     #dvcs inb 0 nA
     print("reading dvcs inb 0 nA")
     df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
+    df_4561_corr = pd.read_pickle(parent_MC + "4561.pkl")
 
     #bh inb 50 nA
     print("reading bh inb 50 nA")
     df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
+    df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
 
-    dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr])
-    dvcsSimInb55nA = df_4186_corr
-    dvcsSimInb45nA = df_4188_corr
-    dvcsSimInb0nA = df_4192_corr
-    bhSimInb50nA = df_4238_corr
+    dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr, df_4528_corr, df_4529_corr, df_4535_corr, df_4539_corr])
+    dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
+    dvcsSimInb45nA = pd.concat([df_4188_corr, df_4547_corr])
+    dvcsSimInb0nA = pd.concat([df_4192_corr, df_4561_corr])
+    bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
 
     dvcsBHSim = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
 
@@ -136,21 +145,44 @@ else:
     parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
     parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
 
+    #dvcs outb 50 nA
+    print("reading dvcs outb 50 nA")
     df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
     df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
     df_4251_corr = pd.read_pickle(parent_MC + "4251.pkl")
     df_4252_corr = pd.read_pickle(parent_MC + "4252.pkl")
     df_4255_corr = pd.read_pickle(parent_MC + "4255.pkl")
-    df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
-    df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
-    df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
-    df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
+    df_4398_corr = pd.read_pickle(parent_MC + "4398.pkl")
+    df_4532_corr = pd.read_pickle(parent_MC + "4532.pkl")
+    df_4534_corr = pd.read_pickle(parent_MC + "4534.pkl")
+    df_4540_corr = pd.read_pickle(parent_MC + "4540.pkl")
+    df_4541_corr = pd.read_pickle(parent_MC + "4541.pkl")
 
-    dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr])
-    dvcsSimOutb40nA = df_4263_corr
-    dvcsSimOutb0nA = df_4262_corr
-    dvcsSimOutb40nAT = df_4266_corr
-    bhSimOutb50nA = df_4249_corr
+    #dvcs outb 40 nA
+    print("reading dvcs outb 40 nA")
+    df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
+    df_4544_corr = pd.read_pickle(parent_MC + "4546.pkl")
+
+    #dvcs outb 0 nA
+    print("reading dvcs outb 40 nA")
+    df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
+    df_4546_corr = pd.read_pickle(parent_MC + "4554.pkl")
+
+    #dvcs outb +1.01, 40 nA
+    print("reading dvcs outb +1.01 40 nA")
+    df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
+    df_4562_corr = pd.read_pickle(parent_MC + "4562.pkl")
+
+    #bh outb 50 nA
+    print("reading bh outb 50 nA")
+    df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
+    df_4544_corr = pd.read_pickle(parent_bhMC + "4544.pkl")
+
+    dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr, df_4398_corr, df_4532_corr, df_4534_corr, df_4540_corr, df_4541_corr])
+    dvcsSimOutb40nA = pd.concat([df_4263_corr, df_4546_corr])
+    dvcsSimOutb0nA = pd.concat([df_4262_corr, df_4554_corr])
+    dvcsSimOutb40nAT = pd.concat([df_4266_corr, df_4562_corr])
+    bhSimOutb50nA = pd.concat([df_4249_corr, df_4544_corr])
 
     dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
 
@@ -168,6 +200,6 @@ if args.config == "3":
 
 TrueVol = []
 for i in range(len(df_global)):
-    TrueVol.append(TruebinVol(df_global.Q2[i], df_global.xB[i], df_global.t[i], df_global.phi[i], df_global.Q2xBtphi[i], dvcsBHSim, 6, 6, 6, 6))
+    TrueVol.append(TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6))
 df_global.loc[:, "binVolInb"] = TrueVolInb
 df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_{}{}.pkl".format(args.polarity, args.config))
