@@ -41,9 +41,6 @@ phibin = [0, 12, 24, 36, 48, 60, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288,
 phibin_i = phibin[:-1]
 phibin_f = phibin[1:]
 
-badBins = ['004', '005', '006', '015', '016', '026', '045', '046', '104', '105', '106', '115', '116', '126', '146', '205', '206', '216', '240', '245', '246', '306', '320', '330', '406', '410', '420', '500', '505', '506', '510', '600', '601']
-goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020', '021', '022', '023', '024', '025', '030', '031', '032', '033', '034', '035', '036', '040', '041', '042', '043', '044', '100', '101', '102', '103', '110', '111', '112', '113', '114', '120', '121', '122', '123', '124', '125', '130', '131', '132', '133', '134', '135', '136', '140', '141', '142', '143', '144', '145', '200', '201', '202', '203', '204', '210', '211', '212', '213', '214', '215', '220', '221', '222', '223', '224', '225', '226', '230', '231', '232', '233', '234', '235', '236', '241', '242', '243', '244', '300', '301', '302', '303', '304', '305', '310', '311', '312', '313', '314', '315', '316', '321', '322', '323', '324', '325', '326', '331', '332', '333', '334', '335', '336', '400', '401', '402', '403', '404', '405', '411', '412', '413', '414', '415', '416', '421', '422', '423', '424', '425', '426', '501', '502', '503', '504', '511', '512', '513', '514', '515', '516', '602', '603', '604', '605', '606']
-
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Mar.pkl")
 
 def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10, N4=10):
@@ -61,6 +58,9 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10,
     
     local = df.loc[df.Q2xBtphibin == Q2xBtphibin]
     print(Q2xBtphibin, len(local))
+
+    if len(local)==0:
+        return 0
                 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -96,7 +96,6 @@ if args.polarity == "inbending":
     print("inbending")
     parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
     parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
-
 
     #dvcs inb 50 nA
     print("reading dvcs inb 50 nA")
@@ -186,6 +185,9 @@ else:
 
     dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
 
+
+dvcsBHSim = dvcsBHSim.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphi", "config"]]
+
 if args.config == "0":
     print("counting inb bin volumes for All configs")
 if args.config == "1":
@@ -199,7 +201,12 @@ if args.config == "3":
     dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 3]
 
 TrueVol = []
+
+pol = "Inb"
+if args.polarity == "outbending":
+    pol = "Outb"
+
 for i in range(len(df_global)):
     TrueVol.append(TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6))
-df_global.loc[:, "binVolInb"] = TrueVolInb
+df_global.loc[:, "binVol{}{}".format(pol, args.config)] = TrueVol
 df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_{}{}.pkl".format(args.polarity, args.config))
