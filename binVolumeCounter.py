@@ -61,7 +61,12 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10,
 
     if len(local)==0:
         return 0
-                
+
+    xBavg = sum(local.xB * local.GenWeight)/sum(local.Genweight)
+    Q2avg = sum(local.Q2 * local.GenWeight)/sum(local.Genweight)
+    tavg = sum(local.t * local.GenWeight)/sum(local.Genweight)
+    phiavg = sum(local.phi * local.GenWeight)/sum(local.Genweight)
+
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
     if isinstance(xB_f, list):
@@ -82,168 +87,163 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10,
                     if(len(local2)):
                         count += 1
     local2 = 0                                                                                     
-    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i)
+    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg, Q2avg, tavg, phiavg
 
 
-import argparse
-parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+# import argparse
+# parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument("-c","--config", help="config", default="1")
-parser.add_argument("-p","--polarity", help="polarity", default="inbending")
-args = parser.parse_args()
+# parser.add_argument("-p","--polarity", help="polarity", default="inbending")
+# args = parser.parse_args()
 
-if args.polarity == "inbending":
-    print("inbending")
-    parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
-    parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
+print("inbending")
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/inb/dvcs/"
+parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/inb/bh/"
 
-    #dvcs inb 50 nA
-    print("reading dvcs inb 50 nA")
-    df_3987_corr = pd.read_pickle(parent_MC + "3987.pkl")
-    df_3987_corr = df_3987_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
-    df_4124_corr = df_4124_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
-    df_4139_corr = df_4139_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")       
-    df_4181_corr = df_4181_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
-    df_4182_corr = df_4182_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
-    df_4397_corr = df_4397_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4528_corr = pd.read_pickle(parent_MC + "4528.pkl")
-    df_4528_corr = df_4528_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4529_corr = pd.read_pickle(parent_MC + "4529.pkl")
-    df_4529_corr = df_4529_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4535_corr = pd.read_pickle(parent_MC + "4535.pkl")
-    df_4535_corr = df_4535_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4539_corr = pd.read_pickle(parent_MC + "4539.pkl")
-    df_4539_corr = df_4539_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs inb 50 nA
+# print("reading dvcs inb 50 nA")
+# df_3987_corr = pd.read_pickle(parent_MC + "3987.pkl")
+# df_3987_corr = df_3987_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4124_corr = pd.read_pickle(parent_MC + "4124.pkl")
+# df_4124_corr = df_4124_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4139_corr = pd.read_pickle(parent_MC + "4139.pkl")
+# df_4139_corr = df_4139_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4181_corr = pd.read_pickle(parent_MC + "4181.pkl")       
+# df_4181_corr = df_4181_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4182_corr = pd.read_pickle(parent_MC + "4182.pkl")
+# df_4182_corr = df_4182_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4397_corr = pd.read_pickle(parent_MC + "4397.pkl")
+# df_4397_corr = df_4397_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4528_corr = pd.read_pickle(parent_MC + "4528.pkl")
+# df_4528_corr = df_4528_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4529_corr = pd.read_pickle(parent_MC + "4529.pkl")
+# df_4529_corr = df_4529_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4535_corr = pd.read_pickle(parent_MC + "4535.pkl")
+# df_4535_corr = df_4535_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4539_corr = pd.read_pickle(parent_MC + "4539.pkl")
+# df_4539_corr = df_4539_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs inb 55 nA
-    print("reading dvcs inb 55 nA")
-    df_4186_corr = pd.read_pickle(parent_MC + "4186.pkl")
-    df_4186_corr = df_4186_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4545_corr = pd.read_pickle(parent_MC + "4545.pkl")
-    df_4545_corr = df_4545_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs inb 55 nA
+# print("reading dvcs inb 55 nA")
+# df_4186_corr = pd.read_pickle(parent_MC + "4186.pkl")
+# df_4186_corr = df_4186_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4545_corr = pd.read_pickle(parent_MC + "4545.pkl")
+# df_4545_corr = df_4545_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs inb 45 nA
-    print("reading dvcs inb 45 nA")
-    df_4188_corr = pd.read_pickle(parent_MC + "4188.pkl")
-    df_4188_corr = df_4188_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4547_corr = pd.read_pickle(parent_MC + "4547.pkl")
-    df_4547_corr = df_4547_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs inb 45 nA
+# print("reading dvcs inb 45 nA")
+# df_4188_corr = pd.read_pickle(parent_MC + "4188.pkl")
+# df_4188_corr = df_4188_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4547_corr = pd.read_pickle(parent_MC + "4547.pkl")
+# df_4547_corr = df_4547_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs inb 0 nA
-    print("reading dvcs inb 0 nA")
-    df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
-    df_4192_corr = df_4192_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4561_corr = pd.read_pickle(parent_MC + "4561.pkl")
-    df_4561_corr = df_4561_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs inb 0 nA
+# print("reading dvcs inb 0 nA")
+# df_4192_corr = pd.read_pickle(parent_MC + "4192.pkl")
+# df_4192_corr = df_4192_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4561_corr = pd.read_pickle(parent_MC + "4561.pkl")
+# df_4561_corr = df_4561_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #bh inb 50 nA
-    print("reading bh inb 50 nA")
-    df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
-    df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
-    df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+#bh inb 50 nA
+print("reading bh inb 50 nA")
+df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
+df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
+df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr, df_4528_corr, df_4529_corr, df_4535_corr, df_4539_corr])
-    dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
-    dvcsSimInb45nA = pd.concat([df_4188_corr, df_4547_corr])
-    dvcsSimInb0nA = pd.concat([df_4192_corr, df_4561_corr])
-    bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
+# dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr, df_4528_corr, df_4529_corr, df_4535_corr, df_4539_corr])
+# dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
+# dvcsSimInb45nA = pd.concat([df_4188_corr, df_4547_corr])
+# dvcsSimInb0nA = pd.concat([df_4192_corr, df_4561_corr])
+bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
 
-    dvcsBHSim = pd.concat([dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
+print("outbending")
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/dvcs/"
+parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/bh/"
 
-else:
-    print("outbending")
-    parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
-    parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
+# #dvcs outb 50 nA
+# print("reading dvcs outb 50 nA")
+# df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
+# df_4240_corr = df_4240_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
+# df_4250_corr = df_4250_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4251_corr = pd.read_pickle(parent_MC + "4251.pkl")
+# df_4251_corr = df_4251_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4252_corr = pd.read_pickle(parent_MC + "4252.pkl")
+# df_4252_corr = df_4252_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4255_corr = pd.read_pickle(parent_MC + "4255.pkl")
+# df_4255_corr = df_4255_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4398_corr = pd.read_pickle(parent_MC + "4398.pkl")
+# df_4398_corr = df_4398_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4532_corr = pd.read_pickle(parent_MC + "4532.pkl")
+# df_4532_corr = df_4532_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4534_corr = pd.read_pickle(parent_MC + "4534.pkl")
+# df_4534_corr = df_4534_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4540_corr = pd.read_pickle(parent_MC + "4540.pkl")
+# df_4540_corr = df_4540_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4541_corr = pd.read_pickle(parent_MC + "4541.pkl")
+# df_4541_corr = df_4541_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs outb 50 nA
-    print("reading dvcs outb 50 nA")
-    df_4240_corr = pd.read_pickle(parent_MC + "4240.pkl")
-    df_4240_corr = df_4240_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4250_corr = pd.read_pickle(parent_MC + "4250.pkl")
-    df_4250_corr = df_4250_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4251_corr = pd.read_pickle(parent_MC + "4251.pkl")
-    df_4251_corr = df_4251_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4252_corr = pd.read_pickle(parent_MC + "4252.pkl")
-    df_4252_corr = df_4252_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4255_corr = pd.read_pickle(parent_MC + "4255.pkl")
-    df_4255_corr = df_4255_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4398_corr = pd.read_pickle(parent_MC + "4398.pkl")
-    df_4398_corr = df_4398_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4532_corr = pd.read_pickle(parent_MC + "4532.pkl")
-    df_4532_corr = df_4532_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4534_corr = pd.read_pickle(parent_MC + "4534.pkl")
-    df_4534_corr = df_4534_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4540_corr = pd.read_pickle(parent_MC + "4540.pkl")
-    df_4540_corr = df_4540_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4541_corr = pd.read_pickle(parent_MC + "4541.pkl")
-    df_4541_corr = df_4541_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs outb 40 nA
+# print("reading dvcs outb 40 nA")
+# df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
+# df_4263_corr = df_4263_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4544_corr = pd.read_pickle(parent_MC + "4546.pkl")
+# df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs outb 40 nA
-    print("reading dvcs outb 40 nA")
-    df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
-    df_4263_corr = df_4263_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4544_corr = pd.read_pickle(parent_MC + "4546.pkl")
-    df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs outb 0 nA
+# print("reading dvcs outb 40 nA")
+# df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
+# df_4262_corr = df_4262_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4546_corr = pd.read_pickle(parent_MC + "4554.pkl")
+# df_4546_corr = df_4546_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs outb 0 nA
-    print("reading dvcs outb 40 nA")
-    df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
-    df_4262_corr = df_4262_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4546_corr = pd.read_pickle(parent_MC + "4554.pkl")
-    df_4546_corr = df_4546_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# #dvcs outb +1.01, 40 nA
+# print("reading dvcs outb +1.01 40 nA")
+# df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
+# df_4266_corr = df_4266_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4562_corr = pd.read_pickle(parent_MC + "4562.pkl")
+# df_4562_corr = df_4562_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #dvcs outb +1.01, 40 nA
-    print("reading dvcs outb +1.01 40 nA")
-    df_4266_corr = pd.read_pickle(parent_MC + "4266.pkl")
-    df_4266_corr = df_4266_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4562_corr = pd.read_pickle(parent_MC + "4562.pkl")
-    df_4562_corr = df_4562_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+#bh outb 50 nA
+print("reading bh outb 50 nA")
+df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
+df_4249_corr = df_4249_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+df_4544_corr = pd.read_pickle(parent_bhMC + "4544.pkl")
+df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-    #bh outb 50 nA
-    print("reading bh outb 50 nA")
-    df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
-    df_4249_corr = df_4249_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
-    df_4544_corr = pd.read_pickle(parent_bhMC + "4544.pkl")
-    df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
+# dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr, df_4398_corr, df_4532_corr, df_4534_corr, df_4540_corr, df_4541_corr])
+# dvcsSimOutb40nA = pd.concat([df_4263_corr, df_4546_corr])
+# dvcsSimOutb0nA = pd.concat([df_4262_corr, df_4554_corr])
+# dvcsSimOutb40nAT = pd.concat([df_4266_corr, df_4562_corr])
+bhSimOutb50nA = pd.concat([df_4249_corr, df_4544_corr])
 
-    dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr, df_4398_corr, df_4532_corr, df_4534_corr, df_4540_corr, df_4541_corr])
-    dvcsSimOutb40nA = pd.concat([df_4263_corr, df_4546_corr])
-    dvcsSimOutb0nA = pd.concat([df_4262_corr, df_4554_corr])
-    dvcsSimOutb40nAT = pd.concat([df_4266_corr, df_4562_corr])
-    bhSimOutb50nA = pd.concat([df_4249_corr, df_4544_corr])
-
-    dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
+# dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA, dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
+dvcsBHSim = pd.concat([bhSimOutb50nA, bhSimInb50nA])
 
 
 # dvcsBHSim = dvcsBHSim.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
 
-if args.config == "0":
-    print("counting inb bin volumes for All configs")
-if args.config == "1":
-    print("counting inb bin volumes for FD")
-    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 1]
-if args.config == "2":
-    print("counting inb bin volumes for CD")
-    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 2]
-if args.config == "3":
-    print("counting inb bin volumes for CDFT")
-    dvcsBHSim = dvcsBHSim.loc[dvcsBHSim.config == 3]
+TrueVols = []
+xBavgs = []
+Q2avgs = []
+tavgs = []
+phis = []
 
-TrueVol = []
-
-pol = "Inb"
-if args.polarity == "outbending":
-    pol = "Outb"
 
 for i in range(len(df_global)):
     if i%50==0:
         print("{}th event".format(i))
-    TrueVol.append(TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 4, 4, 4, 4))
-df_global.loc[:, "binVol{}{}".format(pol, args.config)] = TrueVol
-df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_{}{}.pkl".format(args.polarity, args.config))
+    TrueVol, xBavg, Q2avg, tavg, phiavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 10, 10, 10, 10)
+    # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
+    TrueVols.append(TrueVol)
+    xBavgs.append(xBavg)
+    Q2avgs.append(Q2avg)
+    tavgs.append(tavg)
+    phiavgs.append(phiavg)
+df_global.loc[:, "TruebinVol"] = TrueVol
+df_global.loc[:, "xBavg"] = xBavgs
+df_global.loc[:, "Q2avg"] = Q2avgs
+df_global.loc[:, "tavg"] = tavgs
+df_global.loc[:, "phiavg"] = phiavgs
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_Gen.pkl")
