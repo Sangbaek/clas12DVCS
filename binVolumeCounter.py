@@ -64,7 +64,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
 
     xBavg = sum(local.xB * local.GenWeight)/sum(local.GenWeight)
     Q2avg = sum(local.Q2 * local.GenWeight)/sum(local.GenWeight)
-    tavg = sum(local.t * local.GenWeight)/sum(local.GenWeight)
+    tavg = sum(local.t1 * local.GenWeight)/sum(local.GenWeight)
     if len(local)==0:
         return 0, 0, 0, 0, 0, 0
 
@@ -77,7 +77,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
         return 0, 0, 0, 0, 0, 0
 
     print(Q2xBtphibin, len(local))
-    phiavg = sum(local.phi * local.GenWeight)/sum(local.GenWeight)
+    phiavg = sum(local.phi1 * local.GenWeight)/sum(local.GenWeight)
     xsecavg = local.GenWeight.mean()
 
     if isinstance(xB_i, list):
