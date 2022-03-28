@@ -43,7 +43,7 @@ phibin_f = phibin[1:]
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Mar.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
     
     count = 0 
     
@@ -56,7 +56,11 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10,
     phi_i = phibin_i[phibin]
     phi_f = phibin_f[phibin]
     
-    local = df.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local1 = df1.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local2 = df2.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local3 = df3.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local4 = df4.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local = pd.concat([local1, local2, local3, loca4])
     print(Q2xBtphibin, len(local))
 
     if len(local)==0:
@@ -83,8 +87,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df, N1=10, N2=10, N3=10,
                     tmax = t_i + (t_f - t_i)*(tind+1)/N3
                     pmin = phi_i + (phi_f - phi_i)*phiind/N4
                     pmax = phi_i + (phi_f - phi_i)*(phiind+1)/N4
-                    local2 = local.loc[(local.Q2>=qmin) & (local.Q2<qmax) & (local.xB>=xmin) & (local.xB<xmax) & (local.t1>=tmin) & (local.t1<tmax) & (local.phi1>=pmin) & (local.phi1<pmax)]
-                    if(len(local2)):
+                    if(sum((local.Q2>=qmin) & (local.Q2<qmax) & (local.xB>=xmin) & (local.xB<xmax) & (local.t1>=tmin) & (local.t1<tmax) & (local.phi1>=pmin) & (local.phi1<pmax)) > 0):
+                    # if(len(local2)):
                         count += 1
     local2 = 0                                                                                     
     return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg, Q2avg, tavg, phiavg
@@ -155,7 +159,7 @@ df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "Ge
 # dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
 # dvcsSimInb45nA = pd.concat([df_4188_corr, df_4547_corr])
 # dvcsSimInb0nA = pd.concat([df_4192_corr, df_4561_corr])
-bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
+# bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
 
 print("outbending")
 parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/dvcs/"
@@ -188,15 +192,15 @@ parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/bh/"
 # print("reading dvcs outb 40 nA")
 # df_4263_corr = pd.read_pickle(parent_MC + "4263.pkl")
 # df_4263_corr = df_4263_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
-# df_4544_corr = pd.read_pickle(parent_MC + "4546.pkl")
-# df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4546_corr = pd.read_pickle(parent_MC + "4546.pkl")
+# df_4546_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
 # #dvcs outb 0 nA
 # print("reading dvcs outb 40 nA")
 # df_4262_corr = pd.read_pickle(parent_MC + "4262.pkl")
 # df_4262_corr = df_4262_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
-# df_4546_corr = pd.read_pickle(parent_MC + "4554.pkl")
-# df_4546_corr = df_4546_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
+# df_4554_corr = pd.read_pickle(parent_MC + "4554.pkl")
+# df_4554_corr = df_4546_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
 # #dvcs outb +1.01, 40 nA
 # print("reading dvcs outb +1.01 40 nA")
@@ -216,10 +220,10 @@ df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "Ge
 # dvcsSimOutb40nA = pd.concat([df_4263_corr, df_4546_corr])
 # dvcsSimOutb0nA = pd.concat([df_4262_corr, df_4554_corr])
 # dvcsSimOutb40nAT = pd.concat([df_4266_corr, df_4562_corr])
-bhSimOutb50nA = pd.concat([df_4249_corr, df_4544_corr])
+# bhSimOutb50nA = pd.concat([df_4249_corr, df_4544_corr])
 
 # dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA, dvcsSimInb50nA, dvcsSimInb55nA, dvcsSimInb45nA, dvcsSimInb0nA, bhSimInb50nA])
-dvcsBHSim = pd.concat([bhSimOutb50nA, bhSimInb50nA])
+# dvcsBHSim = pd.concat([bhSimOutb50nA, bhSimInb50nA])
 
 
 # dvcsBHSim = dvcsBHSim.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
@@ -230,11 +234,14 @@ Q2avgs = []
 tavgs = []
 phis = []
 
-
+df1 = df_4238_corr
+df2 = df_4542_corr
+df3 = df_4249_corr
+df4 = df_4544_corr
 for i in range(len(df_global)):
     if i%50==0:
         print("{}th event".format(i))
-    TrueVol, xBavg, Q2avg, tavg, phiavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
+    TrueVol, xBavg, Q2avg, tavg, phiavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
     # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
     TrueVols.append(TrueVol)
     xBavgs.append(xBavg)
