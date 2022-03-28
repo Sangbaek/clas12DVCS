@@ -56,10 +56,10 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df1, df2, df3, df4, N1=1
     phi_i = phibin_i[phibin]
     phi_f = phibin_f[phibin]
     
-    local1 = df1.loc[df.Q2xBtphibin == Q2xBtphibin]
-    local2 = df2.loc[df.Q2xBtphibin == Q2xBtphibin]
-    local3 = df3.loc[df.Q2xBtphibin == Q2xBtphibin]
-    local4 = df4.loc[df.Q2xBtphibin == Q2xBtphibin]
+    local1 = df1.loc[df1.Q2xBtphibin == Q2xBtphibin]
+    local2 = df2.loc[df2.Q2xBtphibin == Q2xBtphibin]
+    local3 = df3.loc[df3.Q2xBtphibin == Q2xBtphibin]
+    local4 = df4.loc[df4.Q2xBtphibin == Q2xBtphibin]
     local = pd.concat([local1, local2, local3, loca4])
     print(Q2xBtphibin, len(local))
 
