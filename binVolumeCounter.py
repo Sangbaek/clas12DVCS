@@ -43,7 +43,7 @@ phibin_f = phibin[1:]
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Mar.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
     
     count = 0 
     
@@ -56,20 +56,29 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df1, df2, df3, df4, N1=1
     phi_i = phibin_i[phibin]
     phi_f = phibin_f[phibin]
     
+    local1 = df1.loc[df1.Q2xBtbin == Q2xBtbin]
+    local2 = df2.loc[df2.Q2xBtbin == Q2xBtbin]
+    local3 = df3.loc[df3.Q2xBtbin == Q2xBtbin]
+    local4 = df4.loc[df4.Q2xBtbin == Q2xBtbin]
+    local = pd.concat([local1, local2, local3, local4])
+
+    xBavg = sum(local.xB * local.GenWeight)/sum(local.GenWeight)
+    Q2avg = sum(local.Q2 * local.GenWeight)/sum(local.GenWeight)
+    tavg = sum(local.t * local.GenWeight)/sum(local.GenWeight)
+    if len(local)==0:
+        return 0, 0, 0, 0, 0, 0
+
     local1 = df1.loc[df1.Q2xBtphibin == Q2xBtphibin]
     local2 = df2.loc[df2.Q2xBtphibin == Q2xBtphibin]
     local3 = df3.loc[df3.Q2xBtphibin == Q2xBtphibin]
     local4 = df4.loc[df4.Q2xBtphibin == Q2xBtphibin]
     local = pd.concat([local1, local2, local3, local4])
-    print(Q2xBtphibin, len(local))
-
     if len(local)==0:
-        return 0
+        return 0, 0, 0, 0, 0, 0
 
-    xBavg = sum(local.xB * local.GenWeight)/sum(local.Genweight)
-    Q2avg = sum(local.Q2 * local.GenWeight)/sum(local.Genweight)
-    tavg = sum(local.t * local.GenWeight)/sum(local.Genweight)
-    phiavg = sum(local.phi * local.GenWeight)/sum(local.Genweight)
+    print(Q2xBtphibin, len(local))
+    phiavg = sum(local.phi * local.GenWeight)/sum(local.GenWeight)
+    xsecavg = local.GenWeight.mean()
 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -91,7 +100,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtphibin, df1, df2, df3, df4, N1=1
                     # if(len(local2)):
                         count += 1
     local2 = 0                                                                                     
-    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg, Q2avg, tavg, phiavg
+    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg, Q2avg, tavg, phiavg, xsecavg
 
 
 # import argparse
@@ -232,7 +241,8 @@ TrueVols = []
 xBavgs = []
 Q2avgs = []
 tavgs = []
-phis = []
+phiavgs = []
+xsecavgs = []
 
 df1 = df_4238_corr
 df2 = df_4542_corr
@@ -241,16 +251,18 @@ df4 = df_4544_corr
 for i in range(len(df_global)):
     if i%50==0:
         print("{}th event".format(i))
-    TrueVol, xBavg, Q2avg, tavg, phiavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
+    TrueVol, xBavg, Q2avg, tavg, phiavg, xsecavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
     # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
     TrueVols.append(TrueVol)
     xBavgs.append(xBavg)
     Q2avgs.append(Q2avg)
     tavgs.append(tavg)
     phiavgs.append(phiavg)
+    xsecavgs.append(xsecavg)
 df_global.loc[:, "TruebinVol"] = TrueVol
 df_global.loc[:, "xBavg"] = xBavgs
 df_global.loc[:, "Q2avg"] = Q2avgs
 df_global.loc[:, "tavg"] = tavgs
 df_global.loc[:, "phiavg"] = phiavgs
+df_global.loc[:, "xsecavg"] = xsecavgs
 df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_Gen.pkl")
