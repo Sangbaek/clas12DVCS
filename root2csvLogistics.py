@@ -33,6 +33,6 @@ for key in ["RunNum", "EventNum", "beamQ"]:
 df = pd.concat([df_logistics1, df_logistics2, df_logistics3, df_logistics4]).drop_duplicates().reset_index(drop=True)
 df = df.sort_values(by=['RunNum', 'EventNum'], ascending = [True, True])
 df.index = np.linspace(0, len(df)-1, len(df), dtype = int)
-for i in range(df[len(df)//100000]):
-    df[i*100000: (i+1)*100000].df.to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
-df[100000*(len(df)//100000):].df.to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(len(df)//100000))
+for i in range(len(df)//100000):
+    df[i*100000: (i+1)*100000].to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
+df[100000*(len(df)//100000)].to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
