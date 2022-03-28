@@ -186,7 +186,7 @@ else:
     dvcsBHSim = pd.concat([dvcsSimOutb50nA, dvcsSimOutb40nA, dvcsSimOutb0nA, dvcsSimOutb40nAT, bhSimOutb50nA])
 
 
-dvcsBHSim = dvcsBHSim.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphi", "config"]]
+dvcsBHSim = dvcsBHSim.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "config"]]
 
 if args.config == "0":
     print("counting inb bin volumes for All configs")
@@ -207,6 +207,8 @@ if args.polarity == "outbending":
     pol = "Outb"
 
 for i in range(len(df_global)):
+    if i%50==0:
+        print(i)
     TrueVol.append(TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6))
 df_global.loc[:, "binVol{}{}".format(pol, args.config)] = TrueVol
 df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_{}{}.pkl".format(args.polarity, args.config))
