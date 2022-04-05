@@ -12,7 +12,7 @@ def countDF(total, df_global, colName = "new"):
             print(i)
         number4 = sum((total.Q2xBtphibin == i) & (total.config == 4))
         numbers4.append(number4)
-    df_global.loc[:, colName+"1"] = numbers4
+    df_global.loc[:, colName+"4"] = numbers4
     return df_global
 
 def countGenDF(total, df_global, colName = "new"):
