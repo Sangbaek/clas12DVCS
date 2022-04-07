@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
-	converter = lund2pickle(args.fname, entry_stop = args.entry_stop, Q2xBtbin = None)
+	converter = lund2pickle(args.fname, entry_stop = args.entry_stop, Q2xBtbin = int(args.Q2xBtbin))
 	df = converter.df
 
 	df.to_pickle(args.out)
