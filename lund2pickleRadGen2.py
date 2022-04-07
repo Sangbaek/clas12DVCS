@@ -28,7 +28,7 @@ class lund2pickle():
 	def readEPG(self, entry_stop = None, Q2xBtbin = None):
 		#save data into df_epg, df_epgg for parent class epg
 		self.readFile()
-		partArray = []
+		kinArray = []
 
 		txtlst = self.data.split("\n")
 		txts = iter(txtlst)
