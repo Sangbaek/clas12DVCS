@@ -62,7 +62,7 @@ class lund2pickle():
 			radMode = eleQuantities[5]
 			kinArray.append([float(xB), float(Q2), float(t1), float(phi1), float(xsec), int(radMode)])
 
-		df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t", "phi", "xsec", "radMode"])
+		df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "xsec", "radMode"])
 
 		# encode unassigned bin as -1
 		df_epgg.loc[:, "Q2bin"] = -1
