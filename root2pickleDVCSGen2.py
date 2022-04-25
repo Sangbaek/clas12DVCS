@@ -38,7 +38,7 @@ class root2pickle():
         # data frames and their keys to read Z part
         df_epg = pd.DataFrame()
 
-        eleKeysGen = ["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"]
+        eleKeysGen = ["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "BornWeight", "crossRef", "helicity", "radMode"]
         # read keys
         for key in eleKeysGen:
             df_epg[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -93,7 +93,7 @@ class root2pickle():
         # df_epg.loc[(df_epg.Q2bin>0)&(df_epg.xBbin>0)&(df_epg.tbin2>0), "Q2xBtbin2"] = df_epg.Q2bin.astype(str) + df_epg.xBbin.astype(str) + df_epg.tbin2.astype(str)
         df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtphibin"] = len(phibin_i) * df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtbin"] + df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "phibin"]
 
-        df_epg = df_epg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": int, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
+        df_epg = df_epg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": int, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int, "helicity": int})
 
 
         self.df_epg = df_epg
