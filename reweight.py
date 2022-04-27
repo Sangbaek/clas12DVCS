@@ -45,7 +45,7 @@ if __name__ == "__main__":
     df = pd.read_pickle(args.fname)
     entry_start = int(args.entry_start)
     entry_stop = int(args.entry_stop)
-    df = df.loc[(df.ind>=entry_start) & (df.ind<entry_stop), :]
+    df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
     XsecObs, XsecBorn = printDVCSarray(df.GenxB.to_numpy(), df.GenQ2.to_numpy(), df.Gent.to_numpy(), np.radians(df.Genphi.to_numpy()), df.helicity)
 
-    print(df)
+    print(df, XsecObs, XsecBorn)
