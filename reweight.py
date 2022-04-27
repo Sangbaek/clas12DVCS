@@ -12,7 +12,7 @@ def printDVCS(xB, Q2, t, phi, heli):
     dstot = subprocess.check_output(['/volatile/clas12/sangbaek/rad2/dvcsgen', '--printdstot', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--gpd', '101', '--phi', str(phi), '--heli', str(heli), '--vv2cut', '0.6', '--delta', '0.1', '--w', '3.61'], env = my_env)
     lines = dstot.decode("utf-8").split("\n")
     dstotline = lines[-2]
-    if len(dstotline.split()) == 3 :
+    if "xsec_obs,xsec_born" in dstotline.split():
         return float(dstotline.split()[1]), float(dstotline.split()[2])
     else:
         return 0, 0
