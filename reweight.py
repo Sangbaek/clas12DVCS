@@ -39,6 +39,7 @@ if __name__ == "__main__":
     parser.add_argument("-f","--fname", help="file to be reweighted", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-S","--entry_start", help="entry_start", default="0")
     parser.add_argument("-s","--entry_stop", help="entry_stop", default="100")
+    parser.add_argument("-o","--ofname", help="file to be saved", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     
     args = parser.parse_args()
 
@@ -48,4 +49,6 @@ if __name__ == "__main__":
     df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
     XsecObs, XsecBorn = printDVCSarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
 
-    print(df, XsecObs, XsecBorn)
+    df.loc[:, "BHrad"] = XsecObs
+    df.loc[:, "BHborn"] = XsecBorn
+    df.to_pickle(args.ofname)
