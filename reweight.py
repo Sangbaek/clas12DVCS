@@ -46,6 +46,6 @@ if __name__ == "__main__":
     entry_start = int(args.entry_start)
     entry_stop = int(args.entry_stop)
     df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
-    XsecObs, XsecBorn = printDVCSarray(df.GenxB.to_numpy(), df.GenQ2.to_numpy(), df.Gent.to_numpy(), np.radians(df.Genphi.to_numpy()), df.helicity)
+    XsecObs, XsecBorn = printDVCSarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t.to_numpy(), np.radians(df.phi.to_numpy()), df.helicity)
 
     print(df, XsecObs, XsecBorn)
