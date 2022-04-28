@@ -46,6 +46,9 @@ class root2pickle():
         df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1"})
         df_epg.loc[:, "event"] = df_epg.index
 
+        df_epg.loc[df_epg.phi1<0, "phi1"] = 10**(-8)
+        df_epg.loc[df_epg.phi1>360, "phi1"] = 360-10**(-8)
+
         # encode unassigned bin as -1
         df_epg.loc[:, "Q2bin"] = -1
         df_epg.loc[:, "xBbin"] = -1
