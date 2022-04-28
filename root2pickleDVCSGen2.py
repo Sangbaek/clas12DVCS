@@ -119,7 +119,7 @@ if __name__ == "__main__":
     df = converter.df
     df.to_pickle(args.out)
 
-    Q2xBtbins = np.sort(df_epg.loc[:, "Q2xBtbin"].to_numpy())
+    Q2xBtbins = np.sort(df.loc[:, "Q2xBtbin"].to_numpy())
 
     for Q2xBtbin in Q2xBtbins:
         df_Q2xBtbin = df.loc[df.Q2xBtbin == Q2xBtbin, :]
