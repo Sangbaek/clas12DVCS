@@ -46,8 +46,8 @@ class root2pickle():
         df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1"})
         df_epg.loc[:, "event"] = df_epg.index
 
-        df_epg.loc[df_epg.phi1<0, "phi1"] = 10**(-8)
-        df_epg.loc[df_epg.phi1>360, "phi1"] = 360-10**(-8)
+        df_epg.loc[df_epg.phi1<0, "phi1"] = 10**(-6)
+        df_epg.loc[df_epg.phi1>=360, "phi1"] = 360-10**(-6)
 
         # encode unassigned bin as -1
         df_epg.loc[:, "Q2bin"] = -1
@@ -117,5 +117,10 @@ if __name__ == "__main__":
 
     converter = root2pickle(args.fname, entry_stop = args.entry_stop)
     df = converter.df
-
     df.to_pickle(args.out)
+
+    Q2xBtbins = np.sort(df_epg.loc[:, "Q2xBtbin"].to_numpy())
+
+    for Q2xBtbin in Q2xBtbins
+        df_Q2xBtbin = df.loc[df.Q2xBtbin == Q2xBtbin, :]
+        df_Q2xBtbin.to_pickle("Q2xBt/"+args.out[:-4] + "_{}".format(Q2xBtbin)+".pkl")
