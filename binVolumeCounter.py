@@ -230,7 +230,7 @@ for i in range(len(df_global)):
     tavgs2.append(tavg2)
     phiavgs2.append(phiavg2)
     xsecavgs.append(xsecavg)
-df_global.loc[:, "TruebinVol"] = TrueVol
+df_global.loc[:, "TruebinVol"] = TrueVols
 df_global.loc[:, "xBavg1"] = xBavgs1
 df_global.loc[:, "Q2avg1"] = Q2avgs1
 df_global.loc[:, "tavg1"] = tavgs1
