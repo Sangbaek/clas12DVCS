@@ -5,7 +5,7 @@ from utils.const import *
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Apr.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4):
     
     count = 0 
     
@@ -45,27 +45,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
     phiavg2 = local.phi1.mean()
     xsecavg = local.GenWeight.mean()
 
-    if isinstance(xB_i, list):
-        xB_i = min(xB_i)
-    if isinstance(xB_f, list):
-        xB_f = max(xB_f)
-    for q2ind in range(N1):
-        for xind in range(N2):
-            for tind in range(N3):
-                for phiind in range(N4):
-                    qmin = Q2_i + (Q2_f - Q2_i)*q2ind/N1
-                    qmax = Q2_i + (Q2_f - Q2_i)*(q2ind+1)/N1
-                    xmin = xB_i + (xB_f - xB_i)*xind/N2
-                    xmax = xB_i + (xB_f - xB_i)*(xind+1)/N2
-                    tmin = t_i + (t_f - t_i)*tind/N3
-                    tmax = t_i + (t_f - t_i)*(tind+1)/N3
-                    pmin = phi_i + (phi_f - phi_i)*phiind/N4
-                    pmax = phi_i + (phi_f - phi_i)*(phiind+1)/N4
-                    local2 = local.loc[(local.Q2>=qmin) & (local.Q2<qmax) & (local.xB>=xmin) & (local.xB<xmax) & (local.t1>=tmin) & (local.t1<tmax) & (local.phi1>=pmin) & (local.phi1<pmax)]
-                    if(len(local2)):
-                        count += 1
     local2 = 0                                                                                     
-    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg
+    return xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg
 
 
 # import argparse

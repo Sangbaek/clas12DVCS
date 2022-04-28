@@ -5,7 +5,7 @@ from utils.const import *
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Apr.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
+def radfin(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4):
     
     count = 0 
     
@@ -122,12 +122,12 @@ parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/inb/bh/"
 # df_4561_corr = pd.read_pickle(parent_MC + "4561.pkl")
 # df_4561_corr = df_4561_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtphibin", "GenWeight"]]
 
-#bh inb 50 nA
-print("reading bh inb 50 nA")
-df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
-df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
-df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
-df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+# #bh inb 50 nA
+# print("reading bh inb 50 nA")
+# df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
+# df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+# df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
+# df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
 
 # dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr, df_4528_corr, df_4529_corr, df_4535_corr, df_4539_corr])
 # dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
@@ -135,9 +135,9 @@ df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBt
 # dvcsSimInb0nA = pd.concat([df_4192_corr, df_4561_corr])
 # bhSimInb50nA = pd.concat([df_4238_corr, df_4542_corr])
 
-print("outbending")
-parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/dvcs/"
-parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/bh/"
+# print("outbending")
+# parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/dvcs/"
+# parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/bh/"
 
 # #dvcs outb 50 nA
 # print("reading dvcs outb 50 nA")
@@ -219,8 +219,7 @@ df4 = df_4544_corr
 for i in range(len(df_global)):
     if i%50==0:
         print("{}th event".format(i))
-    TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
-    # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
+    TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg = radfin(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
     TrueVols.append(TrueVol)
     xBavgs1.append(xBavg1)
     Q2avgs1.append(Q2avg1)
@@ -230,7 +229,7 @@ for i in range(len(df_global)):
     tavgs2.append(tavg2)
     phiavgs2.append(phiavg2)
     xsecavgs.append(xsecavg)
-df_global.loc[:, "TruebinVol"] = TrueVol
+df_global.loc[:, "radfin"] = TrueVol
 df_global.loc[:, "xBavg1"] = xBavgs1
 df_global.loc[:, "Q2avg1"] = Q2avgs1
 df_global.loc[:, "tavg1"] = tavgs1
@@ -239,4 +238,4 @@ df_global.loc[:, "Q2avg2"] = Q2avgs2
 df_global.loc[:, "tavg2"] = tavgs2
 df_global.loc[:, "phiavg2"] = phiavgs2
 df_global.loc[:, "xsecavg"] = xsecavgs
-df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_Gen.pkl")
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/radfin_Gen.pkl")
