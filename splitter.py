@@ -19,6 +19,8 @@ if __name__ == "__main__":
     fname = args.fname
     df = pd.read_pickle(args.fname)
 
+    os.mkdir(dirname)
+
     dirname = fname.rsplit('/', 1)[0] + "/{}/".format(args.binning)
     jobn = fname.rsplit('/', 1)[1][:-4]
 
