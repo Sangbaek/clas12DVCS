@@ -23,11 +23,11 @@ if __name__ == "__main__":
     jobn = fname.rsplit('/', 1)[1][:-4]
 
     if args.binning == "Q2xBt":
-        for Q2xBtbin in (df.Q2xBtbin).unique():
+        for Q2xBtbin in np.sort((df.Q2xBtbin).unique()):
             if Q2xBtbin == -1:
                 continue
             df_sub = df.loc[df.Q2xBtbin == Q2xBtbin, :]
-            ofname = dirname + jobn+"_{}".format(Q2xBtbin)
+            ofname = dirname + jobn+"_{}.pkl".format(Q2xBtbin)
             df_sub.to_pickle(ofname)
 
     # df.loc[:, "BHrad"] = XsecObs
