@@ -23,7 +23,7 @@ if __name__ == "__main__":
     dirname = fname.rsplit('/', 1)[0] + "/{}/".format(args.binning)
     jobn = fname.rsplit('/', 1)[1][:-4]
 
-    os.mkdir(dirname)
+    os.makedirs(dirname, exist_ok = True)
 
     if args.binning == "Q2xBt":
         for Q2xBtbin in np.sort((df.Q2xBtbin).unique()):
