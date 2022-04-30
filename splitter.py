@@ -17,10 +17,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     fname = args.fname
-    # df = pd.read_pickle(args.fname)
+    df = pd.read_pickle(args.fname)
 
-    dirname = fname.rsplit('/')[:-1] + "/{}/".format(args.binning)
-    jobn = fname.rsplit('/')[-1][:-4]
+    dirname = fname.rsplit('/', 1)[0] + "/{}/".format(args.binning)
+    jobn = fname.rsplit('/', 1)[1][:-4]
 
     if args.binning == "Q2xBt":
         for Q2xBtbin in (df.Q2xBtbin).unique():
