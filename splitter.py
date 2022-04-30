@@ -19,10 +19,11 @@ if __name__ == "__main__":
     fname = args.fname
     df = pd.read_pickle(args.fname)
 
-    os.mkdir(dirname)
 
     dirname = fname.rsplit('/', 1)[0] + "/{}/".format(args.binning)
     jobn = fname.rsplit('/', 1)[1][:-4]
+
+    os.mkdir(dirname)
 
     if args.binning == "Q2xBt":
         for Q2xBtbin in np.sort((df.Q2xBtbin).unique()):
