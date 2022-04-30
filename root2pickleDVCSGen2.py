@@ -118,12 +118,3 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_stop = args.entry_stop)
     df = converter.df
     df.to_pickle(args.out)
-
-    Q2xBtbins = np.sort(df.loc[:, "Q2xBtbin"].to_numpy())
-
-    for Q2xBtbin in Q2xBtbins:
-        if Q2xBtbin == -1:
-            continue
-        df_Q2xBtbin = df.loc[df.Q2xBtbin == Q2xBtbin, :]
-        print("Q2xBt/"+args.out[:-4] + "_{}".format(Q2xBtbin)+".pkl")
-        df_Q2xBtbin.to_pickle("Q2xBt/"+args.out[:-4] + "_{}".format(Q2xBtbin)+".pkl")
