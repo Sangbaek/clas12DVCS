@@ -6,21 +6,26 @@ from utils.physics import *
 
 
 def countDF(total, df_global, colName = "new"):
-    numbers1 = []
-    numbers2 = []
-    numbers3 = []
+    # numbers1 = []
+    # numbers2 = []
+    # numbers3 = []
+    numbers = []
     for i in df_global.Q2xBtphibin:
         if i%50 == 0:
             print(i)
-        number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
-        number2 = sum((total.Q2xBtphibin == i) & (total.config == 2))
-        number3 = sum((total.Q2xBtphibin == i) & (total.config == 3))
-        numbers1.append(number1)
-        numbers2.append(number2)
-        numbers3.append(number3)
-    df_global.loc[:, colName+"1"] = numbers1
-    df_global.loc[:, colName+"2"] = numbers2
-    df_global.loc[:, colName+"3"] = numbers3
+        number = sum((total.Q2xBtphibin == i) & (total.config <=3))
+        numbers.append(number)
+
+    #     number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
+    #     number2 = sum((total.Q2xBtphibin == i) & (total.config == 2))
+    #     number3 = sum((total.Q2xBtphibin == i) & (total.config == 3))
+    #     numbers1.append(number1)
+    #     numbers2.append(number2)
+    #     numbers3.append(number3)
+    # df_global.loc[:, colName+"1"] = numbers1
+    # df_global.loc[:, colName+"2"] = numbers2
+    # df_global.loc[:, colName+"3"] = numbers3
+    df_global.loc[:, colName] = numbers
     return df_global
 
 def countGenDF(total, df_global, colName = "new"):
