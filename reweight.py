@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     df = pd.read_pickle(args.fname)
     entry_start = int(args.entry_start)
-    if entry_stop == "inf":
+    if args.entry_stop == "inf":
         df = df.loc[(df.index>=entry_start), :]
     else:
         entry_stop = int(args.entry_stop)
