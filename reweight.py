@@ -4,7 +4,8 @@ import argparse
 from utils.const import *
 from utils.physics import *
 import subprocess, os
-
+from gepard.fits import th_KM15
+import gepard as g
 
 def printDVCS(xB, Q2, t, phi, heli):
     my_env = os.environ.copy()
