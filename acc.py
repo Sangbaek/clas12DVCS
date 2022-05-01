@@ -13,7 +13,7 @@ def countDF(total, df_global, colName = "new"):
     for i in df_global.Q2xBtphibin:
         if i%50 == 0:
             print(i)
-        number = sum((total.Q2xBtphibin == i) & (total.config <=3))
+        number = sum((total.Q2xBtphibin == i))
         numbers.append(number)
 
     #     number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
