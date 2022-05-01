@@ -70,7 +70,9 @@ if __name__ == "__main__":
     entry_stop = int(args.entry_stop)
     df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
     XsecObs, XsecBorn = printDVCSarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
+    XsecKMBorn = printDVCSKMarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
 
     df.loc[:, "BHrad"] = XsecObs
     df.loc[:, "BHborn"] = XsecBorn
+    df.loc[:, "KMborn"] = XsecKMBorn
     df.to_pickle(args.ofname)
