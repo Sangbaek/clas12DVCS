@@ -116,7 +116,7 @@ class root2pickle():
         pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
 
         if gen == "dvcsrad":
-            eleKeysGen.extend(["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode"])
+            eleKeysGen.extend(["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode", "helicity"])
 
         # read keys
         for key in eleKeysGen:
