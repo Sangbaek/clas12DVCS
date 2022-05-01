@@ -32,6 +32,28 @@ def printDVCSarray(xBarray, Q2array, tarray, phiarray, heliarray):
         XsecBorn.append(printDVCS(xB, Q2, t, phi, heli)[1])
     return XsecObs, XsecBorn
 
+def printDVCSKMarray(xBarray, Q2array, tarray, phiarray, heliarray):
+    KMarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi, heli in zip(xBarray, Q2array, tarray, phiarray, heliarray):
+        KMarray.append(printDVCSKM(xB, Q2, t, phi, heli))
+    return KMarray
+
+def printDVCSKM(xB, Q2, t, phi, heli):
+    phi = np.pi - phi
+    pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+                  process='ep2epgamma', exptype='fixed target', frame ='trento',
+                  in1energy=10.604, in1charge=-1, in1polarization=heli)
+#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
+#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
+    return th_KM15.XS(pt1)/(2*np.pi/1000)
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
