@@ -116,7 +116,7 @@ class root2pickle():
         pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
 
         if gen == "dvcsrad":
-            eleKeysGen.extend(["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode", "helicity"])
+            eleKeysGen.extend(["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "BornWeight", "radMode", "helicity"])
 
         # read keys
         for key in eleKeysGen:
@@ -140,9 +140,9 @@ class root2pickle():
         #sort columns for readability
         if gen == "dvcsrad":
             if detRes:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode", "helicity"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "BornWeight", "radMode", "helicity"]]
             else:
-                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "radMode", "helicity"]]
+                df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "BornWeight", "radMode", "helicity"]]
         else:
             if detRes:
                 df_electronGen = df_electronGen.loc[:, ["event", "GenEpx", "GenEpy", "GenEpz", "GenEvx", "GenEvy", "GenEvz"]]
