@@ -68,10 +68,10 @@ if __name__ == "__main__":
 
     df = pd.read_pickle(args.fname)
     entry_start = int(args.entry_start)
-    entry_stop = int(args.entry_stop)
     if entry_stop == "inf":
         df = df.loc[(df.index>=entry_start), :]
     else:
+        entry_stop = int(args.entry_stop)
         df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
     XsecObs, XsecBorn = printDVCSarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
     XsecKMBorn = printDVCSKMarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
