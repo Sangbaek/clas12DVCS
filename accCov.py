@@ -9,15 +9,20 @@ def countDF(total, df_global):
     # numbers1 = []
     # numbers2 = []
     # numbers3 = []
-    numbers = []
     for i in df_global.Q2xBtphibin:
         if i%50 == 0:
             print(i)
+        local_total = sum(total.Q2xBtphibin == i)
+        local_counts = 0
         for j in df_global.Q2xBtphibin:
             if j%50 == 0:
                 print(j)
             number = sum((total.Q2xBtphibin == i) & (total.GenQ2xBtphibin == j))
+            local_counts = local_counts + number
             df_global.loc[df_global.Q2xBtphibin == i, "Gen{}".format(j)] = number
+            if local_counts == local_total:
+                print("skipping because all are counted")
+                break
 
     return df_global
 
