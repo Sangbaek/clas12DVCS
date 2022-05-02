@@ -15,7 +15,7 @@ def countDF(total, df_global):
             print(i)
         for j in df_global.Q2xBtphibin:
             number = sum((total.Q2xBtphibin == i) & (total.GenQ2xBtphibin == j))
-            df_global.loc[df_gloab.Q2xBtphibin == i, "Gen{}".format(j)] = number
+            df_global.loc[df_global.Q2xBtphibin == i, "Gen{}".format(j)] = number
 
     return df_global
 
@@ -25,8 +25,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-if","--ifname", help="a single pickle to be numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
-    parser.add_argument("-of","--ofname", help="output with numbered", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
-    parser.add_argument("-g","--gen", help="gen or rec", action = "store_true")
     parser.add_argument("-i","--inglobal", help="a single pickle file name as an input", default="df_global_Feb.pkl")
     parser.add_argument("-o","--outglobal", help="a single pickle file name as an output", default="df_global_Feb_out.pkl")
     
