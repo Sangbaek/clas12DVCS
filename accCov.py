@@ -14,6 +14,8 @@ def countDF(total, df_global):
         if i%50 == 0:
             print(i)
         for j in df_global.Q2xBtphibin:
+            if j%50 == 0:
+                print(j)
             number = sum((total.Q2xBtphibin == i) & (total.GenQ2xBtphibin == j))
             df_global.loc[df_global.Q2xBtphibin == i, "Gen{}".format(j)] = number
 
