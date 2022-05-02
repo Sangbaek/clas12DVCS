@@ -33,6 +33,15 @@ if __name__ == "__main__":
             ofname = dirname + jobn+"_{}.pkl".format(Q2xBtbin)
             df_sub.to_pickle(ofname)
 
+
+    if args.binning == "Q2xBtphi":
+        for Q2xBtphibin in np.sort((df.Q2xBtphibin).unique()):
+            if Q2xBtphibin == -1:
+                continue
+            df_sub = df.loc[df.Q2xBtphibin == Q2xBtphibin, :]
+            ofname = dirname + jobn+"_{}.pkl".format(Q2xBtphibin)
+            df_sub.to_pickle(ofname)
+
     # df.loc[:, "BHrad"] = XsecObs
     # df.loc[:, "BHborn"] = XsecBorn
     # df.to_pickle(args.ofname)
