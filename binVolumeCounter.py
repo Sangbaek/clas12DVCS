@@ -3,7 +3,7 @@ import numpy as np
 import argparse
 from utils.const import *
 
-df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_Apr.pkl")
+df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_May.pkl")
 
 def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
     
@@ -43,7 +43,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
     Q2avg2 = local.Q2.mean()
     tavg2 =  local.t1.mean()
     phiavg2 = local.phi1.mean()
-    xsecavg = local.GenWeight.mean()
+    local2 = local.loc[local.GenWeight>0, :]
+    xsecavg = len(local2)/((1/local2.GenWeight).mean())
 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -239,4 +240,4 @@ df_global.loc[:, "Q2avg2"] = Q2avgs2
 df_global.loc[:, "tavg2"] = tavgs2
 df_global.loc[:, "phiavg2"] = phiavgs2
 df_global.loc[:, "xsecavg"] = xsecavgs
-df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVol_Gen.pkl")
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen.pkl")
