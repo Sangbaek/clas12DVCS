@@ -127,9 +127,9 @@ parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/inb/bh/"
 #bh inb 50 nA
 print("reading bh inb 50 nA")
 df_4238_corr = pd.read_pickle(parent_bhMC + "4238.pkl")
-df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+df_4238_corr = df_4238_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight", "BornWeight"]]
 df_4542_corr = pd.read_pickle(parent_bhMC + "4542.pkl")
-df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+df_4542_corr = df_4542_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight", "BornWeight"]]
 
 # dvcsSimInb50nA = pd.concat([df_3987_corr, df_4124_corr, df_4139_corr, df_4181_corr, df_4182_corr, df_4397_corr, df_4528_corr, df_4529_corr, df_4535_corr, df_4539_corr])
 # dvcsSimInb55nA = pd.concat([df_4186_corr, df_4545_corr])
@@ -188,9 +188,9 @@ parent_bhMC = "/volatile/clas12/sangbaek/nov2021/convPkl_Gen/outb/bh/"
 #bh outb 50 nA
 print("reading bh outb 50 nA")
 df_4249_corr = pd.read_pickle(parent_bhMC + "4249.pkl")
-df_4249_corr = df_4249_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+df_4249_corr = df_4249_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight", "BornWeight"]]
 df_4544_corr = pd.read_pickle(parent_bhMC + "4544.pkl")
-df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight"]]
+df_4544_corr = df_4544_corr.loc[:, ["xB", "Q2", "t1", "phi1", "Q2xBtbin", "Q2xBtphibin", "GenWeight", "BornWeight"]]
 
 # dvcsSimOutb50nA = pd.concat([df_4240_corr, df_4250_corr, df_4251_corr, df_4252_corr, df_4255_corr, df_4398_corr, df_4532_corr, df_4534_corr, df_4540_corr, df_4541_corr])
 # dvcsSimOutb40nA = pd.concat([df_4263_corr, df_4546_corr])
