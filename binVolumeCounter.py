@@ -44,7 +44,8 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
     tavg2 =  local.t1.mean()
     phiavg2 = local.phi1.mean()
     local2 = local.loc[local.GenWeight>0, :]
-    xsecavg = len(local2)/((1/local2.GenWeight).mean())
+    xsecavg = 1/((1/local2.GenWeight).mean())
+    xsecavg_born = 1/((1/local2.BornWeight).mean())
 
     if isinstance(xB_i, list):
         xB_i = min(xB_i)
@@ -66,7 +67,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
                     if(len(local2)):
                         count += 1
     local2 = 0                                                                                     
-    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg
+    return count/N1/N2/N3/N4*(Q2_f - Q2_i)*(xB_f - xB_i)*(t_f - t_i)*np.radians(phi_f - phi_i), xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg, xsecavg_born
 
 
 # import argparse
@@ -212,6 +213,7 @@ Q2avgs2 = []
 tavgs2 = []
 phiavgs2 = []
 xsecavgs = []
+xsecavgs_born = []
 
 df1 = df_4238_corr
 df2 = df_4542_corr
@@ -220,7 +222,7 @@ df4 = df_4544_corr
 for i in range(len(df_global)):
     if i%50==0:
         print("{}th event".format(i))
-    TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
+    TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg, xsecavg_born = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
     # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
     TrueVols.append(TrueVol)
     xBavgs1.append(xBavg1)
@@ -231,6 +233,7 @@ for i in range(len(df_global)):
     tavgs2.append(tavg2)
     phiavgs2.append(phiavg2)
     xsecavgs.append(xsecavg)
+    xsecavgs_born.append(xsecavg_born)
 df_global.loc[:, "TruebinVol"] = TrueVols
 df_global.loc[:, "xBavg1"] = xBavgs1
 df_global.loc[:, "Q2avg1"] = Q2avgs1
@@ -240,4 +243,5 @@ df_global.loc[:, "Q2avg2"] = Q2avgs2
 df_global.loc[:, "tavg2"] = tavgs2
 df_global.loc[:, "phiavg2"] = phiavgs2
 df_global.loc[:, "xsecavg"] = xsecavgs
+df_global.loc[:, "xsecavg_born"] = xsecavgs_born
 df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen.pkl")
