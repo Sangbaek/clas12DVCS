@@ -43,7 +43,7 @@ def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3,
     Q2avg2 = local.Q2.mean()
     tavg2 =  local.t1.mean()
     phiavg2 = local.phi1.mean()
-    local2 = local.loc[local.GenWeight>0, :]
+    local2 = local.loc[(local.GenWeight>0)&(local.BornWeight>0), :]
     xsecavg = 1/((1/local2.GenWeight).mean())
     xsecavg_born = 1/((1/local2.BornWeight).mean())
 
@@ -244,4 +244,4 @@ df_global.loc[:, "tavg2"] = tavgs2
 df_global.loc[:, "phiavg2"] = phiavgs2
 df_global.loc[:, "xsecavg"] = xsecavgs
 df_global.loc[:, "xsecavg_born"] = xsecavgs_born
-df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen.pkl")
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen2.pkl")
