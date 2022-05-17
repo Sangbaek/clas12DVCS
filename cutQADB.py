@@ -26,5 +26,6 @@ if __name__ == "__main__":
     exp = pd.read_pickle(args.fname)
 
     exp = pd.merge(exp, qadb, how = 'inner', on = ['RunNum', 'EventNum'])
+    exp = exp.loc[(exp.RunNum !=5046) & (exp.RunNum !=5047) & (exp.RunNum !=5164)  & (exp.RunNum !=5495) & (exp.RunNum !=5496) & (exp.RunNum != 5442) & (exp.RunNum!=5448)]
 
     exp.to_pickle(args.out)

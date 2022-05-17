@@ -35,4 +35,4 @@ df = df.sort_values(by=['RunNum', 'EventNum'], ascending = [True, True])
 df.index = np.linspace(0, len(df)-1, len(df), dtype = int)
 for i in range(len(df)//100000):
     df[i*100000: (i+1)*100000].to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
-df[100000*(len(df)//100000)].to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
+# df[100000*(len(df)//100000)].to_csv("/volatile/clas12/sangbaek/clasqaDB/src/csvs/exp{}.csv".format(i))
