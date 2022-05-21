@@ -22,7 +22,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     qadb = pd.read_pickle(args.qadb)
-    qadb = qadb.loc[qadb.QAresult == 1, ["EventNum", "RunNum", "beamCurrent", "beamCurrent_request", "runConfig"]]
+    qadb = qadb.loc[qadb.QAresult == 1, ["EventNum", "RunNum", "beamCurrent", "beamQ_QA", "runConfig"]]
     exp = pd.read_pickle(args.fname)
 
     exp = pd.merge(exp, qadb, how = 'inner', on = ['RunNum', 'EventNum'])
