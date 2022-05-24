@@ -1331,7 +1331,7 @@ class root2pickle():
                         cut_meepg1_FD & cut_meepg2_FD & cut_cone1_FD & cut_cone2_FD &
                         cut_mpt_FD & cut_recon_FD & cut_coplanarity_FD & cut_mmepg1_FD & cut_mmepg2_FD)            
 
-        df_dvcs.loc[cut_CR, "config"] = 4
+        df_dvcs.loc[cut_CR, "config"] = 3
         df_dvcs.loc[cut_CDFT, "config"] = 3
         df_dvcs.loc[cut_CD, "config"] = 2
         df_dvcs.loc[cut_FD, "config"] = 1
