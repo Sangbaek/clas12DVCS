@@ -6,37 +6,31 @@ from utils.physics import *
 
 
 def countDF(total, df_global, colName = "new"):
-    numbers1 = []
-    numbers2 = []
-    numbers3 = []
-    numbers = []
-    for i in df_global.Q2xBtphibin:
-        if i%50 == 0:
-            print(i)
-        number = sum((total.Q2xBtphibin == i))
-        numbers.append(number)
 
-        number1 = sum((total.Q2xBtphibin == i) & (total.config == 1))
-        number2 = sum((total.Q2xBtphibin == i) & (total.config == 2))
-        number3 = sum((total.Q2xBtphibin == i) & (total.config == 3))
-        numbers1.append(number1)
-        numbers2.append(number2)
-        numbers3.append(number3)
-    df_global.loc[:, colName+"1"] = numbers1
-    df_global.loc[:, colName+"2"] = numbers2
-    df_global.loc[:, colName+"3"] = numbers3
-    df_global.loc[:, colName] = numbers
+    hist, _ = np.histogram(total.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201))
+    hist = hist[activebins]
+    hist1, _ = np.histogram(total.loc[total.config==1, "Q2xBtphibin"], bins = np.linspace(-0.5, 4199.5, 4201))
+    hist1 = hist1[activebins]
+    hist2, _ = np.histogram(total.loc[total.config==2, "Q2xBtphibin"], bins = np.linspace(-0.5, 4199.5, 4201))
+    hist2 = hist2[activebins]
+    hist3, _ = np.histogram(total.loc[total.config==3, "Q2xBtphibin"], bins = np.linspace(-0.5, 4199.5, 4201))
+    hist3 = hist3[activebins]
+
+    df_global.loc[:, colName+"1"] = hist1
+    df_global.loc[:, colName+"2"] = hist2
+    df_global.loc[:, colName+"3"] = hist3
+    df_global.loc[:, colName] = hist
     return df_global
 
-def countGenDF(total, df_global, colName = "new"):
-    numbers = []
-    for i in df_global.Q2xBtphibin:
-        if i%10==0:
-            print(i)
-        number = sum((total.Q2xBtphibin == i))
-        numbers.append(number)
-    df_global.loc[:, colName] = numbers
-    return df_global
+# def countGenDF(total, df_global, colName = "new"):
+#     numbers = []
+#     for i in df_global.Q2xBtphibin:
+#         if i%10==0:
+#             print(i)
+#         number = sum((total.Q2xBtphibin == i))
+#         numbers.append(number)
+#     df_global.loc[:, colName] = numbers
+#     return df_global
 
 if __name__ == "__main__":
 
@@ -58,31 +52,31 @@ if __name__ == "__main__":
     df = pd.read_pickle(args.ifname)
     print("reading seed..")
     df_global = pd.read_pickle(args.inglobal)
-    if args.gen:
-        print("count Gen..")
-        if args.nonrad:
-            print("select non rad events only")
-            df = df.loc[df.radMode == 1, :]
-        if args.speak:
-            print("select s-peak events only")
-            df = df.loc[df.radMode == 2, :]
-        if args.ppeak:
-            print("select p-peak events only")
-            df = df.loc[df.radMode == 3, :]
-        df_global = countGenDF(df, df_global, args.colName)
-        print("done with counting..")
-        df_global.to_pickle(args.outglobal)
-    else:
-        if args.nonrad:
-            print("select non rad events only")
-            df = df.loc[df.radMode == 1, :]
-        if args.speak:
-            print("select s-peak events only")
-            df = df.loc[df.radMode == 2, :]
-        if args.ppeak:
-            print("select p-peak events only")
-            df = df.loc[df.radMode == 3, :]
-        print("count Rec..")
-        df_global = countDF(df, df_global, args.colName)
-        print("done with counting..")
+    # if args.gen:
+    #     print("count Gen..")
+    #     if args.nonrad:
+    #         print("select non rad events only")
+    #         df = df.loc[df.radMode == 1, :]
+    #     if args.speak:
+    #         print("select s-peak events only")
+    #         df = df.loc[df.radMode == 2, :]
+    #     if args.ppeak:
+    #         print("select p-peak events only")
+    #         df = df.loc[df.radMode == 3, :]
+    #     df_global = countGenDF(df, df_global, args.colName)
+    #     print("done with counting..")
+    #     df_global.to_pickle(args.outglobal)
+    # else:
+    #     if args.nonrad:
+    #         print("select non rad events only")
+    #         df = df.loc[df.radMode == 1, :]
+    #     if args.speak:
+    #         print("select s-peak events only")
+    #         df = df.loc[df.radMode == 2, :]
+    #     if args.ppeak:
+    #         print("select p-peak events only")
+    #         df = df.loc[df.radMode == 3, :]
+    #     print("count Rec..")
+    df_global = countDF(df, df_global, args.colName)
+    print("done with counting..")
     df_global.to_pickle(args.outglobal)
