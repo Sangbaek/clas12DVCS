@@ -114,8 +114,8 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
     return total
 
 CD_Ptheta_ub = 80
-CD_Ptheta_lb = 30
-FD_Ptheta_inb_ub = 35
+CD_Ptheta_lb = 40
+FD_Ptheta_inb_ub = 40
 FD_Ptheta_outb_ub = 40
 FD_Ptheta_lb = 5
 
