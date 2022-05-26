@@ -100,6 +100,9 @@ inactivebins = np.array([   0.,   22.,   23.,   24.,   25.,   46.,   47.,   48.,
        4054., 4055.])
 activebins = np.linspace(0, 4199, 4200, dtype=int)[~np.isin(np.linspace(0, 4199, 4200), inactivebins)]
 
+inactiveQ2xBtbins = np.array([98, 126, 147, 154, 161, 168])
+activeQ2xBtbins = np.linspace(0, 174, 175, dtype=int)[~np.isin(np.linspace(0, 174, 175, dtype=int), inactiveQ2xBtbins)]
+
 def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins):
     df_allBins = {}
     Q2xBtphi = 0
