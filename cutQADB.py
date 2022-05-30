@@ -28,7 +28,7 @@ if __name__ == "__main__":
     exp = pd.merge(exp, qadb, how = 'inner', on = ['RunNum', 'EventNum'])
     # exp = exp.loc[(exp.RunNum !=5046) & (exp.RunNum !=5047) & (exp.RunNum !=5164)  & (exp.RunNum !=5495) & (exp.RunNum !=5496) & (exp.RunNum != 5442) & (exp.RunNum!=5448)]
 
-    outliers = [5046,5047,5191,5495,5496,5442,5448]
+    outliers = [5046,5047,5191,5495,5496,5448]
     junks = [5336,5398,5400,5404,5504,5562,5594,5600,5610,5617,5620,5621,5623,5627,5650,5652]
     exp = exp.loc[~np.isin(exp.RunNum, outliers) & ~np.isin(exp.RunNum, junks), :]
     exp = exp.sort_values(by=['RunNum', 'EventNum'], ascending = [True, True])
