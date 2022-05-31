@@ -674,12 +674,12 @@ class root2pickle():
                 pchi2FD_S6_lb, pchi2FD_S6_ub = -3.402, 3.351
             elif pol == "outbending":
                 pchi2CD_lb,   pchi2CD_ub     = -5.629, 6.404
-                pchi2FD_S1_lb, pchi2FD_S1_ub = -4.110 4.150
-                pchi2FD_S2_lb, pchi2FD_S2_ub = -4.554 4.708
-                pchi2FD_S3_lb, pchi2FD_S3_ub = -3.934 4.170
-                pchi2FD_S4_lb, pchi2FD_S4_ub = -4.062 4.346
-                pchi2FD_S5_lb, pchi2FD_S5_ub = -4.404 4.457
-                pchi2FD_S6_lb, pchi2FD_S6_ub = -4.222 4.000
+                pchi2FD_S1_lb, pchi2FD_S1_ub = -4.110, 4.150
+                pchi2FD_S2_lb, pchi2FD_S2_ub = -4.554, 4.708
+                pchi2FD_S3_lb, pchi2FD_S3_ub = -3.934, 4.170
+                pchi2FD_S4_lb, pchi2FD_S4_ub = -4.062, 4.346
+                pchi2FD_S5_lb, pchi2FD_S5_ub = -4.404, 4.457
+                pchi2FD_S6_lb, pchi2FD_S6_ub = -4.222, 4.000
 
             df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid"] = 0
             df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid"] = 0
