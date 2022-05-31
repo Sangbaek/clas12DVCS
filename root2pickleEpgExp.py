@@ -247,6 +247,7 @@ class root2pickle():
         if nofid:
             df_electronRec.loc[:, "EFid"] = 1
         else:
+            df_electronRec.loc[:, "EFid"] = 1
             exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
             exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
             exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
@@ -262,6 +263,7 @@ class root2pickle():
             exclusion4_1 = (df_electronRec.EcalV1 < 14)
             exclusion4_2 = (df_electronRec.EcalV1 > 229.4) & (df_electronRec.EcalV1 < 240.7)
             exclusion4_3 = (df_electronRec.EcalW1 > 135) & (df_electronRec.EcalW1 < 150)
+            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
             df_electronRec.loc[(df_electronRec.Esector == 4) & exclusion4, "EFid"] = 0
             exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
             df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
