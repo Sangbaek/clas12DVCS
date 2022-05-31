@@ -112,6 +112,7 @@ class root2pickle():
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
         # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
+        gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
 
         if detRes:
             eleKeysRec.extend(["Evx", "Evy"])
@@ -123,7 +124,7 @@ class root2pickle():
             eleKeysRec.extend(["Enphe"])
             eleKeysRec.extend(["EhtccX", "EhtccY", "EhtccZ"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
-            gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
+            # gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
             gamKeysRec.extend(["GcalU2", "GcalV2", "GcalW2"])
             gamKeysRec.extend(["GcalU3", "GcalV3", "GcalW3"])
             gamKeysRec.extend(["Gbeta"])
