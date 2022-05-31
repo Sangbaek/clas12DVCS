@@ -222,7 +222,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector"]
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
