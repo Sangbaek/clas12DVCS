@@ -107,7 +107,8 @@ class root2pickle():
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat", "Psector"]
+        eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
         # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
@@ -116,7 +117,7 @@ class root2pickle():
             eleKeysRec.extend(["Evx", "Evy"])
             eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
             eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
-            eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
+            # eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
             eleKeysRec.extend(["EcalU2", "EcalV2", "EcalW2"])
             eleKeysRec.extend(["EcalU3", "EcalV3", "EcalW3"])
             eleKeysRec.extend(["Enphe"])
@@ -126,7 +127,7 @@ class root2pickle():
             gamKeysRec.extend(["GcalU2", "GcalV2", "GcalW2"])
             gamKeysRec.extend(["GcalU3", "GcalV3", "GcalW3"])
             gamKeysRec.extend(["Gbeta"])
-            proKeysRec.extend(["Pvz"])
+            # proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz"])
             proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
@@ -134,7 +135,7 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
             proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
-            proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
+            proKeysRec.extend(["Pchi2track", "PNDFtrack"])
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
@@ -220,6 +221,49 @@ class root2pickle():
             df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle2, "GFid"] = 0
             df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle3, "GFid"] = 0
             df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
+
+            exclusion1_1 = (df_gammaRec.GcalW1 > 74) & (df_gammaRec.GcalW1 < 79.8)
+            exclusion1_2 = (df_gammaRec.GcalW1 > 83.6) & (df_gammaRec.GcalW1 < 92.2)
+            exclusion1_3 = (df_gammaRec.GcalW1 > 212.5) & (df_gammaRec.GcalW1 < 230)
+            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
+            df_gammaRec.loc[(df_gammaRec.Gsector == 1) & exclusion1, "GFid"] = 0
+            exclusion2_1 = (df_gammaRec.GcalW1 < 14)
+            exclusion2_2 = (df_gammaRec.GcalU1 > 111.2) & (df_gammaRec.GcalU1 < 119.3)
+            exclusion2_3 = (df_gammaRec.GcalV1 > 113) & (df_gammaRec.GcalV1 < 118.7)
+            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
+            df_gammaRec.loc[(df_gammaRec.Gsector == 2) & exclusion2, "GFid"] = 0
+            exclusion3 = df_gammaRec.GcalW1 < 14
+            df_gammaRec.loc[(df_gammaRec.Gsector == 3) & exclusion3, "GFid"] = 0
+            exclusion4_1 = (df_gammaRec.GcalV1 < 14)
+            exclusion4_2 = (df_gammaRec.GcalV1 > 229.4) & (df_gammaRec.GcalV1 < 240.7)
+            exclusion4_3 = (df_gammaRec.GcalW1 > 135) & (df_gammaRec.GcalW1 < 150)
+            df_gammaRec.loc[(df_gammaRec.Gsector == 4) & exclusion4, "GFid"] = 0
+            exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
+            df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid"] = 0
+
+        #apply electron fiducial cuts
+        if nofid:
+            df_electronRec.loc[:, "EFid"] = 1
+        else:
+            exclusion1_1 = (df_electronRec.GcalW1 > 74) & (df_electronRec.GcalW1 < 79.8)
+            exclusion1_2 = (df_electronRec.GcalW1 > 83.6) & (df_electronRec.GcalW1 < 92.2)
+            exclusion1_3 = (df_electronRec.GcalW1 > 212.5) & (df_electronRec.GcalW1 < 230)
+            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
+            df_electronRec.loc[(df_electronRec.Gsector == 1) & exclusion1, "EFid"] = 0
+            exclusion2_1 = (df_electronRec.GcalW1 < 14)
+            exclusion2_2 = (df_electronRec.GcalU1 > 111.2) & (df_electronRec.GcalU1 < 119.3)
+            exclusion2_3 = (df_electronRec.GcalV1 > 113) & (df_electronRec.GcalV1 < 118.7)
+            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
+            df_electronRec.loc[(df_electronRec.Gsector == 2) & exclusion2, "EFid"] = 0
+            exclusion3 = df_electronRec.GcalW1 < 14
+            df_electronRec.loc[(df_electronRec.Gsector == 3) & exclusion3, "EFid"] = 0
+            exclusion4_1 = (df_electronRec.GcalV1 < 14)
+            exclusion4_2 = (df_electronRec.GcalV1 > 229.4) & (df_electronRec.GcalV1 < 240.7)
+            exclusion4_3 = (df_electronRec.GcalW1 > 135) & (df_electronRec.GcalW1 < 150)
+            df_electronRec.loc[(df_electronRec.Gsector == 4) & exclusion4, "EFid"] = 0
+            exclusion6 = (df_electronRec.GcalW1 > 170) & (df_electronRec.GcalW1 < 192)
+            df_electronRec.loc[(df_electronRec.Gsector == 6) & exclusion6, "EFid"] = 0
+
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
@@ -543,6 +587,31 @@ class root2pickle():
             cut_total = cut_gaps & cut_trapezoid
 
             df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
+            
+            if pol == "inbending":
+                pchi2CD_lb,   pchi2CD_ub   = -5.000, 6.345
+                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.296, 3.508
+                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.552, 4.000
+                pchi2FD_S3_lb, pchi2FD_S3_ub = -3.446, 3.937
+                pchi2FD_S4_lb, pchi2FD_S4_ub = -2.747, 3.190
+                pchi2FD_S5_lb, pchi2FD_S5_ub = -2.851, 3.418
+                pchi2FD_S6_lb, pchi2FD_S6_ub = -3.174, 3.514
+            elif pol == "outbending":
+                pchi2CD_lb,   pchi2CD_ub   = -5.592,  6.785
+                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.905, 4.088
+                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.411, 3.939
+                pchi2FD_S3_lb, pchi2FD_S3_ub = -4.042, 5.954
+                pchi2FD_S4_lb, pchi2FD_S4_ub = -3.820, 5.065
+                pchi2FD_S5_lb, pchi2FD_S5_ub = -3.384, 4.232
+                pchi2FD_S6_lb, pchi2FD_S6_ub = -5.077, 5.100
+
+            df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid"] = 0
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
@@ -924,6 +993,8 @@ class root2pickle():
         df_epg.loc[:,'tmin2'] = M*M*(df_epg.xB**2)/(1-df_epg.xB+df_epg.xB*M*M/df_epg.Q2)
         df_epg.loc[:,'tcol'] = df_epg.Q2*(df_epg.Q2-2*df_epg.xB*M*ebeam)/df_epg.xB/(df_epg.Q2-2*M*ebeam)
 
+        df_epg.loc[:, 'vzdiff'] = df_epg.Evz - df_epg.Pvz
+
         # encode unassigned bin as -1
         df_epg.loc[:, "Q2bin"] = -1
         df_epg.loc[:, "xBbin"] = -1
@@ -990,8 +1061,9 @@ class root2pickle():
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvcs.Ptheta > 0 #Ptheta
         cut_Trigger = ((df_dvcs.TriggerBit & 1 << 1) > 0) | ((df_dvcs.TriggerBit & 1 << 2) > 0) | ((df_dvcs.TriggerBit & 1 << 3) > 0) | ((df_dvcs.TriggerBit & 1 << 4) > 0) | ((df_dvcs.TriggerBit & 1 << 5) > 0) | ((df_dvcs.TriggerBit & 1 << 6) > 0)
+        cut_EFid = df_dvcs.EFid == 1
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
-        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin & cut_Trigger
+        cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin & cut_Trigger & cut_EFid
 
         df_dvcs = df_dvcs[cut_common]
 
@@ -1013,6 +1085,22 @@ class root2pickle():
         cuts_dvcs_FD_Outb = self.cuts_dvcs_FD_Outb
 
         if pol == "inbending":
+            vzdiffCD_lb,    vzdiffCD_ub    = -2.011, 2.314
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.209, 4.017
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.612, 4.139
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.328, 4.287
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.411, 4.108
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.607, 4.246
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -2.999, 3.927
+
+            df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
+
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
@@ -1104,6 +1192,21 @@ class root2pickle():
                         cut_mpt_FD & cut_recon_FD & cut_coplanarity_FD & cut_mmepg1_FD & cut_mmepg2_FD)
 
         elif pol == "outbending":
+            vzdiffCD_lb,    vzdiffCD_ub    = -2.737, 2.096
+            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -4.435, 3.429
+            vzdiffFD_S2_lb, vzdiffFD_S2_ub = -4.646, 2.978
+            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -2.499, 8.722
+            vzdiffFD_S4_lb, vzdiffFD_S4_ub = -4.646, 3.493
+            vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.901, 3.750
+            vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.846, 3.623
+
+            df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
+            df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
