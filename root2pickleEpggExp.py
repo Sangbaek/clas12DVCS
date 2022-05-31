@@ -912,7 +912,7 @@ class root2pickle():
             vzdiffCD_lb,    vzdiffCD_ub    = -2.737, 2.096
             vzdiffFD_S1_lb, vzdiffFD_S1_ub = -4.435, 3.429
             vzdiffFD_S2_lb, vzdiffFD_S2_ub = -4.646, 2.978
-            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -2.499, 8.722
+            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.922, 3.040
             vzdiffFD_S4_lb, vzdiffFD_S4_ub = -4.646, 3.493
             vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.901, 3.750
             vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.846, 3.623
