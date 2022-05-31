@@ -1091,11 +1091,11 @@ class root2pickle():
         if pol == "inbending":
             vzdiffCD_lb,    vzdiffCD_ub    = -2.011, 2.314
             vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.209, 4.017
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.612, 4.139
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.328, 4.287
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.411, 4.108
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.607, 4.246
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -2.999, 3.927
+            vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.612, 4.139
+            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.328, 4.287
+            vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.411, 4.108
+            vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.607, 4.246
+            vzdiffFD_S6_lb, vzdiffFD_S6_ub = -2.999, 3.927
 
             df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
             df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
