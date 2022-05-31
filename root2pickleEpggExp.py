@@ -239,6 +239,7 @@ class root2pickle():
             exclusion4_1 = (df_gammaRec.GcalV1 < 14)
             exclusion4_2 = (df_gammaRec.GcalV1 > 229.4) & (df_gammaRec.GcalV1 < 240.7)
             exclusion4_3 = (df_gammaRec.GcalW1 > 135) & (df_gammaRec.GcalW1 < 150)
+            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
             df_gammaRec.loc[(df_gammaRec.Gsector == 4) & exclusion4, "GFid"] = 0
             exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
             df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid"] = 0
