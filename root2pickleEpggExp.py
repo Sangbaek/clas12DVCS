@@ -248,23 +248,23 @@ class root2pickle():
         if nofid:
             df_electronRec.loc[:, "EFid"] = 1
         else:
-            exclusion1_1 = (df_electronRec.GcalW1 > 74) & (df_electronRec.GcalW1 < 79.8)
-            exclusion1_2 = (df_electronRec.GcalW1 > 83.6) & (df_electronRec.GcalW1 < 92.2)
-            exclusion1_3 = (df_electronRec.GcalW1 > 212.5) & (df_electronRec.GcalW1 < 230)
+            exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
+            exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
+            exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
             exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
             df_electronRec.loc[(df_electronRec.Gsector == 1) & exclusion1, "EFid"] = 0
-            exclusion2_1 = (df_electronRec.GcalW1 < 14)
-            exclusion2_2 = (df_electronRec.GcalU1 > 111.2) & (df_electronRec.GcalU1 < 119.3)
-            exclusion2_3 = (df_electronRec.GcalV1 > 113) & (df_electronRec.GcalV1 < 118.7)
+            exclusion2_1 = (df_electronRec.EcalW1 < 14)
+            exclusion2_2 = (df_electronRec.EcalU1 > 111.2) & (df_electronRec.EcalU1 < 119.3)
+            exclusion2_3 = (df_electronRec.EcalV1 > 113) & (df_electronRec.EcalV1 < 118.7)
             exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
             df_electronRec.loc[(df_electronRec.Gsector == 2) & exclusion2, "EFid"] = 0
-            exclusion3 = df_electronRec.GcalW1 < 14
+            exclusion3 = df_electronRec.EcalW1 < 14
             df_electronRec.loc[(df_electronRec.Gsector == 3) & exclusion3, "EFid"] = 0
-            exclusion4_1 = (df_electronRec.GcalV1 < 14)
-            exclusion4_2 = (df_electronRec.GcalV1 > 229.4) & (df_electronRec.GcalV1 < 240.7)
-            exclusion4_3 = (df_electronRec.GcalW1 > 135) & (df_electronRec.GcalW1 < 150)
+            exclusion4_1 = (df_electronRec.EcalV1 < 14)
+            exclusion4_2 = (df_electronRec.EcalV1 > 229.4) & (df_electronRec.EcalV1 < 240.7)
+            exclusion4_3 = (df_electronRec.EcalW1 > 135) & (df_electronRec.EcalW1 < 150)
             df_electronRec.loc[(df_electronRec.Gsector == 4) & exclusion4, "EFid"] = 0
-            exclusion6 = (df_electronRec.GcalW1 > 170) & (df_electronRec.GcalW1 < 192)
+            exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
             df_electronRec.loc[(df_electronRec.Gsector == 6) & exclusion6, "EFid"] = 0
 
 
