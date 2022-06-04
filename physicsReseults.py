@@ -4,7 +4,52 @@ Main Script to save the cross sections
 """
 import pandas as pd
 import numpy as np
+import gc
+import matplotlib.pyplot as plt
+from copy import copy
+cmap = copy(plt.cm.get_cmap("jet"))
+from scipy.optimize import least_squares
+from matplotlib.colors import LogNorm
+cmap.set_under('w',0)
+cmap.set_bad('w',0)
 
+degree = r"${}^{\circ}$"
+GeV = "GeV"
+GeV2 = "GeV"+r"${}^{2}$"
+GeVc = "GeV/c"
+GeVc2 = "(GeV/c)"+r"${}^{2}$"
+
+import matplotlib
+# initial settings
+pgf_with_latex = {
+		"pgf.texsystem": "pdflatex",
+		"text.usetex": True,            # use LaTeX to write all text
+		"font.family": "sans-serif",         
+		"font.sans-serif": "Helvetica",
+		"font.size": 25,				# default font size
+		"axes.labelsize": 24,			# x and y label size
+		"axes.titlesize": 24,           # subfigure title size, i.e. title size when one figure
+		"legend.fontsize": 22,			# legend size
+		"xtick.labelsize": 23,			# x axis tick label size
+		"ytick.labelsize": 23,			# y axis tick label 
+		"figure.titlesize": 25,         # Figure title size, useful when you have multiple plots in one canvas.
+		"pgf.preamble": r"\usepackage{xcolor}",     # xcolor for colours
+		"figure.autolayout": True
+}
+matplotlib.rcParams.update(pgf_with_latex)
+
+def nphistmean(hist, bins):
+    s=0
+    for i in range(len(hist)):
+        s += hist[i] * ((bins[i] + bins[i+1]) / 2) 
+    mean = s / np.sum(hist)
+    return mean
+
+def createBinEdges(binCenters):
+    start = binCenters[0] - np.diff(binCenters)[0]/2
+    end = binCenters[-1] + np.diff(binCenters)[-1]/2
+    middle = binCenters[:-1] + np.diff(binCenters)/2
+    return np.array([start, *middle, end])
 
 def makeReduced(df):
     columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
@@ -17,12 +62,17 @@ def readReduced(parent, jobNum, polarity, beamCurrent):
     columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
     return df.loc[:, columns_needed]
 
+def divideHist(df1, df2):
+	return np.divide(df1, df2, where = df1>0, out = np.zeros(df1.shape))
+
+def inverseHist(df1):
+	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros(df1))
 
 # simulation run numbers
-runs_inb_dvcs50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
-runs_inb_dvcs55nA = [4186, 4545]
-runs_inb_dvcs45nA = [4188, 4547]
-runs_inb_dvcs0nA = [4192, 4561]
+runs_inb_vgg50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
+runs_inb_vgg55nA = [4186, 4545]
+runs_inb_vgg45nA = [4188, 4547]
+runs_inb_vgg0nA = [4192, 4561]
 runs_inb_bh50nA = [4238, 4542]
 runs_inb_bh45nA = [4740, 4742, 4745, 4751, 4760]
 runs_inb_bkg50nA = [4076, 4202, 4209]
@@ -30,10 +80,10 @@ runs_inb_bkg55nA = [4212]
 runs_inb_bkg45nA = [4217]
 runs_inb_bkg0nA = [4231]
 
-runs_outb_dvcs50nA = [4240, 4250, 4251, 4252, 4255, 4398, 4532, 4534, 4540, 4541, 4717]
-runs_outb_dvcs40nA = [4263, 4546]
-runs_outb_dvcs0nA = [4262, 4554]
-runs_outb_dvcs40nAT = [4266, 4562]
+runs_outb_vgg50nA = [4240, 4250, 4251, 4252, 4255, 4398, 4532, 4534, 4540, 4541, 4717]
+runs_outb_vgg40nA = [4263, 4546]
+runs_outb_vgg0nA = [4262, 4554]
+runs_outb_vgg40nAT = [4266, 4562]
 runs_outb_bh50nA = [4249, 4544, 4780, 4808, 4812, 4818]
 runs_outb_bkg50nA = [4243, 4271, 4290]
 runs_outb_bkg40nA = [4293]
@@ -137,19 +187,19 @@ df_bkg1gs_outb = pd.concat(df_bkg1gs_outb)
 df_bkg2gs_outb = pd.concat(df_bkg2gs_outb)
 
 #define the collecion of bin edges
-collection_xBbins = [np.linspace(0.05, 0.85, 6)]
-collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
-collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
-collection_phibins = [np.linspace(0, 360, 6)]
+collection_cont_xBbins = [np.linspace(0.05, 0.85, 6)]
+collection_cont_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
+collection_cont_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
+collection_cont_phibins = [np.linspace(0, 360, 6)]
 
 
 # trial 0
 i = 0
 
-xBbins  = collection_xBbins[i]
-Q2bins  = collection_Q2bins[i]
-tbins   = collection_tbins [i]
-phibins = collection_phibins[i]
+xBbins  = collection_cont_xBbins[i]
+Q2bins  = collection_cont_Q2bins[i]
+tbins   = collection_cont_tbins [i]
+phibins = collection_cont_phibins[i]
 
 histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 histPi0InbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
@@ -183,12 +233,12 @@ epgExp.loc[:, "newtbin{}".format(i)] = (len(phibins)-1)*(np.digitize(epgExp.t1, 
 epgExp.loc[:, "newphibin{}".format(i)] = np.digitize(epgExp.phi1, phibins)-1
 epgExp.loc[:, "newbin{}".format(i)] = np.sum(epgExp.loc[:, ["newxBbin{}".format(i), "newQ2bin{}".format(i), "newtbin{}".format(i), "newphibin{}".format(i)]], axis = 1)
 
-contInbFD = np.divide(histBkgInbFD*histPi0InbFD, histRefInbFD*histExpInbFD, where = histRefInbFD*histExpInbFD>0, out = np.zeros(histRefInbFD.shape))
-contInbCD = np.divide(histBkgInbCD*histPi0InbCD, histRefInbCD*histExpInbCD, where = histRefInbCD*histExpInbCD>0, out = np.zeros(histRefInbCD.shape))
-contInbCDFT = np.divide(histBkgInbCDFT*histPi0InbCDFT, histRefInbCDFT*histExpInbCDFT, where = histRefInbCDFT*histExpInbCDFT>0, out = np.zeros(histRefInbCDFT.shape))
-contOutbFD = np.divide(histBkgOutbFD*histPi0OutbFD, histRefOutbFD*histExpOutbFD, where = histRefOutbFD*histExpOutbFD>0, out = np.zeros(histRefOutbFD.shape))
-contOutbCD = np.divide(histBkgOutbCD*histPi0OutbCD, histRefOutbCD*histExpOutbCD, where = histRefOutbCD*histExpOutbCD>0, out = np.zeros(histRefOutbCD.shape))
-contOutbCDFT = np.divide(histBkgOutbCDFT*histPi0OutbCDFT, histRefOutbCDFT*histExpOutbCDFT, where = histRefOutbCDFT*histExpOutbCDFT>0, out = np.zeros(histRefOutbCDFT.shape))
+contInbFD = divideHist(histBkgInbFD*histPi0InbFD, histRefInbFD*histExpInbFD)
+contInbCD = divideHist(histBkgInbCD*histPi0InbCD, histRefInbCD*histExpInbCD)
+contInbCDFT = divideHist(histBkgInbCDFT*histPi0InbCDFT, histRefInbCDFT*histExpInbCDFT)
+contOutbFD = divideHist(histBkgOutbFD*histPi0OutbFD, histRefOutbFD*histExpOutbFD)
+contOutbCD = divideHist(histBkgOutbCD*histPi0OutbCD, histRefOutbCD*histExpOutbCD)
+contOutbCDFT = divideHist(histBkgOutbCDFT*histPi0OutbCDFT, histRefOutbCDFT*histExpOutbCDFT)
 
 epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(contInbFD.flatten())))
 epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(contInbCD.flatten())))
@@ -200,3 +250,104 @@ epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)] = 
 epgExp.loc[epgExp.loc[:, "cont{}".format(i)] > 1, "cont{}".format(i)] = 1
 
 print("saved contaminations...")
+
+print("clear memory...")
+
+del df_bkg1gs_inb
+del df_bkg1gs_outb
+del df_bkg2gs_inb
+del df_bkg2gs_outb
+gc.collect()
+
+
+#define the collecion of bin edges
+collection_xBbins = [np.linspace(0.05, 0.85, 6)]
+collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
+collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
+collection_phibins = [np.linspace(0, 360, 25)]
+
+
+# trial 0
+i = 0
+
+xBbins  = collection_xBbins[i]
+Q2bins  = collection_Q2bins[i]
+tbins   = collection_tbins [i]
+phibins = collection_phibins[i]
+
+#Inbending cross sections
+histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+
+
+print("reading bhs")
+
+df_bhs_inb = []
+for jobNum in runs_inb_bh50nA:
+    df_bhs_inb.append(readReduced(parent_MC_BH_inb, jobNum, -1, 50))
+for jobNum in runs_inb_bh45nA:
+    df_bhs_inb.append(readReduced(parent_MC_BH_inb, jobNum, -1, 45))
+    
+df_bhs_inb = pd.concat(df_bhs_inb)
+
+print("reading bh Gens")
+
+df_bhs_Gen_inb = []
+for jobNum in runs_inb_bh50nA:
+    df_bhs_Gen_inb.append(readReduced(parent_Gen_BH_inb, jobNum, -1, 50))
+for jobNum in runs_inb_bh45nA:
+    df_bhs_Gen_inb.append(readReduced(parent_Gen_BH_inb, jobNum, -1, 45))
+    
+df_bhs_Gen_inb = pd.concat(df_bhs_Gen_inb)
+
+histBHInb, bins = np.histogramdd(df_bhs_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHGenInb, bins = np.histogramdd(df_bhs_Gen_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHInbFD, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHGenInbFD, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHInbCD, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHGenInbCD, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHInbCDFT, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histBHGenInbCDFT, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+
+df_vggs_inb = []
+for jobNum in runs_inb_vgg50nA:
+    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 50))
+for jobNum in runs_inb_vgg55nA:
+    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 55))
+for jobNum in runs_inb_vgg45nA:
+    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 45))
+for jobNum in runs_inb_vgg0nA:
+    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 0))
+    
+df_vggs_inb = pd.concat(df_vggs_inb)
+
+print("reading vgg Gens")
+
+df_vggs_Gen_inb = []
+for jobNum in runs_inb_vgg50nA:
+    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 50))
+for jobNum in runs_inb_vgg55nA:
+    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 55))
+for jobNum in runs_inb_vgg45nA:
+    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 45))
+for jobNum in runs_inb_vgg0nA:
+    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 0))
+    
+df_vggs_Gen_inb = pd.concat(df_vggs_Gen_inb)
+
+
+histVGGInb, bins = np.histogramdd(df_vggs_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGGenInb, bins = np.histogramdd(df_vggs_Gen_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGInbFD, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGGenInbFD, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGInbCD, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGGenInbCD, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGInbCDFT, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histVGGGenInbCDFT, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+
+#Method 1
+accVGGInbFD = divideHist(histVGGInbFD, histVGGGenInbFD)
+accVGGInbCD = divideHist(histVGGInbCD, histVGGGenInbCD)
+accVGGInbCDFT = divideHist(histVGGInbCDFT, histVGGGenInbCDFT)
+
