@@ -1528,8 +1528,8 @@ class root2pickle():
             #square phi binning
             df.loc[(df.Genphi>=phibin_i[phibin]) & (df.Genphi<phibin_f[phibin]), "Genphibin"] = phibin
 
-        df.loc[(df.GenQ2xBbin>=0)&(df.tbin>=0), "GenQ2xBtbin"] = len(tbin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.tbin>=0), "GenQ2xBbin"] + df.loc[(df.Q2xBbin>=0)&(df.tbin>=0), "Gentbin"]
-        df.loc[(df.Q2xBbin>=0)&(df.tbin>=0), "GenQ2xBtphibin"] = len(phibin_i) * df.loc[(df.Q2xBbin>=0)&(df.tbin>=0), "GenQ2xBtbin"] + df.loc[(df.Q2xBbin>=0)&(df.tbin>=0), "Genphibin"]
+        df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] = len(tbin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Gentbin"]
+        df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtphibin"] = len(phibin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Genphibin"]
 
         df = df.astype({"GenQ2bin": int, "GenxBbin": int, "Gentbin": int, "Genphibin": int, "GenQ2xBbin": int, "GenQ2xBtbin": int, "GenQ2xBtphibin": int})
 
