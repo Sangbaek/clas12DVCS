@@ -59,11 +59,12 @@ parent_MC_bkg1g_outb = parent + "convPkl_full/outb/bkg_1g/"
 parent_MC_bkg2g_outb = parent + "convPkl_full/outb/bkg_2g/"
 parent_exp_outb = parent + "convPkl_full/outb/exp/"
 
-epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
-pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
+print("read exp...")
+epgExpInb = pd.read_pickle(parent_exp_inb + "dvcs.pkl")
+pi0ExpInb = pd.read_pickle(parent_exp_inb + "pi0.pkl")
 
-epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
-pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
+epgExpOutb = pd.read_pickle(parent_exp_outb + "dvcs.pkl")
+pi0ExpOutb = pd.read_pickle(parent_exp_outb + "pi0.pkl")
 
 runConfig =  pd.read_csv(parent + "rga_runconfigs.txt", sep = '\t')
 beamCurrent_dict = {runConfig.RunNum[i]:runConfig.BeamCurrent_request[i] for i in runConfig.index}
@@ -88,6 +89,7 @@ epgExp = pd.concat([epgExpInb, epgExpOutb])
 pi0Exp = pd.concat([pi0ExpInb, pi0ExpOutb])
 
 # read pi0 simulations
+print("read bkg...")
 df_bkg1gs_inb = []
 for jobNum in runs_inb_bkg50nA:
     df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 50))
@@ -197,3 +199,4 @@ epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)] = 
 
 epgExp.loc[epgExp.loc[:, "cont{}".format(i)] > 1, "cont{}".format(i)] = 1
 
+print("saved contaminations...")
