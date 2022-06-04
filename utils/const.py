@@ -114,6 +114,28 @@ collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
 collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
 collection_phibins = [np.linspace(0, 360, 25)]
 
+# simulation run numbers
+runs_inb_vgg50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
+runs_inb_vgg55nA = [4186, 4545]
+runs_inb_vgg45nA = [4188, 4547]
+runs_inb_vgg0nA = [4192, 4561]
+runs_inb_bh50nA = [4238, 4542]
+runs_inb_bh45nA = [4740, 4742, 4745, 4751, 4760]
+runs_inb_bkg50nA = [4076, 4202, 4209]
+runs_inb_bkg55nA = [4212]
+runs_inb_bkg45nA = [4217]
+runs_inb_bkg0nA = [4231]
+
+runs_outb_vgg50nA = [4240, 4250, 4251, 4252, 4255, 4398, 4532, 4534, 4540, 4541, 4717]
+runs_outb_vgg40nA = [4263, 4546]
+runs_outb_vgg0nA = [4262, 4554]
+runs_outb_vgg40nAT = [4266, 4562]
+runs_outb_bh50nA = [4249, 4544, 4780, 4808, 4812, 4818]
+runs_outb_bkg50nA = [4243, 4271, 4290]
+runs_outb_bkg40nA = [4293]
+runs_outb_bkg0nA = [4304]
+runs_outb_bkg40nAT = [4306]
+
 def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_f=xBbin_f, tbin_i=tbin_i, tbin_f=tbin_f, goodBins=goodBins, badBins=badBins):
     df_allBins = {}
     Q2xBtphi = 0
