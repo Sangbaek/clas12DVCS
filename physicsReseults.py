@@ -118,6 +118,13 @@ def divideHist(df1, df2):
 def inverseHist(df1):
 	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros(df1))
 
+def binVolumes(xBbin, Q2bin, tbin, i=0):
+	xBbins  = collection_xBbins[i]
+	Q2bins  = collection_Q2bins[i]
+	tbins   = collection_tbins [i]
+	phibins = collection_phibins[i]
+	return np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
+
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-sc","--skipcont", help="skip cont", action = "store_true")
@@ -417,3 +424,22 @@ for jobNum in runs_inb_vgg0nA:
 	histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
 	histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
 	histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
+
+CDFTcontribution = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
+CDcontribution = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
+FDcontribution = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
+
+accCorrected_VGG = FDcontribution + CDcontribution + CDFTcontribution
+
+CDFTcontribution = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT50nA , histBHInbCDFT50nA)
+CDcontribution = divideHist(histBHDVCSInbCD*histBHGenInbCD50nA , histBHInbCD50nA)
+FDcontribution = divideHist(histBHDVCSInbFD*histBHGenInbFD50nA , histBHInbFD50nA)
+
+accCorrected_BH = FDcontribution + CDcontribution + CDFTcontribution
+
+xBbin = 2
+Q2bin = 2
+tbin = 1
+binVolume = binVolumes(xBbin, Q2bin, tbin)
+plt.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg)
+plt.show()
