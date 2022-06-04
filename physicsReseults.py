@@ -92,46 +92,46 @@ pi0Exp = pd.concat([pi0ExpInb, pi0ExpOutb])
 print("read bkg...")
 df_bkg1gs_inb = []
 for jobNum in runs_inb_bkg50nA:
-    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 50))
+    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g_inb, jobNum, -1, 50))
 for jobNum in runs_inb_bkg55nA:
-    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 55))
+    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g_inb, jobNum, -1, 55))
 for jobNum in runs_inb_bkg45nA:
-    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 45))
+    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g_inb, jobNum, -1, 45))
 for jobNum in runs_inb_bkg0nA:
-    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 0))
+    df_bkg1gs_inb.append(readReduced(parent_MC_bkg1g_inb, jobNum, -1, 0))
 
 df_bkg2gs_inb = []
 for jobNum in runs_inb_bkg50nA:
-    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 50))
+    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g_inb, jobNum, -1, 50))
 for jobNum in runs_inb_bkg55nA:
-    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 55))
+    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g_inb, jobNum, -1, 55))
 for jobNum in runs_inb_bkg45nA:
-    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 45))
+    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g_inb, jobNum, -1, 45))
 for jobNum in runs_inb_bkg0nA:
-    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 0))
+    df_bkg2gs_inb.append(readReduced(parent_MC_bkg2g_inb, jobNum, -1, 0))
     
 df_bkg1gs_inb = pd.concat(df_bkg1gs_inb)
 df_bkg2gs_inb = pd.concat(df_bkg2gs_inb)
 
 df_bkg1gs_outb = []
 for jobNum in runs_outb_bkg50nA:
-    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 50))
+    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g_outb, jobNum, -1, 50))
 for jobNum in runs_outb_bkg40nA:
-    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 40))
+    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g_outb, jobNum, -1, 40))
 for jobNum in runs_outb_bkg0nA:
-    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 0))
+    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g_outb, jobNum, -1, 0))
 for jobNum in runs_outb_bkg40nAT:
-    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g, jobNum, -1, 40))
+    df_bkg1gs_outb.append(readReduced(parent_MC_bkg1g_outb, jobNum, -1, 40))
 
 df_bkg2gs_outb = []
 for jobNum in runs_outb_bkg50nA:
-    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 50))
+    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g_outb, jobNum, -1, 50))
 for jobNum in runs_outb_bkg40nA:
-    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 40))
+    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g_outb, jobNum, -1, 40))
 for jobNum in runs_outb_bkg0nA:
-    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 0))
+    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g_outb, jobNum, -1, 0))
 for jobNum in runs_outb_bkg40nAT:
-    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g, jobNum, -1, 40))
+    df_bkg2gs_outb.append(readReduced(parent_MC_bkg2g_outb, jobNum, -1, 40))
     
 df_bkg1gs_outb = pd.concat(df_bkg1gs_outb)
 df_bkg2gs_outb = pd.concat(df_bkg2gs_outb)
