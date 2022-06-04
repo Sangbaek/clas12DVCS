@@ -172,6 +172,18 @@ pi0ExpOutb = makeReduced(pi0ExpOutb)
 epgExp = pd.concat([epgExpInb, epgExpOutb])
 pi0Exp = pd.concat([pi0ExpInb, pi0ExpOutb])
 
+runNum = np.sort(epgExp.RunNum.unique())
+charges = []
+charges_QA = []
+for run in runNum:
+    charges.append(epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].max() - epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].min())
+    charges_QA.append(epgExp.loc[epgExp.RunNum==run, "beamQ_QA"].max())
+charges = np.array(charges)
+charges_QA = np.array(charges_QA)
+
+inbcharge_epg = np.sum(charges_QA[runNum<5420])
+outbcharge_epg = np.sum(charges_QA[runNum>=5420])
+
 if args.skipcont:
 	pass
 
