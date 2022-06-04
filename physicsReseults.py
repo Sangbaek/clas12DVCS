@@ -12,6 +12,9 @@ from scipy.optimize import least_squares
 from utils.const import *
 from matplotlib.colors import LogNorm
 import argparse
+from gepard.fits import th_KM15
+import gepard as g
+import os, subprocess
 
 cmap.set_under('w',0)
 cmap.set_bad('w',0)
@@ -40,6 +43,50 @@ pgf_with_latex = {
 		"figure.autolayout": True
 }
 matplotlib.rcParams.update(pgf_with_latex)
+
+def printDVCSKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    BHarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        BHarray.append(printDVCSKM(xB, Q2, t, phi, **kwargs))
+    return np.array(BHarray)
+
+def printDVCSKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
+    phi = np.pi - phi
+    pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+                  process='ep2epgamma', exptype='fixed target', frame =frame,
+                  in1energy=10.604, in1charge=-1, in1polarization=pol)
+#     print(pt1.frame, pol)
+#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
+#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
+    return th_KM15.XS(pt1)/(2*np.pi/1000)
+
+def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    BHarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        BHarray.append(printBHonly(xB, Q2, t, phi, **kwargs))
+    return np.array(BHarray)
+
+def printBHonly(xB, Q2, t, phi, globalfit = True):
+    if globalfit:
+        dstot = subprocess.check_output(['~/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
+    else:
+        dstot = subprocess.check_output(['~/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
+
+    dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+    return dstot
 
 def nphistmean(hist, bins):
     s=0
