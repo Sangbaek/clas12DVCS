@@ -68,7 +68,7 @@ if __name__ == "__main__":
 	hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 	np.savez(out, hist = hist)
 
-	for config in df.configs.unique():
+	for config in df.config.unique():
 		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}.npz".format(jobnum, recgen, config)
 		hists, _ = np.histogramdd(df.loc[df.config == config , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 		np.savez(out, hist = hist)
