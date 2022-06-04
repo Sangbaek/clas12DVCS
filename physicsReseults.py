@@ -65,7 +65,7 @@ def printDVCSKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
 #     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
 #                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
 #                    in1energy=10.604, in1charge=-1, in1polarization=+1)
-    return th_KM15.XS(pt1)/(2*np.pi/1000)
+    return th_KM15.XS(pt1)
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
@@ -442,4 +442,24 @@ Q2bin = 2
 tbin = 1
 binVolume = binVolumes(xBbin, Q2bin, tbin)
 plt.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg)
+
+histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0
+histVGGGenInbphi50nA, histVGGGenInbrad50nA, histVGGGenInbborn50nA = 0, 0, 0
+
+jobNum = 3987
+histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/{}GenxB.npz".format(jobNum))["hist"]
+histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/{}GenQ2.npz".format(jobNum))["hist"]
+histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/{}Gent1.npz".format(jobNum))["hist"]
+histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
+histVGGGenInbrad50nA = histVGGGenInbrad50nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
+histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
+
+xBavg = divideHist(histVGGGenInbxB50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+Q2avg = divideHist(histVGGGenInbQ250nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+t1avg = divideHist(histVGGGenInbt150nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+phi1avg = divideHist(histVGGGenInbphi150nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+
+plt.hist(phi1avg, printDVCSKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
+plt.hist(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
+
 plt.show()
