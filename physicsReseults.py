@@ -459,7 +459,7 @@ histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.
 xBavg = divideHist(histVGGGenInbxB50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 Q2avg = divideHist(histVGGGenInbQ250nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 t1avg = divideHist(histVGGGenInbt150nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
-phi1avg = divideHist(histVGGGenInbphi150nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+phi1avg = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 
 plt.hist(phi1avg, printDVCSKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
 plt.hist(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
