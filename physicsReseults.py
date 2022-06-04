@@ -63,7 +63,7 @@ def readReduced(parent, jobNum, polarity, beamCurrent):
     return df.loc[:, columns_needed]
 
 def divideHist(df1, df2):
-	return np.divide(df1, df2, where = df1>0, out = np.zeros(df1.shape))
+	return np.divide(df1, df2, where = df2>0, out = np.zeros(df2.shape))
 
 def inverseHist(df1):
 	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros(df1))
