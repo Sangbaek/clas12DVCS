@@ -171,25 +171,27 @@ epgExpOutb.loc[:, "beamCurrent"] = epgExpOutb.RunNum.map(beamCurrent_dict)
 pi0ExpInb.loc[:, "beamCurrent"] = pi0ExpInb.RunNum.map(beamCurrent_dict)
 pi0ExpOutb.loc[:, "beamCurrent"] = pi0ExpOutb.RunNum.map(beamCurrent_dict)
 
-runNum = np.sort(epgExpInb.RunNum.unique())
-charges = []
-charges_QA = []
-for run in runNum:
-    charges.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].max() - epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].min())
-    charges_QA.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ_QA"].max())
-charges = np.array(charges)
-charges_QA = np.array(charges_QA)
-inbcharge_epg = np.sum(charges_QA)
+# runNum = np.sort(epgExpInb.RunNum.unique())
+# charges = []
+# charges_QA = []
+# for run in runNum:
+#     charges.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].max() - epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].min())
+#     charges_QA.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ_QA"].max())
+# charges = np.array(charges)
+# charges_QA = np.array(charges_QA)
+# inbcharge_epg = np.sum(charges_QA)
 
-runNum = np.sort(epgExpOutb.RunNum.unique())
-charges = []
-charges_QA = []
-for run in runNum:
-    charges.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].max() - epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].min())
-    charges_QA.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ_QA"].max())
-charges = np.array(charges)
-charges_QA = np.array(charges_QA)
-outbcharge_epg = np.sum(charges_QA)
+# runNum = np.sort(epgExpOutb.RunNum.unique())
+# charges = []
+# charges_QA = []
+# for run in runNum:
+#     charges.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].max() - epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].min())
+#     charges_QA.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ_QA"].max())
+# charges = np.array(charges)
+# charges_QA = np.array(charges_QA)
+# outbcharge_epg = np.sum(charges_QA)
+
+inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 
 epgExpInb = makeReduced(epgExpInb)
 pi0ExpInb = makeReduced(pi0ExpInb)
