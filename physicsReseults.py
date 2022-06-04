@@ -125,7 +125,7 @@ pi0ExpOutb = makeReduced(pi0ExpOutb)
 epgExp = pd.concat([epgExpInb, epgExpOutb])
 pi0Exp = pd.concat([pi0ExpInb, pi0ExpOutb])
 
-if args.sc:
+if args.skipcont:
 	pass
 
 else:
