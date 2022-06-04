@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from copy import copy
 cmap = copy(plt.cm.get_cmap("jet"))
 from scipy.optimize import least_squares
+from utils.const import *
 from matplotlib.colors import LogNorm
 cmap.set_under('w',0)
 cmap.set_bad('w',0)
@@ -67,28 +68,6 @@ def divideHist(df1, df2):
 
 def inverseHist(df1):
 	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros(df1))
-
-# simulation run numbers
-runs_inb_vgg50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
-runs_inb_vgg55nA = [4186, 4545]
-runs_inb_vgg45nA = [4188, 4547]
-runs_inb_vgg0nA = [4192, 4561]
-runs_inb_bh50nA = [4238, 4542]
-runs_inb_bh45nA = [4740, 4742, 4745, 4751, 4760]
-runs_inb_bkg50nA = [4076, 4202, 4209]
-runs_inb_bkg55nA = [4212]
-runs_inb_bkg45nA = [4217]
-runs_inb_bkg0nA = [4231]
-
-runs_outb_vgg50nA = [4240, 4250, 4251, 4252, 4255, 4398, 4532, 4534, 4540, 4541, 4717]
-runs_outb_vgg40nA = [4263, 4546]
-runs_outb_vgg0nA = [4262, 4554]
-runs_outb_vgg40nAT = [4266, 4562]
-runs_outb_bh50nA = [4249, 4544, 4780, 4808, 4812, 4818]
-runs_outb_bkg50nA = [4243, 4271, 4290]
-runs_outb_bkg40nA = [4293]
-runs_outb_bkg0nA = [4304]
-runs_outb_bkg40nAT = [4306]
 
 # read exp
 parent = "/volatile/clas12/sangbaek/nov2021/"
@@ -259,13 +238,8 @@ del df_bkg2gs_inb
 del df_bkg2gs_outb
 gc.collect()
 
-
-#define the collecion of bin edges
-collection_xBbins = [np.linspace(0.05, 0.85, 6)]
-collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
-collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
-collection_phibins = [np.linspace(0, 360, 25)]
-
+# np.savez("nphisograms/epgExp.npz", epgExp = epgExp)
+epgExp.to_pickle("nphistograms/epgExp.pkl")
 
 # trial 0
 i = 0
@@ -280,74 +254,94 @@ histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epg
 histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
 
+histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
 
 print("reading bhs")
 
-df_bhs_inb = []
+histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
 for jobNum in runs_inb_bh50nA:
-    df_bhs_inb.append(readReduced(parent_MC_BH_inb, jobNum, -1, 50))
+	histBHInb50nA = histBHInb50nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histBHInbFD50nA = histBHInbFD50nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histBHInbCD50nA = histBHInbCD50nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
+
+histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA = 0, 0, 0, 0
 for jobNum in runs_inb_bh45nA:
-    df_bhs_inb.append(readReduced(parent_MC_BH_inb, jobNum, -1, 45))
+	histBHInb45nA = histBHInb45nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
     
-df_bhs_inb = pd.concat(df_bhs_inb)
-
-print("reading bh Gens")
-
-df_bhs_Gen_inb = []
+histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
 for jobNum in runs_inb_bh50nA:
-    df_bhs_Gen_inb.append(readReduced(parent_Gen_BH_inb, jobNum, -1, 50))
+	histBHGenInb50nA = histBHGenInb50nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histBHGenInbFD50nA = histBHGenInbFD50nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histBHGenInbCD50nA = histBHGenInbCD50nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
+
+histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA = 0, 0, 0, 0
 for jobNum in runs_inb_bh45nA:
-    df_bhs_Gen_inb.append(readReduced(parent_Gen_BH_inb, jobNum, -1, 45))
-    
-df_bhs_Gen_inb = pd.concat(df_bhs_Gen_inb)
+	histBHGenInb45nA = histBHGenInb45nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
 
-histBHInb, bins = np.histogramdd(df_bhs_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHGenInb, bins = np.histogramdd(df_bhs_Gen_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHInbFD, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHGenInbFD, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHInbCD, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHGenInbCD, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHInbCDFT, bins = np.histogramdd(df_bhs_inb.loc[df_bhs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histBHGenInbCDFT, bins = np.histogramdd(df_bhs_Gen_inb.loc[df_bhs_Gen_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+print("reading vggs")
 
-df_vggs_inb = []
+histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg50nA:
-    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 50))
-for jobNum in runs_inb_vgg55nA:
-    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 55))
+	histVGGInb50nA = histVGGInb50nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histVGGInbFD50nA = histVGGInbFD50nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histVGGInbCD50nA = histVGGInbCD50nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
+
+histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg45nA:
-    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 45))
+	histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
+
+histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
+for jobNum in runs_inb_vgg55nA:
+	histVGGInb55nA = histVGGInb55nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histVGGInbFD55nA = histVGGInbFD55nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histVGGInbCD55nA = histVGGInbCD55nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
+
+histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg0nA:
-    df_vggs_inb.append(readReduced(parent_MC_inb, jobNum, -1, 0))
+	histVGGInb0nA = histVGGInb0nA + np.load("nphistograms/{}Rec.npz".format(jobNum))["hist"]
+	histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/{}Rec1.npz".format(jobNum))["hist"]
+	histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/{}Rec2.npz".format(jobNum))["hist"]
+	histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/{}Rec3.npz".format(jobNum))["hist"]
+
     
-df_vggs_inb = pd.concat(df_vggs_inb)
-
-print("reading vgg Gens")
-
-df_vggs_Gen_inb = []
+histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg50nA:
-    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 50))
-for jobNum in runs_inb_vgg55nA:
-    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 55))
+	histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histVGGGenInbFD50nA = histVGGGenInbFD50nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histVGGGenInbCD50nA = histVGGGenInbCD50nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
+
+histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg45nA:
-    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 45))
+	histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
+
+histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
+for jobNum in runs_inb_vgg55nA:
+	histVGGGenInb55nA = histVGGGenInb55nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
+
+histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
 for jobNum in runs_inb_vgg0nA:
-    df_vggs_Gen_inb.append(readReduced(parent_Gen_inb, jobNum, -1, 0))
-    
-df_vggs_Gen_inb = pd.concat(df_vggs_Gen_inb)
-
-
-histVGGInb, bins = np.histogramdd(df_vggs_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGGenInb, bins = np.histogramdd(df_vggs_Gen_inb.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGInbFD, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGGenInbFD, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGInbCD, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGGenInbCD, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGInbCDFT, bins = np.histogramdd(df_vggs_inb.loc[df_vggs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-histVGGGenInbCDFT, bins = np.histogramdd(df_vggs_Gen_inb.loc[df_vggs_Gen_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-
-#Method 1
-accVGGInbFD = divideHist(histVGGInbFD, histVGGGenInbFD)
-accVGGInbCD = divideHist(histVGGInbCD, histVGGGenInbCD)
-accVGGInbCDFT = divideHist(histVGGInbCDFT, histVGGGenInbCDFT)
+	histVGGGenInb0nA = histVGGGenInb0nA + np.load("nphistograms/{}Gen.npz".format(jobNum))["hist"]
+	histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/{}Gen1.npz".format(jobNum))["hist"]
+	histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/{}Gen2.npz".format(jobNum))["hist"]
+	histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/{}Gen3.npz".format(jobNum))["hist"]
 
