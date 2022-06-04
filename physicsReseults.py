@@ -149,7 +149,7 @@ i = 0
 xBbins  = collection_xBbins[i]
 Q2bins  = collection_Q2bins[i]
 tbins   = collection_tbins [i]
-phibins = collection_phibin[i]
+phibins = collection_phibins[i]
 
 histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 histPi0InbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
