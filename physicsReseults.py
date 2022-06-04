@@ -164,6 +164,26 @@ epgExpOutb.loc[:, "beamCurrent"] = epgExpOutb.RunNum.map(beamCurrent_dict)
 pi0ExpInb.loc[:, "beamCurrent"] = pi0ExpInb.RunNum.map(beamCurrent_dict)
 pi0ExpOutb.loc[:, "beamCurrent"] = pi0ExpOutb.RunNum.map(beamCurrent_dict)
 
+runNum = np.sort(epgExpInb.RunNum.unique())
+charges = []
+charges_QA = []
+for run in runNum:
+    charges.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].max() - epgExpInb.loc[epgExpInb.RunNum==run, "beamQ"].min())
+    charges_QA.append(epgExpInb.loc[epgExpInb.RunNum==run, "beamQ_QA"].max())
+charges = np.array(charges)
+charges_QA = np.array(charges_QA)
+inbcharge_epg = np.sum(charges_QA)
+
+runNum = np.sort(epgExpOutb.RunNum.unique())
+charges = []
+charges_QA = []
+for run in runNum:
+    charges.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].max() - epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ"].min())
+    charges_QA.append(epgExpOutb.loc[epgExpOutb.RunNum==run, "beamQ_QA"].max())
+charges = np.array(charges)
+charges_QA = np.array(charges_QA)
+outbcharge_epg = np.sum(charges_QA)
+
 epgExpInb = makeReduced(epgExpInb)
 pi0ExpInb = makeReduced(pi0ExpInb)
 epgExpOutb = makeReduced(epgExpOutb)
@@ -171,18 +191,6 @@ pi0ExpOutb = makeReduced(pi0ExpOutb)
 
 epgExp = pd.concat([epgExpInb, epgExpOutb])
 pi0Exp = pd.concat([pi0ExpInb, pi0ExpOutb])
-
-runNum = np.sort(epgExp.RunNum.unique())
-charges = []
-charges_QA = []
-for run in runNum:
-    charges.append(epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].max() - epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].min())
-    charges_QA.append(epgExp.loc[epgExp.RunNum==run, "beamQ_QA"].max())
-charges = np.array(charges)
-charges_QA = np.array(charges_QA)
-
-inbcharge_epg = np.sum(charges_QA[runNum<5420])
-outbcharge_epg = np.sum(charges_QA[runNum>=5420])
 
 if args.skipcont:
 	pass
