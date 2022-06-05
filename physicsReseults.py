@@ -137,17 +137,21 @@ def readReduced(parent, jobNum, polarity, beamCurrent):
     return df.loc[:, columns_needed]
 
 def divideHist(df1, df2):
-	return np.divide(df1, df2, where = df2>0, out = np.zeros(df2.shape))
+	return np.divide(df1, df2, where = df2>0, out = np.zeros_like(df2.shape))
 
 def inverseHist(df1):
-	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros(df1))
+	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros_like(df1))
 
-def binVolumes(xBbin, Q2bin, tbin, i=0):
+def binVolumes(xBbin, Q2bin, tbin, finehist, i=0):
 	xBbins  = collection_xBbins[i]
 	Q2bins  = collection_Q2bins[i]
 	tbins   = collection_tbins [i]
 	phibins = collection_phibins[i]
-	return np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
+	fineVols = []
+	for phibin in range(len(phibins)-1):
+		fineVol = finehist[6*xBbin:6*(xBbin+1), 6*Q2bin:6*(Q2bin+1), 6*tbin:6*(tbin+1), 6*phibin:6*(phibin+1)].flatten()
+		fineVols.append(fineVol)
+	return (np.sum(fineVol, axis = 1)/6**4)*np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
 
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -479,10 +483,9 @@ accCorrected_BH = FDcontribution + CDcontribution + CDFTcontribution
 xBbin = 1
 Q2bin = 2
 tbin = 1
-binVolume = binVolumes(xBbin, Q2bin, tbin)
 
 histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
-histVGGGenInbphi50nA, histVGGGenInbrad50nA, histVGGGenInbborn50nA = 0, 0, 0
+histVGGGenInbphi50nA, histVGGGenInbrad50nA, histVGGGenInbborn50nA, histVGGGenInbbinVol50nA = 0, 0, 0, 0
 
 for jobNum in runs_inb_vgg50nA:
 	histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/{}GenInt.npz".format(jobNum))["hist"]
@@ -492,9 +495,10 @@ for jobNum in runs_inb_vgg50nA:
 	histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
 	histVGGGenInbrad50nA = histVGGGenInbrad50nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
+	histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"]
 
 histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
-histBHGenInbphi45nA, histBHGenInbrad45nA, histBHGenInbborn45nA = 0, 0, 0
+histBHGenInbphi45nA, histBHGenInbrad45nA, histBHGenInbborn45nA, histBHGenInbbinVol45nA = 0, 0, 0, 0
 
 for jobNum in runs_inb_bh45nA:
 	histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/{}GenInt.npz".format(jobNum))["hist"]
@@ -504,6 +508,7 @@ for jobNum in runs_inb_bh45nA:
 	histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
 	histBHGenInbrad45nA = histBHGenInbrad45nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histBHGenInbborn45nA = histBHGenInbborn45nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
+	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"]
 
 
 phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
@@ -521,6 +526,8 @@ t1avg_BH = divideHist(histBHGenInbt145nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbi
 integratedRad_BH = divideHist(histBHGenInb45nA, histBHGenInbrad45nA)[xBbin, Q2bin, tbin, :]*0.001*(2*np.pi)
 pointBorn_BH = np.array(printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True))
 rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
+
+binVolume = binVolumes(xBbin, Q2bin, tbin, histVGGGenInbbinVol50nA)
 
 plt.errorbar(phi1avg_VGG, accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG])
 plt.errorbar(phi1avg_BH, accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH])
