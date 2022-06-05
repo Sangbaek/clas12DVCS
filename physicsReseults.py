@@ -142,11 +142,11 @@ def divideHist(df1, df2):
 def inverseHist(df1):
 	return np.divide(np.ones(df1.shape), df1, where = df1!=0, out = np.zeros_like(df1))
 
-def binVolumes(xBbin, Q2bin, tbin, finehist, i=0):
-	xBbins  = collection_xBbins[i]
-	Q2bins  = collection_Q2bins[i]
-	tbins   = collection_tbins [i]
-	phibins = collection_phibins[i]
+def binVolumes(xBbin, Q2bin, tbin, finehist, k=0):
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
 	fineVols = []
 	for phibin in range(len(phibins)-1):
 		fineVol = finehist[6*xBbin:6*(xBbin+1), 6*Q2bin:6*(Q2bin+1), 6*tbin:6*(tbin+1), 6*phibin:6*(phibin+1)].flatten()
@@ -365,14 +365,15 @@ else:
 
 epgExp = pd.read_pickle("nphistograms/epgExp.pkl")
 # trial 0
-i = 0
+k = 0
 
-xBbins  = collection_xBbins[i]
-Q2bins  = collection_Q2bins[i]
-tbins   = collection_tbins [i]
-phibins = collection_phibins[i]
+xBbins  = collection_xBbins[k]
+Q2bins  = collection_Q2bins[k]
+tbins   = collection_tbins [k]
+phibins = collection_phibins[k]
 
 #Inbending cross sections
+i = 0 #selected background estimation
 histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
 histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
@@ -471,18 +472,38 @@ for jobNum in runs_inb_vgg0nA:
 CDFTcontribution = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
 CDcontribution = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
 FDcontribution = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
+#error analysis
+histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+histExpUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histExpUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histExpUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+uncStatInbFD = divideHist(histBkgUncInbFD+histExpUncInbFD, histBHDVCSInbFD**2) + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA)
+uncStatInbCD = divideHist(histBkgUncInbCD+histExpUncInbCD, histBHDVCSInbCD**2) + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA)
+uncStatInbCDFT = divideHist(histBkgUncInbCDFT+histExpUncInbCDFT, histBHDVCSInbCDFT**2) + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA)
+uncStatInb = np.sqrt(FDcontribution**2 *uncStatInbFD + CDcontribution**2 + uncStatInbCD + CDFTcontribution**2 + uncStatInbCDFT)
 
 accCorrected_VGG = FDcontribution + CDcontribution + CDFTcontribution
+uncStatInb_VGG = divideHist(np.sqrt(uncStatInb), accCorrected_VGG)
 
 CDFTcontribution = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT50nA , histBHInbCDFT50nA)
 CDcontribution = divideHist(histBHDVCSInbCD*histBHGenInbCD50nA , histBHInbCD50nA)
 FDcontribution = divideHist(histBHDVCSInbFD*histBHGenInbFD50nA , histBHInbFD50nA)
+#error analysis
+histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+histExpUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histExpUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+histExpUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+uncStatInbFD = divideHist(histBkgUncInbFD+histExpUncInbFD, histBHDVCSInbFD**2) + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA)
+uncStatInbCD = divideHist(histBkgUncInbCD+histExpUncInbCD, histBHDVCSInbCD**2) + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA)
+uncStatInbCDFT = divideHist(histBkgUncInbCDFT+histExpUncInbCDFT, histBHDVCSInbCDFT**2) + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA)
+uncStatInb = np.sqrt(FDcontribution**2 *uncStatInbFD + CDcontribution**2 + uncStatInbCD + CDFTcontribution**2 + uncStatInbCDFT)
 
 accCorrected_BH = FDcontribution + CDcontribution + CDFTcontribution
-
-xBbin = 1
-Q2bin = 2
-tbin = 1
+uncStatInb_BH = divideHist(np.sqrt(uncStatInb), accCorrected_BH)
 
 histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
 histVGGGenInbphi50nA, histVGGGenInbrad50nA, histVGGGenInbborn50nA, histVGGGenInbbinVol50nA = 0, 0, 0, 0
@@ -510,6 +531,9 @@ for jobNum in runs_inb_bh45nA:
 	histBHGenInbborn45nA = histBHGenInbborn45nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
 	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"].astype(int)
 
+xBbin = 1
+Q2bin = 2
+tbin = 1
 
 phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -518,6 +542,7 @@ t1avg_VGG = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, 
 integratedRad_VGG = divideHist(histVGGGenInb50nA, histVGGGenInbrad50nA)[xBbin, Q2bin, tbin, :]*0.001*(2*np.pi)
 pointBorn_VGG = np.array(printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True))
 rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG)
+
 
 phi1avg_BH = divideHist(histBHGenInbphi45nA, histBHGenInb45nA)[xBbin, Q2bin, tbin, :]
 xBavg_BH = divideHist(histBHGenInbxB45nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
@@ -529,8 +554,10 @@ rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
 
 binVolume = binVolumes(xBbin, Q2bin, tbin, histVGGGenInbbinVol50nA)
 
-plt.errorbar(phi1avg_VGG, accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG])
-plt.errorbar(phi1avg_BH, accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH])
+xsecInb_VGG = divideHist(accCorrected_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/inbcharge_epg
+plt.errorbar(phi1avg_VGG, xsecInb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecInb_VGG*uncStatInb_VGG)
+xsecInb_BH = divideHist(accCorrected_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/inbcharge_epg
+plt.errorbar(phi1avg_BH, xsecInb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecInb_BH*uncStatInb_BH)
 
 plt.plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b')
 plt.plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r')
