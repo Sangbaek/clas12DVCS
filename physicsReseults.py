@@ -682,7 +682,7 @@ uncStat_BH = divideHist(np.sqrt(uncStat_BH), accCorrected_BH)
 active = 0
 for tbin in range(len(tbins) -1):
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (80, 80))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
@@ -707,19 +707,19 @@ for tbin in range(len(tbins) -1):
 			binVolume = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA)
 	#
 			xsecInb_VGG = divideHist(accCorrectedInb_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
-			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsecInb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecInb_VGG*uncStatInb_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
+			# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsecInb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecInb_VGG*uncStatInb_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
 			xsecInb_BH = divideHist(accCorrectedInb_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
-			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecInb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecInb_BH*uncStatInb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data(BH)')
+			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecInb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecInb_BH*uncStatInb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
 	#
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
-			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
+			# axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
 	#
 			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[0])
 			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
 			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
 			header = xBheader +Q2header + theader
-			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 30)
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
@@ -739,7 +739,7 @@ for tbin in range(len(tbins) -1):
 active = 0
 for tbin in range(len(tbins) -1):
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (80, 80))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
@@ -766,7 +766,7 @@ for tbin in range(len(tbins) -1):
 			xsecOutb_VGG = divideHist(accCorrectedOutb_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
 			# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsecOutb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecOutb_VGG*uncStatOutb_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
 			xsecOutb_BH = divideHist(accCorrectedOutb_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
-			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecOutb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecOutb_BH*uncStatOutb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data(BH)')
+			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecOutb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecOutb_BH*uncStatOutb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
 	#
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
@@ -776,7 +776,7 @@ for tbin in range(len(tbins) -1):
 			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
 			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
 			header = xBheader +Q2header + theader
-			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 30)
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
@@ -795,11 +795,11 @@ for tbin in range(len(tbins) -1):
 active = 0
 for tbin in range(len(tbins) -1):
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (80, 80))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
-			if np.sum((histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
+			if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
 				continue
 			phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
 			xBavg_VGG = divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -822,7 +822,7 @@ for tbin in range(len(tbins) -1):
 			xsec_VGG = divideHist(accCorrected_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*charge_epg)
 			# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsec_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsec_VGG*uncStat_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
 			xsec_BH = divideHist(accCorrected_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*charge_epg)
-			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsec_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsec_BH*uncStat_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data(BH)')
+			axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsec_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsec_BH*uncStat_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
 	#
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
@@ -832,7 +832,7 @@ for tbin in range(len(tbins) -1):
 			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
 			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
 			header = xBheader +Q2header + theader
-			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 30)
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
