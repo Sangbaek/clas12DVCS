@@ -541,7 +541,7 @@ for tbin in range(len(tbins) -1):
 			if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT)[xBbin, Q2bin, tbin, :])<100:
 				continue
 			if active == 0:
-				handles, labels = axs[len(Q2bins)-Q2bins-2, xBbin].get_legend_handles_labels()
+				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
 
 			phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
