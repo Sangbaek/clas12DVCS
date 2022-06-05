@@ -495,7 +495,7 @@ for jobNum in runs_inb_vgg50nA:
 	histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
 	histVGGGenInbrad50nA = histVGGGenInbrad50nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
-	histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"]
+	histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"].astype(int)
 
 histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
 histBHGenInbphi45nA, histBHGenInbrad45nA, histBHGenInbborn45nA, histBHGenInbbinVol45nA = 0, 0, 0, 0
@@ -508,7 +508,7 @@ for jobNum in runs_inb_bh45nA:
 	histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
 	histBHGenInbrad45nA = histBHGenInbrad45nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histBHGenInbborn45nA = histBHGenInbborn45nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
-	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"]
+	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"].astype(int)
 
 
 phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
