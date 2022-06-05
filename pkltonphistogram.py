@@ -8,6 +8,9 @@ from utils.const import *
 import argparse
 import os
 
+def divideHist(df1, df2):
+	return np.divide(df1, df2, where = df2!=0, out = np.zeros(df2.shape, dtype = float))
+
 if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -68,12 +71,14 @@ if __name__ == "__main__":
 			np.savez(out, hist = hist)
 			#BornWeight
 			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "born")
+			hist0, _ = np.histogramdd(df.loc[df.BornWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			hist, _ = np.histogramdd(df.loc[df.BornWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.BornWeight>0, "BornWeight"])
-			np.savez(out, hist = hist)
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
 			#GenWeight
 			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "rad")
+			hist0, _ = np.histogramdd(df.loc[df.GenWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			hist, _ = np.histogramdd(df.loc[df.GenWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.GenWeight>0, "GenWeight"])
-			np.savez(out, hist = hist)
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
 
 			#Integrated
 			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "Int")
