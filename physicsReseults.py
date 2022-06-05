@@ -480,20 +480,35 @@ for jobNum in runs_inb_vgg50nA:
 	histVGGGenInbrad50nA = histVGGGenInbrad50nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
 
-phi1avg = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
-xBavg = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg.shape)
-Q2avg = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg.shape)
-t1avg = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg.shape)
+for jobNum in runs_inb_bh45nA:
+	histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/{}GenInt.npz".format(jobNum))["hist"]
+	histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/{}GenxB.npz".format(jobNum))["hist"]
+	histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("nphistograms/{}GenQ2.npz".format(jobNum))["hist"]
+	histBHGenInbt145nA = histBHGenInbt145nA + np.load("nphistograms/{}Gent1.npz".format(jobNum))["hist"]
+	histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/{}Genphi.npz".format(jobNum))["hist"]
+	histBHGenInbrad45nA = histBHGenInbrad45nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
+	histBHGenInbborn45nA = histBHGenInbborn45nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
 
-integratedRad = divideHist(histBHGenInb50nA, histBHGenInbrad50nA)[xBbin, Q2bin, tbin, :]
-pointBorn = printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg), globalfit = True)
-rcfactors_BH = divideHist(integratedRad, pointBorn, where = pointBorn>0, out = np.zeros(pointBorn.shape))
-integratedRad = divideHist(histVGGGenInb50nA, histVGGGenInbrad50nA)[xBbin, Q2bin, tbin, :]
-pointBorn = printVGGarray(xBavg, Q2avg, t1avg, np.radians(phi1avg), globalfit = True)
-rcfactors_VGG = divideHist(integratedRad, pointBorn, where = pointBorn>0, out = np.zeros(pointBorn.shape))
 
-plt.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH)
-plt.hist(phibins[:-1], phibins, weights = accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG)
+phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
+xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
+Q2avg_VGG = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
+t1avg_VGG = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
+integratedRad_VGG = divideHist(histVGGGenInb45nA, histVGGGenInbrad45nA)[xBbin, Q2bin, tbin, :]
+pointBorn_VGG = printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True)
+rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG, where = pointBorn_VGG>0, out = np.zeros(pointBorn_VGG.shape))
+
+
+phi1avg_BH = divideHist(histBHGenInbphi50nA, histBHGenInb50nA)[xBbin, Q2bin, tbin, :]
+xBavg_BH = divideHist(histBHGenInbxB50nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+Q2avg_BH = divideHist(histBHGenInbQ250nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+t1avg_BH = divideHist(histBHGenInbt150nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+integratedRad_BH = divideHist(histBHGenInb45nA, histBHGenInbrad45nA)[xBbin, Q2bin, tbin, :]
+pointBorn_BH = printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True)
+rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH, where = pointBorn_BH>0, out = np.zeros(pointBorn_BH.shape))
+
+plt.hist(phi1avg_VGG[:-1], phi1avg_VGG, weights = accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG)
+plt.hist(phi1avg_BH[:-1], phi1avg_BH, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH)
 
 plt.plot(phi1avg, printKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
 plt.plot(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
