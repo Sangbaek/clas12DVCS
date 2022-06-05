@@ -44,7 +44,7 @@ pgf_with_latex = {
 }
 matplotlib.rcParams.update(pgf_with_latex)
 
-def printDVCSKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
     if isinstance(xBarray, pd.core.series.Series):
         xBarray = xBarray.to_numpy()
@@ -53,10 +53,10 @@ def printDVCSKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         phiarray = phiarray.to_numpy()
         
     for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
-        BHarray.append(printDVCSKM(xB, Q2, t, phi, **kwargs))
+        BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printDVCSKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
+def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
     phi = np.pi - phi
     pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
                   process='ep2epgamma', exptype='fixed target', frame =frame,
@@ -66,6 +66,30 @@ def printDVCSKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
 #                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
 #                    in1energy=10.604, in1charge=-1, in1polarization=+1)
     return th_KM15.XS(pt1)
+
+def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    VGGarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        VGGarray.append(printVGG(xB, Q2, t, phi, **kwargs))
+    return VGGarray
+
+def printVGG(xB, Q2, t, phi, globalfit = True):
+    my_env = os.environ.copy()
+    my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
+    my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
+    if globalfit:
+        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
+    else:
+        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
+        
+    dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+    return dstot
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
@@ -439,17 +463,16 @@ FDcontribution = divideHist(histBHDVCSInbFD*histBHGenInbFD50nA , histBHInbFD50nA
 
 accCorrected_BH = FDcontribution + CDcontribution + CDFTcontribution
 
-xBbin = 2
+xBbin = 1
 Q2bin = 2
 tbin = 1
 binVolume = binVolumes(xBbin, Q2bin, tbin)
-plt.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg)
 
-histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0
+histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
 histVGGGenInbphi50nA, histVGGGenInbrad50nA, histVGGGenInbborn50nA = 0, 0, 0
 
 for jobNum in runs_inb_vgg50nA:
-	histVGGGenInbInt50nA = histVGGGenInbxB50nA + np.load("nphistograms/{}GenxB.npz".format(jobNum))["hist"]
+	histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/{}GenInt.npz".format(jobNum))["hist"]
 	histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/{}GenxB.npz".format(jobNum))["hist"]
 	histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/{}GenQ2.npz".format(jobNum))["hist"]
 	histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/{}Gent1.npz".format(jobNum))["hist"]
@@ -462,7 +485,18 @@ xBavg = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin
 Q2avg = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg.shape)
 t1avg = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg.shape)
 
-plt.hist(phi1avg, printDVCSKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
-plt.hist(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
+integratedRad = divideHist(histBHGenInb50nA, histBHGenInbrad50nA)[xBbin, Q2bin, tbin, :]
+pointBorn = printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg), globalfit = True)
+rcfactors_BH = divideHist(integratedRad, pointBorn, where = pointBorn>0, out = np.zeros(pointBorn.shape))
+integratedRad = divideHist(histVGGGenInb50nA, histVGGGenInbrad50nA)[xBbin, Q2bin, tbin, :]
+pointBorn = printVGGarray(xBavg, Q2avg, t1avg, np.radians(phi1avg), globalfit = True)
+rcfactors_VGG = divideHist(integratedRad, pointBorn, where = pointBorn>0, out = np.zeros(pointBorn.shape))
+
+plt.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH)
+plt.hist(phibins[:-1], phibins, weights = accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG)
+
+plt.plot(phi1avg, printKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
+plt.plot(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
+plt.plot(phi1avg, printVGGarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'g')
 
 plt.show()
