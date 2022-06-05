@@ -104,6 +104,6 @@ if __name__ == "__main__":
 						finetbins = np.linspace(tbins[tind], tbins[tind+1], 6)
 						finephibins = np.linspace(phibins[phiind], phibins[phiind+1], 6)
 						hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
-						hists["hist{}{}{}{}".format(xBind, Q2ind, tind, phiind)] = hist
-						print("saving {}{}{}{} bins".format(xBind, Q2ind, tind, phiind))
+						hists["histxB{}Q2{}t{}phi{}".format(xBind, Q2ind, tind, phiind)] = hist
+						print("saving xB{}Q2{}t{}phi{} bins occupied {}".format(xBind, Q2ind, tind, phiind, np.sum(hist)/6**4))
 						np.savez(out, **hists)
