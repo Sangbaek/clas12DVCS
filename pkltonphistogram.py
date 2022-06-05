@@ -50,48 +50,48 @@ if __name__ == "__main__":
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}.npz".format(jobnum, recgen, k)
+		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}_k{}.npz".format(jobnum, recgen, k)
 		hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 		np.savez(out, hist = hist)
 
 		for config in df.config.unique():
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, config, k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, config, k)
 			hist, _ = np.histogramdd(df.loc[df.config == config , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			np.savez(out, hist = hist)
 
 		if recgen == "Gen":
 			#phi
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "phi", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "phi", k)
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
 			np.savez(out, hist = hist)
 			#BornWeight
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "born", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "born", k)
 			hist, _ = np.histogramdd(df.loc[df.BornWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.BornWeight>0, "BornWeight"])
 			np.savez(out, hist = hist)
 			#GenWeight
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "rad", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "rad", k)
 			hist, _ = np.histogramdd(df.loc[df.GenWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.GenWeight>0, "GenWeight"])
 			np.savez(out, hist = hist)
 
 			#Integrated
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "Int", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "Int", k)
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins])
 			np.savez(out, hist = hist)
 			#xB
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "xB", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "xB", k)
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.xB)
 			np.savez(out, hist = hist)
 			#Q2
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "Q2", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "Q2", k)
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.Q2)
 			np.savez(out, hist = hist)
 			#t
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "t1", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "t1", k)
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
 			np.savez(out, hist = hist)
 
 			#volume count
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}{}.npz".format(jobnum, recgen, "binVolume", k)
+			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}_k{}.npz".format(jobnum, recgen, "binVolume", k)
 			finexBbins, fineQ2bins, finetbins, finephibins = [], [], [], []
 			for xBind in range(len(xBbins)-1):
 				finexBbins.append(np.linspace(xBbins[xBind], xBbins[xBind+1], 6+1))
