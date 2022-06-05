@@ -137,10 +137,10 @@ def readReduced(parent, jobNum, polarity, beamCurrent):
     return df.loc[:, columns_needed]
 
 def divideHist(df1, df2):
-	return np.divide(df1, df2, where = df2>0, out = np.zeros_like(df2.shape))
+	return np.divide(df1, df2, where = df2!=0, out = np.zeros(df2.shape, dtype = float))
 
 def inverseHist(df1):
-	return np.divide(np.ones(df1.shape), df1, where = df1>0, out = np.zeros_like(df1))
+	return np.divide(np.ones(df1.shape), df1, where = df1!=0, out = np.zeros_like(df1))
 
 def binVolumes(xBbin, Q2bin, tbin, finehist, i=0):
 	xBbins  = collection_xBbins[i]
