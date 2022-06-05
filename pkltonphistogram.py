@@ -109,6 +109,6 @@ if __name__ == "__main__":
 		finetbins = np.unique(np.concatenate(finetbins))
 		finephibins = np.unique(np.concatenate(finephibins))
 		hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
-		hist = np.divide(hist,hist, where = hist>0, out = np.zeros(hist))
+		hist = np.divide(hist,hist, where = hist>0, out = np.zeros_like(hist))
 		# print("saving xB{}Q2{}t{}phi{} bins occupied {}".format(xBind, Q2ind, tind, phiind, np.sum(hist)/6**4))
 		np.savez(out, hist=hist)
