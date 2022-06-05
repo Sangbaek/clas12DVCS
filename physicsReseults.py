@@ -497,24 +497,24 @@ phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, 
 xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
 Q2avg_VGG = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
 t1avg_VGG = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-integratedRad_VGG = divideHist(histVGGGenInb50nA, histVGGGenInbrad50nA)[xBbin, Q2bin, tbin, :]
-pointBorn_VGG = printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True)
-rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG, where = pointBorn_VGG>0, out = np.zeros(pointBorn_VGG.shape))
+integratedRad_VGG = divideHist(histVGGGenInb50nA, histVGGGenInbrad50nA)[xBbin, Q2bin, tbin, :]*0.001*(2*np.pi)
+pointBorn_VGG = np.array(printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True))
+rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG)
 
 
-phi1avg_BH = divideHist(histBHGenInbphi50nA, histBHGenInb50nA)[xBbin, Q2bin, tbin, :]
-xBavg_BH = divideHist(histBHGenInbxB50nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-Q2avg_BH = divideHist(histBHGenInbQ250nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-t1avg_BH = divideHist(histBHGenInbt150nA, histBHGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-integratedRad_BH = divideHist(histBHGenInb45nA, histBHGenInbrad45nA)[xBbin, Q2bin, tbin, :]
-pointBorn_BH = printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True)
-rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH, where = pointBorn_BH>0, out = np.zeros(pointBorn_BH.shape))
+phi1avg_BH = divideHist(histBHGenInbphi45nA, histBHGenInb45nA)[xBbin, Q2bin, tbin, :]
+xBavg_BH = divideHist(histBHGenInbxB45nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+Q2avg_BH = divideHist(histBHGenInbQ245nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+t1avg_BH = divideHist(histBHGenInbt145nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
+integratedRad_BH = divideHist(histBHGenInb45nA, histBHGenInbrad45nA)[xBbin, Q2bin, tbin, :]*0.001*(2*np.pi)
+pointBorn_BH = np.array(printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True))
+rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
 
-plt.hist(phi1avg_VGG[:-1], phi1avg_VGG, weights = accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG)
-plt.hist(phi1avg_BH[:-1], phi1avg_BH, weights = accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH)
+plt.errorbar(phi1avg_VGG, accCorrected_VGG[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_VGG)
+plt.errorbar(phi1avg_BH, accCorrected_BH[xBbin, Q2bin, tbin, :]/binVolume/inbcharge_epg/rcfactors_BH)
 
-plt.plot(phi1avg, printKMarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'b')
-plt.plot(phi1avg, printBHarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'r')
-plt.plot(phi1avg, printVGGarray(xBavg, Q2avg, t1avg, np.radians(phi1avg)), color = 'g')
+plt.plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b')
+plt.plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r')
+plt.plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g')
 
 plt.show()
