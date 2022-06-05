@@ -480,6 +480,9 @@ for jobNum in runs_inb_vgg50nA:
 	histVGGGenInbrad50nA = histVGGGenInbrad50nA + np.load("nphistograms/{}Genrad.npz".format(jobNum))["hist"]
 	histVGGGenInbborn50nA = histVGGGenInbborn50nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
 
+histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
+histBHGenInbphi45nA, histBHGenInbrad45nA, histBHGenInbborn45nA = 0, 0, 0
+
 for jobNum in runs_inb_bh45nA:
 	histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/{}GenInt.npz".format(jobNum))["hist"]
 	histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/{}GenxB.npz".format(jobNum))["hist"]
