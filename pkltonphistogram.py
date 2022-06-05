@@ -94,17 +94,21 @@ if __name__ == "__main__":
 
 		#volume count
 		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}.npz".format(jobnum, recgen, "binVolume")
+		finexBbins, fineQ2bins, finetbins, finephibins = [], [], [], []
 		for xBind in range(len(xBbins)-1):
-			for Q2ind in range(len(Q2bins)-1):
-				for tind in range(len(tbins)-1):
-					for phiind in range(len(phibins)-1):
-						hists = {}
-						finexBbins = np.linspace(xBbins[xBind], xBbins[xBind+1], 6)
-						fineQ2bins = np.linspace(Q2bins[Q2ind], Q2bins[Q2ind+1], 6)
-						finetbins = np.linspace(tbins[tind], tbins[tind+1], 6)
-						finephibins = np.linspace(phibins[phiind], phibins[phiind+1], 6)
-						hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
-						hist = np.divide(hist,hist, where = hist>0, out = np.zeros(hist))
-						hists["histxB{}Q2{}t{}phi{}".format(xBind, Q2ind, tind, phiind)] = hist
-						print("saving xB{}Q2{}t{}phi{} bins occupied {}".format(xBind, Q2ind, tind, phiind, np.sum(hist)/6**4))
-						np.savez(out, **hists)
+			finexBbins.append(np.linspace(xBbins[xBind], xBbins[xBind+1], 6))
+		for Q2ind in range(len(Q2bins)-1):
+			fineQ2bins = np.linspace(Q2bins[Q2ind], Q2bins[Q2ind+1], 6)
+		for tind in range(len(tbins)-1):
+			finetbins = np.linspace(tbins[tind], tbins[tind+1], 6)
+		for phiind in range(len(phibins)-1):
+			finephibins = np.linspace(phibins[phiind], phibins[phiind+1], 6)
+
+		finexBbins = np.unique(np.concatenate(finexBbins))
+		fineQ2bins = np.unique(np.concatenate(fineQ2bins))
+		finetbins = np.unique(np.concatenate(finetbins))
+		finephibins = np.unique(np.concatenate(finephibins))
+		hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
+		hist = np.divide(hist,hist, where = hist>0, out = np.zeros(hist))
+		# print("saving xB{}Q2{}t{}phi{} bins occupied {}".format(xBind, Q2ind, tind, phiind, np.sum(hist)/6**4))
+		np.savez(out, hist=hist)
