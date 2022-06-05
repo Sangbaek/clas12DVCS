@@ -532,6 +532,7 @@ for jobNum in runs_inb_bh45nA:
 	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"].astype(int)
 
 for tbin in range(len(tbins) -1):
+	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}\n".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (80, 80))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
@@ -565,19 +566,18 @@ for tbin in range(len(tbins) -1):
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
 			axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
 	#
-			xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<x_B<$"+" {:.3f}\n".format(xBbins[xBbin+1])
-			Q2header = "{:.3f} ".format(Q2bins[Q2bin])+r"$<Q^2<$"+" {:.3f}\n".format(Q2bins[Q2bin+1])
-			theader = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}\n".format(tbins[tbin+1])
+			xBheader = r"$<x_B>=$"+" {:.3f}\n".format(xBavg_BH[0])
+			Q2header = r"$<Q^2>=$"+" {:.3f}\n".format(Q2avg_BH[0])
+			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
 			header = xBheader +Q2header + theader
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 30)
-			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 30)
-			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 0.5, 1,  1.5])
-			handles, labels = axs[0, 0].get_legend_handles_labels()
-			fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30)
+	handles, labels = axs[len(Q2bins)-0-2, 0].get_legend_handles_labels()
+	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttile)
 
 	plt.tight_layout()
 	plt.savefig("bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
