@@ -5,30 +5,58 @@ from utils.const import *
 
 df_global = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/df_global_May.pkl")
 
-def TruebinVol(Q2bin, xBbin, tbin, phibin, Q2xBtbin, Q2xBtphibin, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
+def TruebinVol(df_global, df1, df2, df3, df4, N1=10, N2=10, N3=10, N4=10):
     
-    count = 0 
-    
-    Q2_i = Q2bin_i[Q2bin]
-    Q2_f = Q2bin_f[Q2bin]
-    xB_i = xBbin_i[Q2bin][xBbin]
-    xB_f = xBbin_f[Q2bin][xBbin]
-    t_i = tbin_i[tbin]
-    t_f = tbin_f[tbin]
-    phi_i = phibin_i[phibin]
-    phi_f = phibin_f[phibin]
-    
-    local1 = df1.loc[df1.Q2xBtbin == Q2xBtbin]
-    local2 = df2.loc[df2.Q2xBtbin == Q2xBtbin]
-    local3 = df3.loc[df3.Q2xBtbin == Q2xBtbin]
-    local4 = df4.loc[df4.Q2xBtbin == Q2xBtbin]
-    local = pd.concat([local1, local2, local3, local4])
 
-    xBavg1 = local.xB.mean()
-    Q2avg1 = local.Q2.mean()
-    tavg1 =  local.t1.mean()
-    if len(local)==0:
-        return 0, 0, 0, 0, 0, 0, 0, 0, 0
+    df = pd.concat([df1, df2, df3, df4])
+
+    count_by_Q2xBt, _  = np.histogram(df.Q2xBtbin, bins = np.linspace(-0.5, 174.5, 176))
+    Q2s_by_Q2xBt, _  = np.histogram(df.Q2xBtbin, bins = np.linspace(-0.5, 174.5, 176), weights = df.Q2)
+    xBs_by_Q2xBt, _  = np.histogram(df.Q2xBtbin, bins = np.linspace(-0.5, 174.5, 176), weights = df.xB)
+    ts_by_Q2xBt, _  = np.histogram(df.Q2xBtbin, bins = np.linspace(-0.5, 174.5, 176), weights = df.t)
+    
+    xBavg1 = np.divide(xBs_by_Q2xBt, count_by_Q2xBt, where  = count_by_Q2xBt>0, out = np.zeros(count_by_Q2xBt.shape))
+    Q2avg1 = np.divide(Q2s_by_Q2xBt, count_by_Q2xBt, where  = count_by_Q2xBt>0, out = np.zeros(count_by_Q2xBt.shape))
+    tavg1  = np.divide(ts_by_Q2xBt, count_by_Q2xBt, where  = count_by_Q2xBt>0, out = np.zeros(count_by_Q2xBt.shape))
+
+    xBavg1 = xBavg1[activeQ2xBtbins]
+    Q2avg1 = Q2avg1[activeQ2xBtbins]
+    tavg1 = tavg1[activeQ2xBtbins]
+
+    dict_xB1 = {activeQ2xBtbins[i]:xBavg1[i] for i in range(len(xBavg1))}
+    dict_Q21 = {activeQ2xBtbins[i]:Q2avg1[i] for i in range(len(Q2avg1))}
+    dict_t1 = {activeQ2xBtbins[i]:tavg1[i] for i in range(len(tavg1))}
+
+    df.loc[:, "xBavg1"] = df_global.Q2xBtbin.map(dict_xB1)
+    df.loc[:, "Q2avg1"] = df_global.Q2xBtbin.map(dict_Q21)
+    df.loc[:, "tavg1"] = df_global.Q2xBtbin.map(dict_t1)
+
+
+    count_by_Q2xBtphi, _  = np.histogram(df.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201))
+    Q2s_by_Q2xBtphi, _  = np.histogram(df.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201), weights = df.Q2)
+    xBs_by_Q2xBtphi, _  = np.histogram(df.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201), weights = df.xB)
+    ts_by_Q2xBtphi, _  = np.histogram(df.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201), weights = df.t)
+    phis_by_Q2xBtphi, _  = np.histogram(df.Q2xBtphibin, bins = np.linspace(-0.5, 4199.5, 4201), weights = df.phi)
+    
+    xBavg2 = np.divide(xBs_by_Q2xBtphi, count_by_Q2xBtphi, where  = count_by_Q2xBtphi>0, out = np.zeros(count_by_Q2xBtphi.shape))
+    Q2avg2 = np.divide(Q2s_by_Q2xBtphi, count_by_Q2xBtphi, where  = count_by_Q2xBtphi>0, out = np.zeros(count_by_Q2xBtphi.shape))
+    tavg2  = np.divide(ts_by_Q2xBtphi, count_by_Q2xBtphi, where  = count_by_Q2xBtphi>0, out = np.zeros(count_by_Q2xBtphi.shape))
+    phiavg2  = np.divide(phis_by_Q2xBtphi, count_by_Q2xBtphi, where  = count_by_Q2xBtphi>0, out = np.zeros(count_by_Q2xBtphi.shape))
+
+    xBavg2 = xBavg2[activebins]
+    Q2avg2 = Q2avg2[activebins]
+    tavg2 = tavg2[activebins]
+    phiavg2 = phiavg2[activebins]
+
+    dict_xB2 = {activebins[i]:xBavg2[i] for i in range(len(xBavg2))}
+    dict_Q22 = {activebins[i]:Q2avg2[i] for i in range(len(Q2avg2))}
+    dict_t2 = {activebins[i]:tavg2[i] for i in range(len(tavg2))}
+    dict_phi2 = {activebins[i]:phiavg2[i] for i in range(len(phiavg2))}
+
+    df.loc[:, "xBavg2"] = df_global.Q2xBtphibin.map(dict_xB2)
+    df.loc[:, "Q2avg2"] = df_global.Q2xBtphibin.map(dict_Q22)
+    df.loc[:, "tavg2"] = df_global.Q2xBtphibin.map(dict_t2)
+    df.loc[:, "phiavg2"] = df_global.Q2xBtphibin.map(dict_phi2)
 
     local1 = df1.loc[df1.Q2xBtphibin == Q2xBtphibin]
     local2 = df2.loc[df2.Q2xBtphibin == Q2xBtphibin]
@@ -219,29 +247,31 @@ df1 = df_4238_corr
 df2 = df_4542_corr
 df3 = df_4249_corr
 df4 = df_4544_corr
-for i in range(len(df_global)):
-    if i%50==0:
-        print("{}th event".format(i))
-    TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg, xsecavg_born = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
-    # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
-    TrueVols.append(TrueVol)
-    xBavgs1.append(xBavg1)
-    Q2avgs1.append(Q2avg1)
-    tavgs1.append(tavg1)
-    xBavgs2.append(xBavg2)
-    Q2avgs2.append(Q2avg2)
-    tavgs2.append(tavg2)
-    phiavgs2.append(phiavg2)
-    xsecavgs.append(xsecavg)
-    xsecavgs_born.append(xsecavg_born)
-df_global.loc[:, "TruebinVol"] = TrueVols
-df_global.loc[:, "xBavg1"] = xBavgs1
-df_global.loc[:, "Q2avg1"] = Q2avgs1
-df_global.loc[:, "tavg1"] = tavgs1
-df_global.loc[:, "xBavg2"] = xBavgs2
-df_global.loc[:, "Q2avg2"] = Q2avgs2
-df_global.loc[:, "tavg2"] = tavgs2
-df_global.loc[:, "phiavg2"] = phiavgs2
-df_global.loc[:, "xsecavg"] = xsecavgs
-df_global.loc[:, "xsecavg_born"] = xsecavgs_born
-df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen2.pkl")
+# for i in range(len(df_global)):
+#     if i%50==0:
+#         print("{}th event".format(i))
+#     TrueVol, xBavg1, Q2avg1, tavg1, xBavg2, Q2avg2, tavg2, phiavg2, xsecavg, xsecavg_born = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtbin[i], df_global.Q2xBtphibin[i], df1, df2, df3, df4, 6, 6, 6, 6)
+#     # TrueVol = TruebinVol(df_global.Q2bin[i], df_global.xBbin[i], df_global.tbin[i], df_global.phibin[i], df_global.Q2xBtphibin[i], dvcsBHSim, 6, 6, 6, 6)
+#     TrueVols.append(TrueVol)
+#     xBavgs1.append(xBavg1)
+#     Q2avgs1.append(Q2avg1)
+#     tavgs1.append(tavg1)
+#     xBavgs2.append(xBavg2)
+#     Q2avgs2.append(Q2avg2)
+#     tavgs2.append(tavg2)
+#     phiavgs2.append(phiavg2)
+#     xsecavgs.append(xsecavg)
+#     xsecavgs_born.append(xsecavg_born)
+# df_global.loc[:, "TruebinVol"] = TrueVols
+# df_global.loc[:, "xBavg1"] = xBavgs1
+# df_global.loc[:, "Q2avg1"] = Q2avgs1
+# df_global.loc[:, "tavg1"] = tavgs1
+# df_global.loc[:, "xBavg2"] = xBavgs2
+# df_global.loc[:, "Q2avg2"] = Q2avgs2
+# df_global.loc[:, "tavg2"] = tavgs2
+# df_global.loc[:, "phiavg2"] = phiavgs2
+# df_global.loc[:, "xsecavg"] = xsecavgs
+# df_global.loc[:, "xsecavg_born"] = xsecavgs_born
+
+df_global = TruebinVol(df_global, df1, df2, df3, df4, 6, 6, 6, 6)
+df_global.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/results/truebinVolMay_Gen3.pkl")
