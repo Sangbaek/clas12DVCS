@@ -531,6 +531,7 @@ for jobNum in runs_inb_bh45nA:
 	histBHGenInbborn45nA = histBHGenInbborn45nA + np.load("nphistograms/{}Genborn.npz".format(jobNum))["hist"]
 	histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/{}GenbinVolume.npz".format(jobNum))["hist"].astype(int)
 
+active = 0
 for tbin in range(len(tbins) -1):
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}\n".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (80, 80))
@@ -539,6 +540,10 @@ for tbin in range(len(tbins) -1):
 			#skip inactive bins
 			if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT)[xBbin, Q2bin, tbin, :])<100:
 				continue
+			if active == 0:
+				handles, labels = axs[len(Q2bins)-Q2bins-2, xBbin].get_legend_handles_labels()
+				active = 1
+
 			phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 			xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
 			Q2avg_VGG = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -576,8 +581,8 @@ for tbin in range(len(tbins) -1):
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 0.5, 1,  1.5])
-	handles, labels = axs[len(Q2bins)-0-2, 0].get_legend_handles_labels()
-	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttile)
+
+	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
 	plt.tight_layout()
 	plt.savefig("bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
