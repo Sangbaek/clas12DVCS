@@ -91,3 +91,19 @@ if __name__ == "__main__":
 		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}.npz".format(jobnum, recgen, "t1")
 		hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
 		np.savez(out, hist = hist)
+
+		#volume count
+		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/{}{}{}.npz".format(jobnum, recgen, "binVolume")
+		for xBind in range(len(xBbins)-1):
+			for Q2ind in range(len(Q2bins)-1):
+				for tind in range(len(tbins)-1):
+					for phiind in range(len(phibins)-1):
+						hists = {}
+						finexBbins = np.linspace(xBbins[xBind], xBbins[xBind+1], 6)
+						fineQ2bins = np.linspace(Q2bins[Q2ind], Q2bins[Q2ind+1], 6)
+						finetbins = np.linspace(tbins[tind], tbins[tind+1], 6)
+						finephibins = np.linspace(phibins[phiind], phibins[phiind+1], 6)
+						hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
+						hists["hist{}{}{}{}".format(xBind, Q2ind, tind, phiind)] = hist
+						print("saving {}{}{}{} bins".format(xBind, Q2ind, tind, phiind))
+						np.savez(out, **hists)
