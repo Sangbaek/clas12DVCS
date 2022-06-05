@@ -593,20 +593,21 @@ histExpUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epg
 histExpUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 
 histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
-histVGGGenOutbphi50nA, histVGGGenOutbrad50nA, histVGGGenOutbborn50nA, histVGGGenOutbbinVol50nA = 0, 0, 0, 0
+histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
+histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
 for jobNum in runs_outb_vgg50nA:
 	histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 	histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
 	histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
 	histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
 	histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-	histVGGGenOutbrad50nA = histVGGGenOutbrad50nA + np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"]
-	histVGGGenOutbborn50nA = histVGGGenOutbborn50nA + np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"]
+	histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+	histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
 	histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
 histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
 histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
-histBHGenOutbrad50nA, histBHGenOutbborn50nA = 0, 0
+histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
 for jobNum in runs_outb_bh50nA:
 	histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 	histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
