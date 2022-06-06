@@ -80,17 +80,17 @@ def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     return VGGarray
 
 def printVGG(xB, Q2, t, phi, globalfit = True):
-    my_env = os.environ.copy()
-    my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
-    my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
-    if globalfit:
-        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
-    else:
-        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
-    if len(dstot)>0:
-	    dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-    	return dstot
-    else return 0
+	my_env = os.environ.copy()
+	my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
+	my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
+	if globalfit:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
+	else:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
+	if len(dstot)>0:
+		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+		return dstot
+	else return 0
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
@@ -105,15 +105,14 @@ def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     return np.array(BHarray)
 
 def printBHonly(xB, Q2, t, phi, globalfit = True):
-    if globalfit:
-        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
-    else:
-        dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
-
-    if len(dstot)>0:
-	    dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-    	return dstot
-    else return 0
+	if globalfit:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
+	else:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
+	if len(dstot)>0:
+		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+		return dstot
+	else return 0
 
 def nphistmean(hist, bins):
     s=0
