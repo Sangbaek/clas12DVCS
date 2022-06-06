@@ -682,11 +682,13 @@ uncStat_BH = divideHist(np.sqrt(uncStat_BH), accCorrected_BH)
 for tbin in range(len(tbins) -1):
 	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
 			if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT)[xBbin, Q2bin, tbin, :])<100:
+				axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+				axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
 			phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
 			xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -729,22 +731,21 @@ for tbin in range(len(tbins) -1):
 			if active == 0:
 				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	print(handles, labels)
-	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
-
-	# plt.tight_layout()
-	plt.savefig("plots/inb_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
+	lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+	fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+	plt.savefig("plots/inb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
-
 
 for tbin in range(len(tbins) -1):
 	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
 			if np.sum((histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
+				axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+				axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
 			phi1avg_VGG = divideHist(histVGGGenOutbphi50nA, histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
 			xBavg_VGG = divideHist(histVGGGenOutbxB50nA, histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -787,21 +788,21 @@ for tbin in range(len(tbins) -1):
 			if active == 0:
 				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	print(handles, labels)
-	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
-
-	plt.tight_layout()
-	plt.savefig("plots/outb_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
+	lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+	fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+	plt.savefig("plots/outb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
 for tbin in range(len(tbins) -1):
 	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
-	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
+	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
 			#skip inactive bins
 			if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
+				axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+				axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
 			phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
 			xBavg_VGG = divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
@@ -845,8 +846,7 @@ for tbin in range(len(tbins) -1):
 				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
 
-	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
-	fig.subplots_adjust=0.85
-	# plt.tight_layout()
-	plt.savefig("plots/all_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
+	lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+	fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+	plt.savefig("plots/all_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
