@@ -40,7 +40,7 @@ pgf_with_latex = {
 		"ytick.labelsize": 23,			# y axis tick label 
 		"figure.titlesize": 25,         # Figure title size, useful when you have multiple plots in one canvas.
 		"pgf.preamble": r"\usepackage{xcolor}",     # xcolor for colours
-		"figure.autolayout": True
+		"figure.autolayout": False
 }
 matplotlib.rcParams.update(pgf_with_latex)
 
@@ -721,6 +721,7 @@ for tbin in range(len(tbins) -1):
 			header = xBheader +Q2header + theader
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
@@ -732,7 +733,7 @@ for tbin in range(len(tbins) -1):
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
 	plt.tight_layout()
-	plt.savefig("inb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	plt.savefig("plots/inb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
 	plt.clf()
 
 
@@ -778,6 +779,7 @@ for tbin in range(len(tbins) -1):
 			header = xBheader +Q2header + theader
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
@@ -789,7 +791,7 @@ for tbin in range(len(tbins) -1):
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
 	plt.tight_layout()
-	plt.savefig("outb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	plt.savefig("plots/outb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
 	plt.clf()
 
 active = 0
@@ -834,6 +836,7 @@ for tbin in range(len(tbins) -1):
 			header = xBheader +Q2header + theader
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+			axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
 			# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
 			# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
@@ -845,5 +848,5 @@ for tbin in range(len(tbins) -1):
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
 	plt.tight_layout()
-	plt.savefig("all_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	plt.savefig("plots/all_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
 	plt.clf()
