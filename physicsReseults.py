@@ -156,11 +156,12 @@ def binVolumes(xBbin, Q2bin, tbin, finehist, k=0):
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-sc","--skipcont", help="skip cont", action = "store_true")
+parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 
 args = parser.parse_args()
 
 # read exp
-parent = "/volatile/clas12/sangbaek/nov2021/"
+parent = args.parent
 
 parent_MC_inb = parent + "convPkl_full/inb/dvcs/"
 parent_MC_BH_inb = parent + "convPkl_full/inb/bh/"
@@ -629,7 +630,7 @@ uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG + accCorrect
 
 accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG
 accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb50nA, histVGGGenInbFD50nA + histVGGGenInbCD50nA+ histVGGGenInbCDFT50nA)
-uncStatInb_VGG = divideHist(np.sqrt(uncStatInb_VGG), accCorrectedInb_VGG)
+uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
 
 accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
 accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
@@ -642,7 +643,7 @@ uncStatInb_BH = np.sqrt(accCorrectedInbCDFT_BH**2 *uncStatInbFD_BH + accCorrecte
 
 accCorrectedInb_BH = accCorrectedInbCDFT_BH + accCorrectedInbCD_BH + accCorrectedInbFD_BH
 accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA+ histBHGenInbCDFT45nA)
-uncStatInb_BH = divideHist(np.sqrt(uncStatInb_BH), accCorrectedInb_BH)
+uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
 
 #stat error - outbending
 accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
@@ -655,7 +656,7 @@ uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG + accCorr
 
 accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG
 accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA+ histVGGGenOutbCDFT50nA)
-uncStatOutb_VGG = divideHist(np.sqrt(uncStatOutb_VGG), accCorrectedOutb_VGG)
+uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
 
 accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
 accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
@@ -668,16 +669,16 @@ uncStatOutb_BH = np.sqrt(accCorrectedOutbCDFT_BH**2 *uncStatOutbFD_BH + accCorre
 
 accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH
 accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA+ histBHGenOutbCDFT50nA)
-uncStatOutb_BH = divideHist(np.sqrt(uncStatOutb_BH), accCorrectedOutb_BH)
+uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
 
 #stat error - all
 accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
 uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
-uncStat_VGG = divideHist(np.sqrt(uncStat_VGG), accCorrected_VGG)
+uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
 
 accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
 uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
-uncStat_BH = divideHist(np.sqrt(uncStat_BH), accCorrected_BH)
+uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
 
 for tbin in range(len(tbins) -1):
 	active = 0
