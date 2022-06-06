@@ -90,7 +90,8 @@ def printVGG(xB, Q2, t, phi, globalfit = True):
 	if len(dstot)>0:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
-	else return 0
+	else:
+		return 0
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
@@ -112,7 +113,8 @@ def printBHonly(xB, Q2, t, phi, globalfit = True):
 	if len(dstot)>0:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
-	else return 0
+	else:
+		return 0
 
 def nphistmean(hist, bins):
     s=0
