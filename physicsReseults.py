@@ -162,6 +162,9 @@ parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12
 
 args = parser.parse_args()
 
+inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
+charge_epg = inbcharge_epg + outbcharge_epg
+
 if args.savecont:
 	# read exp
 	parent = args.parent
@@ -222,9 +225,6 @@ if args.savecont:
 	# charges = np.array(charges)
 	# charges_QA = np.array(charges_QA)
 	# outbcharge_epg = np.sum(charges_QA)
-
-	inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
-	charge_epg = inbcharge_epg + outbcharge_epg
 
 	epgExpInb = makeReduced(epgExpInb)
 	pi0ExpInb = makeReduced(pi0ExpInb)
