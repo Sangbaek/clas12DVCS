@@ -679,8 +679,8 @@ accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
 uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
 uncStat_BH = divideHist(np.sqrt(uncStat_BH), accCorrected_BH)
 
-active = 0
 for tbin in range(len(tbins) -1):
+	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
@@ -729,16 +729,16 @@ for tbin in range(len(tbins) -1):
 			if active == 0:
 				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-
+	print(handles, labels)
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
-	plt.tight_layout()
-	plt.savefig("plots/inb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	# plt.tight_layout()
+	plt.savefig("plots/inb_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
 	plt.clf()
 
 
-active = 0
 for tbin in range(len(tbins) -1):
+	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
@@ -787,15 +787,15 @@ for tbin in range(len(tbins) -1):
 			if active == 0:
 				handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-
+	print(handles, labels)
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
 
 	plt.tight_layout()
-	plt.savefig("plots/outb_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	plt.savefig("plots/outb_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
 	plt.clf()
 
-active = 0
 for tbin in range(len(tbins) -1):
+	active = 0
 	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (40, 24))
 	for xBbin in range(len(xBbins) - 1):
@@ -846,7 +846,7 @@ for tbin in range(len(tbins) -1):
 				active = 1
 
 	fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.1, 0.6), fontsize= 30, title = ttitle)
-
-	plt.tight_layout()
-	plt.savefig("plots/all_bkgscheme{}binscheme{}tbin{}.pdf".format(i, k, tbin))
+	fig.subplots_adjust=0.85
+	# plt.tight_layout()
+	plt.savefig("plots/all_bkgscheme{}binscheme{}tbin{}.png".format(i, k, tbin))
 	plt.clf()
