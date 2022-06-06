@@ -681,7 +681,7 @@ uncStat_BH = divideHist(np.sqrt(uncStat_BH), accCorrected_BH)
 
 for tbin in range(len(tbins) -1):
 	active = 0
-	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
+	ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
@@ -738,7 +738,7 @@ for tbin in range(len(tbins) -1):
 
 for tbin in range(len(tbins) -1):
 	active = 0
-	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
+	ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
@@ -795,7 +795,7 @@ for tbin in range(len(tbins) -1):
 
 for tbin in range(len(tbins) -1):
 	active = 0
-	ttitle = "{:.3f} ".format(tbins[tbin])+r"$<|t|<$"+" {:.3f}, ".format(tbins[tbin+1])
+	ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 	fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 	for xBbin in range(len(xBbins) - 1):
 		for Q2bin in range(len(Q2bins) - 1):
