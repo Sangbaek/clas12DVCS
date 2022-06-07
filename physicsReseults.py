@@ -140,8 +140,8 @@ def readReduced(parent, jobNum, polarity, beamCurrent):
     columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
     return df.loc[:, columns_needed]
 
-def divideHist(df1, df2):
-	return np.divide(df1, df2, where = df2!=0, out = np.zeros(df2.shape, dtype = float))
+def divideHist(df1, df2, threshold = 0):
+	return np.divide(df1, df2, where = (df2!=0) & (df1>threshold), out = np.zeros(df2.shape, dtype = float))
 
 def inverseHist(df1):
 	return np.divide(np.ones(df1.shape), df1, where = df1!=0, out = np.zeros_like(df1))
@@ -447,7 +447,7 @@ if args.savexsec:
 		histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
 		histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
 		histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-		
+
 	histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
 	for jobNum in runs_inb_vgg50nA:
 		histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
@@ -516,7 +516,7 @@ if args.savexsec:
 
 	histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
 
-	print("reading bhs - outbending")
+	print("reading bhs")
 
 	histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
 	for jobNum in runs_outb_bh50nA:
@@ -532,7 +532,7 @@ if args.savexsec:
 		histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 		histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	print("reading vggs - outbending")
+	print("reading vggs")
 
 	histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
 	for jobNum in runs_outb_vgg50nA:
@@ -561,7 +561,7 @@ if args.savexsec:
 		histVGGOutbFD40naT = histVGGOutbFD40naT + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
 		histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
 		histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-		
+
 	histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0
 	for jobNum in runs_outb_vgg50nA:
 		histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
@@ -691,7 +691,6 @@ if args.savexsec:
 	integratedRad_VGG = np.zeros(accCorrected_VGG.shape)
 	pointBorn_VGG = np.zeros(accCorrected_VGG.shape)
 	rcfactors_VGG = np.zeros(accCorrected_VGG.shape)
-	xsecInb_VGG = np.zeros(accCorrected_VGG.shape)
 
 	phi1avg_BH = np.zeros(accCorrected_BH.shape)
 	xBavg_BH = np.zeros(accCorrected_BH.shape)
@@ -700,7 +699,6 @@ if args.savexsec:
 	integratedRad_BH = np.zeros(accCorrected_BH.shape)
 	pointBorn_BH = np.zeros(accCorrected_BH.shape)
 	rcfactors_BH = np.zeros(accCorrected_BH.shape)
-	xsecInb_BH = np.zeros(accCorrected_BH.shape)
 
 	xsecTh_KM = np.zeros(accCorrected_VGG.shape)
 	xsecTh_BH = np.zeros(accCorrected_VGG.shape)
@@ -730,180 +728,158 @@ if args.savexsec:
 	integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutb50nA], axis = 0)
 	rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
 	integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
-	rcfactors_BH = divideHist(integratedRad_BH, xsecTh_VGG)
+	rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
 
-	xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
-	xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+	xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*inbcharge_epg)
+	xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*inbcharge_epg)
+	xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*outbcharge_epg)
+	xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*outbcharge_epg)
+	xsec_VGG = divideHist(accCorrected_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG, threshold = 100)/(1.324*charge_epg)
+	xsec_BH = divideHist(accCorrected_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH, threshold = 100)/(1.324*charge_epg)
+
+	np.savez("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k), hist = phi1avg_VGG)
+	np.savez("nphistograms/binscheme{}/xBavg_VGG.npz".format(k), hist = xBavg_VGG)
+	np.savez("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k), hist = Q2avg_VGG)
+	np.savez("nphistograms/binscheme{}/t1avg_VGG.npz".format(k), hist = t1avg_VGG)
+
+	np.savez("nphistograms/binscheme{}/phi1avg_BH.npz".format(k), hist = phi1avg_BH)
+	np.savez("nphistograms/binscheme{}/xBavg_BH.npz".format(k), hist = xBavg_BH)
+	np.savez("nphistograms/binscheme{}/Q2avg_BH.npz".format(k), hist = Q2avg_BH)
+	np.savez("nphistograms/binscheme{}/t1avg_BH.npz".format(k), hist = t1avg_BH)
+
+	np.savez("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k), hist = xsecInb_VGG)
+	np.savez("nphistograms/binscheme{}/xsecInb_BH.npz".format(k), hist = xsecInb_BH)
+	np.savez("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k), hist = xsecOutb_VGG)
+	np.savez("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k), hist = xsecOutb_BH)
+	np.savez("nphistograms/binscheme{}/xsec_VGG.npz".format(k), hist = xsec_VGG)
+	np.savez("nphistograms/binscheme{}/xsec_BH.npz".format(k), hist = xsec_BH)
+
+	np.savez("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k), hist = uncStatInb_VGG)
+	np.savez("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k), hist = uncStatInb_BH)
+	np.savez("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k), hist = uncStatOutb_VGG)
+	np.savez("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k), hist = uncStatOutb_BH)
+	np.savez("nphistograms/binscheme{}/uncStat_VGG.npz".format(k), hist = uncStat_VGG)
+	np.savez("nphistograms/binscheme{}/uncStat_BH.npz".format(k), hist = uncStat_BH)
+
+	np.savez("nphistograms/binscheme{}/xsecTh_KM.npz".format(k), hist = xsecTh_KM)
+	np.savez("nphistograms/binscheme{}/xsecTh_BH.npz".format(k), hist = xsecTh_BH)
+	np.savez("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k), hist = xsecTh_VGG)
+	np.savez("nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
 
 if args.saveplot:
-		for tbin in range(len(tbins) -1):
-			active = 0
-			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-			fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-			for xBbin in range(len(xBbins) - 1):
-				for Q2bin in range(len(Q2bins) - 1):
-					#skip inactive bins
-					if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT)[xBbin, Q2bin, tbin, :])<100:
-						axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-						axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
-						continue
-					phi1avg_VGG = divideHist(histVGGGenInbphi50nA, histVGGGenInb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_VGG = divideHist(histVGGGenInbxB50nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					Q2avg_VGG = divideHist(histVGGGenInbQ250nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					t1avg_VGG = divideHist(histVGGGenInbt150nA, histVGGGenInbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					integratedRad_VGG = np.mean(histVGGGenInbrad50nA, axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_VGG = np.array(printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True))
-					rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG)
-			#
-					phi1avg_BH = divideHist(histBHGenInbphi45nA, histBHGenInb45nA)[xBbin, Q2bin, tbin, :]
-					xBavg_BH = divideHist(histBHGenInbxB45nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					Q2avg_BH = divideHist(histBHGenInbQ245nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					t1avg_BH = divideHist(histBHGenInbt145nA, histBHGenInbInt45nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					integratedRad_BH = np.mean(histBHGenInbrad45nA, axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_BH = np.array(printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True))
-					rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
-			#
-					binVolume = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA)
-			#
-					xsecInb_VGG = divideHist(accCorrectedInb_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsecInb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecInb_VGG*uncStatInb_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
-					xsecInb_BH = divideHist(accCorrectedInb_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecInb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecInb_BH*uncStatInb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-			#
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
-			#
-					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[0])
-					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
-					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
-					header = xBheader +Q2header + theader
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
-					# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 0.5, 1,  1.5])
-					if active == 0:
-						handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
-						active = 1
-			lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-			fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-			plt.savefig("plots/binscheme{}/inb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			plt.clf()
 
-		for tbin in range(len(tbins) -1):
-			active = 0
-			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-			fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-			for xBbin in range(len(xBbins) - 1):
-				for Q2bin in range(len(Q2bins) - 1):
-					#skip inactive bins
-					if np.sum((histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
-						axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-						axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
-						continue
-					phi1avg_VGG = divideHist(histVGGGenOutbphi50nA, histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_VGG = divideHist(histVGGGenOutbxB50nA, histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					Q2avg_VGG = divideHist(histVGGGenOutbQ250nA, histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					t1avg_VGG = divideHist(histVGGGenOutbt150nA, histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					integratedRad_VGG = np.mean(histVGGGenOutbrad50nA, axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_VGG = np.array(printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True))
-					rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG)
-			#
-					phi1avg_BH = divideHist(histBHGenOutbphi50nA, histBHGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_BH = divideHist(histBHGenOutbxB50nA, histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					Q2avg_BH = divideHist(histBHGenOutbQ250nA, histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					t1avg_BH = divideHist(histBHGenOutbt150nA, histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					integratedRad_BH = np.mean(histBHGenOutbrad50nA, axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_BH = np.array(printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True))
-					rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
-			#
-					binVolume = binVolumes(xBbin, Q2bin, tbin, histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA)
-			#
-					xsecOutb_VGG = divideHist(accCorrectedOutb_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsecOutb_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsecOutb_VGG*uncStatOutb_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
-					xsecOutb_BH = divideHist(accCorrectedOutb_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsecOutb_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsecOutb_BH*uncStatOutb_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-			#
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
-			#
-					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[0])
-					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
-					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
-					header = xBheader +Q2header + theader
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
-					# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 0.5, 1,  1.5])
-					if active == 0:
-						handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
-						active = 1
-			lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-			fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-			plt.savefig("plots/binscheme{}/outb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			plt.clf()
+	phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
+	xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
+	Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
+	t1avg_VGG   = np.load("nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
 
-		for tbin in range(len(tbins) -1):
-			active = 0
-			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-			fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-			for xBbin in range(len(xBbins) - 1):
-				for Q2bin in range(len(Q2bins) - 1):
-					#skip inactive bins
-					if np.sum((histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT)[xBbin, Q2bin, tbin, :])<100:
-						axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-						axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
-						continue
-					phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_VGG = divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					Q2avg_VGG = divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					t1avg_VGG = divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG.shape)
-					integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutb50nA], axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_VGG = np.array(printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG), globalfit = True))
-					rcfactors_VGG = divideHist(integratedRad_VGG, pointBorn_VGG)
-			#
-					phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_BH = divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					Q2avg_BH = divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					t1avg_BH = divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH.shape)
-					integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)[xBbin, Q2bin, tbin, :]
-					pointBorn_BH = np.array(printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH), globalfit = True))
-					rcfactors_BH = divideHist(integratedRad_BH, pointBorn_BH)
-			#
-					binVolume = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA)
-			#
-					xsec_VGG = divideHist(accCorrected_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG)/(1.324*charge_epg)
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_VGG, xsec_VGG, xerr = [phi1avg_VGG-phibins[:-1], phibins[1:]-phi1avg_VGG], yerr = xsec_VGG*uncStat_VGG[xBbin, Q2bin, tbin, :], color ='brown', label = 'data(VGG)')
-					xsec_BH = divideHist(accCorrected_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH)/(1.324*charge_epg)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH, xsec_BH, xerr = [phi1avg_BH-phibins[:-1], phibins[1:]-phi1avg_BH], yerr = xsec_BH*uncStat_BH[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-			#
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printKMarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'b', label = 'KM')
-					axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH, printBHarray(xBavg_BH, Q2avg_BH, t1avg_BH, np.radians(phi1avg_BH)), color = 'r', label = 'BH')
-					# axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_VGG, printVGGarray(xBavg_VGG, Q2avg_VGG, t1avg_VGG, np.radians(phi1avg_VGG)), color = 'g',  label = 'VGG')
-			#
-					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[0])
-					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[0])
-					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[0])
-					header = xBheader +Q2header + theader
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-					axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_ylim([0.5, 1.5])
-					# axs[len(Q2bins)-Q2bin-2, xBbin].axhline(1, linestyle = '--', color = 'k')
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$|t|$"+ " ["+GeV2+"]")
-					# axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 0.5, 1,  1.5])
-					if active == 0:
-						handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
-						active = 1
+	phi1avg_BH  = np.load("nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
+	xBavg_BH    = np.load("nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
+	Q2avg_BH    = np.load("nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
+	t1avg_BH    = np.load("nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
 
-			lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-			fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-			plt.savefig("plots/binscheme{}/all_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			plt.clf()
+	xsecInb_VGG = np.load("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k))["hist"]
+	xsecInb_BH  = np.load("nphistograms/binscheme{}/xsecInb_BH.npz".format(k))["hist"]
+	xsecOutb_VGG = np.load("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k))["hist"]
+	xsecOutb_BH  = np.load("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k))["hist"]
+	xsec_VGG     = np.load("nphistograms/binscheme{}/xsec_VGG.npz".format(k))["hist"]
+	xsec_BH      = np.load("nphistograms/binscheme{}/xsec_BH.npz".format(k))["hist"]
+
+	uncStatInb_VGG = np.load("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k))["hist"]
+	uncStatInb_BH  = np.load("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k))["hist"]
+	uncStatOutb_VGG = np.load("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k))["hist"]
+	uncStatOutb_BH  = np.load("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k))["hist"]
+	uncStat_VGG     = np.load("nphistograms/binscheme{}/uncStat_VGG.npz".format(k))["hist"]
+	uncStat_BH      = np.load("nphistograms/binscheme{}/uncStat_BH.npz".format(k))["hist"]
+
+	xsecTh_KM          = np.load("nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
+	xsecTh_BH          = np.load("nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
+	xsecTh_VGG         = np.load("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
+	binVolume          = np.load("nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+
+	for tbin in range(len(tbins) -1):
+		active = 0
+		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		for xBbin in range(len(xBbins) - 1):
+			for Q2bin in range(len(Q2bins) - 1):
+				#skip inactive bins
+				if np.sum(xsecInb_BH[xBbin, Q2bin, tbin, :]>0)==0:
+					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+					continue
+				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header + theader
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				if active == 0:
+					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		plt.savefig("plots/binscheme{}/inb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		for xBbin in range(len(xBbins) - 1):
+			for Q2bin in range(len(Q2bins) - 1):
+				#skip inactive bins
+				if np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, :]>0)==0:
+					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+					continue
+				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header + theader
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				if active == 0:
+					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		plt.savefig("plots/binscheme{}/outb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		for xBbin in range(len(xBbins) - 1):
+			for Q2bin in range(len(Q2bins) - 1):
+				#skip inactive bins
+				if np.sum(xsec_BH[xBbin, Q2bin, tbin, :]>0)==0:
+					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+					continue
+				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header + theader
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				if active == 0:
+					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		plt.savefig("plots/binscheme{}/all_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
