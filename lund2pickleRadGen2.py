@@ -61,7 +61,7 @@ class lund2pickle():
 			t1 = eleQuantities[10]
 			phi1 = proQuantities[1]
 			radMode = eleQuantities[5]
-			kinArray.append([float(xB), float(Q2), float(t1), np.degrees(np.pi - float(phi1)), float(xsec), int(radMode), int(helicity)])
+			kinArray.append([float(xB), float(Q2), float(t1), np.degrees(np.pi - float(phi1)), float(xsec), int(float(radMode), int(helicity))])
 
 		df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "xsec", "radMode", "helicity"])
 
