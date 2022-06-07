@@ -81,10 +81,10 @@ class lund2pickle():
 				Gpy2 = radQuantities[7]
 				Gpz2 = radQuantities[8]
 
-			Ee = np.sqrt(Epx**2 + Epy**2 + Epz**2 + me**2)
-			Pe = np.sqrt(Ppx**2 + Ppy**2 + Ppz**2 + M**2)
-			Ge = np.sqrt(Gpx**2 + Gpy**2 + Gpz**2)
-			Ge2 = np.sqrt(Gpx2**2 + Gpy2**2 + Gpz2**2)
+			Ee = np.sqrt(float(Epx)**2 + float(Epy)**2 + float(Epz)**2 + me**2)
+			Pe = np.sqrt(float(Ppx)**2 + float(Ppy)**2 + float(Ppz)**2 + M**2)
+			Ge = np.sqrt(float(Gpx)**2 + float(Gpy)**2 + float(Gpz)**2)
+			Ge2 = np.sqrt(float(Gpx2)**2 + float(Gpy2)**2 + float(Gpz2)**2)
 
 			kinArray.append([float(Epx), float(Epy), float(Epz), float(Ee), float(Ppx), float(Ppy), float(Ppz), float(Pe),
 			 float(Gpx), float(Gpy), float(Gpz), float(Ge), float(Gpx2), float(Gpy2), float(Gpz2),float(Ge2), 
