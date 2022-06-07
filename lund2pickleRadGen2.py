@@ -73,7 +73,7 @@ class lund2pickle():
 			# df_epgg.loc[:, "tbin2"] = -1
 			df_epgg.loc[:, "phibin"] = -1
 			# df_epgg.loc[:, "phibin2"] = -1
-			df_epgg.loc[:, "Q2xBbin"] = -1
+			df_epgg.loc[:, "Q2xBtbin"] = -1
 			df_epgg.loc[:, "Q2xBtbin"] = -1
 			# df_epgg.loc[:, "Q2xBtbin2"] = -1
 			df_epgg.loc[:, "Q2xBtphibin"] = -1
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
-	if args.Q2xBbin:
+	if args.Q2xBtbin:
 		converter = lund2pickle(args.fname, entry_stop = args.entry_stop, Q2xBtbin = int(args.Q2xBtbin))
 	else:
 		converter = lund2pickle(args.fname, entry_stop = args.entry_stop)
