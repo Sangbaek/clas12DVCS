@@ -91,7 +91,7 @@ class lund2pickle():
 			 float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
 
 		df_epgg = pd.DataFrame(kinArray, columns = ["Epx", "Epy", "Epz", "Ee", "Ppx", "Ppy", "Ppz", "Pe", "Gpx", "Gpy", "Gpz", "Ge", "Gpx2", "Gpy2", "Gpz2", "Ge2",
-			"xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
+			"xB", "Q2", "t", "phi", "dsigma", "radMode", "helicity"])
 
 		if Q2xBtbin:
 			# encode unassigned bin as -1
