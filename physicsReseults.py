@@ -734,8 +734,8 @@ if args.savexsec:
 	xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*inbcharge_epg)
 	xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*outbcharge_epg)
 	xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*outbcharge_epg)
-	xsec_VGG = divideHist(accCorrected_VGG[xBbin, Q2bin, tbin, :], binVolume*rcfactors_VGG, threshold = 100)/(1.324*charge_epg)
-	xsec_BH = divideHist(accCorrected_BH[xBbin, Q2bin, tbin, :], binVolume*rcfactors_BH, threshold = 100)/(1.324*charge_epg)
+	xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*charge_epg)
+	xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*charge_epg)
 
 	np.savez("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k), hist = phi1avg_VGG)
 	np.savez("nphistograms/binscheme{}/xBavg_VGG.npz".format(k), hist = xBavg_VGG)
@@ -776,6 +776,7 @@ if args.saveplot:
 
 	i = 0
 
+	print("reading the xsec vars")
 	phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
 	xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
 	Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
@@ -805,6 +806,7 @@ if args.saveplot:
 	xsecTh_VGG         = np.load("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 	binVolume          = np.load("nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
 
+	print("plotting...")
 	for tbin in range(len(tbins) -1):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
