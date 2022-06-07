@@ -54,6 +54,7 @@ class lund2pickle():
 			logQuantities = logLine.split()
 			eleQuantities = eleLine.split()
 			proQuantities = proLine.split()
+			gamQuantities = gamLine.split()
 			dsigma = logQuantities[-1]
 			helicity = logQuantities[4]
 			xB = eleQuantities[1]
