@@ -54,16 +54,43 @@ class lund2pickle():
 			logQuantities = logLine.split()
 			eleQuantities = eleLine.split()
 			proQuantities = proLine.split()
-			xsec = logQuantities[-1]
+			dsigma = logQuantities[-1]
 			helicity = logQuantities[4]
 			xB = eleQuantities[1]
+			radMode = eleQuantities[5]
+			Epx = eleQuantities[6]
+			Epy = eleQuantities[7]
+			Epz = eleQuantities[8]
 			Q2 = eleQuantities[9]
 			t1 = eleQuantities[10]
 			phi1 = proQuantities[1]
-			radMode = eleQuantities[5]
-			kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(xsec), int(radMode), int(float(helicity))])
+			Ppx = proQuantities[6]
+			Ppy = proQuantities[7]
+			Ppz = proQuantities[8]
+			Gpx = gamQuantities[6]
+			Gpy = gamQuantities[7]
+			Gpz = gamQuantities[8]
+			if num_particles == "3":
+				Gpx2 = 0
+				Gpy2 = 0
+				Gpz2 = 0
+			elif num_particles == "4":
+				radQuantities = radLine.split()
+				Gpx2 = radQuantities[6]
+				Gpy2 = radQuantities[7]
+				Gpz2 = radQuantities[8]
 
-		df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "xsec", "radMode", "helicity"])
+			Ee = np.sqrt(Epx**2 + Epy**2 + Epz**2 + me**2)
+			Pe = np.sqrt(Ppx**2 + Ppy**2 + Ppz**2 + M**2)
+			Ge = np.sqrt(Gpx**2 + Gpy**2 + Gpz**2)
+			Ge2 = np.sqrt(Gpx2**2 + Gpy2**2 + Gpz2**2)
+
+			kinArray.append([float(Epx), float(Epy), float(Epz), float(Ee), float(Ppx), float(Ppy), float(Ppz), float(Pe),
+			 float(Gpx), float(Gpy), float(Gpz), float(Ge), float(Gpx2), float(Gpy2), float(Gpz2),float(Ge2), 
+			 float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
+
+		df_epgg = pd.DataFrame(kinArray, columns = ["Epx", "Epy", "Epz", "Ee", "Ppx", "Ppy", "Ppz", "Pe", "Gpx", "Gpy", "Gpz", "Ge", "Gpx2", "Gpy2", "Gpz2", "Ge2",
+			"xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
 
 		if Q2xBtbin:
 			# encode unassigned bin as -1
