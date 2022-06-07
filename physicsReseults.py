@@ -774,6 +774,8 @@ if args.saveplot:
 	tbins   = collection_tbins [k]
 	phibins = collection_phibins[k]
 
+	i = 0
+
 	phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
 	xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
 	Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
