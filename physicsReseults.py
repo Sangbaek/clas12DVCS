@@ -859,7 +859,7 @@ if args.saveplot:
 				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
 
 				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :],/xsecTh_KM[xBbin, Q2bin, tbin, :] color = 'b', label = 'KM')
+				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
 				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
 
 				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
