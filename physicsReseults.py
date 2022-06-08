@@ -916,7 +916,7 @@ if args.saveplot:
 		plt.clf()
 
 	wings = [0,1,-2,-1]
-	Normalization = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = 1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = 1)
+	Normalization = np.mean(xsec_BH[:, :, :, wings], axis = -1)/np.mean(xsecTh_BH[:, :, :, wings], axis = -1)
 
 	for tbin in range(len(tbins) -1):
 		active = 0
