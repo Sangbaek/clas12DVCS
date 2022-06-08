@@ -916,7 +916,7 @@ if args.saveplot:
 		plt.clf()
 
 	wings = [0,1,-2,-1]
-	Normalization = np.mean(xsec_BH[:, :, :, wings], axis = -1)/np.mean(xsecTh_BH[:, :, :, wings], axis = -1)
+	Normalization = np.zeros(xsecTh_BH.shape[:-1])
 
 	for tbin in range(len(tbins) -1):
 		active = 0
@@ -929,6 +929,7 @@ if args.saveplot:
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
+				Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 
 				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
 
