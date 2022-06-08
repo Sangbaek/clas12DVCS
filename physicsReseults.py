@@ -869,7 +869,7 @@ if args.saveplot:
 				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_ylim([0.1, 10])
+				axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
 				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
 				if active == 0:
@@ -906,7 +906,7 @@ if args.saveplot:
 				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_ylim([0.1, 10])
+				axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
 				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
 				if active == 0:
@@ -979,10 +979,10 @@ if args.saveplot:
 			# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 			header = xBheader +Q2header
 			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-			axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-			axs[6-Q2bin-2, xBbin].set_yscale('log')
-			axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-			axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
+			# axs[6-Q2bin-2, xBbin].set_yscale('log')
+			# axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
 			if active == 0:
 				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
