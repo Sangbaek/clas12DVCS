@@ -963,7 +963,6 @@ if args.saveplot:
 		plt.clf()
 
 	active = 0
-	ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 	fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
 	for xBbin in range(3 - 1):
 		for Q2bin in range(6 - 1):
@@ -993,7 +992,7 @@ if args.saveplot:
 			if active == 0:
 				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
