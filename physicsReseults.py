@@ -810,7 +810,7 @@ if args.saveplot:
 	for tbin in range(len(tbins) -1):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		fig, axs = plt.subplots(6-1, 3-1, figsize = (50, 30))
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
