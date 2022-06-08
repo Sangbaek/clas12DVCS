@@ -919,6 +919,8 @@ if args.saveplot:
 
 	wings = [0,1,-2,-1]
 	Normalization = np.zeros(xsecTh_BH.shape[:-1])
+	Normalization_Inb = np.zeros(xsecTh_BH.shape[:-1])
+	Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
 
 	for tbin in range(len(tbins) -1):
 		active = 0
@@ -932,6 +934,8 @@ if args.saveplot:
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
 				Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
+				Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
+				Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 
 				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
 
@@ -968,7 +972,9 @@ if args.saveplot:
 				axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 				axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'g')
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'k')
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Inb[xBbin, Q2bin, :], color = 'r')
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Outb[xBbin, Q2bin, :], color = 'b')
 
 			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
@@ -981,15 +987,16 @@ if args.saveplot:
 			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
 			# axs[6-Q2bin-2, xBbin].set_yscale('log')
+			axs[6-Q2bin-2, xBbin].set_ylim([0.5, 1])
 			# axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
 			if active == 0:
 				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	# lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
 	plt.clf()
 
 		# fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
