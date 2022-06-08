@@ -811,85 +811,119 @@ if args.saveplot:
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-		for xBbin in range(len(xBbins) - 1):
-			for Q2bin in range(len(Q2bins) - 1):
+		for xBbin in range(3 - 1):
+			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if np.sum(xsecInb_BH[xBbin, Q2bin, tbin, :]>0)==0:
-					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
-				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
+
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
+
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
+				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+
 				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 				header = xBheader +Q2header + theader
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				axs[6-Q2bin-2, xBbin].set_yscale('log')
+				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
 				if active == 0:
-					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-		plt.savefig("plots/binscheme{}/inb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("plots/binscheme{}/bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
-		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-		for xBbin in range(len(xBbins) - 1):
-			for Q2bin in range(len(Q2bins) - 1):
-				#skip inactive bins
-				if np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, :]>0)==0:
-					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-		plt.savefig("plots/binscheme{}/outb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
 
-		fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
-		for xBbin in range(len(xBbins) - 1):
-			for Q2bin in range(len(Q2bins) - 1):
-				#skip inactive bins
-				if np.sum(xsec_BH[xBbin, Q2bin, tbin, :]>0)==0:
-					axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-				axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
-		plt.savefig("plots/binscheme{}/all_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
+		# fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		# for xBbin in range(len(xBbins) - 1):
+		# 	for Q2bin in range(len(Q2bins) - 1):
+		# 		#skip inactive bins
+		# 		if np.sum(xsecInb_BH[xBbin, Q2bin, tbin, :]>0)==0:
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+		# 			continue
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+		# 		xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+		# 		Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		header = xBheader +Q2header + theader
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+		# 		if active == 0:
+		# 			handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+		# 			active = 1
+		# lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		# fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		# plt.savefig("plots/binscheme{}/inb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.clf()
+
+		# fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		# for xBbin in range(len(xBbins) - 1):
+		# 	for Q2bin in range(len(Q2bins) - 1):
+		# 		#skip inactive bins
+		# 		if np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, :]>0)==0:
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+		# 			continue
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+		# 		xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+		# 		Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		header = xBheader +Q2header + theader
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+		# 		if active == 0:
+		# 			handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+		# 			active = 1
+		# lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		# fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		# plt.savefig("plots/binscheme{}/outb_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.clf()
+
+		# fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
+		# for xBbin in range(len(xBbins) - 1):
+		# 	for Q2bin in range(len(Q2bins) - 1):
+		# 		#skip inactive bins
+		# 		if np.sum(xsec_BH[xBbin, Q2bin, tbin, :]>0)==0:
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].yaxis.set_visible(False)
+		# 			axs[len(Q2bins)-Q2bin-2 , xBbin].xaxis.set_visible(False)
+		# 			continue
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], color = 'g', label = 'data')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+		# 		axs[len(Q2bins)-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+		# 		xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+		# 		Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+		# 		header = xBheader +Q2header + theader
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_yscale('log')
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+		# 		axs[len(Q2bins)-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+		# 		if active == 0:
+		# 			handles, labels = axs[len(Q2bins)-Q2bin-2, xBbin].get_legend_handles_labels()
+		# 			active = 1
+		# lgd = plt.figlegend(handles, labels, loc='right', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		# fig.subplots_adjust(wspace = 0.5, hspace = 0.5)
+		# plt.savefig("plots/binscheme{}/all_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.clf()
