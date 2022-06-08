@@ -814,7 +814,7 @@ if args.saveplot:
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
@@ -850,7 +850,7 @@ if args.saveplot:
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
@@ -887,7 +887,7 @@ if args.saveplot:
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
@@ -929,7 +929,7 @@ if args.saveplot:
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
@@ -972,9 +972,9 @@ if args.saveplot:
 				axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 				axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'k')
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Inb[xBbin, Q2bin, :], color = 'r')
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Outb[xBbin, Q2bin, :], color = 'b')
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'k', label = "Merged")
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Inb[xBbin, Q2bin, :], color = 'r', label = "Inb.")
+			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Outb[xBbin, Q2bin, :], color = 'b', label = "Outb.")
 
 			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
@@ -987,7 +987,7 @@ if args.saveplot:
 			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
 			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
 			# axs[6-Q2bin-2, xBbin].set_yscale('log')
-			axs[6-Q2bin-2, xBbin].set_ylim([0.5, 1])
+			axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
 			# axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
 			if active == 0:
