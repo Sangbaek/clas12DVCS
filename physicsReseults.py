@@ -1017,10 +1017,10 @@ if args.saveplot:
 				axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 				axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 				continue
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0], IntegratedDiff_Inb[xBbin, Q2bin, :], color = 'k', label = "Merged", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0], IntegratedDiff_Outb[xBbin, Q2bin, :], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0], IntegratedDiff[xBbin, Q2bin, :], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0], IntegratedDiff_KM[xBbin, Q2bin, :], color = 'b', label = "KM", marker = 'o', markersize = 20)
+			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Inb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
+			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Outb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
+			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
+			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_KM[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
 			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
@@ -1055,15 +1055,15 @@ if args.saveplot:
 				axs[5-tbin-2 , xBbin].yaxis.set_visible(False)
 				axs[5-tbin-2 , xBbin].xaxis.set_visible(False)
 				continue
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_Inb[xBbin, :, tbin], color = 'k', label = "Merged", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_Outb[xBbin, :, tbin], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff[xBbin, :, tbin], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_KM[xBbin, :, tbin], color = 'b', label = "KM", marker = 'o', markersize = 20)
+			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Inb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
+			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Outb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
+			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
+			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_KM[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
 			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			# Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-			header = xBheader +Q2header
+			header = xBheader +theader
 			axs[5-tbin-2, xBbin].set_title(header, fontsize = 20)
 			# axs[5-tbin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
 			# axs[5-tbin-2, xBbin].set_yscale('log')
