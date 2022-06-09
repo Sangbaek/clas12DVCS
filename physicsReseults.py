@@ -1034,7 +1034,7 @@ if args.saveplot:
 			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
 			# axs[6-Q2bin-2, xBbin].set_yscale('log')
 			axs[6-Q2bin-2, xBbin].set_xlim([0, 2])
-			axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
+			# axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
 			axs[6-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
 			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
 			if active == 0:
