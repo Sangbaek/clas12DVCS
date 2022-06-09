@@ -974,11 +974,11 @@ if args.saveplot:
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
 
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin]-xsecTh_BH, xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
 
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin]-xsecTh_BH, xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
 
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH, xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
+				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
 				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM-xsecTh_BH)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
 
 				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
