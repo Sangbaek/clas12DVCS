@@ -1040,7 +1040,7 @@ if args.saveplot:
 			if active == 0:
 				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})", bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
@@ -1074,7 +1074,7 @@ if args.saveplot:
 			if active == 0:
 				handles, labels = axs[5-tbin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})", bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
