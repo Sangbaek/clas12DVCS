@@ -1027,7 +1027,7 @@ if args.saveplot:
 			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
 
 			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 			# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 			header = xBheader +Q2header
 			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
@@ -1040,11 +1040,46 @@ if args.saveplot:
 			if active == 0:
 				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})", bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
 	plt.clf()
+
+	active = 0
+	fig, axs = plt.subplots(5-1, 3-1, figsize = (15, 30))
+	for xBbin in range(3 - 1):
+		for tbin in range(5 - 1):
+			#skip inactive bins
+			if (xBbin==1 and tbin == 0):
+				axs[5-tbin-2 , xBbin].yaxis.set_visible(False)
+				axs[5-tbin-2 , xBbin].xaxis.set_visible(False)
+				continue
+			axs[5-tbin-2 , xBbin].scatter(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_Inb[xBbin, :, tbin], color = 'k', label = "Merged")
+			axs[5-tbin-2 , xBbin].scatter(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_Outb[xBbin, :, tbin], color = 'r', label = "Inb.")
+			axs[5-tbin-2 , xBbin].scatter(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff[xBbin, :, tbin], color = 'g', label = "Outb.")
+			axs[5-tbin-2 , xBbin].scatter(Q2avg_BH[xBbin, :, tbin, 0], IntegratedDiff_KM[xBbin, :, tbin], color = 'b', label = "KM")
+
+			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			# Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+			header = xBheader +Q2header
+			axs[5-tbin-2, xBbin].set_title(header, fontsize = 20)
+			# axs[5-tbin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
+			# axs[5-tbin-2, xBbin].set_yscale('log')
+			# axs[5-tbin-2, xBbin].set_xlim([0, 2])
+			# axs[5-tbin-2, xBbin].set_ylim([0.2, 1.])
+			# axs[5-tbin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
+			axs[5-tbin-2, xBbin].set_xlabel(r"$Q^2$" + " [" + GeVc2 + "]")
+			if active == 0:
+				handles, labels = axs[5-tbin-2, xBbin].get_legend_handles_labels()
+				active = 1
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})", bbox_to_anchor = (1.0, 0.6))
+	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+	plt.clf()
+
 
 
 	active = 0
@@ -1065,7 +1100,7 @@ if args.saveplot:
 			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
 
 			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 			# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 			header = xBheader +Q2header
 			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
@@ -1080,7 +1115,7 @@ if args.saveplot:
 				active = 1
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
 	plt.clf()
 
