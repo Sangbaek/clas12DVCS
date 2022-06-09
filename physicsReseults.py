@@ -1071,6 +1071,8 @@ if args.saveplot:
 			# axs[5-tbin-2, xBbin].set_ylim([0.2, 1.])
 			# axs[5-tbin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
 			axs[5-tbin-2, xBbin].set_xlabel(r"$Q^2$" + " [" + GeVc2 + "]")
+			axs[6-Q2bin-2, xBbin].set_xlim([1, 5])
+			axs[6-Q2bin-2, xBbin].set_xticks([1, 2, 3, 4, 5])
 			if active == 0:
 				handles, labels = axs[5-tbin-2, xBbin].get_legend_handles_labels()
 				active = 1
