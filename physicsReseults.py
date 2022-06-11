@@ -287,75 +287,71 @@ if args.savecont:
 	df_bkg2gs_outb = pd.concat(df_bkg2gs_outb)
 
 	i = 0	# trial
-	for xBbins in collection_cont_xBbins:
-		for Q2bins in collection_cont_Q2bins:
-			for tbins in collection_cont_tbins:
-				for phibins in collection_cont_phibins:
+	for i in range(len(collection_cont_xBbins)):
 
-					histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0InbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgInbFD, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefInbFD, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0InbCD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgInbCD, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefInbCD, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0InbCDFT, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgInbCDFT, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefInbCDFT, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0InbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgInbFD, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefInbFD, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0InbCD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgInbCD, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefInbCD, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0InbCDFT, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == -1) & (pi0Exp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgInbCDFT, bins = np.histogramdd(df_bkg1gs_inb.loc[df_bkg1gs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefInbCDFT, bins = np.histogramdd(df_bkg2gs_inb.loc[df_bkg2gs_inb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 
-					histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0OutbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgOutbFD, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefOutbFD, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0OutbCD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgOutbCD, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefOutbCD, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histPi0OutbCDFT, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histBkgOutbCDFT, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-					histRefOutbCDFT, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0OutbFD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgOutbFD, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefOutbFD, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0OutbCD, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgOutbCD, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefOutbCD, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 2 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histPi0OutbCDFT, bins = np.histogramdd(pi0Exp.loc[(pi0Exp.polarity == 1) & (pi0Exp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgOutbCDFT, bins = np.histogramdd(df_bkg1gs_outb.loc[df_bkg1gs_outb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histRefOutbCDFT, bins = np.histogramdd(df_bkg2gs_outb.loc[df_bkg2gs_outb.config == 3 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 
-					epgExp.loc[:, "newxBbin{}".format(i)] = (len(phibins)-1)*(len(tbins)-1)*(len(Q2bins)-1)*(np.digitize(epgExp.xB, xBbins)-1)
-					epgExp.loc[:, "newQ2bin{}".format(i)] = (len(phibins)-1)*(len(tbins)-1)*(np.digitize(epgExp.Q2, Q2bins)-1)
-					epgExp.loc[:, "newtbin{}".format(i)] = (len(phibins)-1)*(np.digitize(epgExp.t1, tbins)-1)
-					epgExp.loc[:, "newphibin{}".format(i)] = np.digitize(epgExp.phi1, phibins)-1
-					epgExp.loc[:, "newbin{}".format(i)] = np.sum(epgExp.loc[:, ["newxBbin{}".format(i), "newQ2bin{}".format(i), "newtbin{}".format(i), "newphibin{}".format(i)]], axis = 1)
+		epgExp.loc[:, "newxBbin{}".format(i)] = (len(phibins)-1)*(len(tbins)-1)*(len(Q2bins)-1)*(np.digitize(epgExp.xB, xBbins)-1)
+		epgExp.loc[:, "newQ2bin{}".format(i)] = (len(phibins)-1)*(len(tbins)-1)*(np.digitize(epgExp.Q2, Q2bins)-1)
+		epgExp.loc[:, "newtbin{}".format(i)] = (len(phibins)-1)*(np.digitize(epgExp.t1, tbins)-1)
+		epgExp.loc[:, "newphibin{}".format(i)] = np.digitize(epgExp.phi1, phibins)-1
+		epgExp.loc[:, "newbin{}".format(i)] = np.sum(epgExp.loc[:, ["newxBbin{}".format(i), "newQ2bin{}".format(i), "newtbin{}".format(i), "newphibin{}".format(i)]], axis = 1)
 
-					contInbFD = divideHist(histBkgInbFD*histPi0InbFD, histRefInbFD*histExpInbFD)
-					contInbCD = divideHist(histBkgInbCD*histPi0InbCD, histRefInbCD*histExpInbCD)
-					contInbCDFT = divideHist(histBkgInbCDFT*histPi0InbCDFT, histRefInbCDFT*histExpInbCDFT)
-					contOutbFD = divideHist(histBkgOutbFD*histPi0OutbFD, histRefOutbFD*histExpOutbFD)
-					contOutbCD = divideHist(histBkgOutbCD*histPi0OutbCD, histRefOutbCD*histExpOutbCD)
-					contOutbCDFT = divideHist(histBkgOutbCDFT*histPi0OutbCDFT, histRefOutbCDFT*histExpOutbCDFT)
+		contInbFD = divideHist(histBkgInbFD*histPi0InbFD, histRefInbFD*histExpInbFD)
+		contInbCD = divideHist(histBkgInbCD*histPi0InbCD, histRefInbCD*histExpInbCD)
+		contInbCDFT = divideHist(histBkgInbCDFT*histPi0InbCDFT, histRefInbCDFT*histExpInbCDFT)
+		contOutbFD = divideHist(histBkgOutbFD*histPi0OutbFD, histRefOutbFD*histExpOutbFD)
+		contOutbCD = divideHist(histBkgOutbCD*histPi0OutbCD, histRefOutbCD*histExpOutbCD)
+		contOutbCDFT = divideHist(histBkgOutbCDFT*histPi0OutbCDFT, histRefOutbCDFT*histExpOutbCDFT)
 
-					unccontInbFD = contInbFD*np.sqrt(inverseHist(histBkgInbFD)+inverseHist(histPi0InbFD)+inverseHist(histRefInbFD)+inverseHist(histExpInbFD))
-					unccontInbCD = contInbCD*np.sqrt(inverseHist(histBkgInbCD)+inverseHist(histPi0InbCD)+inverseHist(histRefInbCD)+inverseHist(histExpInbCD))
-					unccontInbCDFT = contInbCDFT*np.sqrt(inverseHist(histBkgInbCDFT)+inverseHist(histPi0InbCDFT)+inverseHist(histRefInbCDFT)+inverseHist(histExpInbCDFT))
-					unccontOutbFD = contOutbFD*np.sqrt(inverseHist(histBkgOutbFD)+inverseHist(histPi0OutbFD)+inverseHist(histRefOutbFD)+inverseHist(histExpOutbFD))
-					unccontOutbCD = contOutbCD*np.sqrt(inverseHist(histBkgOutbCD)+inverseHist(histPi0OutbCD)+inverseHist(histRefOutbCD)+inverseHist(histExpOutbCD))
-					unccontOutbCDFT = contOutbCDFT*np.sqrt(inverseHist(histBkgOutbCDFT)+inverseHist(histPi0OutbCDFT)+inverseHist(histRefOutbCDFT)+inverseHist(histExpOutbCDFT))
+		unccontInbFD = contInbFD*np.sqrt(inverseHist(histBkgInbFD)+inverseHist(histPi0InbFD)+inverseHist(histRefInbFD)+inverseHist(histExpInbFD))
+		unccontInbCD = contInbCD*np.sqrt(inverseHist(histBkgInbCD)+inverseHist(histPi0InbCD)+inverseHist(histRefInbCD)+inverseHist(histExpInbCD))
+		unccontInbCDFT = contInbCDFT*np.sqrt(inverseHist(histBkgInbCDFT)+inverseHist(histPi0InbCDFT)+inverseHist(histRefInbCDFT)+inverseHist(histExpInbCDFT))
+		unccontOutbFD = contOutbFD*np.sqrt(inverseHist(histBkgOutbFD)+inverseHist(histPi0OutbFD)+inverseHist(histRefOutbFD)+inverseHist(histExpOutbFD))
+		unccontOutbCD = contOutbCD*np.sqrt(inverseHist(histBkgOutbCD)+inverseHist(histPi0OutbCD)+inverseHist(histRefOutbCD)+inverseHist(histExpOutbCD))
+		unccontOutbCDFT = contOutbCDFT*np.sqrt(inverseHist(histBkgOutbCDFT)+inverseHist(histPi0OutbCDFT)+inverseHist(histRefOutbCDFT)+inverseHist(histExpOutbCDFT))
 
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(contInbFD.flatten())))
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(contInbCD.flatten())))
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(contInbCDFT.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(contOutbFD.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(contOutbCD.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(contOutbCDFT.flatten())))
+		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(contInbFD.flatten())))
+		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(contInbCD.flatten())))
+		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(contInbCDFT.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(contOutbFD.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(contOutbCD.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(contOutbCDFT.flatten())))
 
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(unccontInbFD.flatten())))
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(unccontInbCD.flatten())))
-					epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(unccontInbCDFT.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(unccontOutbFD.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(unccontOutbCD.flatten())))
-					epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(unccontOutbCDFT.flatten())))
+		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(unccontInbFD.flatten())))
+e		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(unccontInbCD.flatten())))
+		epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(unccontInbCDFT.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "newbin{}".format(i)].map(dict(enumerate(unccontOutbFD.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "newbin{}".format(i)].map(dict(enumerate(unccontOutbCD.flatten())))
+		epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)] = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "newbin{}".format(i)].map(dict(enumerate(unccontOutbCDFT.flatten())))
 
-					epgExp.loc[epgExp.loc[:, "cont{}".format(i)] > 1, "cont{}".format(i)] = 1
+		epgExp.loc[epgExp.loc[:, "cont{}".format(i)] > 1, "cont{}".format(i)] = 1
 
-					print("saved contaminations {}".format(i))
-					i = i+1
+		print("saved contaminations {}".format(i))
 
 	print("clear memory...")
 
@@ -370,756 +366,764 @@ if args.savecont:
 if args.savexsec:
 	print("read exp...")
 	epgExp = pd.read_pickle("nphistograms/epgExp.pkl")
-	# trial 0
-	k = 0
 
-	xBbins  = collection_xBbins[k]
-	Q2bins  = collection_Q2bins[k]
-	tbins   = collection_tbins [k]
-	phibins = collection_phibins[k]
+	for k in range(len(collection_xBbins)):
+		xBbins  = collection_xBbins[k]
+		Q2bins  = collection_Q2bins[k]
+		tbins   = collection_tbins [k]
+		phibins = collection_phibins[k]
 
-	#Inbending cross sections
-	i = 0 #selected background estimation
+		#Inbending cross sections 
+		i = 0 #selected background estimation
 
-	#inbending
-	histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
-	histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
-	histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+		#inbending
+		histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+		histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+		histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
 
-	histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
+		histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT
+		histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
 
-	print("reading bhs - inbending ")
+		print("reading bhs - inbending ")
 
-	histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_inb_bh50nA:
-		histBHInb50nA = histBHInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histBHInbFD50nA = histBHInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histBHInbCD50nA = histBHInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_inb_bh50nA:
+			histBHInb50nA = histBHInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histBHInbFD50nA = histBHInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histBHInbCD50nA = histBHInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA = 0, 0, 0, 0
-	for jobNum in runs_inb_bh45nA:
-		histBHInb45nA = histBHInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA = 0, 0, 0, 0
+		for jobNum in runs_inb_bh45nA:
+			histBHInb45nA = histBHInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_inb_bh50nA:
-		histBHGenInb50nA = histBHGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histBHGenInbFD50nA = histBHGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histBHGenInbCD50nA = histBHGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_inb_bh50nA:
+			histBHGenInb50nA = histBHGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histBHGenInbFD50nA = histBHGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histBHGenInbCD50nA = histBHGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA = 0, 0, 0, 0
-	for jobNum in runs_inb_bh45nA:
-		histBHGenInb45nA = histBHGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA = 0, 0, 0, 0
+		for jobNum in runs_inb_bh45nA:
+			histBHGenInb45nA = histBHGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	print("reading vggs")
+		print("reading vggs")
 
-	histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg50nA:
-		histVGGInb50nA = histVGGInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGInbFD50nA = histVGGInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGInbCD50nA = histVGGInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg50nA:
+			histVGGInb50nA = histVGGInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGInbFD50nA = histVGGInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGInbCD50nA = histVGGInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg45nA:
-		histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg45nA:
+			histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg55nA:
-		histVGGInb55nA = histVGGInb55nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGInbFD55nA = histVGGInbFD55nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGInbCD55nA = histVGGInbCD55nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg55nA:
+			histVGGInb55nA = histVGGInb55nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGInbFD55nA = histVGGInbFD55nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGInbCD55nA = histVGGInbCD55nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg0nA:
-		histVGGInb0nA = histVGGInb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg0nA:
+			histVGGInb0nA = histVGGInb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg50nA:
-		histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenInbFD50nA = histVGGGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCD50nA = histVGGGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg50nA:
+			histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenInbFD50nA = histVGGGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCD50nA = histVGGGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg45nA:
-		histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg45nA:
+			histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg55nA:
-		histVGGGenInb55nA = histVGGGenInb55nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg55nA:
+			histVGGGenInb55nA = histVGGGenInb55nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
-	for jobNum in runs_inb_vgg0nA:
-		histVGGGenInb0nA = histVGGGenInb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
+		for jobNum in runs_inb_vgg0nA:
+			histVGGGenInb0nA = histVGGGenInb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
-	histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
-	histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
-	histExpUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-	histExpUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-	histExpUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+		histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+		histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+		histExpUncInbFD, bins = np.sqrt(histExpInbFD)
+		histExpUncInbCD, bins = np.sqrt(histExpInbCD)
+		histExpUncInbCDFT, bins = np.sqrt(histExpInbCDFT)
 
-	histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
-	histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
-	histVGGGenInbrad50nA, histVGGGenInbborn50nA = [], []
-	for jobNum in runs_inb_vgg50nA:
-		histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-		histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-		histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-		histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-		histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-		histVGGGenInbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-		histVGGGenInbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-		histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+		histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
+		histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
+		histVGGGenInbrad50nA, histVGGGenInbborn50nA = [], []
+		for jobNum in runs_inb_vgg50nA:
+			histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+			histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+			histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+			histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+			histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+			histVGGGenInbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+			histVGGGenInbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+			histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-	histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
-	histBHGenInbphi45nA, histBHGenInbbinVol45nA = 0, 0
-	histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
-	for jobNum in runs_inb_bh45nA:
-		histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-		histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-		histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-		histBHGenInbt145nA = histBHGenInbt145nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-		histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-		histBHGenInbrad45nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-		histBHGenInbborn45nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-		histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+		histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
+		histBHGenInbphi45nA, histBHGenInbbinVol45nA = 0, 0
+		histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
+		for jobNum in runs_inb_bh45nA:
+			histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+			histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+			histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+			histBHGenInbt145nA = histBHGenInbt145nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+			histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+			histBHGenInbrad45nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+			histBHGenInbborn45nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+			histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-	#outbending
-	histBHDVCSOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
-	histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
-	histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
+		#outbending
+		histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBHDVCSOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
+		histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
+		histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
 
-	histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
+		histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
+		histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
 
-	print("reading bhs")
+		print("reading bhs")
 
-	histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_outb_bh50nA:
-		histBHOutb50nA = histBHOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_outb_bh50nA:
+			histBHOutb50nA = histBHOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_outb_bh50nA:
-		histBHGenOutb50nA = histBHGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_outb_bh50nA:
+			histBHGenOutb50nA = histBHGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	print("reading vggs")
+		print("reading vggs")
 
-	histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg50nA:
-		histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg50nA:
+			histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg40nA:
-		histVGGOutb40nA = histVGGOutb40nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGOutbFD40nA = histVGGOutbFD40nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGOutbCD40nA = histVGGOutbCD40nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGOutbCDFT40nA = histVGGOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg40nA:
+			histVGGOutb40nA = histVGGOutb40nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGOutbFD40nA = histVGGOutbFD40nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGOutbCD40nA = histVGGOutbCD40nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGOutbCDFT40nA = histVGGOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGOutb0nA, histVGGOutbFD0nA, histVGGOutbCD0nA, histVGGOutbCDFT0nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg0nA:
-		histVGGOutb0nA = histVGGOutb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGOutbFD0nA = histVGGOutbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGOutbCD0nA = histVGGOutbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGOutbCDFT0nA = histVGGOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGOutb0nA, histVGGOutbFD0nA, histVGGOutbCD0nA, histVGGOutbCDFT0nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg0nA:
+			histVGGOutb0nA = histVGGOutb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGOutbFD0nA = histVGGOutbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGOutbCD0nA = histVGGOutbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGOutbCDFT0nA = histVGGOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGOutb40naT, histVGGOutbFD40naT, histVGGOutbCD40naT, histVGGOutbCDFT40naT = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg40nAT:
-		histVGGOutb40naT = histVGGOutb40naT + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-		histVGGOutbFD40naT = histVGGOutbFD40naT + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-		histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-		histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+		histVGGOutb40naT, histVGGOutbFD40naT, histVGGOutbCD40naT, histVGGOutbCDFT40naT = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg40nAT:
+			histVGGOutb40naT = histVGGOutb40naT + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+			histVGGOutbFD40naT = histVGGOutbFD40naT + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+			histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+			histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg50nA:
-		histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCDFT50nA = histVGGGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg50nA:
+			histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCDFT50nA = histVGGGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenOutb40nA, histVGGGenOutbFD40nA, histVGGGenOutbCD40nA, histVGGGenOutbCDFT40nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg40nA:
-		histVGGGenOutb40nA = histVGGGenOutb40nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbFD40nA = histVGGGenOutbFD40nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCD40nA = histVGGGenOutbCD40nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCDFT40nA = histVGGGenOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenOutb40nA, histVGGGenOutbFD40nA, histVGGGenOutbCD40nA, histVGGGenOutbCDFT40nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg40nA:
+			histVGGGenOutb40nA = histVGGGenOutb40nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbFD40nA = histVGGGenOutbFD40nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCD40nA = histVGGGenOutbCD40nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCDFT40nA = histVGGGenOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenOutb0nA, histVGGGenOutbFD0nA, histVGGGenOutbCD0nA, histVGGGenOutbCDFT0nA = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg0nA:
-		histVGGGenOutb0nA = histVGGGenOutb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbFD0nA = histVGGGenOutbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCD0nA = histVGGGenOutbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCDFT0nA = histVGGGenOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenOutb0nA, histVGGGenOutbFD0nA, histVGGGenOutbCD0nA, histVGGGenOutbCDFT0nA = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg0nA:
+			histVGGGenOutb0nA = histVGGGenOutb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbFD0nA = histVGGGenOutbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCD0nA = histVGGGenOutbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCDFT0nA = histVGGGenOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histVGGGenOutb40nAT, histVGGGenOutbFD40nAT, histVGGGenOutbCD40nAT, histVGGGenOutbCDFT40nAT = 0, 0, 0, 0
-	for jobNum in runs_outb_vgg40nAT:
-		histVGGGenOutb40nAT = histVGGGenOutb40nAT + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbFD40nAT = histVGGGenOutbFD40nAT + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCD40nAT = histVGGGenOutbCD40nAT + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbCDFT40nAT = histVGGGenOutbCDFT40nAT + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histVGGGenOutb40nAT, histVGGGenOutbFD40nAT, histVGGGenOutbCD40nAT, histVGGGenOutbCDFT40nAT = 0, 0, 0, 0
+		for jobNum in runs_outb_vgg40nAT:
+			histVGGGenOutb40nAT = histVGGGenOutb40nAT + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbFD40nAT = histVGGGenOutbFD40nAT + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCD40nAT = histVGGGenOutbCD40nAT + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbCDFT40nAT = histVGGGenOutbCDFT40nAT + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-	histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
-	histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
-	histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
-	histExpUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-	histExpUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-	histExpUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
+		histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
+		histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
+		histExpUncOutbFD, bins = np.sqrt(histExpOutbFD)
+		histExpUncOutbCD, bins = np.sqrt(histExpOutbCD)
+		histExpUncOutbCDFT, bins = np.sqrt(histExpOutbCDFT)
 
-	histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
-	histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
-	histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
-	for jobNum in runs_outb_vgg50nA:
-		histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-		histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-		histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-		histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+		histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
+		histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
+		histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
+		for jobNum in runs_outb_vgg50nA:
+			histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+			histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-	histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
-	histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
-	histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
-	for jobNum in runs_outb_bh50nA:
-		histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-		histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-		histBHGenOutbQ250nA = histBHGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-		histBHGenOutbt150nA = histBHGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-		histBHGenOutbphi50nA = histBHGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-		histBHGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-		histBHGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-		histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+		histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
+		histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
+		histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
+		for jobNum in runs_outb_bh50nA:
+			histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+			histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+			histBHGenOutbQ250nA = histBHGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+			histBHGenOutbt150nA = histBHGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+			histBHGenOutbphi50nA = histBHGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+			histBHGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+			histBHGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+			histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-	#stat error - inbending
-	accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
-	accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
-	accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
-	uncStatInbFD_VGG = divideHist(histBkgUncInbFD+histExpUncInbFD, histBHDVCSInbFD**2) + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA)
-	uncStatInbCD_VGG = divideHist(histBkgUncInbCD+histExpUncInbCD, histBHDVCSInbCD**2) + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA)
-	uncStatInbCDFT_VGG = divideHist(histBkgUncInbCDFT+histExpUncInbCDFT, histBHDVCSInbCDFT**2) + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA)
-	uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG)
+		#stat error - inbending
+		accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
+		accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
+		accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
+		uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA))
+		uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA))
+		uncStatInbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA))
+		uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2)
 
-	accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG
-	accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb50nA, histVGGGenInbFD50nA + histVGGGenInbCD50nA+ histVGGGenInbCDFT50nA)
-	uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
+		accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG
+		accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb50nA, histVGGGenInbFD50nA + histVGGGenInbCD50nA+ histVGGGenInbCDFT50nA)
+		uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
 
-	accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
-	accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
-	accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
+		accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
+		accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
+		accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
+		uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
+		uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
+		uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
+		uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2)
 
-	uncStatInbFD_BH = divideHist(histBkgUncInbFD+histExpUncInbFD, histBHDVCSInbFD**2) + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA)
-	uncStatInbCD_BH = divideHist(histBkgUncInbCD+histExpUncInbCD, histBHDVCSInbCD**2) + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA)
-	uncStatInbCDFT_BH = divideHist(histBkgUncInbCDFT+histExpUncInbCDFT, histBHDVCSInbCDFT**2) + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA)
-	uncStatInb_BH = np.sqrt(accCorrectedInbCDFT_BH**2 *uncStatInbFD_BH + accCorrectedInbCD_BH**2 * uncStatInbCD_BH + accCorrectedInbFD_BH**2 * uncStatInbCDFT_BH)
+		accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH
+		accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA+ histBHGenInbCDFT45nA)
+		uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
 
-	accCorrectedInb_BH = accCorrectedInbCDFT_BH + accCorrectedInbCD_BH + accCorrectedInbFD_BH
-	accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA+ histBHGenInbCDFT45nA)
-	uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
+		#stat error - outbending
+		accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
+		accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
+		accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
+		uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
+		uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
+		uncStatOutbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutbCDFT50nA))
+		uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2)
 
-	#stat error - outbending
-	accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
-	accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
-	accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
-	uncStatOutbFD_VGG = divideHist(histBkgUncOutbFD+histExpUncOutbFD, histBHDVCSOutbFD**2) + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA)
-	uncStatOutbCD_VGG = divideHist(histBkgUncOutbCD+histExpUncOutbCD, histBHDVCSOutbCD**2) + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA)
-	uncStatOutbCDFT_VGG = divideHist(histBkgUncOutbCDFT+histExpUncOutbCDFT, histBHDVCSOutbCDFT**2) + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutbCDFT50nA)
-	uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG)
+		accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG
+		accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA+ histVGGGenOutbCDFT50nA)
+		uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
 
-	accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG
-	accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA+ histVGGGenOutbCDFT50nA)
-	uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
+		accCorrectedOutbFD_BH = divideHist(histBHDVCSOutbFD*histBHGenOutbFD50nA , histBHOutbFD50nA)
+		accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
+		accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
+		uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
+		uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
+		uncStatOutbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutbCDFT50nA))
+		uncStatOutb_BH = np.sqrt(accCorrectedOutbFD_BH**2 *uncStatOutbFD_BH**2 + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2)
 
-	accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
-	accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
-	accCorrectedOutbFD_BH = divideHist(histBHDVCSOutbFD*histBHGenOutbFD50nA , histBHOutbFD50nA)
+		accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH
+		accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA+ histBHGenOutbCDFT50nA)
+		uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
 
-	uncStatOutbFD_BH = divideHist(histBkgUncOutbFD+histExpUncOutbFD, histBHDVCSOutbFD**2) + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA)
-	uncStatOutbCD_BH = divideHist(histBkgUncOutbCD+histExpUncOutbCD, histBHDVCSOutbCD**2) + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA)
-	uncStatOutbCDFT_BH = divideHist(histBkgUncOutbCDFT+histExpUncOutbCDFT, histBHDVCSOutbCDFT**2) + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutbCDFT50nA)
-	uncStatOutb_BH = np.sqrt(accCorrectedOutbCDFT_BH**2 *uncStatOutbFD_BH + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH + accCorrectedOutbFD_BH**2 * uncStatOutbCDFT_BH)
+		#stat error - all
+		accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
+		uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
+		uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
 
-	accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH
-	accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA+ histBHGenOutbCDFT50nA)
-	uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
+		accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
+		uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
+		uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
 
-	#stat error - all
-	accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
-	uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
-	uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
+		phi1avg_VGG = np.zeros(accCorrected_VGG.shape)
+		xBavg_VGG = np.zeros(accCorrected_VGG.shape)
+		Q2avg_VGG = np.zeros(accCorrected_VGG.shape)
+		t1avg_VGG = np.zeros(accCorrected_VGG.shape)
+		integratedRad_VGG = np.zeros(accCorrected_VGG.shape)
+		pointBorn_VGG = np.zeros(accCorrected_VGG.shape)
+		rcfactors_VGG = np.zeros(accCorrected_VGG.shape)
 
-	accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
-	uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
-	uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
+		phi1avg_BH = np.zeros(accCorrected_BH.shape)
+		xBavg_BH = np.zeros(accCorrected_BH.shape)
+		Q2avg_BH = np.zeros(accCorrected_BH.shape)
+		t1avg_BH = np.zeros(accCorrected_BH.shape)
+		integratedRad_BH = np.zeros(accCorrected_BH.shape)
+		pointBorn_BH = np.zeros(accCorrected_BH.shape)
+		rcfactors_BH = np.zeros(accCorrected_BH.shape)
 
-	phi1avg_VGG = np.zeros(accCorrected_VGG.shape)
-	xBavg_VGG = np.zeros(accCorrected_VGG.shape)
-	Q2avg_VGG = np.zeros(accCorrected_VGG.shape)
-	t1avg_VGG = np.zeros(accCorrected_VGG.shape)
-	integratedRad_VGG = np.zeros(accCorrected_VGG.shape)
-	pointBorn_VGG = np.zeros(accCorrected_VGG.shape)
-	rcfactors_VGG = np.zeros(accCorrected_VGG.shape)
+		xsecTh_KM = np.zeros(accCorrected_VGG.shape)
+		xsecTh_BH = np.zeros(accCorrected_VGG.shape)
+		xsecTh_VGG = np.zeros(accCorrected_VGG.shape)
 
-	phi1avg_BH = np.zeros(accCorrected_BH.shape)
-	xBavg_BH = np.zeros(accCorrected_BH.shape)
-	Q2avg_BH = np.zeros(accCorrected_BH.shape)
-	t1avg_BH = np.zeros(accCorrected_BH.shape)
-	integratedRad_BH = np.zeros(accCorrected_BH.shape)
-	pointBorn_BH = np.zeros(accCorrected_BH.shape)
-	rcfactors_BH = np.zeros(accCorrected_BH.shape)
+		binVolume = np.zeros(accCorrected_VGG.shape)
 
-	xsecTh_KM = np.zeros(accCorrected_VGG.shape)
-	xsecTh_BH = np.zeros(accCorrected_VGG.shape)
-	xsecTh_VGG = np.zeros(accCorrected_VGG.shape)
+		for tbin in range(len(tbins) -1):
+			for xBbin in range(len(xBbins) - 1):
+				for Q2bin in range(len(Q2bins) - 1):
+					if np.sum((histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :])>100:
+						phi1avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
+						xBavg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
+						Q2avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
+						t1avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
+						xsecTh_VGG[xBbin, Q2bin, tbin, :] = np.array(printVGGarray(xBavg_VGG[xBbin, Q2bin, tbin, :], Q2avg_VGG[xBbin, Q2bin, tbin, :], t1avg_VGG[xBbin, Q2bin, tbin, :], np.radians(phi1avg_VGG[xBbin, Q2bin, tbin, :]), globalfit = True))
 
-	binVolume = np.zeros(accCorrected_VGG.shape)
+					if np.sum((histBHGenInb45nA+histBHGenOutb50nA)[xBbin, Q2bin, tbin, :])>100:
+						phi1avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)[xBbin, Q2bin, tbin, :]
+						xBavg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
+						Q2avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
+						t1avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
+						xsecTh_BH[xBbin, Q2bin, tbin, :] = np.array(printBHarray(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], np.radians(phi1avg_BH[xBbin, Q2bin, tbin, :]), globalfit = True))
+						xsecTh_KM[xBbin, Q2bin, tbin, :] = np.array(printKMarray(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], np.radians(phi1avg_BH[xBbin, Q2bin, tbin, :])))
+					binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA)
 
-	for tbin in range(len(tbins) -1):
-		for xBbin in range(len(xBbins) - 1):
-			for Q2bin in range(len(Q2bins) - 1):
-				if np.sum((histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :])>100:
-					phi1avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
-					Q2avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
-					t1avg_VGG[xBbin, Q2bin, tbin, :] = divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_VGG[xBbin, Q2bin, tbin, :].shape)
-					xsecTh_VGG[xBbin, Q2bin, tbin, :] = np.array(printVGGarray(xBavg_VGG[xBbin, Q2bin, tbin, :], Q2avg_VGG[xBbin, Q2bin, tbin, :], t1avg_VGG[xBbin, Q2bin, tbin, :], np.radians(phi1avg_VGG[xBbin, Q2bin, tbin, :]), globalfit = True))
+		integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutb50nA], axis = 0)
+		rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
+		integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
+		rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
 
-				if np.sum((histBHGenInb45nA+histBHGenOutb50nA)[xBbin, Q2bin, tbin, :])>100:
-					phi1avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)[xBbin, Q2bin, tbin, :]
-					xBavg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
-					Q2avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
-					t1avg_BH[xBbin, Q2bin, tbin, :] = divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)[xBbin, Q2bin, tbin]*np.ones(phi1avg_BH[xBbin, Q2bin, tbin, :].shape)
-					xsecTh_BH[xBbin, Q2bin, tbin, :] = np.array(printBHarray(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], np.radians(phi1avg_BH[xBbin, Q2bin, tbin, :]), globalfit = True))
-					xsecTh_KM[xBbin, Q2bin, tbin, :] = np.array(printKMarray(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], np.radians(phi1avg_BH[xBbin, Q2bin, tbin, :])))
-				binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA)
+		xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*inbcharge_epg)
+		xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*inbcharge_epg)
+		xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*outbcharge_epg)
+		xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*outbcharge_epg)
+		xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*charge_epg)
+		xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*charge_epg)
 
-	integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutb50nA], axis = 0)
-	rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
-	integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
-	rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
+		np.savez("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k), hist = phi1avg_VGG)
+		np.savez("nphistograms/binscheme{}/xBavg_VGG.npz".format(k), hist = xBavg_VGG)
+		np.savez("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k), hist = Q2avg_VGG)
+		np.savez("nphistograms/binscheme{}/t1avg_VGG.npz".format(k), hist = t1avg_VGG)
 
-	xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*inbcharge_epg)
-	xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*inbcharge_epg)
-	xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*outbcharge_epg)
-	xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*outbcharge_epg)
-	xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG, threshold = 100)/(1.324*charge_epg)
-	xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH, threshold = 100)/(1.324*charge_epg)
+		np.savez("nphistograms/binscheme{}/phi1avg_BH.npz".format(k), hist = phi1avg_BH)
+		np.savez("nphistograms/binscheme{}/xBavg_BH.npz".format(k), hist = xBavg_BH)
+		np.savez("nphistograms/binscheme{}/Q2avg_BH.npz".format(k), hist = Q2avg_BH)
+		np.savez("nphistograms/binscheme{}/t1avg_BH.npz".format(k), hist = t1avg_BH)
 
-	np.savez("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k), hist = phi1avg_VGG)
-	np.savez("nphistograms/binscheme{}/xBavg_VGG.npz".format(k), hist = xBavg_VGG)
-	np.savez("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k), hist = Q2avg_VGG)
-	np.savez("nphistograms/binscheme{}/t1avg_VGG.npz".format(k), hist = t1avg_VGG)
+		np.savez("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k), hist = xsecInb_VGG)
+		np.savez("nphistograms/binscheme{}/xsecInb_BH.npz".format(k), hist = xsecInb_BH)
+		np.savez("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k), hist = xsecOutb_VGG)
+		np.savez("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k), hist = xsecOutb_BH)
+		np.savez("nphistograms/binscheme{}/xsec_VGG.npz".format(k), hist = xsec_VGG)
+		np.savez("nphistograms/binscheme{}/xsec_BH.npz".format(k), hist = xsec_BH)
 
-	np.savez("nphistograms/binscheme{}/phi1avg_BH.npz".format(k), hist = phi1avg_BH)
-	np.savez("nphistograms/binscheme{}/xBavg_BH.npz".format(k), hist = xBavg_BH)
-	np.savez("nphistograms/binscheme{}/Q2avg_BH.npz".format(k), hist = Q2avg_BH)
-	np.savez("nphistograms/binscheme{}/t1avg_BH.npz".format(k), hist = t1avg_BH)
+		np.savez("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k), hist = uncStatInb_VGG)
+		np.savez("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k), hist = uncStatInb_BH)
+		np.savez("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k), hist = uncStatOutb_VGG)
+		np.savez("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k), hist = uncStatOutb_BH)
+		np.savez("nphistograms/binscheme{}/uncStat_VGG.npz".format(k), hist = uncStat_VGG)
+		np.savez("nphistograms/binscheme{}/uncStat_BH.npz".format(k), hist = uncStat_BH)
 
-	np.savez("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k), hist = xsecInb_VGG)
-	np.savez("nphistograms/binscheme{}/xsecInb_BH.npz".format(k), hist = xsecInb_BH)
-	np.savez("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k), hist = xsecOutb_VGG)
-	np.savez("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k), hist = xsecOutb_BH)
-	np.savez("nphistograms/binscheme{}/xsec_VGG.npz".format(k), hist = xsec_VGG)
-	np.savez("nphistograms/binscheme{}/xsec_BH.npz".format(k), hist = xsec_BH)
-
-	np.savez("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k), hist = uncStatInb_VGG)
-	np.savez("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k), hist = uncStatInb_BH)
-	np.savez("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k), hist = uncStatOutb_VGG)
-	np.savez("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k), hist = uncStatOutb_BH)
-	np.savez("nphistograms/binscheme{}/uncStat_VGG.npz".format(k), hist = uncStat_VGG)
-	np.savez("nphistograms/binscheme{}/uncStat_BH.npz".format(k), hist = uncStat_BH)
-
-	np.savez("nphistograms/binscheme{}/xsecTh_KM.npz".format(k), hist = xsecTh_KM)
-	np.savez("nphistograms/binscheme{}/xsecTh_BH.npz".format(k), hist = xsecTh_BH)
-	np.savez("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k), hist = xsecTh_VGG)
-	np.savez("nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
+		np.savez("nphistograms/binscheme{}/xsecTh_KM.npz".format(k), hist = xsecTh_KM)
+		np.savez("nphistograms/binscheme{}/xsecTh_BH.npz".format(k), hist = xsecTh_BH)
+		np.savez("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k), hist = xsecTh_VGG)
+		np.savez("nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
 
 if args.saveplot:
 
-	k = 0
-	xBbins  = collection_xBbins[k]
-	Q2bins  = collection_Q2bins[k]
-	tbins   = collection_tbins [k]
-	phibins = collection_phibins[k]
+	for k in range(len(collection_xBbins)):
 
-	i = 0
+		xBbins  = collection_xBbins[k]
+		Q2bins  = collection_Q2bins[k]
+		tbins   = collection_tbins [k]
+		phibins = collection_phibins[k]
 
-	print("reading the xsec vars")
-	phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
-	xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
-	Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
-	t1avg_VGG   = np.load("nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
+		i = 0
 
-	phi1avg_BH  = np.load("nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
-	xBavg_BH    = np.load("nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
-	Q2avg_BH    = np.load("nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
-	t1avg_BH    = np.load("nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
+		os.makedirs("plots/binscheme{}".format(k), exist_ok = True)
 
-	xsecInb_VGG = np.load("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k))["hist"]
-	xsecInb_BH  = np.load("nphistograms/binscheme{}/xsecInb_BH.npz".format(k))["hist"]
-	xsecOutb_VGG = np.load("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k))["hist"]
-	xsecOutb_BH  = np.load("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k))["hist"]
-	xsec_VGG     = np.load("nphistograms/binscheme{}/xsec_VGG.npz".format(k))["hist"]
-	xsec_BH      = np.load("nphistograms/binscheme{}/xsec_BH.npz".format(k))["hist"]
+		print("reading the xsec vars")
+		phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
+		xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
+		Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
+		t1avg_VGG   = np.load("nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
 
-	uncStatInb_VGG = np.load("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k))["hist"]
-	uncStatInb_BH  = np.load("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k))["hist"]
-	uncStatOutb_VGG = np.load("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k))["hist"]
-	uncStatOutb_BH  = np.load("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k))["hist"]
-	uncStat_VGG     = np.load("nphistograms/binscheme{}/uncStat_VGG.npz".format(k))["hist"]
-	uncStat_BH      = np.load("nphistograms/binscheme{}/uncStat_BH.npz".format(k))["hist"]
+		phi1avg_BH  = np.load("nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
+		xBavg_BH    = np.load("nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
+		Q2avg_BH    = np.load("nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
+		t1avg_BH    = np.load("nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
 
-	xsecTh_KM          = np.load("nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
-	xsecTh_BH          = np.load("nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
-	xsecTh_VGG         = np.load("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
-	binVolume          = np.load("nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+		xsecInb_VGG = np.load("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k))["hist"]
+		xsecInb_BH  = np.load("nphistograms/binscheme{}/xsecInb_BH.npz".format(k))["hist"]
+		xsecOutb_VGG = np.load("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k))["hist"]
+		xsecOutb_BH  = np.load("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k))["hist"]
+		xsec_VGG     = np.load("nphistograms/binscheme{}/xsec_VGG.npz".format(k))["hist"]
+		xsec_BH      = np.load("nphistograms/binscheme{}/xsec_BH.npz".format(k))["hist"]
 
-	print("plotting...")
-	for tbin in range(len(tbins) -1):
+		uncStatInb_VGG = np.load("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k))["hist"]
+		uncStatInb_BH  = np.load("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k))["hist"]
+		uncStatOutb_VGG = np.load("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k))["hist"]
+		uncStatOutb_BH  = np.load("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k))["hist"]
+		uncStat_VGG     = np.load("nphistograms/binscheme{}/uncStat_VGG.npz".format(k))["hist"]
+		uncStat_BH      = np.load("nphistograms/binscheme{}/uncStat_BH.npz".format(k))["hist"]
+
+		xsecTh_KM          = np.load("nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
+		xsecTh_BH          = np.load("nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
+		xsecTh_VGG         = np.load("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
+		binVolume          = np.load("nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+
+		print("plotting...")
+		for tbin in range(len(tbins) -1):
+			active = 0
+			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+			for xBbin in range(3 - 1):
+				for Q2bin in range(6 - 1):
+					#skip inactive bins
+					if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+						axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+						axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+						continue
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+
+					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+					header = xBheader +Q2header + theader
+					axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+					axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					axs[6-Q2bin-2, xBbin].set_yscale('log')
+					axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+					axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+					if active == 0:
+						handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+						active = 1
+			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+			plt.savefig("plots/binscheme{}/bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.clf()
+
+		for tbin in range(len(tbins) -1):
+			active = 0
+			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+			for xBbin in range(3 - 1):
+				for Q2bin in range(6 - 1):
+					#skip inactive bins
+					if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+						axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+						axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+						continue
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+
+					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+					header = xBheader +Q2header + theader
+					axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+					axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					axs[6-Q2bin-2, xBbin].set_yscale('log')
+					axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
+					axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+					axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+					if active == 0:
+						handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+						active = 1
+			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+			plt.savefig("plots/binscheme{}/KM_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.clf()
+
+		for tbin in range(len(tbins) -1):
+			active = 0
+			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+			for xBbin in range(3 - 1):
+				for Q2bin in range(6 - 1):
+					#skip inactive bins
+					if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+						axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+						axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+						continue
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+
+					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+					header = xBheader +Q2header + theader
+					axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+					axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					axs[6-Q2bin-2, xBbin].set_yscale('log')
+					axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
+					axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+					axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+					if active == 0:
+						handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+						active = 1
+			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+			plt.savefig("plots/binscheme{}/BH_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.clf()
+
+		wings = [0,1,-2,-1]
+		Normalization = np.zeros(xsecTh_BH.shape[:-1])
+		Normalization_Inb = np.zeros(xsecTh_BH.shape[:-1])
+		Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
+
+		for tbin in range(len(tbins) -1):
+			active = 0
+			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+			for xBbin in range(3 - 1):
+				for Q2bin in range(6 - 1):
+					#skip inactive bins
+					if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+						axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+						axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+						continue
+					Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
+					Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
+					Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+
+					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+					header = xBheader +Q2header + theader
+					axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+					axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					axs[6-Q2bin-2, xBbin].set_yscale('log')
+					axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+					axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+					if active == 0:
+						handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+						active = 1
+			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+			plt.savefig("plots/binscheme{}/Normalized_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.clf()
+
+		IntegratedDiff = np.zeros(xsecTh_BH.shape[:-1])
+		IntegratedDiff_Inb = np.zeros(xsecTh_BH.shape[:-1])
+		IntegratedDiff_Outb = np.zeros(xsecTh_BH.shape[:-1])
+		IntegratedDiff_KM = np.zeros(xsecTh_BH.shape[:-1])
+
+		for tbin in range(len(tbins) -1):
+			active = 0
+			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+			for xBbin in range(3 - 1):
+				for Q2bin in range(6 - 1):
+					#skip inactive bins
+					if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+						axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+						axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+						continue
+
+					IntegratedDiff_Inb[xBbin, Q2bin, tbin] = np.sum(xsecInb_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
+					IntegratedDiff_Outb[xBbin, Q2bin, tbin] = np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
+					IntegratedDiff[xBbin, Q2bin, tbin] = np.sum(xsec_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
+					IntegratedDiff_KM[xBbin, Q2bin, tbin] = np.sum(xsecTh_KM[xBbin, Q2bin, tbin, 11-3:12+3] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
+
+					axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
+					axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM-xsecTh_BH)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
+
+					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+					header = xBheader +Q2header + theader
+					axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+					axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					# axs[6-Q2bin-2, xBbin].set_yscale('log')
+					axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
+					axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+					if active == 0:
+						handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+						active = 1
+			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+			plt.savefig("plots/binscheme{}/Differences_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.clf()
+
 		active = 0
-		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
 		for xBbin in range(3 - 1):
 			for Q2bin in range(6 - 1):
 				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
 					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
+				axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Inb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
+				axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Outb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
+				axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
+				axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_KM[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
+				# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
-
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/binscheme{}/bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
-
-	for tbin in range(len(tbins) -1):
-		active = 0
-		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-		for xBbin in range(3 - 1):
-			for Q2bin in range(6 - 1):
-				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
-					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]/xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+				# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
 
 				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
+				Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header
 				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
-				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/binscheme{}/KM_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
-
-	for tbin in range(len(tbins) -1):
-		active = 0
-		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-		for xBbin in range(3 - 1):
-			for Q2bin in range(6 - 1):
-				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
-					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]/xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
-
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_ylim([0.01, 100])
-				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/binscheme{}/BH_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
-
-	wings = [0,1,-2,-1]
-	Normalization = np.zeros(xsecTh_BH.shape[:-1])
-	Normalization_Inb = np.zeros(xsecTh_BH.shape[:-1])
-	Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
-
-	for tbin in range(len(tbins) -1):
-		active = 0
-		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-		for xBbin in range(3 - 1):
-			for Q2bin in range(6 - 1):
-				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
-					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-				Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
-				Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
-				Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
-
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-				axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-				if active == 0:
-					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
-		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/binscheme{}/Normalized_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-		plt.clf()
-
-	IntegratedDiff = np.zeros(xsecTh_BH.shape[:-1])
-	IntegratedDiff_Inb = np.zeros(xsecTh_BH.shape[:-1])
-	IntegratedDiff_Outb = np.zeros(xsecTh_BH.shape[:-1])
-	IntegratedDiff_KM = np.zeros(xsecTh_BH.shape[:-1])
-
-	for tbin in range(len(tbins) -1):
-		active = 0
-		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-		for xBbin in range(3 - 1):
-			for Q2bin in range(6 - 1):
-				#skip inactive bins
-				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1):
-					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-					continue
-
-				IntegratedDiff_Inb[xBbin, Q2bin, tbin] = np.sum(xsecInb_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
-				IntegratedDiff_Outb[xBbin, Q2bin, tbin] = np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
-				IntegratedDiff[xBbin, Q2bin, tbin] = np.sum(xsec_BH[xBbin, Q2bin, tbin, 11-3:12+3]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
-				IntegratedDiff_KM[xBbin, Q2bin, tbin] = np.sum(xsecTh_KM[xBbin, Q2bin, tbin, 11-3:12+3] - xsecTh_BH[xBbin, Q2bin, tbin, 11-3:12+3], axis = -1)
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
-
-				axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Merged')
-				axs[6-Q2bin-2 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM-xsecTh_BH)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM')
-
-				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-				header = xBheader +Q2header + theader
-				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-				axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
 				# axs[6-Q2bin-2, xBbin].set_yscale('log')
-				axs[6-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
-				axs[6-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				axs[6-Q2bin-2, xBbin].set_xlim([0, 2])
+				# axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
+				axs[6-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
+				axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
 				if active == 0:
 					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
 					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/binscheme{}/Differences_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
 		plt.clf()
 
-	active = 0
-	fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-	for xBbin in range(3 - 1):
-		for Q2bin in range(6 - 1):
-			#skip inactive bins
-			if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
-				axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-				axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-				continue
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Inb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_Outb[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
-			axs[6-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, :, 0][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], IntegratedDiff_KM[xBbin, Q2bin, :][IntegratedDiff_Inb[xBbin, Q2bin, :]!=0], color = 'b', label = "KM", marker = 'o', markersize = 20)
+		active = 0
+		fig, axs = plt.subplots(5-1, 3-1, figsize = (15, 30))
+		for xBbin in range(3 - 1):
+			for tbin in range(5 - 1):
+				#skip inactive bins
+				if (xBbin==1 and tbin == 0):
+					axs[5-tbin-2 , xBbin].yaxis.set_visible(False)
+					axs[5-tbin-2 , xBbin].xaxis.set_visible(False)
+					continue
+				axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Inb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
+				axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Outb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
+				axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
+				axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_KM[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
-			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
-
-			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
-
-			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-			Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-			# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-			header = xBheader +Q2header
-			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
-			# axs[6-Q2bin-2, xBbin].set_yscale('log')
-			axs[6-Q2bin-2, xBbin].set_xlim([0, 2])
-			# axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
-			axs[6-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
-			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
-			if active == 0:
-				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
-	plt.clf()
-
-	active = 0
-	fig, axs = plt.subplots(5-1, 3-1, figsize = (15, 30))
-	for xBbin in range(3 - 1):
-		for tbin in range(5 - 1):
-			#skip inactive bins
-			if (xBbin==1 and tbin == 0):
-				axs[5-tbin-2 , xBbin].yaxis.set_visible(False)
-				axs[5-tbin-2 , xBbin].xaxis.set_visible(False)
-				continue
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Inb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'k', label = "Merged", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_Outb[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'r', label = "Inb.", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'g', label = "Outb.", marker = 'o', markersize = 20)
-			axs[5-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, :, tbin, 0][IntegratedDiff[xBbin, :, tbin]>0], IntegratedDiff_KM[xBbin, :, tbin][IntegratedDiff[xBbin, :, tbin]>0], color = 'b', label = "KM", marker = 'o', markersize = 20)
-
-			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-			# Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-			header = xBheader +theader
-			axs[5-tbin-2, xBbin].set_title(header, fontsize = 20)
-			# axs[5-tbin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
-			# axs[5-tbin-2, xBbin].set_yscale('log')
-			# axs[5-tbin-2, xBbin].set_xlim([0, 2])
-			# axs[5-tbin-2, xBbin].set_ylim([0.2, 1.])
-			# axs[5-tbin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
-			axs[5-tbin-2, xBbin].set_xlabel(r"$Q^2$" + " [" + GeVc2 + "]")
-			axs[5-tbin-2, xBbin].set_xlim([1, 5])
-			axs[5-tbin-2, xBbin].set_xticks([1, 2, 3, 4, 5])
-			if active == 0:
-				handles, labels = axs[5-tbin-2, xBbin].get_legend_handles_labels()
-				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
-	plt.clf()
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				# Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +theader
+				axs[5-tbin-2, xBbin].set_title(header, fontsize = 20)
+				# axs[5-tbin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
+				# axs[5-tbin-2, xBbin].set_yscale('log')
+				# axs[5-tbin-2, xBbin].set_xlim([0, 2])
+				# axs[5-tbin-2, xBbin].set_ylim([0.2, 1.])
+				# axs[5-tbin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
+				axs[5-tbin-2, xBbin].set_xlabel(r"$Q^2$" + " [" + GeVc2 + "]")
+				axs[5-tbin-2, xBbin].set_xlim([1, 5])
+				axs[5-tbin-2, xBbin].set_xticks([1, 2, 3, 4, 5])
+				if active == 0:
+					handles, labels = axs[5-tbin-2, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+		plt.clf()
 
 
 
-	active = 0
-	fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
-	for xBbin in range(3 - 1):
-		for Q2bin in range(6 - 1):
-			#skip inactive bins
-			if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
-				axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
-				axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
-				continue
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'k', label = "Merged")
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Inb[xBbin, Q2bin, :], color = 'r', label = "Inb.")
-			axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Outb[xBbin, Q2bin, :], color = 'b', label = "Outb.")
+		active = 0
+		fig, axs = plt.subplots(6-1, 3-1, figsize = (15, 30))
+		for xBbin in range(3 - 1):
+			for Q2bin in range(6 - 1):
+				#skip inactive bins
+				if (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4):
+					axs[6-Q2bin-2 , xBbin].yaxis.set_visible(False)
+					axs[6-Q2bin-2 , xBbin].xaxis.set_visible(False)
+					continue
+				axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization[xBbin, Q2bin, :], color = 'k', label = "Merged")
+				axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Inb[xBbin, Q2bin, :], color = 'r', label = "Inb.")
+				axs[6-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0], Normalization_Outb[xBbin, Q2bin, :], color = 'b', label = "Outb.")
 
-			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
+				# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
-			# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
+				# axs[6-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'k', label = 'Merged')
 
-			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
-			Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
-			# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
-			header = xBheader +Q2header
-			axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
-			# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
-			# axs[6-Q2bin-2, xBbin].set_yscale('log')
-			axs[6-Q2bin-2, xBbin].set_xlim([0, 2])
-			axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
-			axs[6-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
-			axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
-			if active == 0:
-				handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
-				active = 1
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-	# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
-	plt.clf()
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				# theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header
+				axs[6-Q2bin-2, xBbin].set_title(header, fontsize = 20)
+				# axs[6-Q2bin-2, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$"))
+				# axs[6-Q2bin-2, xBbin].set_yscale('log')
+				axs[6-Q2bin-2, xBbin].set_xlim([0, 2])
+				axs[6-Q2bin-2, xBbin].set_ylim([0.2, 1.])
+				axs[6-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
+				axs[6-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
+				if active == 0:
+					handles, labels = axs[6-Q2bin-2, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+		plt.clf()
 
 		# fig, axs = plt.subplots(len(Q2bins)-1, len(xBbins)-1, figsize = (50, 30))
 		# for xBbin in range(len(xBbins) - 1):
