@@ -490,9 +490,9 @@ if args.savexsec:
 		histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
 		histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
 		histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
-		histExpUncInbFD, bins = np.sqrt(histExpInbFD)
-		histExpUncInbCD, bins = np.sqrt(histExpInbCD)
-		histExpUncInbCDFT, bins = np.sqrt(histExpInbCDFT)
+		histExpUncInbFD = np.sqrt(histExpInbFD)
+		histExpUncInbCD = np.sqrt(histExpInbCD)
+		histExpUncInbCDFT = np.sqrt(histExpInbCDFT)
 
 		histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
 		histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
@@ -608,9 +608,9 @@ if args.savexsec:
 		histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
 		histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
 		histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
-		histExpUncOutbFD, bins = np.sqrt(histExpOutbFD)
-		histExpUncOutbCD, bins = np.sqrt(histExpOutbCD)
-		histExpUncOutbCDFT, bins = np.sqrt(histExpOutbCDFT)
+		histExpUncOutbFD = np.sqrt(histExpOutbFD)
+		histExpUncOutbCD = np.sqrt(histExpOutbCD)
+		histExpUncOutbCDFT = np.sqrt(histExpOutbCDFT)
 
 		histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
 		histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
