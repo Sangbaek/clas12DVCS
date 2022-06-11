@@ -981,7 +981,7 @@ if args.saveplot:
 						continue
 
 					pureBH = xsec_BH[xBbin, Q2bin, tbin, :]
-					wings = np.argwhere(pureBH>0)[[0,1,-2,-1]]
+					wings = np.argwhere(pureBH>0)[[0,1,-2,-1]].flatten()
 					Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
