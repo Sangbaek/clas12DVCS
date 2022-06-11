@@ -163,8 +163,14 @@ parser.add_argument("-sc","--savecont", help="save cont", action = "store_true")
 parser.add_argument("-sx","--savexsec", help="save xsec", action = "store_true")
 parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true")
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
+parser.add_argument("-kstart","--binscheme", help="binning scheme number", default=None)
 
 args = parser.parse_args()
+
+if args.kstart:
+	kstart = int(args.kstart)
+else:
+	kstart = len(collection_xBbins) - 1 
 
 inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 charge_epg = inbcharge_epg + outbcharge_epg
@@ -367,7 +373,7 @@ if args.savexsec:
 	print("read exp...")
 	epgExp = pd.read_pickle("nphistograms/epgExp.pkl")
 
-	for k in range(len(collection_xBbins)):
+	for k in range(kstart, len(collection_xBbins)):
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
 		tbins   = collection_tbins [k]
@@ -769,7 +775,7 @@ if args.savexsec:
 
 if args.saveplot:
 
-	for k in range(len(collection_xBbins)):
+	for k in range(kstart, len(collection_xBbins)):
 
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
