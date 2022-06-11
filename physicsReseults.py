@@ -896,6 +896,7 @@ if args.saveplot:
 		for tbin in range(num_plott -1):
 			active = 0
 			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 			for xBbin in range(num_plotxB - 1):
 				for Q2bin in range(num_plotQ2 - 1):
 					#skip inactive bins
@@ -932,6 +933,7 @@ if args.saveplot:
 		for tbin in range(num_plott -1):
 			active = 0
 			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 			for xBbin in range(num_plotxB - 1):
 				for Q2bin in range(num_plotQ2 - 1):
 					#skip inactive bins
@@ -972,6 +974,7 @@ if args.saveplot:
 		for tbin in range(num_plott -1):
 			active = 0
 			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 			for xBbin in range(num_plotxB - 1):
 				for Q2bin in range(num_plotQ2 - 1):
 					#skip inactive bins
@@ -980,8 +983,7 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 						continue
 
-					pureBH = xsec_BH[xBbin, Q2bin, tbin, :]
-					wings = np.argwhere(pureBH>0)[[0,1,-2,-1]].flatten()
+					wings = np.argwhere(xsecTh_BH[xBbin, Q2bin, tbin, :]>0)[[0,1,-2,-1]].flatten()
 					Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
@@ -1019,6 +1021,7 @@ if args.saveplot:
 		for tbin in range(num_plott -1):
 			active = 0
 			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 			for xBbin in range(num_plotxB - 1):
 				for Q2bin in range(num_plotQ2 - 1):
 					#skip inactive bins
@@ -1058,6 +1061,7 @@ if args.saveplot:
 			plt.clf()
 
 		active = 0
+		fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 		for xBbin in range(num_plotxB - 1):
 			for Q2bin in range(num_plotQ2 - 1):
 				#skip inactive bins
@@ -1096,6 +1100,7 @@ if args.saveplot:
 
 
 		active = 0
+		fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
 		for xBbin in range(num_plotxB - 1):
 			for Q2bin in range(num_plotQ2 - 1):
 				#skip inactive bins
