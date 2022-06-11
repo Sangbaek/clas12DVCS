@@ -104,12 +104,12 @@ inactiveQ2xBtbins = np.array([98, 126, 147, 154, 161, 168])
 activeQ2xBtbins = np.linspace(0, 174, 175, dtype=int)[~np.isin(np.linspace(0, 174, 175, dtype=int), inactiveQ2xBtbins)]
 
 
-collection_cont_xBbins = [np.linspace(0.05, 0.85, 6)]
-collection_cont_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
-collection_cont_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
+collection_cont_xBbins  = [np.linspace(0.05, 0.85, 6)]
+collection_cont_Q2bins  = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
+collection_cont_tbins   = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
 collection_cont_phibins = [np.linspace(0, 360, 6)]
 
-newxBbins = [x1, c0, c0, c1, c2, c3, c4, d2]
+newxBbins = [x1, c0, c1, c2, c3, c4, d2]
 newQ2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5)]
 
 collection_xBbins = [np.linspace(0.05, 0.85, 6), newxBbins]
