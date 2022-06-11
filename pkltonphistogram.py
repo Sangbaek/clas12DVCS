@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 	parser.add_argument("-j","--jobnum", help="jobnum", default="3987")
 	parser.add_argument("-u","--uri", help="uri", default = "/volatile/clas12/sangbaek/nov2021/convPkl_full/")
-	parser.add_argument("-kstart","--binscheme", help="binning scheme number", default=None)
+	parser.add_argument("-kstart","--kstart", help="binning scheme number starting", default=None)
 
 	args = parser.parse_args()
 	jobnum = int(args.jobnum)
