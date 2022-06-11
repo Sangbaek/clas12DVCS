@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 	parser.add_argument("-j","--jobnum", help="jobnum", default="3987")
 	parser.add_argument("-u","--uri", help="uri", default = "/volatile/clas12/sangbaek/nov2021/convPkl_full/")
-	parser.add_argument("-k","--binscheme", help="binning scheme number", default="0")
+	parser.add_argument("-kstart","--binscheme", help="binning scheme number", default=None)
 
 	args = parser.parse_args()
 	jobnum = int(args.jobnum)
@@ -47,7 +47,12 @@ if __name__ == "__main__":
 	print("reading {}".format(infile))
 	df = pd.read_pickle(infile)
 
-	for k in range(len(collection_xBbins)):
+	if args.kstart:
+		kstart = int(args.kstart)
+	else:
+		kstart = len(collection_xBbins) - 1 
+
+	for k in range(kstart, len(collection_xBbins)):
 
 		os.makedirs("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}".format(k), exist_ok = True)
 		xBbins  = collection_xBbins[k]
