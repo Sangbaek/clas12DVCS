@@ -760,9 +760,9 @@ if args.savexsec:
 		xsecTh_BH[ActiveAny] = np.array(printBHarray(xBavg_BH[ActiveAny], Q2avg_BH[ActiveAny], t1avg_BH[ActiveAny], np.radians(phi1avg_BH[ActiveAny]), globalfit = True))
 		xsecTh_KM[ActiveAny] = np.array(printKMarray(xBavg_BH[ActiveAny], Q2avg_BH[ActiveAny], t1avg_BH[ActiveAny], np.radians(phi1avg_BH[ActiveAny])))
 		
-		for xBbin in range(len(xBbins)):
-			for Q2bin in range(len(Q2bins)):
-				for tbin in range(len(tbins)):
+		for xBbin in range(len(xBbins)-1):
+			for Q2bin in range(len(Q2bins)-1):
+				for tbin in range(len(tbins)-1):
 					binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA, k = k)
 
 		integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutbrad50nA], axis = 0)
