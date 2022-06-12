@@ -738,7 +738,7 @@ if args.savexsec:
 						xsecTh_KM[xBbin, Q2bin, tbin, :] = np.array(printKMarray(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], np.radians(phi1avg_BH[xBbin, Q2bin, tbin, :])))
 					binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA, k = k)
 
-		integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutb50nA], axis = 0)
+		integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutbrad50nA], axis = 0)
 		rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
 		integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
 		rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
@@ -846,7 +846,7 @@ if args.saveplot:
 			if k ==0:
 				return (xBbin==1 and tbin == 0)
 			else:
-				return np.sum(xsecTh_BH[xBbin, Q2bin, :, :]) == 0
+				return np.sum(xsecTh_BH[xBbin, :, tbin, :]) == 0
 
 		num_plotQ2 = len(Q2bins)
 		num_plotxB = len(xBbins)
