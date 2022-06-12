@@ -861,7 +861,7 @@ if args.saveplot:
 		ActiveAll       = np.load("nphistograms/binscheme{}/ActiveAll.npz".format(k))["hist"]
 		ActiveAny       = np.load("nphistograms/binscheme{}/ActiveAny.npz".format(k))["hist"]
 		ActiveInb          = np.load("nphistograms/binscheme{}/ActiveInb.npz".format(k))["hist"]
-		ActiveOutb         = np.load("nphistograms/binscheme{}/ActiveOutb.pz".format(k))["hist"]
+		ActiveOutb         = np.load("nphistograms/binscheme{}/ActiveOutb.npz".format(k))["hist"]
 
 		print("plotting...")
 
