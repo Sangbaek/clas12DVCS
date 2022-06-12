@@ -772,8 +772,8 @@ if args.savexsec:
 
 		charges = charge_epg*np.zeros(xsecTh_BH.shape)
 		charges[ActiveAll] = charge_epg
-		charges[ActiveInb] = inbcharge_epg
-		charges[ActiveOutb] = outbcharge_epg
+		charges[(ActiveInb)&(~ActoveOutb)] = inbcharge_epg
+		charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
 		xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
 		xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
 		xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
