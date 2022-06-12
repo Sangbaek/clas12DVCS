@@ -431,7 +431,7 @@ if args.savexsec:
 			histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 			histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-		print("reading vggs")
+		print("reading vggs  - inbending")
 
 		histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
 		for jobNum in runs_inb_vgg50nA:
@@ -537,7 +537,7 @@ if args.savexsec:
 		ActiveAll = ActiveInb & ActiveOutb
 		ActiveAny = ActiveInb | ActiveOutb
 
-		print("reading bhs")
+		print("reading bhs  - outbending")
 
 		histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
 		for jobNum in runs_outb_bh50nA:
@@ -553,7 +553,7 @@ if args.savexsec:
 			histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 			histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-		print("reading vggs")
+		print("reading vggs  - outbending")
 
 		histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
 		for jobNum in runs_outb_vgg50nA:
