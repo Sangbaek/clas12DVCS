@@ -1185,9 +1185,9 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
-				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveAny[xBbin, :, tbin, 0]], Normalization[xBbin, Q2bin, :][ActiveAny[xBbin, :, tbin, 0]], color = 'k', label = "Merged")
-				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveInb[xBbin, :, tbin, 0]], Normalization_Inb[xBbin, Q2bin, :][ActiveInb[xBbin, :, tbin, 0]], color = 'r', label = "Inb.")
-				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveOutb[xBbin, :, tbin, 0]], Normalization_Outb[xBbin, Q2bin, :][ActiveOutb[xBbin, :, tbin, 0]], color = 'b', label = "Outb.")
+				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveAny[xBbin, Q2bin, :, 0]], Normalization[xBbin, Q2bin, :][ActiveAny[xBbin, Q2bin, :, 0]], color = 'k', label = "Merged")
+				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveInb[xBbin, Q2bin, :, 0]], Normalization_Inb[xBbin, Q2bin, :][ActiveInb[xBbin, Q2bin, :, 0]], color = 'r', label = "Inb.")
+				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, :, 0][ActiveOutb[xBbin, Q2bin, :, 0]], Normalization_Outb[xBbin, Q2bin, :][ActiveOutb[xBbin, Q2bin, :, 0]], color = 'b', label = "Outb.")
 
 				# axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = 0, linestyle ='', color = 'cyan', label = 'Outb.')
 
