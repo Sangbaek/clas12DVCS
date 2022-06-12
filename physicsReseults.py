@@ -828,25 +828,25 @@ if args.saveplot:
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
 			else:
-				return np.sum(xsec_BH[xBbin, Q2bin, tbin, :]) < 6
+				return np.sum(xsec_BH[xBbin, Q2bin, tbin, :]>0) < 6
 
 		def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
 			else:
-				return np.sum(xsec_BH[xBbin, Q2bin, tbin, :]) < 6
+				return np.sum(xsec_BH[xBbin, Q2bin, tbin, :]>0) < 6
 
 		def badBinCondxBQ2(xBbin, Q2bin, k = 0):
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
 			else:
-				return np.sum(xsec_BH[xBbin, Q2bin, :, :]) < 6
+				return np.sum(xsec_BH[xBbin, Q2bin, :, :]>0) < 6
 
 		def badBinCondxBt(xBbin, tbin, k = 0):
 			if k ==0:
 				return (xBbin==1 and tbin == 0)
 			else:
-				return np.sum(xsec_BH[xBbin, :, tbin, :]) < 6
+				return np.sum(xsec_BH[xBbin, :, tbin, :]>0) < 6
 
 		num_plotQ2 = len(Q2bins)
 		num_plotxB = len(xBbins)
