@@ -745,10 +745,10 @@ if args.savexsec:
 		xsecTh_VGG = np.zeros(phi1avg_VGG.shape)
 		xsecTh_VGG[ActiveAny] = np.array(printVGGarray(xBavg_VGG[ActiveAny], Q2avg_VGG[ActiveAny], t1avg_VGG[ActiveAny], np.radians(phi1avg_VGG[ActiveAny]), globalfit = True))
 
-		phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi45nA, histBHGenInb45nA+histBHGenOutb45nA)
-		xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB45nA, histBHGenInbInt45nA+histBHGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
-		Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ245nA, histBHGenInbInt45nA+histBHGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
-		t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt145nA, histBHGenInbInt45nA+histBHGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
+		phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)
+		xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+		Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+		t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 		phi1avg_BH[~ActiveAny] = 0
 		xBavg_BH[~ActiveAny] = 0
 		Q2avg_BH[~ActiveAny] = 0
