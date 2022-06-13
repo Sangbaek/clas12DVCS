@@ -399,7 +399,7 @@ if args.savexsec:
 		histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT
 		histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
 
-		ActiveInb = np.stack([np.sum(histBHDVCSInb, axis=-1)>500]*(len(phibins)-1), axis = -1)
+		ActiveInb = histBHDVCSInb>20#np.stack([np.sum(histBHDVCSInb, axis=-1)>500]*(len(phibins)-1), axis = -1)
 
 		print("reading bhs - inbending ")
 
@@ -533,7 +533,7 @@ if args.savexsec:
 		histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
 		histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
 
-		ActiveOutb = np.stack([np.sum(histBHDVCSOutb, axis=-1)>500]*(len(phibins)-1), axis = -1)
+		ActiveOutb = histBHDVCSOutb>20#np.stack([np.sum(histBHDVCSOutb, axis=-1)>500]*(len(phibins)-1), axis = -1)
 		ActiveAll = ActiveInb & ActiveOutb
 		ActiveAny = ActiveInb | ActiveOutb
 
