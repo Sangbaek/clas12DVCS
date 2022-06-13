@@ -921,7 +921,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if active == 0:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -959,7 +959,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.01, 100])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if active == 0:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -997,7 +997,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.01, 100])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if active == 0:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -1046,7 +1046,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if active == 0:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -1094,7 +1094,7 @@ if args.saveplot:
 					# axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if active == 0:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -1131,7 +1131,7 @@ if args.saveplot:
 				# axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.2, 1.])
 				axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
 				axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
-				if active == 0:
+				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 					handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
@@ -1167,7 +1167,7 @@ if args.saveplot:
 				axs[num_plott-tbin-2, xBbin].set_xlabel(r"$Q^2$" + " [" + GeVc2 + "]")
 				axs[num_plott-tbin-2, xBbin].set_xlim([1, 5])
 				axs[num_plott-tbin-2, xBbin].set_xticks([1, 2, 3, 4, 5])
-				if active == 0:
+				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 					handles, labels = axs[num_plott-tbin-2, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
@@ -1204,7 +1204,7 @@ if args.saveplot:
 				axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.2, 1.])
 				axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 0.5, 1, 1.5, 2])
 				axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$|t|$" + " [" + GeV2 + "]")
-				if active == 0:
+				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
 					handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
