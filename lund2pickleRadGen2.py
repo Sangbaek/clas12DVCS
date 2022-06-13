@@ -100,7 +100,7 @@ class lund2pickle():
 		# df_epgg.loc[:, "tbin2"] = -1
 		df_epgg.loc[:, "phibin"] = -1
 		# df_epgg.loc[:, "phibin2"] = -1
-		df_epgg.loc[:, "Q2xBtbin"] = -1
+		df_epgg.loc[:, "Q2xBbin"] = -1
 		df_epgg.loc[:, "Q2xBtbin"] = -1
 		# df_epgg.loc[:, "Q2xBtbin2"] = -1
 		df_epgg.loc[:, "Q2xBtphibin"] = -1
