@@ -869,19 +869,19 @@ if args.saveplot:
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
 			else:
-				return ~ActiveAny[xBbin, Q2bin, tbin, 0]
+				return ~ActiveAny[xBbin, Q2bin, tbin, :].any()
 
 		def badBinCondxBQ2(xBbin, Q2bin, k = 0):
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
 			else:
-				return ~ActiveAny[xBbin, Q2bin, :, 0].any()
+				return ~ActiveAny[xBbin, Q2bin, :, :].any()
 
 		def badBinCondxBt(xBbin, tbin, k = 0):
 			if k ==0:
 				return (xBbin==1 and tbin == 0)
 			else:
-				return ~ActiveAny[xBbin, :, tbin, 0].any()
+				return ~ActiveAny[xBbin, :, tbin, :].any()
 
 		num_plotQ2 = len(Q2bins)
 		num_plotxB = len(xBbins)
@@ -903,9 +903,9 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 						axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 						continue
-					if ActiveInb[xBbin, Q2bin, tbin, 0]:
+					if ActiveInb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'g', label = 'Inb.')
-					if ActiveOutb[xBbin, Q2bin, tbin, 0]:
+					if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'cyan', label = 'Outb.')
 
 					axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsec_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], linestyle ='', color = 'k', label = 'Merged')
@@ -921,7 +921,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -940,9 +940,9 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 						axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 						continue
-					if ActiveInb[xBbin, Q2bin, tbin, 0]:
+					if ActiveInb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecInb_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'g', label = 'Inb.')
-					if ActiveOutb[xBbin, Q2bin, tbin, 0]:
+					if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecOutb_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'cyan', label = 'Outb.')
 
 					axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsec_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'k', label = 'Merged')
@@ -959,7 +959,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.01, 100])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -978,9 +978,9 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 						axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 						continue
-					if ActiveInb[xBbin, Q2bin, tbin, 0]:
+					if ActiveInb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecInb_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'g', label = 'Inb.')
-					if ActiveOutb[xBbin, Q2bin, tbin, 0]:
+					if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecOutb_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'cyan', label = 'Outb.')
 
 					axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsec_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = divideHist((xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :]), linestyle ='', color = 'k', label = 'Merged')
@@ -997,7 +997,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_ylim([0.01, 100])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -1021,11 +1021,11 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 						continue
 
-					if ActiveInb[xBbin, Q2bin, tbin, 0]:
+					if ActiveInb[xBbin, Q2bin, tbin, :].any():
 						wings_Inb = np.argwhere((xsecTh_BH[xBbin, Q2bin, tbin, :]>0)&(xsecInb_BH[xBbin, Q2bin, tbin, :]>0))[[0,1,-2,-1]].flatten()
 						Normalization_Inb[xBbin, Q2bin, tbin] = np.mean(xsecInb_BH[xBbin, Q2bin, tbin, wings_Inb], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings_Inb], axis = -1)
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
-					if ActiveOutb[xBbin, Q2bin, tbin, 0]:
+					if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 						wings_Outb = np.argwhere((xsecTh_BH[xBbin, Q2bin, tbin, :]>0)&(xsecOutb_BH[xBbin, Q2bin, tbin, :]>0))[[0,1,-2,-1]].flatten()
 						Normalization_Outb[xBbin, Q2bin, tbin] = np.mean(xsecOutb_BH[xBbin, Q2bin, tbin, wings_Outb], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings_Outb], axis = -1)
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
@@ -1046,7 +1046,7 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
@@ -1072,10 +1072,10 @@ if args.saveplot:
 						continue
 
 					centers = [8, 9, 10, 11, 12, 13, 14, 15]
-					if ActiveInb[xBbin, Q2bin, tbin, 0]:
+					if ActiveInb[xBbin, Q2bin, tbin, :].any():
 						IntegratedDiff_Inb[xBbin, Q2bin, tbin] = np.sum(xsecInb_BH[xBbin, Q2bin, tbin, centers]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, centers], axis = -1)
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecInb_BH[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Inb[xBbin, Q2bin, tbin], linestyle ='', color = 'g', label = 'Inb.')
-					if ActiveOutb[xBbin, Q2bin, tbin, 0]:
+					if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 						IntegratedDiff_Outb[xBbin, Q2bin, tbin] = np.sum(xsecOutb_BH[xBbin, Q2bin, tbin, centers]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, centers], axis = -1)
 						axs[num_plotQ2-Q2bin-2 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecOutb_BH[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin] - xsecTh_BH[xBbin, Q2bin, tbin, :], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, :]-phibins[:-1], phibins[1:]-phi1avg_BH[xBbin, Q2bin, tbin, :]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, :]/Normalization_Outb[xBbin, Q2bin, tbin], linestyle ='', color = 'cyan', label = 'Outb.')
 
@@ -1094,7 +1094,7 @@ if args.saveplot:
 					# axs[num_plotQ2-Q2bin-2, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-2, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, 0]:
+					if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-2, xBbin].get_legend_handles_labels()
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
