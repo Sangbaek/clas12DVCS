@@ -869,19 +869,19 @@ if args.saveplot:
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
 			else:
-				return ActiveAny[xBbin, Q2bin, tbin, 0]
+				return ~ActiveAny[xBbin, Q2bin, tbin, 0]
 
 		def badBinCondxBQ2(xBbin, Q2bin, k = 0):
 			if k ==0:
 				return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
 			else:
-				return ActiveAny[xBbin, Q2bin, :, 0].any()
+				return ~ActiveAny[xBbin, Q2bin, :, 0].any()
 
 		def badBinCondxBt(xBbin, tbin, k = 0):
 			if k ==0:
 				return (xBbin==1 and tbin == 0)
 			else:
-				return ActiveAny[xBbin, :, tbin, 0].any()
+				return ~ActiveAny[xBbin, :, tbin, 0].any()
 
 		num_plotQ2 = len(Q2bins)
 		num_plotxB = len(xBbins)
