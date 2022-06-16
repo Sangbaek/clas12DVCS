@@ -94,7 +94,7 @@ def printVGG(xB, Q2, t, phi, globalfit = True):
 	try:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
-	else:
+	except:
 		print(xB, Q2, t, phi)
 		return 0
 
@@ -118,7 +118,7 @@ def printBHonly(xB, Q2, t, phi, globalfit = True):
 	try:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
-	else:
+	except:
 		print(xB, Q2, t, phi)
 		return 0
 
