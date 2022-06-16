@@ -57,15 +57,19 @@ def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     return np.array(BHarray)
 
 def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
-    phi = np.pi - phi
-    pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-                  process='ep2epgamma', exptype='fixed target', frame =frame,
-                  in1energy=10.604, in1charge=-1, in1polarization=pol)
-#     print(pt1.frame, pol)
-#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
-#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
-    return th_KM15.XS(pt1)
+	phi = np.pi - phi
+	pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+					process='ep2epgamma', exptype='fixed target', frame =frame,
+					in1energy=10.604, in1charge=-1, in1polarization=pol)
+	#     print(pt1.frame, pol)
+	#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+	#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
+	#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
+	try:
+		return th_KM15.XS(pt1)
+	except:
+		print(xB, Q2, t, phi)
+		return 0
 
 def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     VGGarray = []
@@ -87,10 +91,11 @@ def printVGG(xB, Q2, t, phi, globalfit = True):
 		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
 	else:
 		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
-	if len(dstot)>0:
+	try:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
 	else:
+		print(xB, Q2, t, phi)
 		return 0
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
@@ -110,10 +115,11 @@ def printBHonly(xB, Q2, t, phi, globalfit = True):
 		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
 	else:
 		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
-	if len(dstot)>0:
+	try:
 		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
 		return dstot
 	else:
+		print(xB, Q2, t, phi)
 		return 0
 
 def nphistmean(hist, bins):
@@ -741,10 +747,10 @@ if args.savexsec:
 		xBavg_VGG = np.stack([divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 		Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 		t1avg_VGG = np.stack([divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		phi1avg_VGG[~ActiveAny] = 0
-		xBavg_VGG[~ActiveAny] = 0
-		Q2avg_VGG[~ActiveAny] = 0
-		t1avg_VGG[~ActiveAny] = 0
+		phi1avg_VGG[~ActiveAny_int] = 0
+		xBavg_VGG[~ActiveAny_int] = 0
+		Q2avg_VGG[~ActiveAny_int] = 0
+		t1avg_VGG[~ActiveAny_int] = 0
 
 		xsecTh_VGG[ActiveAny_int] = np.array(printVGGarray(xBavg_VGG[ActiveAny_int], Q2avg_VGG[ActiveAny_int], t1avg_VGG[ActiveAny_int], np.radians(phi1avg_VGG[ActiveAny_int]), globalfit = True))
 
@@ -752,10 +758,10 @@ if args.savexsec:
 		xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 		Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 		t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		phi1avg_BH[~ActiveAny] = 0
-		xBavg_BH[~ActiveAny] = 0
-		Q2avg_BH[~ActiveAny] = 0
-		t1avg_BH[~ActiveAny] = 0
+		phi1avg_BH[~ActiveAny_int] = 0
+		xBavg_BH[~ActiveAny_int] = 0
+		Q2avg_BH[~ActiveAny_int] = 0
+		t1avg_BH[~ActiveAny_int] = 0
 
 		binVolume = np.zeros(phi1avg_BH.shape)
 		xsecTh_BH[ActiveAny_int] = np.array(printBHarray(xBavg_BH[ActiveAny_int], Q2avg_BH[ActiveAny_int], t1avg_BH[ActiveAny_int], np.radians(phi1avg_BH[ActiveAny_int]), globalfit = True))
