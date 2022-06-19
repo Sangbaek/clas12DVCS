@@ -1139,11 +1139,11 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
-				tbin = np.argwhere(ActiveInb_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveInb_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_Inb[xBbin, Q2bin, tbin], color = 'g', label = "Inb", marker = 'o', markersize = 20)
-				tbin = np.argwhere(ActiveOutb_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveOutb_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_Outb[xBbin, Q2bin, tbin], color = 'cyan', label = "Outb.", marker = 'o', markersize = 20)
-				tbin = np.argwhere(ActiveAny_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveAny_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff[xBbin, Q2bin, tbin], color = 'k', label = "Merged", marker = 'o', markersize = 20)
 				axs[num_plotQ2-Q2bin-2 , xBbin].plot(t1avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_KM[xBbin, Q2bin, tbin], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
@@ -1177,11 +1177,11 @@ if args.saveplot:
 					axs[num_plott-tbin-2 , xBbin].xaxis.set_visible(False)
 					continue
 
-				Q2bin = np.argwhere(ActiveInb_Int[xBbin, :, tbin, 0]).flatten()
+				Q2bin = np.argwhere(ActiveInb_int[xBbin, :, tbin, 0]).flatten()
 				axs[num_plott-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_Inb[xBbin, Q2bin, tbin], color = 'g', label = "Inb.", marker = 'o', markersize = 20)
-				Q2bin = np.argwhere(ActiveOutb_Int[xBbin, :, tbin, 0]).flatten()
+				Q2bin = np.argwhere(ActiveOutb_int[xBbin, :, tbin, 0]).flatten()
 				axs[num_plott-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_Outb[xBbin, Q2bin, tbin], color = 'cyan', label = "Outb.", marker = 'o', markersize = 20)
-				Q2bin = np.argwhere(ActiveAny_Int[xBbin, :, tbin, 0]).flatten()
+				Q2bin = np.argwhere(ActiveAny_int[xBbin, :, tbin, 0]).flatten()
 				axs[num_plott-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff[xBbin, Q2bin, tbin], color = 'k', label = "Merged", marker = 'o', markersize = 20)
 				axs[num_plott-tbin-2 , xBbin].plot(Q2avg_BH[xBbin, Q2bin, tbin, 0], IntegratedDiff_KM[xBbin, Q2bin, tbin], color = 'b', label = "KM", marker = 'o', markersize = 20)
 
@@ -1216,11 +1216,11 @@ if args.saveplot:
 					axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-2 , xBbin].xaxis.set_visible(False)
 					continue
-				tbin = np.argwhere(ActiveInb_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveInb_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, tbin, 0], Normalization_Inb[xBbin, Q2bin, tbin], color = 'g', label = "Inb.")
-				tbin = np.argwhere(ActiveOutb_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveOutb_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, tbin, 0], Normalization_Outb[xBbin, Q2bin, tbin], color = 'cyan', label = "Outb.")
-				tbin = np.argwhere(ActiveAny_Int[xBbin, Q2bin, :, 0]).flatten()
+				tbin = np.argwhere(ActiveAny_int[xBbin, Q2bin, :, 0]).flatten()
 				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, tbin, 0], Normalization[xBbin, Q2bin, tbin], color = 'r', label = "Inb.")
 				axs[num_plotQ2-Q2bin-2 , xBbin].scatter(t1avg_BH[xBbin, Q2bin, tbin, 0], Normalization_KM[xBbin, Q2bin, tbin], color = 'b', label = "KM")
 
