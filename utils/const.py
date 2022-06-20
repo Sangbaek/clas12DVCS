@@ -103,19 +103,19 @@ activebins = np.linspace(0, 4199, 4200, dtype=int)[~np.isin(np.linspace(0, 4199,
 inactiveQ2xBtbins = np.array([98, 126, 147, 154, 161, 168])
 activeQ2xBtbins = np.linspace(0, 174, 175, dtype=int)[~np.isin(np.linspace(0, 174, 175, dtype=int), inactiveQ2xBtbins)]
 
-
-collection_cont_xBbins  = [np.linspace(0.05, 0.85, 6)]
-collection_cont_Q2bins  = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3])]
-collection_cont_tbins   = [np.array([0.09, 0.2, 0.4, 0.8, 1.8])]
-collection_cont_phibins = [np.linspace(0, 360, 6)]
-
 newxBbins = [x1, c0, c1, c2, c3, c4, d2]
 newQ2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5)]
+newtbins = [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0, 1.25, 1.5, 1.79]
 
-collection_xBbins = [np.linspace(0.05, 0.85, 6), newxBbins]
-collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins]
-collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), tbins]
-collection_phibins = [np.linspace(0, 360, 25), phibins]
+collection_cont_xBbins  = [np.linspace(0.05, 0.85, 6), newxBbins]
+collection_cont_Q2bins  = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins]
+collection_cont_tbins   = [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), newtbins]
+collection_cont_phibins = [np.linspace(0, 360, 6), phibins]
+
+collection_xBbins = [np.linspace(0.05, 0.85, 6), newxBbins, newxBbins]
+collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins, newQ2bins]
+collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), tbins, newtbins]
+collection_phibins = [phibins, phibins, phibins]
 
 # simulation run numbers
 runs_inb_vgg50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
