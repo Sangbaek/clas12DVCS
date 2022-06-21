@@ -391,441 +391,442 @@ if args.savexsec:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		#Inbending cross sections 
-		i = 0 #selected background estimation
-
-		#inbending
-		histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
-		histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
-		histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
-
-		histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT
-		histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
-
-		ActiveInb = histBHDVCSInb>20
-		ActiveInb_int = np.stack([np.sum(ActiveInb, axis=-1)>8]*(len(phibins)-1), axis = -1)
-
-		print("reading bhs - inbending ")
-
-		histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_inb_bh50nA:
-			histBHInb50nA = histBHInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histBHInbFD50nA = histBHInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histBHInbCD50nA = histBHInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA = 0, 0, 0, 0
-		for jobNum in runs_inb_bh45nA:
-			histBHInb45nA = histBHInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_inb_bh50nA:
-			histBHGenInb50nA = histBHGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histBHGenInbFD50nA = histBHGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histBHGenInbCD50nA = histBHGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA = 0, 0, 0, 0
-		for jobNum in runs_inb_bh45nA:
-			histBHGenInb45nA = histBHGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		print("reading vggs  - inbending")
-
-		histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg50nA:
-			histVGGInb50nA = histVGGInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGInbFD50nA = histVGGInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGInbCD50nA = histVGGInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg45nA:
-			histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg55nA:
-			histVGGInb55nA = histVGGInb55nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGInbFD55nA = histVGGInbFD55nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGInbCD55nA = histVGGInbCD55nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg0nA:
-			histVGGInb0nA = histVGGInb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg50nA:
-			histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenInbFD50nA = histVGGGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCD50nA = histVGGGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg45nA:
-			histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg55nA:
-			histVGGGenInb55nA = histVGGGenInb55nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
-		for jobNum in runs_inb_vgg0nA:
-			histVGGGenInb0nA = histVGGGenInb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
-		histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
-		histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
-		histExpUncInbFD = np.sqrt(histExpInbFD)
-		histExpUncInbCD = np.sqrt(histExpInbCD)
-		histExpUncInbCDFT = np.sqrt(histExpInbCDFT)
-
-		histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
-		histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
-		histVGGGenInbrad50nA, histVGGGenInbborn50nA = [], []
-		for jobNum in runs_inb_vgg50nA:
-			histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-			histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-			histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-			histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-			histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-			histVGGGenInbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-			histVGGGenInbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
-
-		histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
-		histBHGenInbphi45nA, histBHGenInbbinVol45nA = 0, 0
-		histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
-		for jobNum in runs_inb_bh45nA:
-			histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-			histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-			histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-			histBHGenInbt145nA = histBHGenInbt145nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-			histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-			histBHGenInbrad45nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-			histBHGenInbborn45nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
-
-		#outbending
-		histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
-		histBHDVCSOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
-		histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
-		histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
-
-		histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
-		histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
-
-		ActiveOutb = histBHDVCSOutb>20
-		ActiveOutb_int = np.stack([np.sum(ActiveOutb, axis=-1)>8]*(len(phibins)-1), axis = -1)
-		ActiveAll = ActiveInb & ActiveOutb
-		ActiveAny = ActiveInb | ActiveOutb
-		ActiveAll_int = ActiveInb_int & ActiveOutb_int
-		ActiveAny_int = ActiveInb_int | ActiveOutb_int
-
-		print("reading bhs  - outbending")
-
-		histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_outb_bh50nA:
-			histBHOutb50nA = histBHOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_outb_bh50nA:
-			histBHGenOutb50nA = histBHGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		print("reading vggs  - outbending")
-
-		histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg50nA:
-			histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg40nA:
-			histVGGOutb40nA = histVGGOutb40nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGOutbFD40nA = histVGGOutbFD40nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGOutbCD40nA = histVGGOutbCD40nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGOutbCDFT40nA = histVGGOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGOutb0nA, histVGGOutbFD0nA, histVGGOutbCD0nA, histVGGOutbCDFT0nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg0nA:
-			histVGGOutb0nA = histVGGOutb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGOutbFD0nA = histVGGOutbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGOutbCD0nA = histVGGOutbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGOutbCDFT0nA = histVGGOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGOutb40naT, histVGGOutbFD40naT, histVGGOutbCD40naT, histVGGOutbCDFT40naT = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg40nAT:
-			histVGGOutb40naT = histVGGOutb40naT + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			histVGGOutbFD40naT = histVGGOutbFD40naT + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg50nA:
-			histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCDFT50nA = histVGGGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenOutb40nA, histVGGGenOutbFD40nA, histVGGGenOutbCD40nA, histVGGGenOutbCDFT40nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg40nA:
-			histVGGGenOutb40nA = histVGGGenOutb40nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbFD40nA = histVGGGenOutbFD40nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCD40nA = histVGGGenOutbCD40nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCDFT40nA = histVGGGenOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenOutb0nA, histVGGGenOutbFD0nA, histVGGGenOutbCD0nA, histVGGGenOutbCDFT0nA = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg0nA:
-			histVGGGenOutb0nA = histVGGGenOutb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbFD0nA = histVGGGenOutbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCD0nA = histVGGGenOutbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCDFT0nA = histVGGGenOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histVGGGenOutb40nAT, histVGGGenOutbFD40nAT, histVGGGenOutbCD40nAT, histVGGGenOutbCDFT40nAT = 0, 0, 0, 0
-		for jobNum in runs_outb_vgg40nAT:
-			histVGGGenOutb40nAT = histVGGGenOutb40nAT + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbFD40nAT = histVGGGenOutbFD40nAT + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCD40nAT = histVGGGenOutbCD40nAT + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbCDFT40nAT = histVGGGenOutbCDFT40nAT + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-		histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
-		histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
-		histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
-		histExpUncOutbFD = np.sqrt(histExpOutbFD)
-		histExpUncOutbCD = np.sqrt(histExpOutbCD)
-		histExpUncOutbCDFT = np.sqrt(histExpOutbCDFT)
-
-		histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
-		histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
-		histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
-		for jobNum in runs_outb_vgg50nA:
-			histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-			histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
-
-		histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
-		histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
-		histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
-		for jobNum in runs_outb_bh50nA:
-			histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
-			histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
-			histBHGenOutbQ250nA = histBHGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
-			histBHGenOutbt150nA = histBHGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
-			histBHGenOutbphi50nA = histBHGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
-			histBHGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
-			histBHGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
-
-		#stat error - inbending
-		accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
-		accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
-		accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
-		uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA))
-		uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA))
-		uncStatInbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA))
-		uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2)
-
-		accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG
-		accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb50nA, histVGGGenInbFD50nA + histVGGGenInbCD50nA+ histVGGGenInbCDFT50nA)
-		uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
-		accCorrectedInb_VGG[~ActiveInb] = 0
-		uncStatInb_VGG[~ActiveInb] = 0
-
-		accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
-		accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
-		accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
-		uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
-		uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
-		uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
-		uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2)
-
-		accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH
-		accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA+ histBHGenInbCDFT45nA)
-		uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
-		accCorrectedInb_BH[~ActiveInb] = 0
-		uncStatInb_BH[~ActiveInb] = 0
-
-		#stat error - outbending
-		accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
-		accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
-		accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
-		uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
-		uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
-		uncStatOutbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutbCDFT50nA))
-		uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2)
-
-		accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG
-		accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA+ histVGGGenOutbCDFT50nA)
-		uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
-		accCorrectedOutb_VGG[~ActiveOutb] = 0
-		uncStatOutb_VGG[~ActiveOutb] = 0
-
-		accCorrectedOutbFD_BH = divideHist(histBHDVCSOutbFD*histBHGenOutbFD50nA , histBHOutbFD50nA)
-		accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
-		accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
-		uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
-		uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
-		uncStatOutbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutbCDFT50nA))
-		uncStatOutb_BH = np.sqrt(accCorrectedOutbFD_BH**2 *uncStatOutbFD_BH**2 + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2)
-
-		accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH
-		accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA+ histBHGenOutbCDFT50nA)
-		uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
-		accCorrectedOutb_BH[~ActiveOutb] = 0
-		uncStatOutb_BH[~ActiveOutb] = 0
-
-		#stat error - all
-		accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
-		uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
-		uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
-
-		accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
-		uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
-		uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
-
-		phi1avg_VGG = np.zeros(accCorrected_VGG.shape)
-		xBavg_VGG = np.zeros(accCorrected_VGG.shape)
-		Q2avg_VGG = np.zeros(accCorrected_VGG.shape)
-		t1avg_VGG = np.zeros(accCorrected_VGG.shape)
-		integratedRad_VGG = np.zeros(accCorrected_VGG.shape)
-		pointBorn_VGG = np.zeros(accCorrected_VGG.shape)
-		rcfactors_VGG = np.zeros(accCorrected_VGG.shape)
-
-		phi1avg_BH = np.zeros(accCorrected_BH.shape)
-		xBavg_BH = np.zeros(accCorrected_BH.shape)
-		Q2avg_BH = np.zeros(accCorrected_BH.shape)
-		t1avg_BH = np.zeros(accCorrected_BH.shape)
-		integratedRad_BH = np.zeros(accCorrected_BH.shape)
-		pointBorn_BH = np.zeros(accCorrected_BH.shape)
-		rcfactors_BH = np.zeros(accCorrected_BH.shape)
-
-		xsecTh_KM = np.zeros(accCorrected_VGG.shape)
-		xsecTh_BH = np.zeros(accCorrected_VGG.shape)
-		xsecTh_VGG = np.zeros(accCorrected_VGG.shape)
-
-		binVolume = np.zeros(accCorrected_VGG.shape)
-
-		phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)
-		xBavg_VGG = np.stack([divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		t1avg_VGG = np.stack([divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		phi1avg_VGG[~ActiveAny_int] = 0
-		xBavg_VGG[~ActiveAny_int] = 0
-		Q2avg_VGG[~ActiveAny_int] = 0
-		t1avg_VGG[~ActiveAny_int] = 0
-
-		xsecTh_VGG[ActiveAny_int] = np.array(printVGGarray(xBavg_VGG[ActiveAny_int], Q2avg_VGG[ActiveAny_int], t1avg_VGG[ActiveAny_int], np.radians(phi1avg_VGG[ActiveAny_int]), globalfit = True))
-
-		phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)
-		xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-		phi1avg_BH[~ActiveAny_int] = 0
-		xBavg_BH[~ActiveAny_int] = 0
-		Q2avg_BH[~ActiveAny_int] = 0
-		t1avg_BH[~ActiveAny_int] = 0
-
-		binVolume = np.zeros(phi1avg_BH.shape)
-		xsecTh_BH[ActiveAny_int] = np.array(printBHarray(xBavg_BH[ActiveAny_int], Q2avg_BH[ActiveAny_int], t1avg_BH[ActiveAny_int], np.radians(phi1avg_BH[ActiveAny_int]), globalfit = True))
-		xsecTh_KM[ActiveAny_int] = np.array(printKMarray(xBavg_BH[ActiveAny_int], Q2avg_BH[ActiveAny_int], t1avg_BH[ActiveAny_int], np.radians(phi1avg_BH[ActiveAny_int])))
-		
-		for xBbin in range(len(xBbins)-1):
-			for Q2bin in range(len(Q2bins)-1):
-				for tbin in range(len(tbins)-1):
-					binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA, k = k)
-
-		integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutbrad50nA], axis = 0)
-		rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
-		integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
-		rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
-
-		charges = charge_epg*np.zeros(xsecTh_BH.shape)
-		charges[ActiveAll] = charge_epg
-		charges[(ActiveInb)&(~ActiveOutb)] = inbcharge_epg
-		charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
-		xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
-		xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
-		xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
-		xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
-		xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG*(1.324*charges))
-		xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH*(1.324*charges))
-
-		np.savez("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k), hist = phi1avg_VGG)
-		np.savez("nphistograms/binscheme{}/xBavg_VGG.npz".format(k), hist = xBavg_VGG)
-		np.savez("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k), hist = Q2avg_VGG)
-		np.savez("nphistograms/binscheme{}/t1avg_VGG.npz".format(k), hist = t1avg_VGG)
-
-		np.savez("nphistograms/binscheme{}/phi1avg_BH.npz".format(k), hist = phi1avg_BH)
-		np.savez("nphistograms/binscheme{}/xBavg_BH.npz".format(k), hist = xBavg_BH)
-		np.savez("nphistograms/binscheme{}/Q2avg_BH.npz".format(k), hist = Q2avg_BH)
-		np.savez("nphistograms/binscheme{}/t1avg_BH.npz".format(k), hist = t1avg_BH)
-
-		np.savez("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k), hist = xsecInb_VGG)
-		np.savez("nphistograms/binscheme{}/xsecInb_BH.npz".format(k), hist = xsecInb_BH)
-		np.savez("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k), hist = xsecOutb_VGG)
-		np.savez("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k), hist = xsecOutb_BH)
-		np.savez("nphistograms/binscheme{}/xsec_VGG.npz".format(k), hist = xsec_VGG)
-		np.savez("nphistograms/binscheme{}/xsec_BH.npz".format(k), hist = xsec_BH)
-
-		np.savez("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k), hist = uncStatInb_VGG)
-		np.savez("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k), hist = uncStatInb_BH)
-		np.savez("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k), hist = uncStatOutb_VGG)
-		np.savez("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k), hist = uncStatOutb_BH)
-		np.savez("nphistograms/binscheme{}/uncStat_VGG.npz".format(k), hist = uncStat_VGG)
-		np.savez("nphistograms/binscheme{}/uncStat_BH.npz".format(k), hist = uncStat_BH)
-
-		np.savez("nphistograms/binscheme{}/xsecTh_KM.npz".format(k), hist = xsecTh_KM)
-		np.savez("nphistograms/binscheme{}/xsecTh_BH.npz".format(k), hist = xsecTh_BH)
-		np.savez("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k), hist = xsecTh_VGG)
-		np.savez("nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
-
-		np.savez("nphistograms/binscheme{}/ActiveAll.npz".format(k), hist = ActiveAll)
-		np.savez("nphistograms/binscheme{}/ActiveAny.npz".format(k), hist = ActiveAny)
-		np.savez("nphistograms/binscheme{}/ActiveInb.npz".format(k), hist = ActiveInb)
-		np.savez("nphistograms/binscheme{}/ActiveOutb.npz".format(k), hist = ActiveOutb)
-
-		np.savez("nphistograms/binscheme{}/ActiveAll_int.npz".format(k), hist = ActiveAll_int)
-		np.savez("nphistograms/binscheme{}/ActiveAny_int.npz".format(k), hist = ActiveAny_int)
-		np.savez("nphistograms/binscheme{}/ActiveInb_int.npz".format(k), hist = ActiveInb_int)
-		np.savez("nphistograms/binscheme{}/ActiveOutb_int.npz".format(k), hist = ActiveOutb_int)
+		for i in range(len(collection_cont_xBbins)):
+			#Inbending cross sections 
+			# i = 0 #selected background estimation
+
+			#inbending
+			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+
+			histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT
+			histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
+
+			ActiveInb = histBHDVCSInb>20
+			ActiveInb_int = np.stack([np.sum(ActiveInb, axis=-1)>8]*(len(phibins)-1), axis = -1)
+
+			print("reading bhs - inbending ")
+
+			histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_inb_bh50nA:
+				histBHInb50nA = histBHInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histBHInbFD50nA = histBHInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histBHInbCD50nA = histBHInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA = 0, 0, 0, 0
+			for jobNum in runs_inb_bh45nA:
+				histBHInb45nA = histBHInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_inb_bh50nA:
+				histBHGenInb50nA = histBHGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histBHGenInbFD50nA = histBHGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histBHGenInbCD50nA = histBHGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA = 0, 0, 0, 0
+			for jobNum in runs_inb_bh45nA:
+				histBHGenInb45nA = histBHGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			print("reading vggs  - inbending")
+
+			histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg50nA:
+				histVGGInb50nA = histVGGInb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGInbFD50nA = histVGGInbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGInbCD50nA = histVGGInbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg45nA:
+				histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg55nA:
+				histVGGInb55nA = histVGGInb55nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGInbFD55nA = histVGGInbFD55nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGInbCD55nA = histVGGInbCD55nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg0nA:
+				histVGGInb0nA = histVGGInb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGInbFD0nA = histVGGInbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGInbCD0nA = histVGGInbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg50nA:
+				histVGGGenInb50nA = histVGGGenInb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD50nA = histVGGGenInbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD50nA = histVGGGenInbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg45nA:
+				histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg55nA:
+				histVGGGenInb55nA = histVGGGenInb55nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
+			for jobNum in runs_inb_vgg0nA:
+				histVGGGenInb0nA = histVGGGenInb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histExpUncInbFD = np.sqrt(histExpInbFD)
+			histExpUncInbCD = np.sqrt(histExpInbCD)
+			histExpUncInbCDFT = np.sqrt(histExpInbCDFT)
+
+			histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
+			histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
+			histVGGGenInbrad50nA, histVGGGenInbborn50nA = [], []
+			for jobNum in runs_inb_vgg50nA:
+				histVGGGenInbInt50nA = histVGGGenInbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+				histVGGGenInbxB50nA = histVGGGenInbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+				histVGGGenInbQ250nA = histVGGGenInbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+				histVGGGenInbt150nA = histVGGGenInbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+				histVGGGenInbphi50nA = histVGGGenInbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+				histVGGGenInbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+				histVGGGenInbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+				histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+
+			histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
+			histBHGenInbphi45nA, histBHGenInbbinVol45nA = 0, 0
+			histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
+			for jobNum in runs_inb_bh45nA:
+				histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+				histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+				histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+				histBHGenInbt145nA = histBHGenInbt145nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+				histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+				histBHGenInbrad45nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+				histBHGenInbborn45nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+				histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+
+			#outbending
+			histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
+
+			histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
+			histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
+
+			ActiveOutb = histBHDVCSOutb>20
+			ActiveOutb_int = np.stack([np.sum(ActiveOutb, axis=-1)>8]*(len(phibins)-1), axis = -1)
+			ActiveAll = ActiveInb & ActiveOutb
+			ActiveAny = ActiveInb | ActiveOutb
+			ActiveAll_int = ActiveInb_int & ActiveOutb_int
+			ActiveAny_int = ActiveInb_int | ActiveOutb_int
+
+			print("reading bhs  - outbending")
+
+			histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_outb_bh50nA:
+				histBHOutb50nA = histBHOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_outb_bh50nA:
+				histBHGenOutb50nA = histBHGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			print("reading vggs  - outbending")
+
+			histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg50nA:
+				histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg40nA:
+				histVGGOutb40nA = histVGGOutb40nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGOutbFD40nA = histVGGOutbFD40nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGOutbCD40nA = histVGGOutbCD40nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGOutbCDFT40nA = histVGGOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGOutb0nA, histVGGOutbFD0nA, histVGGOutbCD0nA, histVGGOutbCDFT0nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg0nA:
+				histVGGOutb0nA = histVGGOutb0nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGOutbFD0nA = histVGGOutbFD0nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGOutbCD0nA = histVGGOutbCD0nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGOutbCDFT0nA = histVGGOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGOutb40naT, histVGGOutbFD40naT, histVGGOutbCD40naT, histVGGOutbCDFT40naT = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg40nAT:
+				histVGGOutb40naT = histVGGOutb40naT + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
+				histVGGOutbFD40naT = histVGGOutbFD40naT + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
+				histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
+				histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg50nA:
+				histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT50nA = histVGGGenOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenOutb40nA, histVGGGenOutbFD40nA, histVGGGenOutbCD40nA, histVGGGenOutbCDFT40nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg40nA:
+				histVGGGenOutb40nA = histVGGGenOutb40nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD40nA = histVGGGenOutbFD40nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD40nA = histVGGGenOutbCD40nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT40nA = histVGGGenOutbCDFT40nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenOutb0nA, histVGGGenOutbFD0nA, histVGGGenOutbCD0nA, histVGGGenOutbCDFT0nA = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg0nA:
+				histVGGGenOutb0nA = histVGGGenOutb0nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD0nA = histVGGGenOutbFD0nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD0nA = histVGGGenOutbCD0nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT0nA = histVGGGenOutbCDFT0nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histVGGGenOutb40nAT, histVGGGenOutbFD40nAT, histVGGGenOutbCD40nAT, histVGGGenOutbCDFT40nAT = 0, 0, 0, 0
+			for jobNum in runs_outb_vgg40nAT:
+				histVGGGenOutb40nAT = histVGGGenOutb40nAT + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD40nAT = histVGGGenOutbFD40nAT + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD40nAT = histVGGGenOutbCD40nAT + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT40nAT = histVGGGenOutbCDFT40nAT + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+			histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histExpUncOutbFD = np.sqrt(histExpOutbFD)
+			histExpUncOutbCD = np.sqrt(histExpOutbCD)
+			histExpUncOutbCDFT = np.sqrt(histExpOutbCDFT)
+
+			histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
+			histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
+			histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
+			for jobNum in runs_outb_vgg50nA:
+				histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+				histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+				histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+
+			histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
+			histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
+			histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
+			for jobNum in runs_outb_bh50nA:
+				histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
+				histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
+				histBHGenOutbQ250nA = histBHGenOutbQ250nA + np.load("nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
+				histBHGenOutbt150nA = histBHGenOutbt150nA + np.load("nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
+				histBHGenOutbphi50nA = histBHGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
+				histBHGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
+				histBHGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
+				histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+
+			#stat error - inbending
+			accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD50nA , histVGGInbFD50nA)
+			accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD50nA , histVGGInbCD50nA)
+			accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT50nA , histVGGInbCDFT50nA)
+			uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD50nA) + inverseHist(histVGGGenInbFD50nA))
+			uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD50nA) + inverseHist(histVGGGenInbCD50nA))
+			uncStatInbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT50nA) + inverseHist(histVGGGenInbCDFT50nA))
+			uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2)
+
+			accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG
+			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb50nA, histVGGGenInbFD50nA + histVGGGenInbCD50nA+ histVGGGenInbCDFT50nA)
+			uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
+			accCorrectedInb_VGG[~ActiveInb] = 0
+			uncStatInb_VGG[~ActiveInb] = 0
+
+			accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
+			accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
+			accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
+			uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
+			uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
+			uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
+			uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2)
+
+			accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH
+			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA+ histBHGenInbCDFT45nA)
+			uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
+			accCorrectedInb_BH[~ActiveInb] = 0
+			uncStatInb_BH[~ActiveInb] = 0
+
+			#stat error - outbending
+			accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
+			accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
+			accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
+			uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
+			uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
+			uncStatOutbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutbCDFT50nA))
+			uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2)
+
+			accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG
+			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA+ histVGGGenOutbCDFT50nA)
+			uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
+			accCorrectedOutb_VGG[~ActiveOutb] = 0
+			uncStatOutb_VGG[~ActiveOutb] = 0
+
+			accCorrectedOutbFD_BH = divideHist(histBHDVCSOutbFD*histBHGenOutbFD50nA , histBHOutbFD50nA)
+			accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
+			accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
+			uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
+			uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
+			uncStatOutbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutbCDFT50nA))
+			uncStatOutb_BH = np.sqrt(accCorrectedOutbFD_BH**2 *uncStatOutbFD_BH**2 + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2)
+
+			accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH
+			accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA+ histBHGenOutbCDFT50nA)
+			uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
+			accCorrectedOutb_BH[~ActiveOutb] = 0
+			uncStatOutb_BH[~ActiveOutb] = 0
+
+			#stat error - all
+			accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
+			uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
+			uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
+
+			accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
+			uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
+			uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
+
+			phi1avg_VGG = np.zeros(accCorrected_VGG.shape)
+			xBavg_VGG = np.zeros(accCorrected_VGG.shape)
+			Q2avg_VGG = np.zeros(accCorrected_VGG.shape)
+			t1avg_VGG = np.zeros(accCorrected_VGG.shape)
+			integratedRad_VGG = np.zeros(accCorrected_VGG.shape)
+			pointBorn_VGG = np.zeros(accCorrected_VGG.shape)
+			rcfactors_VGG = np.zeros(accCorrected_VGG.shape)
+
+			phi1avg_BH = np.zeros(accCorrected_BH.shape)
+			xBavg_BH = np.zeros(accCorrected_BH.shape)
+			Q2avg_BH = np.zeros(accCorrected_BH.shape)
+			t1avg_BH = np.zeros(accCorrected_BH.shape)
+			integratedRad_BH = np.zeros(accCorrected_BH.shape)
+			pointBorn_BH = np.zeros(accCorrected_BH.shape)
+			rcfactors_BH = np.zeros(accCorrected_BH.shape)
+
+			xsecTh_KM = np.zeros(accCorrected_VGG.shape)
+			xsecTh_BH = np.zeros(accCorrected_VGG.shape)
+			xsecTh_VGG = np.zeros(accCorrected_VGG.shape)
+
+			binVolume = np.zeros(accCorrected_VGG.shape)
+
+			phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)
+			xBavg_VGG = np.stack([divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			t1avg_VGG = np.stack([divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			phi1avg_VGG[~ActiveAny_int] = 0
+			xBavg_VGG[~ActiveAny_int] = 0
+			Q2avg_VGG[~ActiveAny_int] = 0
+			t1avg_VGG[~ActiveAny_int] = 0
+
+			xsecTh_VGG[ActiveAny_int] = np.array(printVGGarray(xBavg_VGG[ActiveAny_int], Q2avg_VGG[ActiveAny_int], t1avg_VGG[ActiveAny_int], np.radians(phi1avg_VGG[ActiveAny_int]), globalfit = True))
+
+			phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)
+			xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			phi1avg_BH[~ActiveAny_int] = 0
+			xBavg_BH[~ActiveAny_int] = 0
+			Q2avg_BH[~ActiveAny_int] = 0
+			t1avg_BH[~ActiveAny_int] = 0
+
+			binVolume = np.zeros(phi1avg_BH.shape)
+			xsecTh_BH[ActiveAny_int] = np.array(printBHarray(xBavg_BH[ActiveAny_int], Q2avg_BH[ActiveAny_int], t1avg_BH[ActiveAny_int], np.radians(phi1avg_BH[ActiveAny_int]), globalfit = True))
+			xsecTh_KM[ActiveAny_int] = np.array(printKMarray(xBavg_BH[ActiveAny_int], Q2avg_BH[ActiveAny_int], t1avg_BH[ActiveAny_int], np.radians(phi1avg_BH[ActiveAny_int])))
+			
+			for xBbin in range(len(xBbins)-1):
+				for Q2bin in range(len(Q2bins)-1):
+					for tbin in range(len(tbins)-1):
+						binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA, k = k)
+
+			integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutbrad50nA], axis = 0)
+			rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
+			integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
+			rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
+
+			charges = charge_epg*np.zeros(xsecTh_BH.shape)
+			charges[ActiveAll] = charge_epg
+			charges[(ActiveInb)&(~ActiveOutb)] = inbcharge_epg
+			charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
+			xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
+			xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+			xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
+			xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
+			xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG*(1.324*charges))
+			xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH*(1.324*charges))
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i), hist = phi1avg_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i), hist = xBavg_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i), hist = Q2avg_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(k, i), hist = t1avg_VGG)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(k, i), hist = phi1avg_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xBavg_BH.npz".format(k, i), hist = xBavg_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(k, i), hist = Q2avg_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}t1avg_BH.npz".format(k, i), hist = t1avg_BH)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(k, i), hist = xsecInb_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(k, i), hist = xsecInb_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(k, i), hist = xsecOutb_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(k, i), hist = xsecOutb_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsec_VGG.npz".format(k, i), hist = xsec_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsec_BH.npz".format(k, i), hist = xsec_BH)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(k, i), hist = uncStatInb_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(k, i), hist = uncStatInb_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(k, i), hist = uncStatOutb_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(k, i), hist = uncStatOutb_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(k, i), hist = uncStat_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStat_BH.npz".format(k, i), hist = uncStat_BH)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(k, i), hist = xsecTh_KM)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(k, i), hist = xsecTh_BH)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(k, i), hist = xsecTh_VGG)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i), hist = binVolume)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, i), hist = ActiveAll)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, i), hist = ActiveAny)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveInb.npz".format(k, i), hist = ActiveInb)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveOutb.npz".format(k, i), hist = ActiveOutb)
+
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(k, i), hist = ActiveAll_int)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i), hist = ActiveAny_int)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i), hist = ActiveInb_int)
+			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i), hist = ActiveOutb_int)
 
 if args.saveplot:
 
@@ -841,44 +842,44 @@ if args.saveplot:
 		os.makedirs("plots/binscheme{}".format(k), exist_ok = True)
 
 		print("reading the xsec vars")
-		phi1avg_VGG = np.load("nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
-		xBavg_VGG   = np.load("nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
-		Q2avg_VGG   = np.load("nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
-		t1avg_VGG   = np.load("nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
+		phi1avg_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
+		xBavg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i))["hist"]
+		Q2avg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i))["hist"]
+		t1avg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(k, i))["hist"]
 
-		phi1avg_BH  = np.load("nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
-		xBavg_BH    = np.load("nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
-		Q2avg_BH    = np.load("nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
-		t1avg_BH    = np.load("nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
+		phi1avg_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(k, i))["hist"]
+		xBavg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_BH.npz".format(k, i))["hist"]
+		Q2avg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(k, i))["hist"]
+		t1avg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_BH.npz".format(k, i))["hist"]
 
-		xsecInb_VGG = np.load("nphistograms/binscheme{}/xsecInb_VGG.npz".format(k))["hist"]
-		xsecInb_BH  = np.load("nphistograms/binscheme{}/xsecInb_BH.npz".format(k))["hist"]
-		xsecOutb_VGG = np.load("nphistograms/binscheme{}/xsecOutb_VGG.npz".format(k))["hist"]
-		xsecOutb_BH  = np.load("nphistograms/binscheme{}/xsecOutb_BH.npz".format(k))["hist"]
-		xsec_VGG     = np.load("nphistograms/binscheme{}/xsec_VGG.npz".format(k))["hist"]
-		xsec_BH      = np.load("nphistograms/binscheme{}/xsec_BH.npz".format(k))["hist"]
+		xsecInb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(k, i))["hist"]
+		xsecInb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(k, i))["hist"]
+		xsecOutb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(k, i))["hist"]
+		xsecOutb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(k, i))["hist"]
+		xsec_VGG     = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_VGG.npz".format(k, i))["hist"]
+		xsec_BH      = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_BH.npz".format(k, i))["hist"]
 
-		uncStatInb_VGG = np.load("nphistograms/binscheme{}/uncStatInb_VGG.npz".format(k))["hist"]
-		uncStatInb_BH  = np.load("nphistograms/binscheme{}/uncStatInb_BH.npz".format(k))["hist"]
-		uncStatOutb_VGG = np.load("nphistograms/binscheme{}/uncStatOutb_VGG.npz".format(k))["hist"]
-		uncStatOutb_BH  = np.load("nphistograms/binscheme{}/uncStatOutb_BH.npz".format(k))["hist"]
-		uncStat_VGG     = np.load("nphistograms/binscheme{}/uncStat_VGG.npz".format(k))["hist"]
-		uncStat_BH      = np.load("nphistograms/binscheme{}/uncStat_BH.npz".format(k))["hist"]
+		uncStatInb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(k, i))["hist"]
+		uncStatInb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(k, i))["hist"]
+		uncStatOutb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(k, i))["hist"]
+		uncStatOutb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(k, i))["hist"]
+		uncStat_VGG     = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(k, i))["hist"]
+		uncStat_BH      = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_BH.npz".format(k, i))["hist"]
 
-		xsecTh_KM          = np.load("nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
-		xsecTh_BH          = np.load("nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
-		xsecTh_VGG         = np.load("nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
-		binVolume          = np.load("nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+		xsecTh_KM          = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(k, i))["hist"]
+		xsecTh_BH          = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(k, i))["hist"]
+		xsecTh_VGG         = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(k, i))["hist"]
+		binVolume          = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 
-		ActiveAll       = np.load("nphistograms/binscheme{}/ActiveAll.npz".format(k))["hist"]
-		ActiveAny       = np.load("nphistograms/binscheme{}/ActiveAny.npz".format(k))["hist"]
-		ActiveInb          = np.load("nphistograms/binscheme{}/ActiveInb.npz".format(k))["hist"]
-		ActiveOutb         = np.load("nphistograms/binscheme{}/ActiveOutb.npz".format(k))["hist"]
+		ActiveAll       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, i))["hist"]
+		ActiveAny       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, i))["hist"]
+		ActiveInb          = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb.npz".format(k, i))["hist"]
+		ActiveOutb         = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb.npz".format(k, i))["hist"]
 
-		ActiveAll_int       = np.load("nphistograms/binscheme{}/ActiveAll_int.npz".format(k))["hist"]
-		ActiveAny_int       = np.load("nphistograms/binscheme{}/ActiveAny_int.npz".format(k))["hist"]
-		ActiveInb_int          = np.load("nphistograms/binscheme{}/ActiveInb_int.npz".format(k))["hist"]
-		ActiveOutb_int         = np.load("nphistograms/binscheme{}/ActiveOutb_int.npz".format(k))["hist"]
+		ActiveAll_int       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(k, i))["hist"]
+		ActiveAny_int       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i))["hist"]
+		ActiveInb_int          = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i))["hist"]
+		ActiveOutb_int         = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i))["hist"]
 
 		print("plotting...")
 
