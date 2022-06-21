@@ -386,6 +386,8 @@ if args.savexsec:
 	epgExp = pd.read_pickle("nphistograms/epgExp.pkl")
 
 	for k in range(kstart, len(collection_xBbins)):
+
+		print("bin scheme {}".format(k))
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
 		tbins   = collection_tbins [k]
@@ -395,6 +397,7 @@ if args.savexsec:
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
 
+			print("bkg scheme {}".format(i))
 			#inbending
 			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
