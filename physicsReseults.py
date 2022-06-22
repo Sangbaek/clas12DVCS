@@ -410,6 +410,8 @@ if args.savexsec:
 			histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT
 
 			ActiveInb = histBHDVCSInb>20
+			if k == 2:
+				ActiveInb[:, 0, :, :] = False
 			ActiveInb_int = np.stack([np.sum(ActiveInb, axis=-1)>8]*(len(phibins)-1), axis = -1)
 
 			print("reading bhs - inbending ")
@@ -830,6 +832,148 @@ if args.savexsec:
 			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i), hist = ActiveAny_int)
 			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i), hist = ActiveInb_int)
 			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i), hist = ActiveOutb_int)
+
+if args.contplot:
+	print("read exp...")
+	epgExp = pd.read_pickle("nphistograms/epgExp.pkl")
+
+	k = 2
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
+
+	histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+
+	histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+
+	histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT
+	histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
+
+	histBHDVCSInb, histBHDVCSInbFD, histBHDVCSInbCD, histBHDVCSInbCDFT = {}, {}, {}, {}
+	histBHDVCSOutb, histBHDVCSOutbFD, histBHDVCSOutbCD, histBHDVCSOutbCDFT = {}, {}, {}, {}
+	for i in range(3):
+
+	    histBHDVCSInbFD[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+	    histBHDVCSInbCD[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+	    histBHDVCSInbCDFT[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+
+	    histBHDVCSInb[i] = histBHDVCSInbFD[i] + histBHDVCSInbCD[i] + histBHDVCSInbCDFT[i]
+	    
+	    histBHDVCSOutbFD[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
+	    histBHDVCSOutbCD[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
+	    histBHDVCSOutbCDFT[i], bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
+
+	    histBHDVCSOutb[i] = histBHDVCSOutbFD[i] + histBHDVCSOutbCD[i] + histBHDVCSOutbCDFT[i]
+
+	plt.rcParams["figure.figsize"] = (10,6)
+	plt.rcParams['legend.title_fontsize'] = 'small'
+
+	xBbin = 4
+	Q2bin = 2
+	tbin = 1
+
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
+	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
+
+
+	plt.xlim([90, 270])
+	plt.ylim([0, 70])
+	# plt.yscale('log')
+	plt.xticks([90, 180, 270])
+	plt.xlabel(r"$\phi$" + " ["+degree+"]")
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
+	header = xBheader + Q2header + theader
+	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
+	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+
+	xBbin = 3
+	Q2bin = 2
+	tbin = 1
+
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
+	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
+	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
+
+
+	plt.xlim([90, 270])
+	plt.ylim([0, 70])
+	# plt.yscale('log')
+	plt.xticks([90, 180, 270])
+	plt.xlabel(r"$\phi$" + " ["+degree+"]")
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
+	header = xBheader + Q2header + theader
+	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
+	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+
+# if args.readonly: 
+# 	phi1avg_VGG, xBavg_VGG, Q2avg_VGG, t1avg_VGG = {}, {}, {}, {}  
+# 	phi1avg_BH , xBavg_BH , Q2avg_BH,  t1avg_BH  = {}, {}, {}, {} 
+# 	xsecInb_VGG, xsecInb_BH, xsecOutb_VGG, xsecOutb_BH, xsec_VGG, xsec_BH = {}, {}, {}, {}, {}, {}
+# 	uncStatInb_VGG, uncStatInb_BH, uncStatOutb_VGG, uncStatOutb_BH, uncStat_VGG, uncStat_BH = {}, {}, {}, {}, {}, {}
+# 	xsecTh_KM, xsecTh_BH, xsecTh_VGG = {}, {}, {}     
+# binVolume      
+# ActiveAll      
+# ActiveAny      
+# ActiveInb      
+# ActiveOutb     
+# ActiveAll_int  
+# ActiveAny_int  
+# ActiveInb_int  
+# ActiveOutb_int 
+# 	for k in range(kstart, len(collection_xBbins)):
+# 		for i in range(len(collection_cont_xBbins)):
+# 			phi1avg_VGG [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
+# 			xBavg_VGG   [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i))["hist"]
+# 			Q2avg_VGG   [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i))["hist"]
+# 			t1avg_VGG   [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(k, i))["hist"]
+
+# 			phi1avg_BH  [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(k, i))["hist"]
+# 			xBavg_BH    [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_BH.npz".format(k, i))["hist"]
+# 			Q2avg_BH    [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(k, i))["hist"]
+# 			t1avg_BH    [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_BH.npz".format(k, i))["hist"]
+
+# 			xsecInb_VGG [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(k, i))["hist"]
+# 			xsecInb_BH  [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(k, i))["hist"]
+# 			xsecOutb_VGG [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(k, i))["hist"]
+# 			xsecOutb_BH  [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(k, i))["hist"]
+# 			xsec_VGG     [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_VGG.npz".format(k, i))["hist"]
+# 			xsec_BH      [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_BH.npz".format(k, i))["hist"]
+
+# 			uncStatInb_VGG [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(k, i))["hist"]
+# 			uncStatInb_BH  [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(k, i))["hist"]
+# 			uncStatOutb_VGG [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(k, i))["hist"]
+# 			uncStatOutb_BH  [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(k, i))["hist"]
+# 			uncStat_VGG     [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(k, i))["hist"]
+# 			uncStat_BH      [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_BH.npz".format(k, i))["hist"]
+
+# 			xsecTh_KM          [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(k, i))["hist"]
+# 			xsecTh_BH          [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(k, i))["hist"]
+# 			xsecTh_VGG         [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(k, i))["hist"]
+# 			binVolume          [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
+
+# 			ActiveAll       [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, i))["hist"]
+# 			ActiveAny       [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, i))["hist"]
+# 			ActiveInb          [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb.npz".format(k, i))["hist"]
+# 			ActiveOutb         [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb.npz".format(k, i))["hist"]
+
+# 			ActiveAll_int       [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(k, i))["hist"]
+# 			ActiveAny_int       [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i))["hist"]
+# 			ActiveInb_int          [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i))["hist"]
+# 			ActiveOutb_int         [k, i] = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i))["hist"]
 
 if args.saveplot:
 
