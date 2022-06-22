@@ -167,6 +167,7 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 
 parser.add_argument("-sc","--savecont", help="save cont", action = "store_true")
 parser.add_argument("-sx","--savexsec", help="save xsec", action = "store_true")
+parser.add_argument("-ct","--contplot", help="save cont plots", action = "store_true")
 parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true")
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
