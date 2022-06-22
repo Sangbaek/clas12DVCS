@@ -86,12 +86,16 @@ class lund2pickle():
 			Ge = np.sqrt(float(Gpx)**2 + float(Gpy)**2 + float(Gpz)**2)
 			Ge2 = np.sqrt(float(Gpx2)**2 + float(Gpy2)**2 + float(Gpz2)**2)
 
-			kinArray.append([float(Epx), float(Epy), float(Epz), float(Ee), float(Ppx), float(Ppy), float(Ppz), float(Pe),
-			 float(Gpx), float(Gpy), float(Gpz), float(Ge), float(Gpx2), float(Gpy2), float(Gpz2),float(Ge2), 
-			 float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
+		# 	kinArray.append([float(Epx), float(Epy), float(Epz), float(Ee), float(Ppx), float(Ppy), float(Ppz), float(Pe),
+		# 	 float(Gpx), float(Gpy), float(Gpz), float(Ge), float(Gpx2), float(Gpy2), float(Gpz2),float(Ge2), 
+		# 	 float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
 
-		df_epgg = pd.DataFrame(kinArray, columns = ["Epx", "Epy", "Epz", "Ee", "Ppx", "Ppy", "Ppz", "Pe", "Gpx", "Gpy", "Gpz", "Ge", "Gpx2", "Gpy2", "Gpz2", "Ge2",
-			"xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
+		# df_epgg = pd.DataFrame(kinArray, columns = ["Epx", "Epy", "Epz", "Ee", "Ppx", "Ppy", "Ppz", "Pe", "Gpx", "Gpy", "Gpz", "Ge", "Gpx2", "Gpy2", "Gpz2", "Ge2",
+		# 	"xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
+
+			kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
+
+		df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
 
 		# encode unassigned bin as -1
 		df_epgg.loc[:, "Q2bin"] = -1
