@@ -394,7 +394,7 @@ if args.savexsec:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		for i in range(len(collection_cont_xBbins)):
+		for i in range(2, len(collection_cont_xBbins)):
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
 
@@ -413,6 +413,9 @@ if args.savexsec:
 			ActiveInb = histBHDVCSInb>20
 			if k == 2:
 				ActiveInb[:, 0, :, :] = False
+				ActiveInb[2, 1, 2, 4] = False
+				ActiveInb[2, 1, 2, 5] = False
+				ActiveInb[3, 1, 2, 22] = False
 			ActiveInb_int = np.stack([np.sum(ActiveInb, axis=-1)>8]*(len(phibins)-1), axis = -1)
 
 			print("reading bhs - inbending ")
@@ -987,7 +990,7 @@ if args.saveplot:
 
 		os.makedirs("plots/binscheme{}".format(k), exist_ok = True)
 
-		for i in range(0, len(collection_cont_xBbins)):
+		for i in range(2, len(collection_cont_xBbins)):
 
 			print("reading the xsec vars")
 			phi1avg_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
