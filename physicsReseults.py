@@ -394,7 +394,7 @@ if args.savexsec:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		for i in range(2, len(collection_cont_xBbins)):
+		for i in range(0, len(collection_cont_xBbins)):
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
 
@@ -990,7 +990,7 @@ if args.saveplot:
 
 		os.makedirs("plots/binscheme{}".format(k), exist_ok = True)
 
-		for i in range(2, len(collection_cont_xBbins)):
+		for i in range(0, len(collection_cont_xBbins)):
 
 			print("reading the xsec vars")
 			phi1avg_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
