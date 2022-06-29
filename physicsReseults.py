@@ -398,6 +398,7 @@ if args.savecont:
 
 if args.savebinVolume:
 	for k in range(kstart, len(collection_xBbins)):
+		print("saving bin scheme {}".format(k))
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
 		tbins   = collection_tbins [k]
@@ -408,6 +409,7 @@ if args.savebinVolume:
 		n = 1000
 
 		for xBind in range(len(xBbins)-1):
+			print(xBind)
 			for Q2ind in range(len(Q2bins)-1):
 				for tind in range(len(tbins)-1):
 					for phiind in range(len(phibins)-1):
