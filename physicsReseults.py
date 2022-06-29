@@ -10,6 +10,7 @@ from copy import copy
 cmap = copy(plt.cm.get_cmap("jet"))
 from scipy.optimize import least_squares
 from utils.const import *
+from utils.physics import *
 from matplotlib.colors import LogNorm
 import argparse
 from gepard.fits import th_KM15
