@@ -55,3 +55,33 @@ def getTheta(vec1):
 def getEnergy(vec1, mass):
 	# for taken 3d momenta p and mass m, return energy = sqrt(p**2 + m**2)
 	return np.sqrt(mag2(vec1)+mass**2)
+
+def nu(xB, Q2, t, phi):
+    return Q2/(2*M*xB)
+
+def y(xB, Q2, t, phi):
+    return nu(xB, Q2, t, phi)/10.604
+
+def xi(xB, Q2, t, phi):
+    return xB*(1-t/2/Q2)/(2-xB+xB*(-t/Q2))
+
+def del2(xB, Q2, t, phi):
+    return -t
+
+def eps(xB, Q2, t, phi):
+    return 2*xB*M/np.sqrt(Q2)
+
+def eps2(xB, Q2, t, phi):
+    return eps(xB, Q2, t, phi)**2
+
+def qeps2(xB, Q2, t, phi):
+    return 1+eps2(xB, Q2, t, phi)
+
+def sqeps2(xB, Q2, t, phi):
+    return np.sqrt(qeps2(xB, Q2, t, phi))
+
+def y1eps(xB, Q2, t, phi):
+    return 1 - y(xB, Q2, t, phi) - y(xB, Q2, t, phi)*y(xB, Q2, t, phi)*eps2(xB, Q2, t, phi)/4
+
+def tmin(xB, Q2, t, phi):
+    return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))
