@@ -3,6 +3,7 @@
 Modules help pandas algebra without using ROOT.
 """
 import numpy as np
+from utils.const import *
 
 def dot(vec1, vec2):
 	# dot product of two 3d vectors
@@ -85,3 +86,10 @@ def y1eps(xB, Q2, t, phi):
 
 def tmin(xB, Q2, t, phi):
     return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))
+
+def W2(xB, Q2, t, phi):
+	return M*M+2.0*M*10.604*yb(xB, Q2, t, phi)-Q2
+
+def W(xB, Q2, t, phi):
+	return np.sqrt(W2)
+
