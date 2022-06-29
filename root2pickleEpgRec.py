@@ -56,7 +56,7 @@ class root2pickle():
         self.pi02gSubtraction()
         if not raw:
             self.makeDVCS(pol = pol)
-        self.save(raw = raw, pol = pol)
+        self.save(raw = raw, pol = pol, gen = gen)
 
     def readFile(self):
         '''read root using uproot'''
@@ -1424,7 +1424,7 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self, raw = False, pol = "inbending"):
+    def save(self, raw = False, pol = "inbending", gen = 'dvcsnorad'):
         if raw:
             df_Rec = self.df_epg
             #common cuts
@@ -1491,47 +1491,48 @@ class root2pickle():
         df_MC = self.df_MC
         df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
 
-        # encode unassigned bin as -1
-        df.loc[:, "GenQ2bin"] = -1
-        df.loc[:, "GenxBbin"] = -1
-        df.loc[:, "Gentbin"] = -1
-        df.loc[:, "Genphibin"] = -1
-        df.loc[:, "GenQ2xBbin"] = -1
-        df.loc[:, "GenQ2xBtbin"] = -1
-        df.loc[:, "GenQ2xBtphibin"] = -1
-        Q2xBbin = 0
+        if gen == "dvcsrad":
+            # encode unassigned bin as -1
+            df.loc[:, "GenQ2bin"] = -1
+            df.loc[:, "GenxBbin"] = -1
+            df.loc[:, "Gentbin"] = -1
+            df.loc[:, "Genphibin"] = -1
+            df.loc[:, "GenQ2xBbin"] = -1
+            df.loc[:, "GenQ2xBtbin"] = -1
+            df.loc[:, "GenQ2xBtphibin"] = -1
+            Q2xBbin = 0
 
-        # encode all binning
-        for Q2bin in range(len(Q2bin_i)):
-            #square Q2 binning
-            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]), "GenQ2bin"] = Q2bin
-            #adaptive xB binning
-            for xBbin in range(len(xBbin_i[Q2bin])):
-                if Q2bin < len(Q2bin_i) -1:
-                    if xBbin == 0:
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin #0
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin #0
-                    elif xBbin < len(xBbin_i[Q2bin])-1:
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin
+            # encode all binning
+            for Q2bin in range(len(Q2bin_i)):
+                #square Q2 binning
+                df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]), "GenQ2bin"] = Q2bin
+                #adaptive xB binning
+                for xBbin in range(len(xBbin_i[Q2bin])):
+                    if Q2bin < len(Q2bin_i) -1:
+                        if xBbin == 0:
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin #0
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin #0
+                        elif xBbin < len(xBbin_i[Q2bin])-1:
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin
+                        else:
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
+                            df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin
                     else:
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
-                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin
-                else:
-                    df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
-                    df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin #0
-                Q2xBbin = Q2xBbin + 1
-        for tbin in range(len(tbin_i)):
-            #square t binning
-            df.loc[(df.Gent>=tbin_i[tbin]) & (df.Gent<tbin_f[tbin]), "Gentbin"] = tbin
-        for phibin in range(len(phibin_i)):
-            #square phi binning
-            df.loc[(df.Genphi>=phibin_i[phibin]) & (df.Genphi<phibin_f[phibin]), "Genphibin"] = phibin
+                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
+                        df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin #0
+                    Q2xBbin = Q2xBbin + 1
+            for tbin in range(len(tbin_i)):
+                #square t binning
+                df.loc[(df.Gent>=tbin_i[tbin]) & (df.Gent<tbin_f[tbin]), "Gentbin"] = tbin
+            for phibin in range(len(phibin_i)):
+                #square phi binning
+                df.loc[(df.Genphi>=phibin_i[phibin]) & (df.Genphi<phibin_f[phibin]), "Genphibin"] = phibin
 
-        df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] = len(tbin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Gentbin"]
-        df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtphibin"] = len(phibin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Genphibin"]
+            df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] = len(tbin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Gentbin"]
+            df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtphibin"] = len(phibin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Genphibin"]
 
-        df = df.astype({"GenQ2bin": int, "GenxBbin": int, "Gentbin": int, "Genphibin": int, "GenQ2xBbin": int, "GenQ2xBtbin": int, "GenQ2xBtphibin": int})
+            df = df.astype({"GenQ2bin": int, "GenxBbin": int, "Gentbin": int, "Genphibin": int, "GenQ2xBbin": int, "GenQ2xBtbin": int, "GenQ2xBtphibin": int})
 
         self.df = df
 
