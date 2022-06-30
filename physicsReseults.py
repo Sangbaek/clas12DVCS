@@ -413,12 +413,12 @@ if args.savebinVolume:
 			for Q2ind in range(len(Q2bins)-1):
 				for tind in range(len(tbins)-1):
 					for phiind in range(len(phibins)-1):
-						xBi = newxBbins[xBind]
-						xBf = newxBbins[xBind+1]
-						Q2i = newQ2bins[Q2ind]
-						Q2f = newQ2bins[Q2ind+1]
-						ti = newtbins[tind]
-						tf = newtbins[tind+1]
+						xBi = xBbins[xBind]
+						xBf = xBbins[xBind+1]
+						Q2i = Q2bins[Q2ind]
+						Q2f = Q2bins[Q2ind+1]
+						ti = tbins[tind]
+						tf = tbins[tind+1]
 						phii = np.radians(phibins[phiind])
 						phif = np.radians(phibins[phiind+1])
 

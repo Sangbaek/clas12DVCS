@@ -92,4 +92,3 @@ def W2(xB, Q2, t, phi):
 
 def W(xB, Q2, t, phi):
 	return np.sqrt(W2)
-
