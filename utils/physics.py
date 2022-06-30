@@ -85,10 +85,34 @@ def y1eps(xB, Q2, t, phi):
     return 1 - y(xB, Q2, t, phi) - y(xB, Q2, t, phi)*y(xB, Q2, t, phi)*eps2(xB, Q2, t, phi)/4
 
 def tmin(xB, Q2, t, phi):
-    return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))
+    return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi))
+
+def tmax(xB, Q2, t, phi):
+    return -Q2*(2*(1-xB)*(1+sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi))
 
 def W2(xB, Q2, t, phi):
-	return M*M+2.0*M*10.604*yb(xB, Q2, t, phi)-Q2
+    return M*M+2.0*M*nu(xB, Q2, t, phi)-Q2
 
 def W(xB, Q2, t, phi):
-	return np.sqrt(W2)
+    return np.sqrt(W2(xB, Q2, t, phi))
+
+def tmin2(xB, Q2, t, phi):
+    return -0.5*((Q2/xB-Q2)*(Q2/xB-np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi)
+
+def tmax2(xB, Q2, t, phi):
+    return -0.5*((Q2/xB-Q2)*(Q2/xB+np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi)
+
+def Kfac2(xB, Q2, t, phi):
+    return (-del2q2(xB, Q2, t, phi))*(1 - xB)*y1eps(xB, Q2, t, phi)*(1 - np.abs(tmin(xB, Q2, t, phi))/t)*(np.sqrt(1 + eps2(xB, Q2, t, phi)) + 
+            ((4*xB*(1 - xB) + eps2(xB, Q2, t, phi))/(4*(1 - xB)))*(-(t - np.abs(tmin(xB, Q2, t, phi)))/Q2))
+def Kfac(xB, Q2, t, phi):
+    return np.sqrt(Kfac2(xB, Q2, t, phi))
+
+def Jfac(xB, Q2, t, phi):
+    return (1 - y(xB, Q2, t, phi) - y(xB, Q2, t, phi)*eps2(xB, Q2, t, phi)/2)*(1 + del2q2(xB, Q2, t, phi)) - (1 - xB)*(2 - y(xB, Q2, t, phi))*del2q2(xB, Q2, t, phi)
+
+def P1(xB, Q2, t, phi):    
+    return -(Jfac(xB, Q2, t, phi) + 2*Kfac(xB, Q2, t, phi)*np.cos(np.pi-np.radians(phi)))/(y(xB, Q2, t, phi)*(1 + eps2(xB, Q2, t, phi)))
+
+def P2(xB, Q2, t, phi):
+    return 1 + del2q2(xB, Q2, t, phi) - P1(xB, Q2, t, phi)
