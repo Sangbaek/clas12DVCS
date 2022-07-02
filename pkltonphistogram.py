@@ -48,12 +48,7 @@ if __name__ == "__main__":
 	print("reading {}".format(infile))
 	df = pd.read_pickle(infile)
 
-	if args.kstart:
-		kstart = int(args.kstart)
-	else:
-		kstart = len(collection_xBbins) - 1 
-
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(0, len(collection_xBbins)):
 
 		os.makedirs("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}".format(k), exist_ok = True)
 		xBbins  = collection_xBbins[k]
