@@ -824,10 +824,10 @@ if args.savexsec:
 
 			# binVolume = np.zeros(accCorrected_VGG.shape)
 
-			phi1avg_VGG = divideHist(histVGGGenInbphi50nA+histVGGGenOutbphi50nA, histVGGGenInb50nA+histVGGGenOutb50nA)
-			xBavg_VGG = np.stack([divideHist(histVGGGenInbxB50nA+histVGGGenOutbxB50nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ250nA+histVGGGenOutbQ250nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			t1avg_VGG = np.stack([divideHist(histVGGGenInbt150nA+histVGGGenOutbt150nA, histVGGGenInbInt50nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			phi1avg_VGG = divideHist(histVGGGenInbphi45nA+histVGGGenOutbphi45nA, histVGGGenInb45nA+histVGGGenOutb45nA)
+			xBavg_VGG = np.stack([divideHist(histVGGGenInbxB45nA+histVGGGenOutbxB45nA, histVGGGenInbInt45nA+histVGGGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
+			Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ245nA+histVGGGenOutbQ245nA, histVGGGenInbInt45nA+histVGGGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
+			t1avg_VGG = np.stack([divideHist(histVGGGenInbt145nA+histVGGGenOutbt145nA, histVGGGenInbInt45nA+histVGGGenOutbInt45nA)]*(len(phibins)-1), axis = -1)
 			phi1avg_VGG[~ActiveAny_int] = 0
 			xBavg_VGG[~ActiveAny_int] = 0
 			Q2avg_VGG[~ActiveAny_int] = 0
