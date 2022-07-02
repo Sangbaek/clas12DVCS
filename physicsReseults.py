@@ -685,7 +685,7 @@ if args.savexsec:
 			# 	histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
 			# 	histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-			histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA, histVGGGenOutbCDFT50nA = 0, 0, 0, 0, 0
+			histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA, histVGGGenOutbCR50nA = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_vgg50nA:
 				histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
