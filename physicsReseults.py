@@ -1565,9 +1565,9 @@ for k in range(2, len(collection_xBbins)):
 			else:
 				return ~ActiveAny_int[xBbin, :, tbin, :].any()
 
-		num_plotQ2 = len(Q2bins)
-		num_plotxB = len(xBbins)
-		num_plott = len(tbins)
+		num_plotQ2 = len(Q2bins) - 1
+		num_plotxB = len(xBbins) - 1
+		num_plott = len(tbins) - 1
 
 		if k == 2:
 			num_plotQ2 = 4
