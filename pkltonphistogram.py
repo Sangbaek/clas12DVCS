@@ -5,6 +5,7 @@ Convert to np histogram for the binning
 import pandas as pd
 import numpy as np
 from utils.const import *
+from utils.physics import *
 import argparse
 import os
 
@@ -70,6 +71,14 @@ if __name__ == "__main__":
 			np.savez(out, hist = hist)
 
 		if recgen == "Gen":
+
+			nu  = df.Q2/(2*M*df.xB)
+			yb= nu/10.604
+			W2 = M*M+2.0*M*10.604*yb-df.Q2
+            tmin1 = np.abs(tmin(df.xB, df.Q2, df.t1, df.phi1))
+
+			cond = (nu>2 )&(nu<10.604 - 2 ) & (W2>4) & (df.t1>tmin1) & (Kfac2(df.xB, df.Q2, df.t1, df.phi1)>0)
+            df = df.loc[cond, :]
 			#phi
 			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "phi")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
@@ -102,22 +111,22 @@ if __name__ == "__main__":
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
 			np.savez(out, hist = hist)
 
-			#volume count
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "binVolume")
-			finexBbins, fineQ2bins, finetbins, finephibins = [], [], [], []
-			for xBind in range(len(xBbins)-1):
-				finexBbins.append(np.linspace(xBbins[xBind], xBbins[xBind+1], 6+1))
-			for Q2ind in range(len(Q2bins)-1):
-				fineQ2bins.append(np.linspace(Q2bins[Q2ind], Q2bins[Q2ind+1], 6+1))
-			for tind in range(len(tbins)-1):
-				finetbins.append(np.linspace(tbins[tind], tbins[tind+1], 6+1))
-			for phiind in range(len(phibins)-1):
-				finephibins.append(np.linspace(phibins[phiind], phibins[phiind+1], 6+1))
+			# #volume count
+			# out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "binVolume")
+			# finexBbins, fineQ2bins, finetbins, finephibins = [], [], [], []
+			# for xBind in range(len(xBbins)-1):
+			# 	finexBbins.append(np.linspace(xBbins[xBind], xBbins[xBind+1], 6+1))
+			# for Q2ind in range(len(Q2bins)-1):
+			# 	fineQ2bins.append(np.linspace(Q2bins[Q2ind], Q2bins[Q2ind+1], 6+1))
+			# for tind in range(len(tbins)-1):
+			# 	finetbins.append(np.linspace(tbins[tind], tbins[tind+1], 6+1))
+			# for phiind in range(len(phibins)-1):
+			# 	finephibins.append(np.linspace(phibins[phiind], phibins[phiind+1], 6+1))
 
-			finexBbins = np.unique(np.concatenate(finexBbins))
-			fineQ2bins = np.unique(np.concatenate(fineQ2bins))
-			finetbins = np.unique(np.concatenate(finetbins))
-			finephibins = np.unique(np.concatenate(finephibins))
-			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
-			hist = np.divide(hist,hist, where = hist>0, out = np.zeros_like(hist))
-			np.savez(out, hist=hist)
+			# finexBbins = np.unique(np.concatenate(finexBbins))
+			# fineQ2bins = np.unique(np.concatenate(fineQ2bins))
+			# finetbins = np.unique(np.concatenate(finetbins))
+			# finephibins = np.unique(np.concatenate(finephibins))
+			# hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [finexBbins, fineQ2bins, finetbins, finephibins])
+			# hist = np.divide(hist,hist, where = hist>0, out = np.zeros_like(hist))
+			# np.savez(out, hist=hist)
