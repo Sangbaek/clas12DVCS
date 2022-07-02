@@ -75,10 +75,9 @@ if __name__ == "__main__":
 			nu  = df.Q2/(2*M*df.xB)
 			yb= nu/10.604
 			W2 = M*M+2.0*M*10.604*yb-df.Q2
-            tmin1 = np.abs(tmin(df.xB, df.Q2, df.t1, df.phi1))
-
-			cond = (nu>2 )&(nu<10.604 - 2 ) & (W2>4) & (df.t1>tmin1) & (Kfac2(df.xB, df.Q2, df.t1, df.phi1)>0)
-            df = df.loc[cond, :]
+			tmin1 = np.abs(tmin(df.xB, df.Q2, df.t1, df.phi1))
+			cond = (nu>2)&(nu<10.604 - 2) & (W2>4) & (df.t1>tmin1) & (Kfac2(df.xB, df.Q2, df.t1, df.phi1)>0)
+			df = df.loc[cond, :]
 			#phi
 			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "phi")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
