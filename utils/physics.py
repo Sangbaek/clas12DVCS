@@ -69,6 +69,9 @@ def xi(xB, Q2, t, phi):
 def del2(xB, Q2, t, phi):
     return -t
 
+def del2q2(xB, Q2, t, phi):
+    return del2(xB, Q2, t, phi)/Q2
+
 def eps(xB, Q2, t, phi):
     return 2*xB*M/np.sqrt(Q2)
 
