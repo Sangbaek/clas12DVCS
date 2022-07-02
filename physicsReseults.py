@@ -1145,21 +1145,21 @@ if args.saveplot:
 				else:
 					return ~ActiveAny_int[xBbin, :, tbin, :].any()
 
-			num_plotQ2 = len(Q2bins)
-			num_plotxB = len(xBbins)
-			num_plott = len(tbins)
+			num_plotQ2 = len(Q2bins) - 1
+			num_plotxB = len(xBbins) - 1
+			num_plott = len(tbins) - 1
 
 			if k == 0:
-				num_plotQ2 = 6
-				num_plotxB = 3
+				num_plotQ2 = 6 - 1
+				num_plotxB = 3 - 1
 
 
-			for tbin in range(num_plott -1):
+			for tbin in range(num_plott):
 				active = 0
 				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-				fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-				for xBbin in range(num_plotxB - 1):
-					for Q2bin in range(num_plotQ2 - 1):
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
 						#skip inactive bins
 						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 							axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1194,12 +1194,12 @@ if args.saveplot:
 				plt.savefig("plots/binscheme{}/bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
-			for tbin in range(num_plott -1):
+			for tbin in range(num_plott):
 				active = 0
 				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-				fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-				for xBbin in range(num_plotxB - 1):
-					for Q2bin in range(num_plotQ2 - 1):
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
 						#skip inactive bins
 						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 							axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1234,12 +1234,12 @@ if args.saveplot:
 				plt.savefig("plots/binscheme{}/KM_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
-			for tbin in range(num_plott -1):
+			for tbin in range(num_plott):
 				active = 0
 				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-				fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-				for xBbin in range(num_plotxB - 1):
-					for Q2bin in range(num_plotQ2 - 1):
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
 						#skip inactive bins
 						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 							axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1279,12 +1279,12 @@ if args.saveplot:
 			Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
 			Normalization_KM = np.zeros(xsecTh_BH.shape[:-1])
 
-			for tbin in range(num_plott -1):
+			for tbin in range(num_plott):
 				active = 0
 				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-				fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-				for xBbin in range(num_plotxB - 1):
-					for Q2bin in range(num_plotQ2 - 1):
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
 						#skip inactive bins
 						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 							axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1331,12 +1331,12 @@ if args.saveplot:
 			IntegratedDiff_Outb = np.zeros(xsecTh_BH.shape[:-1])
 			IntegratedDiff_KM = np.zeros(xsecTh_BH.shape[:-1])
 
-			for tbin in range(num_plott -1):
+			for tbin in range(num_plott):
 				active = 0
 				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-				fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-				for xBbin in range(num_plotxB - 1):
-					for Q2bin in range(num_plotQ2 - 1):
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
 						#skip inactive bins
 						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 							axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1376,9 +1376,9 @@ if args.saveplot:
 				plt.clf()
 
 			active = 0
-			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-			for xBbin in range(num_plotxB - 1):
-				for Q2bin in range(num_plotQ2 - 1):
+			fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+			for xBbin in range(num_plotxB):
+				for Q2bin in range(num_plotQ2):
 					#skip inactive bins
 					if badBinCondxBQ2(xBbin, Q2bin, k):
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1413,8 +1413,8 @@ if args.saveplot:
 			plt.clf()
 
 			active = 0
-			fig, axs = plt.subplots(num_plott-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 7.5*(num_plott-1)))
-			for xBbin in range(num_plotxB - 1):
+			fig, axs = plt.subplots(num_plott-1, num_plotxB, figsize = (7.5*(num_plotxB), 7.5*(num_plott-1)))
+			for xBbin in range(num_plotxB):
 				for tbin in range(num_plott - 1):
 					#skip inactive bins
 					if badBinCondxBt(xBbin, tbin, k):
@@ -1453,9 +1453,9 @@ if args.saveplot:
 			plt.clf()
 
 			active = 0
-			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-			for xBbin in range(num_plotxB - 1):
-				for Q2bin in range(num_plotQ2 - 1):
+			fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+			for xBbin in range(num_plotxB):
+				for Q2bin in range(num_plotQ2):
 					#skip inactive bins
 					if badBinCondxBQ2(xBbin, Q2bin, k):
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
@@ -1574,12 +1574,12 @@ for k in range(2, len(collection_xBbins)):
 			num_plotxB = 4
 
 
-		for tbin in range(num_plott -1):
+		for tbin in range(num_plott):
 			active = 0
 			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-			fig, axs = plt.subplots(num_plotQ2-1, num_plotxB-1, figsize = (7.5*(num_plotxB-1), 6*(num_plotQ2-1)))
-			for xBbin in range(num_plotxB - 1):
-				for Q2bin in range(num_plotQ2 - 1):
+			fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+			for xBbin in range(num_plotxB):
+				for Q2bin in range(num_plotQ2):
 					#skip inactive bins
 					if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 						axs[num_plotQ2-Q2bin-2 , xBbin].yaxis.set_visible(False)
