@@ -853,7 +853,7 @@ if args.savexsec:
 			# 		for tbin in range(len(tbins)-1):
 			# 			binVolume[xBbin, Q2bin, tbin, :] = binVolumes(xBbin, Q2bin, tbin, histBHGenInbbinVol45nA|histVGGGenInbbinVol50nA|histBHGenOutbbinVol50nA|histVGGGenOutbbinVol50nA, k = k)
 
-			integratedRad_VGG = np.mean([*histVGGGenInbrad50nA, *histVGGGenOutbrad50nA], axis = 0)
+			integratedRad_VGG = np.mean([*histVGGGenInbrad45nA, *histVGGGenOutbrad50nA], axis = 0)
 			rcfactors_VGG = divideHist(integratedRad_VGG, xsecTh_VGG)
 			integratedRad_BH = np.mean([*histBHGenInbrad45nA, *histBHGenOutbrad50nA], axis = 0)
 			rcfactors_BH = divideHist(integratedRad_BH, xsecTh_BH)
