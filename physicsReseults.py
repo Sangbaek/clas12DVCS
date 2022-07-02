@@ -824,10 +824,10 @@ if args.savexsec:
 
 			# binVolume = np.zeros(accCorrected_VGG.shape)
 
-			phi1avg_VGG = divideHist(histVGGGenInbphi45nA+histVGGGenOutbphi50nA, histVGGGenInb45nA+histVGGGenOutb50nA)
-			xBavg_VGG = np.stack([divideHist(histVGGGenInbxB45nA+histVGGGenOutbxB50nA, histVGGGenInbInt45nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			Q2avg_VGG = np.stack([divideHist(histVGGGenInbQ245nA+histVGGGenOutbQ250nA, histVGGGenInbInt45nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			t1avg_VGG = np.stack([divideHist(histVGGGenInbt145nA+histVGGGenOutbt150nA, histVGGGenInbInt45nA+histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			phi1avg_VGG = divideHist(histVGGGenOutbphi50nA, histVGGGenOutb50nA)
+			xBavg_VGG = np.stack([divideHist(histVGGGenOutbxB50nA, histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			Q2avg_VGG = np.stack([divideHist(histVGGGenOutbQ250nA, histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			t1avg_VGG = np.stack([divideHist(histVGGGenOutbt150nA, histVGGGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 			phi1avg_VGG[~ActiveAny_int] = 0
 			xBavg_VGG[~ActiveAny_int] = 0
 			Q2avg_VGG[~ActiveAny_int] = 0
@@ -835,10 +835,10 @@ if args.savexsec:
 
 			xsecTh_VGG[ActiveAny_int] = np.array(printVGGarray(xBavg_VGG[ActiveAny_int], Q2avg_VGG[ActiveAny_int], t1avg_VGG[ActiveAny_int], np.radians(phi1avg_VGG[ActiveAny_int]), globalfit = True))
 
-			phi1avg_BH = divideHist(histBHGenInbphi45nA+histBHGenOutbphi50nA, histBHGenInb45nA+histBHGenOutb50nA)
-			xBavg_BH = np.stack([divideHist(histBHGenInbxB45nA+histBHGenOutbxB50nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			Q2avg_BH = np.stack([divideHist(histBHGenInbQ245nA+histBHGenOutbQ250nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
-			t1avg_BH = np.stack([divideHist(histBHGenInbt145nA+histBHGenOutbt150nA, histBHGenInbInt45nA+histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			phi1avg_BH = divideHist(histBHGenOutbphi50nA, histBHGenOutb50nA)
+			xBavg_BH = np.stack([divideHist(histBHGenOutbxB50nA, histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			Q2avg_BH = np.stack([divideHist(histBHGenOutbQ250nA, histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
+			t1avg_BH = np.stack([divideHist(histBHGenOutbt150nA, histBHGenOutbInt50nA)]*(len(phibins)-1), axis = -1)
 			phi1avg_BH[~ActiveAny_int] = 0
 			xBavg_BH[~ActiveAny_int] = 0
 			Q2avg_BH[~ActiveAny_int] = 0
