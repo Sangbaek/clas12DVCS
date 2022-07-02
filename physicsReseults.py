@@ -435,7 +435,7 @@ if args.savebinVolume:
 		                    cond = (nub>2 )&(nub<10.604 - 2 ) & (W2(xB, Q2, t1, phi)>4) & (t1>tmin1) & (Kfac2(xB, Q2, t1, phi)>0)
 							ratio.append(np.sum(cond)/N)
 						binVolume[xBind, Q2ind, tind, phiind] = (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii)*np.mean(ratio)
-		for i in range(1, 4):
+		for i in range(0, len(collection_cont_xBbins)):
 			np.savez("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i), hist = binVolume)
 
 if args.savexsec:
@@ -449,6 +449,8 @@ if args.savexsec:
 		Q2bins  = collection_Q2bins[k]
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
+
+		binVolume = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 
 		for i in range(0, len(collection_cont_xBbins)):
 			#Inbending cross sections 
@@ -720,7 +722,7 @@ if args.savexsec:
 				histVGGGenOutbphi50nA = histVGGGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 				histVGGGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-				histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+				# histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
 			histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
 			histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
@@ -733,7 +735,7 @@ if args.savexsec:
 				histBHGenOutbphi50nA = histBHGenOutbphi50nA + np.load("nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
 				histBHGenOutbrad50nA.append(np.load("nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 				histBHGenOutbborn50nA.append(np.load("nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-				histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
+				# histBHGenOutbbinVol50nA = histBHGenOutbbinVol50nA | np.load("nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
 			#stat error - inbending
 			accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD45nA , histVGGInbFD45nA)
