@@ -450,13 +450,11 @@ if args.savexsec:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		binVolume = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
-
 		for i in range(0, len(collection_cont_xBbins)):
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
-
 			print("bkg scheme {}".format(i))
+			binVolume = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 			#inbending
 			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
