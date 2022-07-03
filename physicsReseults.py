@@ -1585,7 +1585,7 @@ for k in range(2, len(collection_xBbins)):
 			axs[4-Q2bin-1].set_xlabel(r"$\phi$" + " [" + degree + "]")
 			if Q2bin == 0:
 				handles, labels = axs[4-Q2bin-1].get_legend_handles_labels()
-				order = [5, 0, 1, 2, 3, 4]
+				order = [3, 0, 1, 2]
 
 		lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.02, 0.5), title = "")
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
