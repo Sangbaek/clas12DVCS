@@ -12,7 +12,9 @@ ebeam = 10.604 # beam energy
 pbeam = np.sqrt(ebeam * ebeam - me * me) # beam electron momentum
 beam = [0, 0, pbeam] # beam vector
 target = [0, 0, 0] # target vector
-
+alpha = 1/137.036
+hc2  = 0.38938
+Ed = ebeam
 
 #reaction: dvcs, pi0
 #polarity: inb, outb

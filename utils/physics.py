@@ -119,3 +119,251 @@ def P1(xB, Q2, t, phi):
 
 def P2(xB, Q2, t, phi):
     return 1 + del2q2(xB, Q2, t, phi) - P1(xB, Q2, t, phi)
+
+def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    BHarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
+    return np.array(BHarray)
+
+def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
+	phi = np.pi - phi
+	pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+					process='ep2epgamma', exptype='fixed target', frame =frame,
+					in1energy=10.604, in1charge=-1, in1polarization=pol)
+	#     print(pt1.frame, pol)
+	#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+	#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
+	#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
+	try:
+		return th_KM15.XS(pt1)
+	except:
+		print(xB, Q2, t, phi)
+		return 0
+
+def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    VGGarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        VGGarray.append(printVGG(xB, Q2, t, phi, **kwargs))
+    return VGGarray
+
+def printVGG(xB, Q2, t, phi, globalfit = True):
+	my_env = os.environ.copy()
+	my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
+	my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
+	if globalfit:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
+	else:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
+	try:
+		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+		return dstot
+	except:
+		print(xB, Q2, t, phi)
+		return 0
+
+def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
+    BHarray = []
+    if isinstance(xBarray, pd.core.series.Series):
+        xBarray = xBarray.to_numpy()
+        Q2array = Q2array.to_numpy()
+        tarray = tarray.to_numpy()
+        phiarray = phiarray.to_numpy()
+        
+    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
+        BHarray.append(printBHonly(xB, Q2, t, phi, **kwargs))
+    return np.array(BHarray)
+
+def printBHonly(xB, Q2, t, phi, globalfit = True):
+	if globalfit:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
+	else:
+		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
+	try:
+		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+		return dstot
+	except:
+		print(xB, Q2, t, phi)
+		return 0
+
+def nphistmean(hist, bins):
+    s=0
+    for i in range(len(hist)):
+        s += hist[i] * ((bins[i] + bins[i+1]) / 2) 
+    mean = s / np.sum(hist)
+    return mean
+
+def createBinEdges(binCenters):
+    start = binCenters[0] - np.diff(binCenters)[0]/2
+    end = binCenters[-1] + np.diff(binCenters)[-1]/2
+    middle = binCenters[:-1] + np.diff(binCenters)/2
+    return np.array([start, *middle, end])
+
+def makeReduced(df):
+    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
+    return df.loc[:, columns_needed]
+
+def readReduced(parent, jobNum, polarity, beamCurrent):
+    df = pd.read_pickle(parent + "{}.pkl".format(jobNum))
+    df.loc[:, "polarity"] = polarity
+    df.loc[:, "beamCurrent"] = beamCurrent
+    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
+    return df.loc[:, columns_needed]
+
+def divideHist(df1, df2, threshold = 0):
+	return np.divide(df1, df2, where = (df2!=0) & (df1>threshold), out = np.zeros(df2.shape, dtype = float))
+
+def inverseHist(df1):
+	return np.divide(np.ones(df1.shape), df1, where = df1!=0, out = np.zeros_like(df1))
+
+def binVolumes(xBbin, Q2bin, tbin, finehist, k=0):
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
+	fineVols = []
+	for phibin in range(len(phibins)-1):
+		fineVol = finehist[6*xBbin:6*(xBbin+1), 6*Q2bin:6*(Q2bin+1), 6*tbin:6*(tbin+1), 6*phibin:6*(phibin+1)].flatten()
+		fineVols.append(fineVol)
+	return (np.sum(fineVols, axis = 1)/6**4)*np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
+
+def getCFFarrays(xB, Q2, t, phi):
+    phigd = pi - np.radians(phi)
+    if isinstance(xB, np.ndarray):
+        H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = ([], [], [], [], [], [], [], [])
+        for i in range(len(xB)):
+            pt1 = g.DataPoint(xB=xB[i], t=-t[i], Q2=Q2[i], phi=phigd[i],
+                          process='ep2epgamma', exptype='fixed target', frame ='trento',
+                          in1energy=10.604, in1charge=-1, in1polarization=0)
+            H1_RE.append(th_KM15.ReH(pt1))
+            H1_IM.append(th_KM15.ImH(pt1))
+            E1_RE.append(th_KM15.ReE(pt1))
+            E1_IM.append(th_KM15.ImE(pt1))
+            H1T_RE.append(th_KM15.ReHt(pt1))
+            H1T_IM.append(th_KM15.ImHt(pt1))
+            E1T_RE.append(th_KM15.ReEt(pt1))
+            E1T_IM.append(th_KM15.ImEt(pt1))
+        H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = (np.array(H1_RE), np.array(H1_IM), np.array(E1_RE), np.array(E1_IM), np.array(H1T_RE), np.array(H1T_IM), np.array(E1T_RE), np.array(E1T_IM))
+    else:
+        pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phigd,
+                      process='ep2epgamma', exptype='fixed target', frame ='trento',
+                      in1energy=10.604, in1charge=-1, in1polarization=0)
+        H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = (th_KM15.ReH(pt1), th_KM15.ImH(pt1), th_KM15.ReE(pt1), th_KM15.ImE(pt1), th_KM15.ReHt(pt1), th_KM15.ImHt(pt1), th_KM15.ReEt(pt1), th_KM15.ImEt(pt1))
+    return H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM
+
+def getBHDVCS(xB, Q2, t, phi, mode = 1):
+    coeff = 10**9*hc2*alpha**3
+    del2  = -t
+    Phi_gb = np.pi-np.radians(phi)
+    phigd = Phi_gb
+    nu  = Q2/(2*M*xB)
+    yb = nu/Ed
+    eps = 2*xB*M/np.sqrt(Q2)
+    eps2=eps*eps
+    qeps2=1 + eps2
+    sqeps2=np.sqrt(qeps2)
+    ds = 2*np.pi*0.001*coeff*(xB*yb**2/(16*pi**2*Q2**2))/sqeps2
+    del2min=-Q2*(2*(1-xB)*(1-sqeps2)+eps2)
+    del2min=del2min/(4*xB*(1-xB)+eps2)
+    tau  = del2/(4*M**2)
+    taum1=1-tau
+    xtau=xB*xB/tau
+    del2q2=del2/Q2
+    del2q4=del2q2*del2q2
+    del2q2m1=1-del2q2
+    phip = phigd 
+    GE_p, GM_p, GE_n, GM_n, dipol = ffs( - t)
+    delm = del2/(2*M)**2
+    F1 = (GE_p - delm*GM_p)/(1-delm)
+    F2 = (GM_p - GE_p)/(1-delm)
+    y1eps=1 - yb - yb*yb*eps2/4
+    sqy1eps=np.sqrt(y1eps)
+    Kfac = np.sqrt((-del2q2)*(1 - xB)*y1eps*
+        (1 - del2min/del2)*(np.sqrt(1 + eps2) + 
+        ((4*xB*(1 - xB) + eps2)/(4*(1 - xB)))*((del2 - del2min)/Q2)))
+    Jfac = (1 - yb - yb*eps2/2)*(1 + del2q2) - (1 - xB)*(2 - yb)*del2q2
+    P1 = -(Jfac + 2*Kfac*np.cos(phip))/(yb*(1 + eps2))
+    P2 = 1 + del2q2 - P1
+    F1_M_F = F1 + tau*F2
+    F1_M_F2 = F1**2 - tau*F2**2
+    F1_P_F = F1 + F2
+    F1_P_F2 = F1_P_F*F1_P_F
+    c01_BH = 8*Kfac**2*((2 + 3*eps2)*Q2*F1_M_F2/del2 + 2*xB**2*F1_P_F2)
+    c02_BH = (2 - yb)**2*((2 + eps2)*F1_M_F2*((2*xB*M)**2*(1 + del2q2)**2/del2 + 
+        4*(1 - xB)*(1 + xB*del2q2)) +
+        4*xB**2*F1_P_F2*(xB + (1 - xB + eps2/2)*(del2q2m1)**2 - xB*(1 - 2*xB)*(del2q2)**2))
+    c03_BH = 8*(1 + eps2)*(1 - yb - yb*yb*eps2/4)*(2*eps2*(1 - del2/(4*M**2))*F1_M_F2 - xB**2*(del2q2m1)**2*F1_P_F2)
+    c0_BH = c01_BH + c02_BH + c03_BH
+    c1_BH = 8*Kfac*(2 - yb)*(F1_M_F2*(4*(xB*M)**2/del2 - 2*xB - eps2) + F1_P_F2*2*xB**2*(1 - (1 - 2*xB)*del2q2))
+    c2_BH = 8*(xB*Kfac)**2*(F1_M_F2*4*M**2/del2 + 2*F1_P_F2)
+    BHfact = ds/((xB*yb*(1 + eps2))**2*del2*P1*P2)
+    hc0BH=c0_BH*BHfact
+    hc1BH=c1_BH*BHfact
+    hc2BH=c2_BH*BHfact
+    if mode == 0:
+        return c0_BH*BHfact*P1*P2
+    if mode == 1:
+        return hc0BH +hc1BH*np.cos(Phi_gb)+hc2BH*np.cos(2*Phi_gb)
+
+
+    H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = getCFFarrays(xB, Q2, t, phi)
+
+    deldel    = 1 - del2min/del2
+    deldel_sq = np.sqrt(deldel)
+    del2m2    = -del2/M**2
+    del2m4    = -del2m2/4
+    delm2_sq  = np.sqrt(del2m2)
+    cy2   = 2 - 2*yb + yb**2
+
+    C_I_re = F1*H1_RE + xB/(2-xB)*(F1+F2)*H1T_RE - del2m4*F2*E1_RE
+    C_I_im = F1*H1_IM + xB/(2-xB)*(F1+F2)*H1T_IM - del2m4*F2*E1_IM
+    RE2    = xB/(2-xB)*(H1_RE + E1_RE) + H1T_RE
+    C_I_re_eff = -xB*C_I_re
+    C_I_im_eff = -xB*C_I_im
+    b1 = (2 - xB)*(1 - yb) 
+    b1= b1 + (2-yb)**2/(1-yb)*Kfac*Kfac/del2*Q2
+    b2 = (1 - yb)*xB*(F1 + F2)
+    c0_I = -8*(2 - yb)*( b1*C_I_re - b2*RE2 )
+    c1_I = -8*cy2*C_I_re
+    s1_I =  8*yb*(2 - yb)*C_I_im
+    c2_I = -16*((2 - yb)/(2 - xB))*C_I_re_eff
+    s2_I =  16*(yb/(2 - xB))*C_I_im_eff
+    Intfac=ds/(xB*yb**3*P1*P2*(del2))
+    hs2Iunp=Kfac*Kfac*s2_I*Intfac
+    hs1Iunp=Kfac*s1_I*Intfac
+    hc2Iunp=Kfac*Kfac*c2_I*Intfac
+    hc1Iunp=Kfac*c1_I*Intfac
+    hc0Iunp=del2/Q2*c0_I*Intfac
+
+    a1 = H1_RE**2 + H1_IM**2 + H1T_RE**2 + H1T_IM**2
+    a2 = 2.*( H1_RE*E1_RE  +  H1_IM*E1_IM +  H1T_RE*E1T_RE + H1T_IM*E1T_IM )
+    a3 =  E1_RE**2 +  E1_IM**2
+    a4 = E1T_RE**2 + E1T_IM**2 
+    C_DVCS = ( 4*(1-xB)*a1 - a2*xB**2 - (xB**2 + (2-xB)**2*del2m4)*a3 - xB**2*del2m4*a4 )/(2 - xB)**2
+    C_DVCS_eff = -xB*C_DVCS
+    c0_DVCS = 2*cy2*C_DVCS
+    c1_DVCS = 8*((2 - yb)/(2 - xB))*C_DVCS_eff
+    DVCSfac=ds/(yb**2*Q2)
+    hc0dvcs=c0_DVCS*DVCSfac
+    hc1dvcs=Kfac*c1_DVCS*DVCSfac
+
+    if mode == 2:
+        return hc0Iunp+hc1Iunp*np.cos(Phi_gb)+hc2Iunp*np.cos(2*Phi_gb)
+    if mode == 3:
+        return hc0dvcs+hc1dvcs*np.cos(Phi_gb)
+    if mode == 4:
+        return hc0dvcs+hc1dvcs*np.cos(Phi_gb) + hc0Iunp+hc1Iunp*np.cos(Phi_gb)+hc2Iunp*np.cos(2*Phi_gb)
+    if mode == 5:
+        return hc0BH +hc1BH*np.cos(Phi_gb)+hc2BH*np.cos(2*Phi_gb)+hc0dvcs+hc1dvcs*np.cos(Phi_gb) + hc0Iunp+hc1Iunp*np.cos(Phi_gb)+hc2Iunp*np.cos(2*Phi_gb)
