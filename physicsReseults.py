@@ -1581,8 +1581,8 @@ for k in range(2, len(collection_xBbins)):
 			# axs.set_yscale('log')
 			axs.set_xticks([0, 90, 180, 270, 360])
 			axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
-			# handles, labels = axs.get_legend_handles_labels()
-			# order = [5, 0, 1, 2, 3, 4]
+			handles, labels = axs.get_legend_handles_labels()
+			order = [5, 0, 1, 2, 3, 4]
 
 			lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "")
 			plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
