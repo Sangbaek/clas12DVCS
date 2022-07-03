@@ -1547,7 +1547,7 @@ for k in range(2, len(collection_xBbins)):
 
 		for Q2bin in range(4):
 
-			fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+			fig, axs = plt.subplots(1, 1, figsize = (15, 6))
 			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
 			P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 			P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
@@ -1581,10 +1581,11 @@ for k in range(2, len(collection_xBbins)):
 			# axs.set_yscale('log')
 			axs.set_xticks([0, 90, 180, 270, 360])
 			axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
-			handles, labels = axs.get_legend_handles_labels()
-			order = [5, 0, 1, 2, 3, 4]
+			# handles, labels = axs.get_legend_handles_labels()
+			# order = [5, 0, 1, 2, 3, 4]
 
-			lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "Reduced Cross Sections")
+			lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "")
 			plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			# plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin))
 			plt.clf()
 
