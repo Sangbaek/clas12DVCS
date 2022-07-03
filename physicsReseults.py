@@ -1545,11 +1545,11 @@ for k in range(2, len(collection_xBbins)):
 		tbin = 2
 		xBbin = 3
 
+		fig, axs = plt.subplots(4, 1, figsize = (20, 20))
 		for Q2bin in range(4):
 
 			print(Q2bin)
 
-			fig, axs = plt.subplots(4, 1, figsize = (20, 20))
 			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
 			P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 			P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
