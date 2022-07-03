@@ -1517,7 +1517,7 @@ for k in range(2, len(collection_xBbins)):
 		Q2s = np.ones(len(phi1s))*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
 		t1s = np.ones(len(phi1s))*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
 
-		axs.plot(phi1s, P1(xBs, Q2s, t1s, phi1s)*P2(xBs, Q2s, t1s, phi1s)*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results')
+		axs.plot(phi1s, 1/P1(xBs, Q2s, t1s, phi1s)*1/P2(xBs, Q2s, t1s, phi1s)*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
 
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'g', label = 'Theory (Pure BH)')
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'r', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
