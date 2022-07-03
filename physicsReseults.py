@@ -1464,7 +1464,7 @@ for k in range(2, len(collection_xBbins)):
 		Normalization_Inb = np.zeros(xsecTh_BH.shape[:-1])
 		Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
 		Normalization_KM = np.zeros(xsecTh_BH.shape[:-1])
-
+		order = [2, 0, 1]
 		for tbin in range(num_plott):
 			active = 0
 			ttitle = "{:.3f} GeV".format(tbins[tbin])+r"${}^{2}<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"${}^{2}$"
@@ -1496,7 +1496,7 @@ for k in range(2, len(collection_xBbins)):
 					if (active == 0) and ActiveAll_int[xBbin, Q2bin, tbin, :].any():
 						handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 						active = 1
-			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+			lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 			plt.savefig("plots/richard_rolf_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 			plt.clf()
