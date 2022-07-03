@@ -4,6 +4,9 @@ Modules help pandas algebra without using ROOT.
 """
 import numpy as np
 from utils.const import *
+from gepard.fits import th_KM15
+import gepard as g
+import os, subprocess
 
 def dot(vec1, vec2):
 	# dot product of two 3d vectors
