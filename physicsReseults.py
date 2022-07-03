@@ -1528,5 +1528,6 @@ for k in range(2, len(collection_xBbins)):
 		# axs.set_yscale('log')
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
-		plt.legend(loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
-		plt.savefig("plots/richard_rolf.pdf")
+		handles, labels = axs.get_legend_handles_labels()
+		lgd = plt.figlegend(handles, labels, loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
+		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
