@@ -1456,9 +1456,9 @@ for k in range(2, len(collection_xBbins)):
 		num_plotxB = len(xBbins) - 1
 		num_plott = len(tbins) - 1
 
-		if k == 2:
-			num_plotQ2 = 4
-			num_plotxB = 4
+		# if k == 2:
+		# 	num_plotQ2 = 4
+		# 	num_plotxB = 4
 
 		Normalization = np.zeros(xsecTh_BH.shape[:-1])
 		Normalization_Inb = np.zeros(xsecTh_BH.shape[:-1])
@@ -1517,17 +1517,19 @@ for k in range(2, len(collection_xBbins)):
 		Q2s = np.ones(len(phi1s))*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
 		t1s = np.ones(len(phi1s))*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
 
-		axs.plot(phi1s, 1/P1(xBs, Q2s, t1s, phi1s)*1/P2(xBs, Q2s, t1s, phi1s)*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
+		axs.plot(phi1s, FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
+		P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
+		P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
 
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'g', label = 'Theory (Pure BH)')
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'r', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'b', label = 'Interference')
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'orange', label = 'DVCS'+r"${}^{2}$")
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], P1b*P2b*getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'g', label = 'Theory (Pure BH)')
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], P1b*P2b*getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'r', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], P1b*P2b*getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'b', label = 'Interference')
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], P1b*P2b*getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'orange', label = 'DVCS'+r"${}^{2}$")
 		axs.set_title(header, fontsize = 20)
-		axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+		axs.set_ylabel(r"$P1(\phi)P2(\phi)\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 		# axs.set_yscale('log')
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
 		handles, labels = axs.get_legend_handles_labels()
 		lgd = plt.figlegend(handles, labels, loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
-		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight', title = "Reduced Cross Sections")
