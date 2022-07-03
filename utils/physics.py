@@ -240,7 +240,7 @@ def binVolumes(xBbin, Q2bin, tbin, finehist, k=0):
 	return (np.sum(fineVols, axis = 1)/6**4)*np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
 
 def getCFFarrays(xB, Q2, t, phi):
-    phigd = pi - np.radians(phi)
+    phigd = np.pi - np.radians(phi)
     if isinstance(xB, np.ndarray):
         H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = ([], [], [], [], [], [], [], [])
         for i in range(len(xB)):
