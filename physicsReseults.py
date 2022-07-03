@@ -1465,7 +1465,7 @@ for k in range(2, len(collection_xBbins)):
 		Normalization_Outb = np.zeros(xsecTh_BH.shape[:-1])
 		Normalization_KM = np.zeros(xsecTh_BH.shape[:-1])
 
-		for tbin in range(2, 3):
+		for tbin in range(num_plott):
 			active = 0
 			ttitle = "{:.3f} GeV".format(tbins[tbin])+r"${}^{2}<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"${}^{2}$"
 			fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
