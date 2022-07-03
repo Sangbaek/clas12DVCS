@@ -45,125 +45,6 @@ pgf_with_latex = {
 }
 matplotlib.rcParams.update(pgf_with_latex)
 
-def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
-    BHarray = []
-    if isinstance(xBarray, pd.core.series.Series):
-        xBarray = xBarray.to_numpy()
-        Q2array = Q2array.to_numpy()
-        tarray = tarray.to_numpy()
-        phiarray = phiarray.to_numpy()
-        
-    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
-        BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
-    return np.array(BHarray)
-
-def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
-	phi = np.pi - phi
-	pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-					process='ep2epgamma', exptype='fixed target', frame =frame,
-					in1energy=10.604, in1charge=-1, in1polarization=pol)
-	#     print(pt1.frame, pol)
-	#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-	#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
-	#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
-	try:
-		return th_KM15.XS(pt1)
-	except:
-		print(xB, Q2, t, phi)
-		return 0
-
-def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
-    VGGarray = []
-    if isinstance(xBarray, pd.core.series.Series):
-        xBarray = xBarray.to_numpy()
-        Q2array = Q2array.to_numpy()
-        tarray = tarray.to_numpy()
-        phiarray = phiarray.to_numpy()
-        
-    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
-        VGGarray.append(printVGG(xB, Q2, t, phi, **kwargs))
-    return VGGarray
-
-def printVGG(xB, Q2, t, phi, globalfit = True):
-	my_env = os.environ.copy()
-	my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
-	my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
-	if globalfit:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
-	else:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
-	try:
-		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-		return dstot
-	except:
-		print(xB, Q2, t, phi)
-		return 0
-
-def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
-    BHarray = []
-    if isinstance(xBarray, pd.core.series.Series):
-        xBarray = xBarray.to_numpy()
-        Q2array = Q2array.to_numpy()
-        tarray = tarray.to_numpy()
-        phiarray = phiarray.to_numpy()
-        
-    for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
-        BHarray.append(printBHonly(xB, Q2, t, phi, **kwargs))
-    return np.array(BHarray)
-
-def printBHonly(xB, Q2, t, phi, globalfit = True):
-	if globalfit:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
-	else:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
-	try:
-		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-		return dstot
-	except:
-		print(xB, Q2, t, phi)
-		return 0
-
-def nphistmean(hist, bins):
-    s=0
-    for i in range(len(hist)):
-        s += hist[i] * ((bins[i] + bins[i+1]) / 2) 
-    mean = s / np.sum(hist)
-    return mean
-
-def createBinEdges(binCenters):
-    start = binCenters[0] - np.diff(binCenters)[0]/2
-    end = binCenters[-1] + np.diff(binCenters)[-1]/2
-    middle = binCenters[:-1] + np.diff(binCenters)/2
-    return np.array([start, *middle, end])
-
-def makeReduced(df):
-    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
-    return df.loc[:, columns_needed]
-
-def readReduced(parent, jobNum, polarity, beamCurrent):
-    df = pd.read_pickle(parent + "{}.pkl".format(jobNum))
-    df.loc[:, "polarity"] = polarity
-    df.loc[:, "beamCurrent"] = beamCurrent
-    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
-    return df.loc[:, columns_needed]
-
-def divideHist(df1, df2, threshold = 0):
-	return np.divide(df1, df2, where = (df2!=0) & (df1>threshold), out = np.zeros(df2.shape, dtype = float))
-
-def inverseHist(df1):
-	return np.divide(np.ones(df1.shape), df1, where = df1!=0, out = np.zeros_like(df1))
-
-def binVolumes(xBbin, Q2bin, tbin, finehist, k=0):
-	xBbins  = collection_xBbins[k]
-	Q2bins  = collection_Q2bins[k]
-	tbins   = collection_tbins [k]
-	phibins = collection_phibins[k]
-	fineVols = []
-	for phibin in range(len(phibins)-1):
-		fineVol = finehist[6*xBbin:6*(xBbin+1), 6*Q2bin:6*(Q2bin+1), 6*tbin:6*(tbin+1), 6*phibin:6*(phibin+1)].flatten()
-		fineVols.append(fineVol)
-	return (np.sum(fineVols, axis = 1)/6**4)*np.diff(np.radians(phibins))*np.diff(xBbins)[xBbin]*np.diff(Q2bins)[Q2bin]*np.diff(tbins)[tbin]
-
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-sc","--savecont", help="save cont", action = "store_true")
@@ -184,6 +65,15 @@ else:
 
 inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 charge_epg = inbcharge_epg + outbcharge_epg
+
+def FourierSeries(args, x):
+#     df = args
+    a, b, c = args
+    return a + b * np.cos(np.radians(x)) + c* np.cos(2*np.radians(x))
+
+def lstsq_FourierSeries(args, x, y):
+#     print(args, x, y)
+    return FourierSeries(args, x) - y
 
 if args.savecont:
 	# read exp
@@ -1593,9 +1483,9 @@ for k in range(2, len(collection_xBbins)):
 					Normalization[xBbin, Q2bin, tbin] = np.mean(xsec_BH[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					Normalization_KM[xBbin, Q2bin, tbin] = np.mean(xsecTh_KM[xBbin, Q2bin, tbin, wings], axis = -1)/np.mean(xsecTh_BH[xBbin, Q2bin, tbin, wings], axis = -1)
 					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-					axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsec_BH[xBbin, Q2bin, tbin, phibin]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Exp.')
-					axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'BH+Int.+DVCS')
-					axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'Pure BH')
+					axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsec_BH[xBbin, Q2bin, tbin, phibin]/Normalization[xBbin, Q2bin, tbin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin]/Normalization[xBbin, Q2bin, tbin], linestyle ='', color = 'k', label = 'Measurement')
+					axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'b', label = 'Theory (BH+Int.+DVCS)')
+					axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'Theory (Pure BH)')
 
 					xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 					Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
@@ -1613,3 +1503,26 @@ for k in range(2, len(collection_xBbins)):
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 			plt.savefig("plots/richard_rolf_tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 			plt.clf()
+
+		xBbin, Q2bin, tbin = (2, 1, 2)
+
+		fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+		phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
+		axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
+		P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
+		P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
+
+		res_lsq = least_squares(lstsq_FourierSeries, [0, 0, 0], args=(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin]))
+		axs.plot(np.linspace(0, 360, 21), FourierSeries(res_lsq.x, np.linspace(0, 360, 21)))
+
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'g', label = 'Pure BH')
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'b', label = 'Interference')
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'orange', label = 'DVCS'+r"${}^{2}$")
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'r', label = 'KM15')
+		axs.set_title(header, fontsize = 20)
+		axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+		axs.set_yscale('log')
+		axs.set_xticks([0, 90, 180, 270, 360])
+		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
+		plt.legend(loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
+		plt.saveflig("plots/richard_rolf.pdf")
