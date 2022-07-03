@@ -1467,7 +1467,7 @@ for k in range(2, len(collection_xBbins)):
 
 		for tbin in range(2, 3):
 			active = 0
-			ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+			ttitle = "{:.3f} GeV".format(tbins[tbin])+r"${}^{2}<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"${}^{2}$"
 			fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
 			for xBbin in range(num_plotxB):
 				for Q2bin in range(num_plotQ2):
