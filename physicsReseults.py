@@ -1545,7 +1545,7 @@ for k in range(2, len(collection_xBbins)):
 		tbin = 2
 		xBbin = 3
 
-		fig, axs = plt.subplots(4, 1, figsize = (20, 20))
+		fig, axs = plt.subplots(4, 1, figsize = (20, 12))
 		for Q2bin in range(4):
 
 			print(Q2bin)
@@ -1588,7 +1588,8 @@ for k in range(2, len(collection_xBbins)):
 				order = [5, 0, 1, 2, 3, 4]
 
 		lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "")
-		plt.savefig("plots/richard_rolf.pdf")
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		# plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin))
 		plt.clf()
 
