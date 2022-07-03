@@ -1501,7 +1501,7 @@ for k in range(2, len(collection_xBbins)):
 			plt.savefig("plots/richard_rolf_tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 			plt.clf()
 
-		xBbin, Q2bin, tbin = (4, 1, 2)
+		xBbin, Q2bin, tbin = (3, 2, 2)
 
 		fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 		phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
@@ -1540,8 +1540,6 @@ for k in range(2, len(collection_xBbins)):
 
 		lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "Reduced Cross Sections")
 		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
-
-		xBbin, Q2bin, tbin = (4, 1, 2)
 
 		fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 		phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
