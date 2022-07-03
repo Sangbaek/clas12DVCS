@@ -18,10 +18,12 @@ if __name__ == "__main__":
 
 	parser.add_argument("-j","--jobnum", help="jobnum", default="3987")
 	parser.add_argument("-u","--uri", help="uri", default = "/volatile/clas12/sangbaek/nov2021/convPkl_full/")
+	parser.add_argument("-o","--output", help="output", default = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/")
 	parser.add_argument("-kstart","--kstart", help="binning scheme number starting", default=None)
 
 	args = parser.parse_args()
 	jobnum = int(args.jobnum)
+	output = args.output
 
 	if jobnum in [*runs_inb_vgg50nA, *runs_inb_vgg55nA, *runs_inb_vgg45nA, *runs_inb_vgg0nA]:
 		pol = "inb"
@@ -55,59 +57,141 @@ if __name__ == "__main__":
 	cond = (nu>2)&(nu<10.604 - 2) & (W2>4) & (df.t1>tmin1) & (Kfac2(df.xB, df.Q2, df.t1, df.phi1)>0)
 	df = df.loc[cond, :]
 
+	os.makedirs("{}".format(output), exist_ok = True)
 	for k in range(0, len(collection_xBbins)):
 
-		os.makedirs("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}".format(k), exist_ok = True)
+		os.makedirs("{}binscheme{}".format(output, k), exist_ok = True)
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}.npz".format(k, jobnum, recgen)
+		#all
+		out = "{}binscheme{}/{}{}.npz".format(output, k, jobnum, recgen)
 		hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		np.savez(out, hist = hist)
+		# helicity plus
+		out = "{}binscheme{}/{}{}plus.npz".format(output, k, jobnum, recgen)
+		hist, _ = np.histogramdd(df.loc[df.helicity == 1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+		np.savez(out, hist = hist)
+		# helicity minus
+		out = "{}binscheme{}/{}{}minus.npz".format(output, k, jobnum, recgen)
+		hist, _ = np.histogramdd(df.loc[df.helicity == -1 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 		np.savez(out, hist = hist)
 
 		for config in df.config.unique():
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, config)
+			#all
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, config)
 			hist, _ = np.histogramdd(df.loc[df.config == config , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			np.savez(out, hist = hist)
+			# helicity plus
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, config)
+			hist, _ = np.histogramdd(df.loc[(df.config == config) & (df.helicity == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			np.savez(out, hist = hist)
+			# helicity minus
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, config)
+			hist, _ = np.histogramdd(df.loc[(df.config == config) & (df.helicity == -1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			np.savez(out, hist = hist)
 
 		if recgen == "Gen":
-
+			#all
 			#phi
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "phi")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "phi")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
 			np.savez(out, hist = hist)
 			#BornWeight
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "born")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "born")
 			hist0, _ = np.histogramdd(df.loc[df.BornWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			hist, _ = np.histogramdd(df.loc[df.BornWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.BornWeight>0, "BornWeight"])
 			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
 			#GenWeight
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "rad")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "rad")
 			hist0, _ = np.histogramdd(df.loc[df.GenWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			hist, _ = np.histogramdd(df.loc[df.GenWeight>0 , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.GenWeight>0, "GenWeight"])
 			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
 
 			#Integrated
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "Int")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "Int")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins])
 			np.savez(out, hist = hist)
 			#xB
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "xB")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "xB")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.xB)
 			np.savez(out, hist = hist)
 			#Q2
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "Q2")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "Q2")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.Q2)
 			np.savez(out, hist = hist)
 			#t
-			out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "t1")
+			out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "t1")
 			hist, _ = np.histogramdd(df.loc[: , ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
+			np.savez(out, hist = hist)
+			#helicity plus
+			#phi
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "phi")
+			hist, _ = np.histogramdd(df.loc[df.helicity == 1, ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
+			np.savez(out, hist = hist)
+			#BornWeight
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "born")
+			hist0, _ = np.histogramdd(df.loc[(df.BornWeight>0) & (df.helicity == 1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			hist, _ = np.histogramdd(df.loc[(df.BornWeight>0) & (df.helicity == 1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.BornWeight>0, "BornWeight"])
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
+			#GenWeight
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "rad")
+			hist0, _ = np.histogramdd(df.loc[(df.GenWeight>0) & (df.helicity == 1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			hist, _ = np.histogramdd(df.loc[(df.GenWeight>0) & (df.helicity == 1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.GenWeight>0, "GenWeight"])
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
+			#Integrated
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "Int")
+			hist, _ = np.histogramdd(df.loc[df.helicity == 1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins])
+			np.savez(out, hist = hist)
+			#xB
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "xB")
+			hist, _ = np.histogramdd(df.loc[df.helicity == 1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.xB)
+			np.savez(out, hist = hist)
+			#Q2
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "Q2")
+			hist, _ = np.histogramdd(df.loc[df.helicity == 1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.Q2)
+			np.savez(out, hist = hist)
+			#t
+			out = "{}binscheme{}/{}{}{}plus.npz".format(output, k, jobnum, recgen, "t1")
+			hist, _ = np.histogramdd(df.loc[df.helicity == 1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
+			np.savez(out, hist = hist)
+
+			#helicity minus
+			#phi
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "phi")
+			hist, _ = np.histogramdd(df.loc[df.helicity == -1, ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = df.phi1)
+			np.savez(out, hist = hist)
+			#BornWeight
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "born")
+			hist0, _ = np.histogramdd(df.loc[(df.BornWeight>0) & (df.helicity == -1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			hist, _ = np.histogramdd(df.loc[(df.BornWeight>0) & (df.helicity == -1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.BornWeight>0, "BornWeight"])
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
+			#GenWeight
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "rad")
+			hist0, _ = np.histogramdd(df.loc[(df.GenWeight>0) & (df.helicity == -1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			hist, _ = np.histogramdd(df.loc[(df.GenWeight>0) & (df.helicity == -1), ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1/df.loc[df.GenWeight>0, "GenWeight"])
+			np.savez(out, hist = divideHist(hist0, hist)*0.001*(2*np.pi))
+			#Integrated
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "Int")
+			hist, _ = np.histogramdd(df.loc[df.helicity == -1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins])
+			np.savez(out, hist = hist)
+			#xB
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "xB")
+			hist, _ = np.histogramdd(df.loc[df.helicity == -1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.xB)
+			np.savez(out, hist = hist)
+			#Q2
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "Q2")
+			hist, _ = np.histogramdd(df.loc[df.helicity == -1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.Q2)
+			np.savez(out, hist = hist)
+			#t
+			out = "{}binscheme{}/{}{}{}minus.npz".format(output, k, jobnum, recgen, "t1")
+			hist, _ = np.histogramdd(df.loc[df.helicity == -1, ["xB", "Q2", "t1"]].to_numpy(), bins = [xBbins, Q2bins, tbins], weights = df.t1)
 			np.savez(out, hist = hist)
 
 			# #volume count
-			# out = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}{}{}.npz".format(k, jobnum, recgen, "binVolume")
+			# out = "{}binscheme{}/{}{}{}.npz".format(output, k, jobnum, recgen, "binVolume")
 			# finexBbins, fineQ2bins, finetbins, finephibins = [], [], [], []
 			# for xBind in range(len(xBbins)-1):
 			# 	finexBbins.append(np.linspace(xBbins[xBind], xBbins[xBind+1], 6+1))
