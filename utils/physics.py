@@ -3,6 +3,7 @@
 Modules help pandas algebra without using ROOT.
 """
 import numpy as np
+import pandas as pd
 from utils.const import *
 from gepard.fits import th_KM15
 import gepard as g
@@ -160,22 +161,31 @@ def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         
     for xB, Q2, t, phi in zip(xBarray, Q2array, tarray, phiarray):
         VGGarray.append(printVGG(xB, Q2, t, phi, **kwargs))
-    return VGGarray
+    return np.array(VGGarray)
 
-def printVGG(xB, Q2, t, phi, globalfit = True):
-	my_env = os.environ.copy()
-	my_env["PATH"] = "/Users/sangbaek/CLAS12/dvcs/print:" + my_env["PATH"]
-	my_env["CLASDVCS_PDF"] = "/Users/sangbaek/CLAS12/dvcs/print"
-	if globalfit:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
-	else:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
-	try:
-		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-		return dstot
-	except:
-		print(xB, Q2, t, phi)
-		return 0
+def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False):
+    my_env = os.environ.copy()
+    path = "/home/sangbaek/printDVCSBH/"
+    if local:
+        path = "/Users/sangbaek/CLAS12/dvcs/print/"
+    my_env["PATH"] = "{}:".format(path) + my_env["PATH"]
+    my_env["CLASDVCS_PDF"] = "{}".format(path)
+    if globalfit:
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
+    else:
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
+    try:
+        if pol == 0:
+            i = 0
+        if pol == 1:
+            i = 2
+        if pol == -1:
+            i = 1
+        dstot = float(dstot.splitlines()[-1-i].decode("utf-8"))
+        return dstot
+    except:
+        print(xB, Q2, t, phi)
+        return 0
 
 def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
