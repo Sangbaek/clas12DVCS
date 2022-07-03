@@ -1522,4 +1522,4 @@ for k in range(2, len(collection_xBbins)):
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
 		plt.legend(loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
-		plt.saveflig("plots/richard_rolf.pdf")
+		plt.savefig("plots/richard_rolf.pdf")
