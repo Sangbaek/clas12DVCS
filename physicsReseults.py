@@ -1505,10 +1505,10 @@ for k in range(2, len(collection_xBbins)):
 
 		fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 		phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
-		axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 		P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 		P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 
+		axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 		res_lsq = least_squares(lstsq_FourierSeries, [0, 0, 0], args=(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin]))
 		N = 40
 		phi1s = np.linspace(0, 360, N)[:-1]
@@ -1531,5 +1531,5 @@ for k in range(2, len(collection_xBbins)):
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
 		handles, labels = axs.get_legend_handles_labels()
-		lgd = plt.figlegend(handles, labels, loc = 'upper left', bbox_to_anchor =(1.1, 0.9))
-		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight', title = "Reduced Cross Sections")
+		lgd = plt.figlegend(handles, labels, loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "Reduced Cross Sections")
+		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
