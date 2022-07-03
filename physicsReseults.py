@@ -1489,7 +1489,7 @@ for k in range(2, len(collection_xBbins)):
 					theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 					header = xBheader +Q2header + theader
 					axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
-					axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+					axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 					axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 					axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 					axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
@@ -1510,14 +1510,21 @@ for k in range(2, len(collection_xBbins)):
 		P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 
 		res_lsq = least_squares(lstsq_FourierSeries, [0, 0, 0], args=(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin]))
-		axs.plot(np.linspace(0, 360, 21), P1b*P2b*FourierSeries(res_lsq.x, np.linspace(0, 360, 21)), label = 'Fitting results')
+		N = 40
+		phi1s = np.linspace(0, 360, N)[:-1]
+		phi1s = phi1s + np.diff(phi1s)[0]
+		xBs = np.ones(len(phi1s))*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
+		Q2s = np.ones(len(phi1s))*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
+		t1s = np.ones(len(phi1s))*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+
+		axs.plot(phi1s, P1(xBs, Q2s, t1s, phi1s)*P2(xBs, Q2s, t1s, phi1s)*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results')
 
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'g', label = 'Theory (Pure BH)')
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'r', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'b', label = 'Interference')
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'orange', label = 'DVCS'+r"${}^{2}$")
 		axs.set_title(header, fontsize = 20)
-		axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+		axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 		# axs.set_yscale('log')
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
