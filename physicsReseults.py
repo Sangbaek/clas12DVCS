@@ -1529,11 +1529,12 @@ for k in range(2, len(collection_xBbins)):
 		Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 		theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 		header = xBheader +Q2header + theader
+		axs.set_xlim([0, 360])
 		axs.set_title(header, fontsize = 20)
 		axs.set_ylabel(r"$P1(\phi)P2(\phi)\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 		# axs.set_yscale('log')
 		axs.set_xticks([0, 90, 180, 270, 360])
 		axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
 		handles, labels = axs.get_legend_handles_labels()
-		lgd = plt.figlegend(handles, labels, loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "Reduced Cross Sections")
+		lgd = plt.figlegend(handles[5, 0, 1, 2, 3, 4], labels[5, 0, 1, 2, 3, 4], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "Reduced Cross Sections")
 		plt.savefig("plots/richard_rolf.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
