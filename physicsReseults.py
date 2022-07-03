@@ -1547,12 +1547,12 @@ for k in range(2, len(collection_xBbins)):
 
 		for Q2bin in range(4):
 
-			fig, axs = plt.subplots(1, 1, figsize = (15, 6))
+			fig, axs = plt.subplots(4, 1, figsize = (20, 20))
 			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()		
 			P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 			P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 
-			axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
+			axs[Q2bin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 			res_lsq = least_squares(lstsq_FourierSeries, [0, 0, 0], args=(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin]))
 			N = 40
 			phi1s = np.linspace(0, 360, N)[:-1]
@@ -1563,29 +1563,29 @@ for k in range(2, len(collection_xBbins)):
 			P1b = P1(xBs, Q2s, t1s, phi1s)
 			P2b = P2(xBs, Q2s, t1s, phi1s)
 
-			axs.plot(phi1s, 1/P1b*1/P2b*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
+			axs[Q2bin].plot(phi1s, 1/P1b*1/P2b*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
 			P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
 			P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :])
 
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'r', label = 'Theory (Pure BH)')
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'b', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'g', label = 'Interference')
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'turquoise', label = 'DVCS'+r"${}^{2}$")
+			axs[Q2bin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 1), color = 'r', label = 'Theory (Pure BH)')
+			axs[Q2bin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 5), color = 'b', label = 'Theory (BH+Int.+DVCS'+r"${}^{2}$"+")")
+			axs[Q2bin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 2), color = 'g', label = 'Interference')
+			axs[Q2bin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, :], Q2avg_BH[xBbin, Q2bin, tbin, :], t1avg_BH[xBbin, Q2bin, tbin, :], phi1avg_BH[xBbin, Q2bin, tbin, :], mode = 3), color = 'turquoise', label = 'DVCS'+r"${}^{2}$")
 			xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
 			theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 			header = xBheader +Q2header + theader
-			axs.set_xlim([0, 360])
-			axs.set_title(header, fontsize = 20)
-			axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
-			# axs.set_yscale('log')
-			axs.set_xticks([0, 90, 180, 270, 360])
-			axs.set_xlabel(r"$\phi$" + " [" + degree + "]")
-			handles, labels = axs.get_legend_handles_labels()
-			order = [5, 0, 1, 2, 3, 4]
+			axs[Q2bin].set_xlim([0, 360])
+			axs[Q2bin].set_title(header, fontsize = 20)
+			axs[Q2bin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[Q2bin].set_yscale('log')
+			axs[Q2bin].set_xticks([0, 90, 180, 270, 360])
+			axs[Q2bin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+			# handles, labels = axs.get_legend_handles_labels()
+			# order = [5, 0, 1, 2, 3, 4]
 
-			lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "")
-			plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			# lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.1, 0.9), title = "")
+			plt.savefig("plots/richard_rolf.pdf")
 			# plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin))
 			plt.clf()
 
