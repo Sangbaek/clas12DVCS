@@ -1634,12 +1634,8 @@ for k in range(2, len(collection_xBbins)):
 			axs[4-tbin].set_yscale('log')
 			axs[4-tbin].set_xticks([0, 90, 180, 270, 360])
 			axs[4-tbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-			if Q2bin == 0:
-				handles, labels = axs[4-tbin].get_legend_handles_labels()
-				order = [5, 0, 1, 2, 3, 4]
 
-		lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc = 'upper left', bbox_to_anchor =(1.02, 0.5), title = "")
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("plots/richard_rolf_t.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.savefig("plots/richard_rolf_t.pdf")
 		# plt.savefig("plots/richard_rolf{}.pdf".format(Q2bin))
 		plt.clf()
