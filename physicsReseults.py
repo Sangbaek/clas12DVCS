@@ -1498,7 +1498,7 @@ for k in range(2, len(collection_xBbins)):
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-			plt.savefig("plots/richard_rolf_tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			plt.savefig("plots/richard_rolf_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 			plt.clf()
 
 		# xBbin, Q2bin, tbin = (3, 2, 2)
