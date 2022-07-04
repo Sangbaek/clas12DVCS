@@ -112,11 +112,11 @@ class root2pickle():
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
         eleKeysRec.extend(["Enphe"])
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid", "EventNum"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
         proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
-        gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector", "EventNum"]
+        gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
         gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1", "Gbeta"])
 
         if detRes:
@@ -167,12 +167,16 @@ class root2pickle():
         df_protonRec = protonFiducial(df_protonRec, pol = pol)
         df_gammaRec = gammaFiducial(df_gammaRec)
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        coincidence = reduce(np.intersect1d, (df_electronRec.EventNum, df_protonRec.EventNum, df_gammaRec.EventNum))
-        df_electronRec = df_electronRec.loc[df_electronRec.EventNum.isin(coincidence), :]
-        df_protonRec = df_protonRec.loc[df_protonRec.EventNum.isin(coincidence), :]
-        df_protonRec = df_protonRec.drop("EventNum", axis = 1)
-        df_gammaRec = df_gammaRec.loc[df_gammaRec.EventNum.isin(coincidence), :]
-        df_gammaRec = df_gammaRec.drop("EventNum", axis = 1)
+        #set up a dummy index for merging
+        df_electronRec.loc[:,'event'] = df_electronRec.index
+        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
+        coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
+        print(len(coincidence))
+        df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
+        df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
+        df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
 
         #apply photon fiducial cuts
@@ -289,12 +293,6 @@ class root2pickle():
             exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
             df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
 
-
-        #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index
-        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-        df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
-        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
         #prepare for proton energy loss corrections correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
