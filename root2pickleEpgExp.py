@@ -497,6 +497,8 @@ class root2pickle():
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
         # proton fiducial cuts
+            df_protonRec.loc[:, "PFid"] = 0
+
             cut_CD = df_protonRec.Psector > 7
             cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
             cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
