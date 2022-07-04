@@ -45,8 +45,8 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 		ecal_e_sampl_sigm_2 = np.select(sector_cond, ecal_e_sampl_sigm_mc[2])
 	mean = ecal_e_sampl_mu_0 + ecal_e_sampl_mu_1/1000*pow(df_electronRec.Ep-ecal_e_sampl_mu_2,2)
 	sigma = ecal_e_sampl_sigm_0 + ecal_e_sampl_sigm_1/(10*(df_electronRec.Ep-ecal_e_sampl_sigm_2))
-	df_electronRec.loc[df.ESamplFrac < mean - e_sampl_sigma_range*sigma, "EFid"]  = 0
-	df_electronRec.loc[df.ESamplFrac > mean + e_sampl_sigma_range*sigma, "EFid"]  = 0
+	df_electronRec.loc[df_electronRec.ESamplFrac < mean - e_sampl_sigma_range*sigma, "EFid"]  = 0
+	df_electronRec.loc[df_electronRec.ESamplFrac > mean + e_sampl_sigma_range*sigma, "EFid"]  = 0
 
 
 	#passElectronNpheCut
