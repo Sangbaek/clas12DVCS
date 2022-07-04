@@ -8,6 +8,7 @@ from utils.const import *
 from gepard.fits import th_KM15
 import gepard as g
 import os, subprocess
+from functools import reduce
 
 def dot(vec1, vec2):
 	# dot product of two 3d vectors
