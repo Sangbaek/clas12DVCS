@@ -102,8 +102,8 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 
 def gammaFiducial(df_gammaRec):
 	#passGammaPCALFiducialCut
-	df_gammaRec.loc[df_gammaRec.GcalV1 < min_v, "GFid"] = 0
-	df_gammaRec.loc[df_gammaRec.GcalW1 < min_w, "GFid"] = 0
+	df_gammaRec.loc[(df_gammaRec.GcalV1 < min_v) & (df_gammaRec.Gsector>1000), "GFid"] = 0
+	df_gammaRec.loc[(df_gammaRec.GcalW1 < min_w) & (df_gammaRec.Gsector>1000), "GFid"] = 0
 	#passGammaBetaCut
 	df_gammaRec.loc[df_gammaRec.Gbeta < min_Gbeta, "GFid"] = 0
 	df_gammaRec.loc[df_gammaRec.Gbeta > max_Gbeta, "GFid"] = 0
@@ -119,18 +119,18 @@ def protonFiducial(df_protonRec):
 
 		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 0, minparams, maxparams)
-		df_protonRec.loc[phi_DC<phi_DC_min, "Pfid"] = 0
-		df_protonRec.loc[phi_DC>phi_DC_max, "Pfid"] = 0
+		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
 		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 1, minparams, maxparams)
-		df_protonRec.loc[phi_DC<phi_DC_min, "Pfid"] = 0
-		df_protonRec.loc[phi_DC>phi_DC_max, "Pfid"] = 0
+		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
 		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 2, minparams, maxparams)
-		df_protonRec.loc[phi_DC<phi_DC_min, "Pfid"] = 0
-		df_protonRec.loc[phi_DC>phi_DC_max, "Pfid"] = 0
+		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
 	if pol == 'outbending':
 		minparams = p_dc_minparams_out
@@ -139,20 +139,20 @@ def protonFiducial(df_protonRec):
 		dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
 		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, dcsec)
 		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 0, minparams, maxparams)
-		df_protonRec.loc[y_rot<calc_min, "Pfid"] = 0
-		df_protonRec.loc[y_rot>calc_max, "Pfid"] = 0
+		df_protonRec.loc[(y_rot<calc_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(y_rot>calc_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 		#passElectronDCR2
 		dcsec = determineSector(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
 		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, dcsec)
 		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 1, minparams, maxparams)
-		df_protonRec.loc[y_rot<calc_min, "Pfid"] = 0
-		df_protonRec.loc[y_rot>calc_max, "Pfid"] = 0
+		df_protonRec.loc[(y_rot<calc_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(y_rot>calc_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
 		#passElectronDCR3
 		dcsec = determineSector(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
 		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, dcsec)
 		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 2, minparams, maxparams)
-		df_protonRec.loc[y_rot<calc_min, "Pfid"] = 0
-		df_protonRec.loc[y_rot>calc_max, "Pfid"] = 0
+		df_protonRec.loc[(y_rot<calc_min) & (df_protonRec.Psector<7), "Pfid"] = 0
+		df_protonRec.loc[(y_rot>calc_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
 	return df_protonRec
