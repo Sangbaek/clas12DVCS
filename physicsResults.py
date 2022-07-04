@@ -1296,9 +1296,9 @@ if args.saveplot:
 			plt.clf()
 
 			active = 0
-			fig, axs = plt.subplots(num_plott-1, num_plotxB, figsize = (7.5*(num_plotxB), 7.5*(num_plott-1)))
+			fig, axs = plt.subplots(num_plott, num_plotxB, figsize = (7.5*(num_plotxB), 7.5*(num_plott)))
 			for xBbin in range(num_plotxB):
-				for tbin in range(num_plott - 1):
+				for tbin in range(num_plott):
 					#skip inactive bins
 					if badBinCondxBt(xBbin, tbin, k):
 						axs[num_plott-tbin-1 , xBbin].yaxis.set_visible(False)
