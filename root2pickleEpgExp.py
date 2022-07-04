@@ -230,12 +230,12 @@ class root2pickle():
             cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
             df_gammaRec.loc[~cond1, "GFid"] = 0
             #second condition else if the first
-            # cond2_0 = df_gammaRec.GFid == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
+            cond2_0 = df_gammaRec.GFid == 0
             cond2_1 = df_gammaRec.GcX < psplit
             cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
             cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
             cond2_4 = df_gammaRec.Gsector < 7
-            cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
+            cond2 = cond2_0 & cond2_1 & cond2_2 & cond2_3 & cond2_4
             df_gammaRec.loc[~cond2, "GFid"] = 0
 
             df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
