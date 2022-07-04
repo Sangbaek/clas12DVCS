@@ -98,7 +98,7 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 
 	# #passElectronAntiPionCut
 	# df_electronRec.loc[-df_electronRec.Edep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Edep2/event.p[index], "EFid"] = 0
-	return df_electronRec
+	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
 def gammaFiducial(df_gammaRec):
 	#passGammaPCALFiducialCut
@@ -108,7 +108,7 @@ def gammaFiducial(df_gammaRec):
 	df_gammaRec.loc[df_gammaRec.Gbeta < min_Gbeta, "GFid"] = 0
 	df_gammaRec.loc[df_gammaRec.Gbeta > max_Gbeta, "GFid"] = 0
 
-	return df_gammaRec
+	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
 def protonFiducial(df_protonRec, pol = 'inbending'):
 
@@ -155,4 +155,4 @@ def protonFiducial(df_protonRec, pol = 'inbending'):
 		df_protonRec.loc[(y_rot<calc_min) & (df_protonRec.Psector<7), "PFid"] = 0
 		df_protonRec.loc[(y_rot>calc_max) & (df_protonRec.Psector<7), "PFid"] = 0
 
-	return df_protonRec
+	return df_protonRec.loc[df_protonRec.PFid==1, :]

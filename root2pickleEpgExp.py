@@ -161,6 +161,12 @@ class root2pickle():
         df_electronRec.loc[:, 'Ep'] = mag(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
+        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+        df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
+        df_protonRec = electronFiducial(df_protonRec, pol = pol)
+        df_gammaRec = gammaFiducial(df_gammaRec)
+        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+
         #apply photon fiducial cuts
         if nofid:
             df_gammaRec.loc[:, "GFid"] = 1
