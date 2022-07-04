@@ -164,7 +164,7 @@ class root2pickle():
 
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
         df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
-        df_protonRec = electronFiducial(df_protonRec, pol = pol)
+        df_protonRec = protonFiducial(df_protonRec, pol = pol)
         df_gammaRec = gammaFiducial(df_gammaRec)
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
 
