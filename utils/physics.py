@@ -61,6 +61,51 @@ def getEnergy(vec1, mass):
 	# for taken 3d momenta p and mass m, return energy = sqrt(p**2 + m**2)
 	return np.sqrt(mag2(vec1)+mass**2)
 
+def rotateDCHitPosition(x, y, sec):
+    ang = np.radians((sec-1) * sect_angle_coverage)
+    x1_rot = x * np.sin(ang) + y * np.cos(ang)
+    y1_rot = x * np.cos(ang) - y * np.sin(ang)
+    return x1_rot, y1_rot
+
+def determineSector(x, y):
+    phi = getPhi([x, y])
+    sector_cond = [(phi < 30) & (phi >= -30), (phi < 90) & (phi >= 30), (phi < 150) & (phi >= 90), (phi >= 150) | (phi < -150), (phi < -90) & (phi >= -150), (phi < -30) & (phi >= -90)]
+    return np.select(sector_cond, [1, 2, 3, 4, 5, 6])
+
+
+def thetaphifromhit(x, y):
+    theta = getTheta([x, y])
+    phi = getPhi([x, y])
+    sector_cond = [(phi < 30) & (phi >= -30), (phi < 90) & (phi >= 30), (phi < 150) & (phi >= 90), (phi >= 150), (phi < -150), (phi < -90) & (phi >= -150), (phi < -30) & (phi >= -90)]
+    return theta, phi + np.select(sector_cond, [0, -60, -120, -180, 180, 120, 60])
+
+def e_DC_fiducial_cut_XY(x_rot, sec, region, minparams, maxparams):
+    # if (pid==11) pid_ind =0
+    # else if (pid==2212) pid_ind=1
+    # else if (pid==211)  pid_ind=2
+    # else if (pid==-211) pid_ind=3
+    # else if (pid==321)  pid_ind=4
+    # else if (pid==-321) pid_ind=5
+    calc_min = np.array(minparams)[0, sec-1, region, 0] + np.array(minparams)[0, sec-1, region, 1] * x_rot;
+    calc_max = np.array(maxparams)[0, sec-1, region, 0] + np.array(maxparams)[0, sec-1, region, 1] * x_rot;
+    return calc_min, calc_max
+
+def p_DC_fiducial_cut_XY(x_rot, sec, region, minparams, maxparams):
+    # if (pid==11) pid_ind =0
+    # else if (pid==2212) pid_ind=1
+    # else if (pid==211)  pid_ind=2
+    # else if (pid==-211) pid_ind=3
+    # else if (pid==321)  pid_ind=4
+    # else if (pid==-321) pid_ind=5
+    calc_min = np.array(minparams)[1, sec-1, region, 0] + np.array(minparams)[1, sec-1, region, 1] * x_rot;
+    calc_max = np.array(maxparams)[1, sec-1, region, 0] + np.array(maxparams)[1, sec-1, region, 1] * x_rot;
+    return calc_min, calc_max
+
+def p_DC_fiducial_cut_thetaphi(theta_DC, sec, region, minparams, maxparams):
+    calc_phi_min = np.array(minparams)[1, sec-1, region, 0] + np.array(minparams)[1, sec-1, region, 1] * np.log(theta_DC) + np.array(minparams)[1, sec-1, region, 2] * theta_DC + np.array(minparams)[1, sec-1, region, 3] * theta_DC * theta_DC;
+    calc_phi_max = np.array(maxparams)[1, sec-1, region, 0] + np.array(maxparams)[1, sec-1, region, 1] * np.log(theta_DC) + np.array(maxparams)[pid_ind][sec-1][region][2] * theta_DC + np.array(maxparams)[pid_ind][sec-1][region][3] * theta_DC * theta_DC;
+    return calc_phi_min, calc_phi_max
+
 def nu(xB, Q2, t, phi):
     return Q2/(2*M*xB)
 
