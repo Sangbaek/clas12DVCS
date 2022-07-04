@@ -63,8 +63,8 @@ def getEnergy(vec1, mass):
 
 def rotateDCHitPosition(x, y, sec):
     ang = np.radians((sec-1) * sect_angle_coverage)
-    x1_rot = x * np.sin(ang) + y * np.cos(ang)
-    y1_rot = x * np.cos(ang) - y * np.sin(ang)
+    x1_rot = y * np.sin(ang) + x * np.cos(ang)
+    y1_rot = y * np.cos(ang) - x * np.sin(ang)
     return x1_rot, y1_rot
 
 def determineSector(x, y):

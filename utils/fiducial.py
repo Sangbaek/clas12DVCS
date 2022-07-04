@@ -80,21 +80,21 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 	dcsec = determineSector(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity)
 	x_rot, y_rot = rotateDCHitPosition(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity, dcsec)
 	calc_min, calc_max = e_DC_fiducial_cut_XY(x_rot, dcsec, 0, minparams, maxparams)
-	df_electronRec.loc[y_rot<calc_min, "Efid"] = 0
-	df_electronRec.loc[y_rot>calc_max, "Efid"] = 0
+	df_electronRec.loc[y_rot<calc_min, "EFid"] = 0
+	df_electronRec.loc[y_rot>calc_max, "EFid"] = 0
 	#passElectronDCR2
 	dcsec = determineSector(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity)
 	x_rot, y_rot = rotateDCHitPosition(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity, dcsec)
 	calc_min, calc_max = e_DC_fiducial_cut_XY(x_rot, dcsec, 1, minparams, maxparams)
-	df_electronRec.loc[y_rot<calc_min, "Efid"] = 0
-	df_electronRec.loc[y_rot>calc_max, "Efid"] = 0
+	df_electronRec.loc[y_rot<calc_min, "EFid"] = 0
+	df_electronRec.loc[y_rot>calc_max, "EFid"] = 0
 
 	#passElectronDCR3
 	dcsec = determineSector(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity)
 	x_rot, y_rot = rotateDCHitPosition(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity, dcsec)
 	calc_min, calc_max = e_DC_fiducial_cut_XY(x_rot, dcsec, 2, minparams, maxparams)
-	df_electronRec.loc[y_rot<calc_min, "Efid"] = 0
-	df_electronRec.loc[y_rot>calc_max, "Efid"] = 0
+	df_electronRec.loc[y_rot<calc_min, "EFid"] = 0
+	df_electronRec.loc[y_rot>calc_max, "EFid"] = 0
 
 	# #passElectronAntiPionCut
 	# df_electronRec.loc[-df_electronRec.Edep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Edep2/event.p[index], "EFid"] = 0
