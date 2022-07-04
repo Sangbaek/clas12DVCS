@@ -499,6 +499,8 @@ class root2pickle():
         # proton fiducial cuts
             df_protonRec.loc[:, "PFid"] = 0
 
+            df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
+
             cut_CD = df_protonRec.Psector > 7
             cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
             cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
