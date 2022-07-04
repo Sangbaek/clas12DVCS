@@ -73,9 +73,9 @@ def determineSector(x, y):
     return np.select(sector_cond, [1, 2, 3, 4, 5, 6])
 
 
-def thetaphifromhit(x, y):
-    theta = getTheta([x, y])
-    phi = getPhi([x, y])
+def thetaphifromhit(x, y, z):
+    theta = getTheta([x, y, z])
+    phi = getPhi([x, y, z])
     sector_cond = [(phi < 30) & (phi >= -30), (phi < 90) & (phi >= 30), (phi < 150) & (phi >= 90), (phi >= 150), (phi < -150), (phi < -90) & (phi >= -150), (phi < -30) & (phi >= -90)]
     return theta, phi + np.select(sector_cond, [0, -60, -120, -180, 180, 120, 60])
 

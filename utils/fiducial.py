@@ -117,17 +117,17 @@ def protonFiducial(df_protonRec, pol = 'inbending'):
 		minparams = p_dc_minparams_in
 		maxparams = p_dc_maxparams_in
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
+		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, df_protonRec.PDc1Hitz)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 0, minparams, maxparams)
 		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
 		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
+		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, df_protonRec.PDc2Hitz)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 1, minparams, maxparams)
 		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
 		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
+		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, df_protonRec.PDc3Hitz)
 		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 2, minparams, maxparams)
 		df_protonRec.loc[(phi_DC<phi_DC_min) & (df_protonRec.Psector<7), "Pfid"] = 0
 		df_protonRec.loc[(phi_DC>phi_DC_max) & (df_protonRec.Psector<7), "Pfid"] = 0
