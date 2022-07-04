@@ -107,30 +107,34 @@ class root2pickle():
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
         eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
+        eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
+        eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
+        eleKeysRec.extend(["Enphe"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
+        proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
-        gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
+        gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1", "Gbeta"])
 
         if detRes:
             eleKeysRec.extend(["Evx", "Evy"])
-            eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
-            eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
+            # eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
+            # eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
             # eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
             eleKeysRec.extend(["EcalU2", "EcalV2", "EcalW2"])
             eleKeysRec.extend(["EcalU3", "EcalV3", "EcalW3"])
-            eleKeysRec.extend(["Enphe"])
+            # eleKeysRec.extend(["Enphe"])
             eleKeysRec.extend(["EhtccX", "EhtccY", "EhtccZ"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
             # gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
             gamKeysRec.extend(["GcalU2", "GcalV2", "GcalW2"])
             gamKeysRec.extend(["GcalU3", "GcalV3", "GcalW3"])
-            gamKeysRec.extend(["Gbeta"])
+            # gamKeysRec.extend(["Gbeta"])
             # proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz"])
-            proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
+            # proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
             proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
@@ -153,6 +157,9 @@ class root2pickle():
         df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
+        ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
+        df_electronRec.loc[:, 'Ep'] = mag(ele)
+        df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
         #apply photon fiducial cuts
         if nofid:
@@ -481,9 +488,6 @@ class root2pickle():
 
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
-        df_electronRec.loc[:, 'Ep'] = mag(ele)
-        df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
         gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
         df_gammaRec.loc[:, 'Gp'] = mag(gam)
         df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
