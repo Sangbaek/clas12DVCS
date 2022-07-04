@@ -323,7 +323,7 @@ if args.savebinVolume:
 
 if args.savexsec:
 	print("read exp...")
-	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/epgExp.pkl")
+	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/epgExp.pkl".format(optionaltag))
 
 	for k in range(kstart, len(collection_xBbins)):
 
