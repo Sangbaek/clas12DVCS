@@ -497,6 +497,9 @@ class root2pickle():
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
         # proton fiducial cuts
+        if nofid:
+            df_protonRec.loc[:, "PFid"] = 1
+        else:
             df_protonRec.loc[:, "PFid"] = 0
 
             df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
