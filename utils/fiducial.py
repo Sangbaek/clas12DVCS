@@ -101,6 +101,7 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
 def gammaFiducial(df_gammaRec):
+	df_gammaRec.loc[:, "GFid"] = 1
 	#passGammaPCALFiducialCut
 	df_gammaRec.loc[(df_gammaRec.GcalV1 < min_v) & (df_gammaRec.Gsector<7), "GFid"] = 0
 	df_gammaRec.loc[(df_gammaRec.GcalW1 < min_w) & (df_gammaRec.Gsector<7), "GFid"] = 0
@@ -111,6 +112,7 @@ def gammaFiducial(df_gammaRec):
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
 def protonFiducial(df_protonRec, pol = 'inbending'):
+	df_protonRec.loc[:, "PFid"] = 1
 
 	dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
 	if pol == 'inbending':
