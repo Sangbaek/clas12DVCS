@@ -2,8 +2,6 @@
 """
 Main Script to save the cross sections
 """
-import pandas as pd
-import numpy as np
 import gc
 import matplotlib.pyplot as plt
 from copy import copy
@@ -51,9 +49,15 @@ parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true"
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
 parser.add_argument("-kstart","--kstart", help="binning scheme start", default=None)
+parser.add_argument("-opt","--optinaltag", help="optional tag: none, eb, 2sigma, 3sigma, sm09, sm11", default=None)
 parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = "store_true")
 
 args = parser.parse_args()
+
+if args.optionaltag:
+	optionaltag = args.optionaltag
+else:
+	optionaltag = ''
 
 if args.kstart:
 	kstart = int(args.kstart)
@@ -76,21 +80,13 @@ if args.savecont:
 	# read exp
 	parent = args.parent
 
-	parent_MC_inb = parent + "convPkl_full/inb/dvcs/"
-	parent_MC_BH_inb = parent + "convPkl_full/inb/bh/"
-	parent_Gen_inb = parent + "convPkl_Gen/inb/dvcs/"
-	parent_Gen_BH_inb = parent + "convPkl_Gen/inb/bh/"
-	parent_MC_bkg1g_inb = parent + "convPkl_full/inb/bkg_1g/"
-	parent_MC_bkg2g_inb = parent + "convPkl_full/inb/bkg_2g/"
-	parent_exp_inb = parent + "convPkl_full/inb/exp/"
+	parent_MC_bkg1g_inb = parent + "convPkl_full{}/inb/bkg_1g/".format(optionaltag)
+	parent_MC_bkg2g_inb = parent + "convPkl_full{}/inb/bkg_2g/".format(optionaltag)
+	parent_exp_inb = parent + "convPkl_full{}/inb/exp/".format(optionaltag)
 
-	parent_MC_outb = parent + "convPkl_full/outb/dvcs/"
-	parent_MC_BH_outb = parent + "convPkl_full/outb/bh/"
-	parent_Gen_outb = parent + "convPkl_Gen/outb/dvcs/"
-	parent_Gen_BH_outb = parent + "convPkl_Gen/outb/bh/"
-	parent_MC_bkg1g_outb = parent + "convPkl_full/outb/bkg_1g/"
-	parent_MC_bkg2g_outb = parent + "convPkl_full/outb/bkg_2g/"
-	parent_exp_outb = parent + "convPkl_full/outb/exp/"
+	parent_MC_bkg1g_outb = parent + "convPkl_full{}/outb/bkg_1g/".format(optionaltag)
+	parent_MC_bkg2g_outb = parent + "convPkl_full{}/outb/bkg_2g/".format(optionaltag)
+	parent_exp_outb = parent + "convPkl_full{}/outb/exp/".format(optionaltag)
 
 	print("read exp...")
 	epgExpInb = pd.read_pickle(parent_exp_inb + "dvcs.pkl")
@@ -281,7 +277,7 @@ if args.savecont:
 	del df_bkg2gs_outb
 	gc.collect()
 
-	epgExp.to_pickle("nphistograms/epgExp.pkl")
+	epgExp.to_pickle("nphistograms{}/epgExp.pkl".format(optionaltag))
 
 if args.savebinVolume:
 	for k in range(kstart, len(collection_xBbins)):
@@ -374,11 +370,11 @@ if args.savexsec:
 
 			histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_bh45nA:
-				histBHInb45nA = histBHInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-				histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-				histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-				histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-				histBHInbCR45nA = histBHInbCR45nA + np.load("nphistograms/binscheme{}/{}Rec4.npz".format(k, jobNum))["hist"]
+				histBHInb45nA = histBHInb45nA + np.load("nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbFD45nA = histBHInbFD45nA + np.load("nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCD45nA = histBHInbCD45nA + np.load("nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCR45nA = histBHInbCR45nA + np.load("nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_bh50nA:
@@ -406,11 +402,11 @@ if args.savexsec:
 
 			histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_vgg45nA:
-				histVGGInb45nA = histVGGInb45nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-				histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-				histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-				histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-				histVGGInbCR45nA = histVGGInbCR45nA + np.load("nphistograms/binscheme{}/{}Rec4.npz".format(k, jobNum))["hist"]
+				histVGGInb45nA = histVGGInb45nA + np.load("nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbFD45nA = histVGGInbFD45nA + np.load("nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCD45nA = histVGGInbCD45nA + np.load("nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCR45nA = histVGGInbCR45nA + np.load("nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg55nA:
@@ -435,11 +431,11 @@ if args.savexsec:
 
 			histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_vgg45nA:
-				histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-				histVGGGenInbCR45nA = histVGGGenInbCR45nA + np.load("nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+				histVGGGenInb45nA = histVGGGenInb45nA + np.load("nphistograms{}/binscheme{}/{}Gen.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("nphistograms{}/binscheme{}/{}Gen1.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("nphistograms{}/binscheme{}/{}Gen2.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("nphistograms{}/binscheme{}/{}Gen3.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCR45nA = histVGGGenInbCR45nA + np.load("nphistograms{}/binscheme{}/{}Gen4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg55nA:
@@ -527,11 +523,11 @@ if args.savexsec:
 
 			histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA, histBHOutbCR50nA = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_bh50nA:
-				histBHOutb50nA = histBHOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-				histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-				histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-				histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-				histBHOutbCR50nA = histBHOutbCR50nA + np.load("nphistograms/binscheme{}/{}Rec4.npz".format(k, jobNum))["hist"]
+				histBHOutb50nA = histBHOutb50nA + np.load("nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbFD50nA = histBHOutbFD50nA + np.load("nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCD50nA = histBHOutbCD50nA + np.load("nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCR50nA = histBHOutbCR50nA + np.load("nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA, histBHGenOutbCR50nA = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_bh50nA:
@@ -545,11 +541,11 @@ if args.savexsec:
 
 			histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA, histVGGOutbCR50nA = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_vgg50nA:
-				histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-				histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-				histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-				histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-				histVGGOutbCR50nA = histVGGOutbCR50nA + np.load("nphistograms/binscheme{}/{}Rec4.npz".format(k, jobNum))["hist"]
+				histVGGOutb50nA = histVGGOutb50nA + np.load("nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCR50nA = histVGGOutbCR50nA + np.load("nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
 			# for jobNum in runs_outb_vgg40nA:
@@ -778,44 +774,44 @@ if args.savexsec:
 			xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG*(1.324*charges))
 			xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH*(1.324*charges))
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i), hist = phi1avg_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i), hist = xBavg_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i), hist = Q2avg_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(k, i), hist = t1avg_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(optionaltag, k, i), hist = phi1avg_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(optionaltag, k, i), hist = xBavg_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(optionaltag, k, i), hist = Q2avg_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(optionaltag, k, i), hist = t1avg_VGG)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(k, i), hist = phi1avg_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xBavg_BH.npz".format(k, i), hist = xBavg_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(k, i), hist = Q2avg_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}t1avg_BH.npz".format(k, i), hist = t1avg_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(optionaltag, k, i), hist = phi1avg_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xBavg_BH.npz".format(optionaltag, k, i), hist = xBavg_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(optionaltag, k, i), hist = Q2avg_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}t1avg_BH.npz".format(optionaltag, k, i), hist = t1avg_BH)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(k, i), hist = xsecInb_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(k, i), hist = xsecInb_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(k, i), hist = xsecOutb_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(k, i), hist = xsecOutb_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsec_VGG.npz".format(k, i), hist = xsec_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsec_BH.npz".format(k, i), hist = xsec_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(optionaltag, k, i), hist = xsecInb_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(optionaltag, k, i), hist = xsecInb_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(optionaltag, k, i), hist = xsecOutb_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(optionaltag, k, i), hist = xsecOutb_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i), hist = xsec_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i), hist = xsec_BH)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(k, i), hist = uncStatInb_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(k, i), hist = uncStatInb_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(k, i), hist = uncStatOutb_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(k, i), hist = uncStatOutb_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(k, i), hist = uncStat_VGG)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}uncStat_BH.npz".format(k, i), hist = uncStat_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(optionaltag, k, i), hist = uncStatInb_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(optionaltag, k, i), hist = uncStatInb_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(optionaltag, k, i), hist = uncStatOutb_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(optionaltag, k, i), hist = uncStatOutb_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i), hist = uncStat_VGG)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i), hist = uncStat_BH)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(k, i), hist = xsecTh_KM)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(k, i), hist = xsecTh_BH)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(k, i), hist = xsecTh_VGG)
-			# np.savez("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i), hist = binVolume)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(optionaltag, k, i), hist = xsecTh_KM)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(optionaltag, k, i), hist = xsecTh_BH)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(optionaltag, k, i), hist = xsecTh_VGG)
+			# np.savez("nphistograms{}/binscheme{}/bkgscheme{}binVolume.npz".format(optionaltag, k, i), hist = binVolume)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, i), hist = ActiveAll)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, i), hist = ActiveAny)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveInb.npz".format(k, i), hist = ActiveInb)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveOutb.npz".format(k, i), hist = ActiveOutb)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i), hist = ActiveAll)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i), hist = ActiveAny)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i), hist = ActiveInb)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i), hist = ActiveOutb)
 
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(k, i), hist = ActiveAll_int)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i), hist = ActiveAny_int)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i), hist = ActiveInb_int)
-			np.savez("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i), hist = ActiveOutb_int)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(optionaltag, k, i), hist = ActiveAll_int)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(optionaltag, k, i), hist = ActiveAny_int)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(optionaltag, k, i), hist = ActiveInb_int)
+			np.savez("nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(optionaltag, k, i), hist = ActiveOutb_int)
 
 if args.contplot:
 	print("read exp...")
@@ -973,44 +969,44 @@ if args.saveplot:
 		for i in range(0, len(collection_cont_xBbins)):
 
 			print("reading the xsec vars")
-			phi1avg_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
-			xBavg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i))["hist"]
-			Q2avg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i))["hist"]
-			t1avg_VGG   = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(k, i))["hist"]
+			phi1avg_VGG = np.load("nphistograms{}/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(optionaltag, k, i))["hist"]
+			xBavg_VGG   = np.load("nphistograms{}/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(optionaltag, k, i))["hist"]
+			Q2avg_VGG   = np.load("nphistograms{}/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(optionaltag, k, i))["hist"]
+			t1avg_VGG   = np.load("nphistograms{}/binscheme{}/bkgscheme{}t1avg_VGG.npz".format(optionaltag, k, i))["hist"]
 
-			phi1avg_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(k, i))["hist"]
-			xBavg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}xBavg_BH.npz".format(k, i))["hist"]
-			Q2avg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(k, i))["hist"]
-			t1avg_BH    = np.load("nphistograms/binscheme{}/bkgscheme{}t1avg_BH.npz".format(k, i))["hist"]
+			phi1avg_BH  = np.load("nphistograms{}/binscheme{}/bkgscheme{}phi1avg_BH.npz".format(optionaltag, k, i))["hist"]
+			xBavg_BH    = np.load("nphistograms{}/binscheme{}/bkgscheme{}xBavg_BH.npz".format(optionaltag, k, i))["hist"]
+			Q2avg_BH    = np.load("nphistograms{}/binscheme{}/bkgscheme{}Q2avg_BH.npz".format(optionaltag, k, i))["hist"]
+			t1avg_BH    = np.load("nphistograms{}/binscheme{}/bkgscheme{}t1avg_BH.npz".format(optionaltag, k, i))["hist"]
 
-			xsecInb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(k, i))["hist"]
-			xsecInb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(k, i))["hist"]
-			xsecOutb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(k, i))["hist"]
-			xsecOutb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(k, i))["hist"]
-			xsec_VGG     = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_VGG.npz".format(k, i))["hist"]
-			xsec_BH      = np.load("nphistograms/binscheme{}/bkgscheme{}xsec_BH.npz".format(k, i))["hist"]
+			xsecInb_VGG = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(optionaltag, k, i))["hist"]
+			xsecInb_BH  = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(optionaltag, k, i))["hist"]
+			xsecOutb_VGG = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+			xsecOutb_BH  = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(optionaltag, k, i))["hist"]
+			xsec_VGG     = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i))["hist"]
+			xsec_BH      = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
 
-			uncStatInb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(k, i))["hist"]
-			uncStatInb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(k, i))["hist"]
-			uncStatOutb_VGG = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(k, i))["hist"]
-			uncStatOutb_BH  = np.load("nphistograms/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(k, i))["hist"]
-			uncStat_VGG     = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(k, i))["hist"]
-			uncStat_BH      = np.load("nphistograms/binscheme{}/bkgscheme{}uncStat_BH.npz".format(k, i))["hist"]
+			uncStatInb_VGG = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(optionaltag, k, i))["hist"]
+			uncStatInb_BH  = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(optionaltag, k, i))["hist"]
+			uncStatOutb_VGG = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+			uncStatOutb_BH  = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(optionaltag, k, i))["hist"]
+			uncStat_VGG     = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i))["hist"]
+			uncStat_BH      = np.load("nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
 
-			xsecTh_KM          = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(k, i))["hist"]
-			xsecTh_BH          = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(k, i))["hist"]
-			xsecTh_VGG         = np.load("nphistograms/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(k, i))["hist"]
-			binVolume          = np.load("nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
+			xsecTh_KM          = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(optionaltag, k, i))["hist"]
+			xsecTh_BH          = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(optionaltag, k, i))["hist"]
+			xsecTh_VGG         = np.load("nphistograms{}/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(optionaltag, k, i))["hist"]
+			binVolume          = np.load("nphistograms{}/binscheme{}/bkgscheme{}binVolume.npz".format(optionaltag, k, i))["hist"]
 
-			ActiveAll       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, i))["hist"]
-			ActiveAny       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, i))["hist"]
-			ActiveInb          = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb.npz".format(k, i))["hist"]
-			ActiveOutb         = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb.npz".format(k, i))["hist"]
+			ActiveAll       = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
+			ActiveAny       = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
+			ActiveInb          = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
+			ActiveOutb         = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
 
-			ActiveAll_int       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(k, i))["hist"]
-			ActiveAny_int       = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(k, i))["hist"]
-			ActiveInb_int          = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i))["hist"]
-			ActiveOutb_int         = np.load("nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i))["hist"]
+			ActiveAll_int       = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(optionaltag, k, i))["hist"]
+			ActiveAny_int       = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(optionaltag, k, i))["hist"]
+			ActiveInb_int          = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(optionaltag, k, i))["hist"]
+			ActiveOutb_int         = np.load("nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(optionaltag, k, i))["hist"]
 
 			print("plotting...")
 
@@ -1078,7 +1074,7 @@ if args.saveplot:
 							active = 1
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("plots/binscheme{}/bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("plots{}/binscheme{}/bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
 			for tbin in range(num_plott):
@@ -1118,7 +1114,7 @@ if args.saveplot:
 							active = 1
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("plots/binscheme{}/KM_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("plots{}/binscheme{}/KM_ratio_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
 			for tbin in range(num_plott):
@@ -1158,7 +1154,7 @@ if args.saveplot:
 							active = 1
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("plots/binscheme{}/BH_ratio_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("plots{}/binscheme{}/BH_ratio_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
 			Normalization = np.zeros(xsecTh_BH.shape[:-1])
@@ -1210,7 +1206,7 @@ if args.saveplot:
 							active = 1
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("plots/binscheme{}/Normalized_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("plots{}/binscheme{}/Normalized_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
 			IntegratedDiff = np.zeros(xsecTh_BH.shape[:-1])
@@ -1259,7 +1255,7 @@ if args.saveplot:
 							active = 1
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("plots/binscheme{}/Differences_bkgscheme{}tbin{}.pdf".format(k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("plots{}/binscheme{}/Differences_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
 			active = 0
@@ -1295,8 +1291,8 @@ if args.saveplot:
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-			plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+			plt.savefig("plots{}/binscheme{}/Integrals_bkgscheme{}.pdf".format(optionaltag, k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			# plt.savefig("plots{}/binscheme{}/NormScale_bkgscheme{}.pdf".format(optionaltag, k, i, tbin), bbox_inches = 'tight')
 			plt.clf()
 
 			active = 0
@@ -1335,8 +1331,8 @@ if args.saveplot:
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = r"$\int (d\sigma-d\sigma_{BH})$", bbox_to_anchor = (1.0, 0.6))
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-			plt.savefig("plots/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+			plt.savefig("plots{}/binscheme{}/Integrals_bkgscheme{}_inQ2.pdf".format(optionaltag, k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			# plt.savefig("plots{}/binscheme{}/NormScale_bkgscheme{}.pdf".format(optionaltag, k, i, tbin), bbox_inches = 'tight')
 			plt.clf()
 
 			active = 0
@@ -1376,8 +1372,8 @@ if args.saveplot:
 						active = 1
 			lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = "Norm. to BH", bbox_to_anchor = (1.0, 0.6))
 			fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-			plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
-			# plt.savefig("plots/binscheme{}/NormScale_bkgscheme{}.pdf".format(k, i, tbin), bbox_inches = 'tight')
+			plt.savefig("plots{}/binscheme{}/NormScale_bkgscheme{}.pdf".format(optionaltag, k, i), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+			# plt.savefig("plots{}/binscheme{}/NormScale_bkgscheme{}.pdf".format(optionaltag, k, i, tbin), bbox_inches = 'tight')
 			plt.clf()
 
 
