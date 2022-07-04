@@ -1011,22 +1011,22 @@ if args.saveplot:
 			print("plotting...")
 
 			def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
-				if k ==0:
-					return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
-				else:
-					return ~ActiveAny_int[xBbin, Q2bin, tbin, :].any()
+				# if k ==0:
+				# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
+				# else:
+				return ~ActiveAny_int[xBbin, Q2bin, tbin, :].any()
 
 			def badBinCondxBQ2(xBbin, Q2bin, k = 0):
-				if k ==0:
-					return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
-				else:
-					return ~ActiveAny_int[xBbin, Q2bin, :, :].any()
+				# if k ==0:
+				# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
+				# else:
+				return ~ActiveAny_int[xBbin, Q2bin, :, :].any()
 
 			def badBinCondxBt(xBbin, tbin, k = 0):
-				if k ==0:
-					return (xBbin==1 and tbin == 0)
-				else:
-					return ~ActiveAny_int[xBbin, :, tbin, :].any()
+				# if k ==0:
+				# 	return (xBbin==1 and tbin == 0)
+				# else:
+				return ~ActiveAny_int[xBbin, :, tbin, :].any()
 
 			num_plotQ2 = len(Q2bins) - 1
 			num_plotxB = len(xBbins) - 1
