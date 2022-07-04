@@ -107,7 +107,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit", "EventNum"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
         eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
@@ -143,7 +143,7 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             proKeysRec.extend(["Pchi2track", "PNDFtrack"])
         if logistics:
-            eleKeysRec.extend(["RunNum", "beamQ", "liveTime", "helicity"])
+            eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
         # read them
         for key in eleKeysRec:
@@ -184,9 +184,7 @@ class root2pickle():
             df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
 
-            #photon FD fiducial cuts by F.X. Girod
-            df_gammaRec.loc[:, "GFid"] = 0
-
+            #electron pcal dead wires
             exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
             exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
             exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
@@ -206,6 +204,9 @@ class root2pickle():
             df_electronRec.loc[(df_electronRec.Esector == 4) & exclusion4, "EFid"] = 0
             exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
             df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
+
+            #photon FD fiducial cuts by F.X. Girod
+            df_gammaRec.loc[:, "GFid"] = 0
 
             #apply photon fiducial cuts
             sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
