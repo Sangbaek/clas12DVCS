@@ -10,6 +10,7 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
+from utils.fiducial import *
 from scipy.stats import skewnorm
 
 class root2pickle():
