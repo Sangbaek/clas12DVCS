@@ -711,10 +711,10 @@ class root2pickle():
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
             df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
-        else:
-            df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz", "PCvt12theta", "PCvt12phi"], axis = 1)
-            df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
-            df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
+        # else:
+        #     df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz", "PCvt12theta", "PCvt12phi"], axis = 1)
+        #     df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
+        #     df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
 
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
 
