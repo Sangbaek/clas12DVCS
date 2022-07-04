@@ -10,7 +10,7 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
-from scipy.stats import skewnorm
+from utils.fiducial import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
