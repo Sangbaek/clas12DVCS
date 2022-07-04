@@ -49,7 +49,7 @@ parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true"
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
 parser.add_argument("-kstart","--kstart", help="binning scheme start", default=None)
-parser.add_argument("-opt","--optinaltag", help="optional tag: none, eb, 2sigma, 3sigma, sm09, sm11", default=None)
+parser.add_argument("-opt","--optionaltag", help="optional tag: none, eb, 2sigma, 3sigma, sm09, sm11", default=None)
 parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = "store_true")
 
 args = parser.parse_args()
