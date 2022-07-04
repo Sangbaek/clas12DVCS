@@ -63,6 +63,8 @@ phibin_f = phibins[1:]
 
 min_v = 9.0
 min_w = 9.0
+g_min_v = 14.0
+g_min_w = 14.0
 min_nphe = 2
 vz_min_inb = -13
 vz_max_inb = 12
