@@ -2,6 +2,7 @@ from utils.const import *
 from utils.physics import *
 
 def electronFiducial(df_electronRec, pol = "inbending", mc = False):
+	print(df_electronRec)
 	df_electronRec.loc[:, "EFid"] = 1
 
 	# #PCAL dead wires
