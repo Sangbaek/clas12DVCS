@@ -308,7 +308,7 @@ class root2pickle():
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
         else:
-            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = True)
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
