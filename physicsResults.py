@@ -431,11 +431,11 @@ if args.savexsec:
 
 			histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_vgg45nA:
-				histVGGGenInb45nA = histVGGGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Gen.npz".format(optionaltag, k, jobNum))["hist"]
-				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Gen1.npz".format(optionaltag, k, jobNum))["hist"]
-				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Gen2.npz".format(optionaltag, k, jobNum))["hist"]
-				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Gen3.npz".format(optionaltag, k, jobNum))["hist"]
-				histVGGGenInbCR45nA = histVGGGenInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Gen4.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInb45nA = histVGGGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Gen.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Gen1.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Gen2.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Gen3.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGGenInbCR45nA = histVGGGenInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Gen4.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg55nA:
