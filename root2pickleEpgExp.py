@@ -162,30 +162,49 @@ class root2pickle():
         df_electronRec.loc[:, 'Ep'] = mag(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
+        #apply fiducial cuts
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
-        df_protonRec = protonFiducial(df_protonRec, pol = pol)
-        df_gammaRec = gammaFiducial(df_gammaRec)
-        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index
-        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-        df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
-        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
-        coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
-        print(len(coincidence))
-        df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
-        df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
-        df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
-        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-
-        #apply photon fiducial cuts
         if nofid:
+            df_electronRec.loc[:, "EFid"] = 1
+            df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
         else:
-            #photon FD fiducial cuts by F.X. Girod
-            df_gammaRec.loc[:, "GFid"] = 0
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
+            df_protonRec = protonFiducial(df_protonRec, pol = pol)
+            df_gammaRec = gammaFiducial(df_gammaRec)
+            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+            #set up a dummy index for merging
+            df_electronRec.loc[:,'event'] = df_electronRec.index
+            df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+            df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
+            df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
+            coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
+            df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
+            df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
+            df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
+            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
 
+            exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
+            exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
+            exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
+            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
+            df_electronRec.loc[(df_electronRec.Esector == 1) & exclusion1, "EFid"] = 0
+            exclusion2_1 = (df_electronRec.EcalW1 < 14)
+            exclusion2_2 = (df_electronRec.EcalU1 > 111.2) & (df_electronRec.EcalU1 < 119.3)
+            exclusion2_3 = (df_electronRec.EcalV1 > 113) & (df_electronRec.EcalV1 < 118.7)
+            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
+            df_electronRec.loc[(df_electronRec.Esector == 2) & exclusion2, "EFid"] = 0
+            exclusion3 = df_electronRec.EcalW1 < 14
+            df_electronRec.loc[(df_electronRec.Esector == 3) & exclusion3, "EFid"] = 0
+            exclusion4_1 = (df_electronRec.EcalV1 < 14)
+            exclusion4_2 = (df_electronRec.EcalV1 > 229.4) & (df_electronRec.EcalV1 < 240.7)
+            exclusion4_3 = (df_electronRec.EcalW1 > 135) & (df_electronRec.EcalW1 < 150)
+            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
+            df_electronRec.loc[(df_electronRec.Esector == 4) & exclusion4, "EFid"] = 0
+            exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
+            df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
+
+            #apply photon fiducial cuts
             sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
             psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
             tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
@@ -267,32 +286,6 @@ class root2pickle():
             df_gammaRec.loc[(df_gammaRec.Gsector == 4) & exclusion4, "GFid"] = 0
             exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
             df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid"] = 0
-
-        #apply electron fiducial cuts
-        if nofid:
-            df_electronRec.loc[:, "EFid"] = 1
-        else:
-            df_electronRec.loc[:, "EFid"] = 1
-            exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
-            exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
-            exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
-            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
-            df_electronRec.loc[(df_electronRec.Esector == 1) & exclusion1, "EFid"] = 0
-            exclusion2_1 = (df_electronRec.EcalW1 < 14)
-            exclusion2_2 = (df_electronRec.EcalU1 > 111.2) & (df_electronRec.EcalU1 < 119.3)
-            exclusion2_3 = (df_electronRec.EcalV1 > 113) & (df_electronRec.EcalV1 < 118.7)
-            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
-            df_electronRec.loc[(df_electronRec.Esector == 2) & exclusion2, "EFid"] = 0
-            exclusion3 = df_electronRec.EcalW1 < 14
-            df_electronRec.loc[(df_electronRec.Esector == 3) & exclusion3, "EFid"] = 0
-            exclusion4_1 = (df_electronRec.EcalV1 < 14)
-            exclusion4_2 = (df_electronRec.EcalV1 > 229.4) & (df_electronRec.EcalV1 < 240.7)
-            exclusion4_3 = (df_electronRec.EcalW1 > 135) & (df_electronRec.EcalW1 < 150)
-            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
-            df_electronRec.loc[(df_electronRec.Esector == 4) & exclusion4, "EFid"] = 0
-            exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
-            df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
-
 
         #prepare for proton energy loss corrections correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
@@ -499,6 +492,48 @@ class root2pickle():
             pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
 
             df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+            
+        # proton fiducial cuts
+            cut_CD = df_protonRec.Psector > 7
+            cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
+            cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
+            cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
+            cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
+
+            cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
+
+            cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
+            cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
+            cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
+            cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
+            cut_total = cut_gaps & cut_trapezoid
+
+            df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
+            
+            if pol == "inbending":
+                pchi2CD_lb,   pchi2CD_ub   = -5.000, 6.345
+                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.296, 3.508
+                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.552, 4.000
+                pchi2FD_S3_lb, pchi2FD_S3_ub = -3.446, 3.937
+                pchi2FD_S4_lb, pchi2FD_S4_ub = -2.747, 3.190
+                pchi2FD_S5_lb, pchi2FD_S5_ub = -2.851, 3.418
+                pchi2FD_S6_lb, pchi2FD_S6_ub = -3.174, 3.514
+            elif pol == "outbending":
+                pchi2CD_lb,   pchi2CD_ub   = -5.592,  6.785
+                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.905, 4.088
+                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.411, 3.939
+                pchi2FD_S3_lb, pchi2FD_S3_ub = -4.042, 5.954
+                pchi2FD_S4_lb, pchi2FD_S4_ub = -3.820, 5.065
+                pchi2FD_S5_lb, pchi2FD_S5_ub = -3.384, 4.232
+                pchi2FD_S6_lb, pchi2FD_S6_ub = -5.077, 5.100
+
+            df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid"] = 0
+            df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid"] = 0
 
         gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
         df_gammaRec.loc[:, 'Gp'] = mag(gam)
@@ -583,55 +618,6 @@ class root2pickle():
             df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
             df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
             df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
-
-        # proton fiducial cuts
-        if nofid:
-            df_protonRec.loc[:, "PFid"] = 1
-        else:
-            df_protonRec.loc[:, "PFid"] = 0
-
-            df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
-
-            cut_CD = df_protonRec.Psector > 7
-            cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
-            cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
-            cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
-            cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
-
-            cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
-
-            cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
-            cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
-            cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
-            cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
-            cut_total = cut_gaps & cut_trapezoid
-
-            df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
-            
-            if pol == "inbending":
-                pchi2CD_lb,   pchi2CD_ub   = -5.000, 6.345
-                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.296, 3.508
-                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.552, 4.000
-                pchi2FD_S3_lb, pchi2FD_S3_ub = -3.446, 3.937
-                pchi2FD_S4_lb, pchi2FD_S4_ub = -2.747, 3.190
-                pchi2FD_S5_lb, pchi2FD_S5_ub = -2.851, 3.418
-                pchi2FD_S6_lb, pchi2FD_S6_ub = -3.174, 3.514
-            elif pol == "outbending":
-                pchi2CD_lb,   pchi2CD_ub   = -5.592,  6.785
-                pchi2FD_S1_lb, pchi2FD_S1_ub = -3.905, 4.088
-                pchi2FD_S2_lb, pchi2FD_S2_ub = -3.411, 3.939
-                pchi2FD_S3_lb, pchi2FD_S3_ub = -4.042, 5.954
-                pchi2FD_S4_lb, pchi2FD_S4_ub = -3.820, 5.065
-                pchi2FD_S5_lb, pchi2FD_S5_ub = -3.384, 4.232
-                pchi2FD_S6_lb, pchi2FD_S6_ub = -5.077, 5.100
-
-            df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid"] = 0
-            df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid"] = 0
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
