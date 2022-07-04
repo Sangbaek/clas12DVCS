@@ -184,6 +184,9 @@ class root2pickle():
             df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
 
+            #photon FD fiducial cuts by F.X. Girod
+            df_gammaRec.loc[:, "GFid"] = 0
+
             exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
             exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
             exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
@@ -228,15 +231,15 @@ class root2pickle():
             cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
             cond1_4 = df_gammaRec.Gsector < 7
             cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
-            df_gammaRec.loc[~cond1, "GFid"] = 0
+            df_gammaRec.loc[cond1, "GFid"] = 1
             #second condition else if the first
-            cond2_0 = df_gammaRec.GFid == 0
+            # cond2_0 = df_gammaRec.GFid == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
             cond2_1 = df_gammaRec.GcX < psplit
             cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
             cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
             cond2_4 = df_gammaRec.Gsector < 7
-            cond2 = cond2_0 & cond2_1 & cond2_2 & cond2_3 & cond2_4
-            df_gammaRec.loc[~cond2, "GFid"] = 0
+            cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
+            df_gammaRec.loc[cond2, "GFid"] = 1
 
             df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
 
