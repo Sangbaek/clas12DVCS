@@ -964,7 +964,7 @@ if args.saveplot:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		os.makedirs("plots/binscheme{}".format(k), exist_ok = True)
+		os.makedirs("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}".format(optionaltag, k), exist_ok = True)
 
 		for i in range(0, len(collection_cont_xBbins)):
 
