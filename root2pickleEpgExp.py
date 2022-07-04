@@ -167,7 +167,7 @@ class root2pickle():
         df_protonRec = protonFiducial(df_protonRec, pol = pol)
         df_gammaRec = gammaFiducial(df_gammaRec)
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        coincidence = reduce(np.intersect1d, (df_electronRec.EventNum, df_protonnRec.EventNum, df_gammaRec.EventNum))
+        coincidence = reduce(np.intersect1d, (df_electronRec.EventNum, df_protonRec.EventNum, df_gammaRec.EventNum))
         df_electronRec = df_electronRec.loc[df_electronRec.EventNum.isin(coincidence), :]
         df_protonRec = df_protonRec.loc[df_protonRec.EventNum.isin(coincidence), :]
         df_protonRec = df_protonRec.drop("EventNum", axis = 1)
