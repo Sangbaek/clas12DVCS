@@ -301,6 +301,11 @@ class root2pickle():
         df_electronRec.loc[:, 'Ep'] = mag(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
+        #set up a dummy index for merging
+        df_electronRec.loc[:,'event'] = df_electronRec.index
+        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
         #apply fiducial cuts
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
         if nofid:
@@ -312,11 +317,6 @@ class root2pickle():
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-            #set up a dummy index for merging
-            df_electronRec.loc[:,'event'] = df_electronRec.index
-            df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-            df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
-            df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
             coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
             df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
             df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
