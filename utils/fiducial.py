@@ -110,7 +110,7 @@ def gammaFiducial(df_gammaRec):
 
 	return df_gammaRec
 
-def protonFiducial(df_protonRec):
+def protonFiducial(df_protonRec, pol = 'inbending'):
 
 	dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
 	if pol == 'inbending':
