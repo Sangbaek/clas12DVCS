@@ -996,7 +996,7 @@ if args.saveplot:
 			xsecTh_KM          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(optionaltag, k, i))["hist"]
 			xsecTh_BH          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(optionaltag, k, i))["hist"]
 			xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(optionaltag, k, i))["hist"]
-			binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}binVolume.npz".format(optionaltag, k, i))["hist"]
+			binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 
 			ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
 			ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
