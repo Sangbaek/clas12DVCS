@@ -473,6 +473,7 @@ if args.savexsec:
 			print("bkg scheme {}".format(i))
 			binVolume = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 			#inbending
+			#exp - all
 			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
@@ -481,6 +482,53 @@ if args.savexsec:
 			histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 			histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
 			histBHDVCSInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncInbFD = np.sqrt(histExpInbFD)
+			histExpUncInbCD = np.sqrt(histExpInbCD)
+			histExpUncInbCDFT = np.sqrt(histExpInbCDFT)
+			histExpUncInbCR = np.sqrt(histExpInbCR)
+
+			#exp - plus helicity (helcity flip issue)
+			histExpInbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSInbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSInbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSInbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+			histBHDVCSInbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncInbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncInbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncInbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncInbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == -1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncInbFD_plus = np.sqrt(histExpInbFD_plus)
+			histExpUncInbCD_plus = np.sqrt(histExpInbCD_plus)
+			histExpUncInbCDFT_plus = np.sqrt(histExpInbCDFT_plus)
+			histExpUncInbCR_plus = np.sqrt(histExpInbCR_plus)
+
+			#exp -minus helicity (helcity flip issue)
+			histExpInbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpInbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSInbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSInbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSInbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
+			histBHDVCSInbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncInbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncInbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncInbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncInbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == -1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncInbFD_minus = np.sqrt(histExpInbFD_minus)
+			histExpUncInbCD_minus = np.sqrt(histExpInbCD_minus)
+			histExpUncInbCDFT_minus = np.sqrt(histExpInbCDFT_minus)
+			histExpUncInbCR_minus = np.sqrt(histExpInbCR_plus)
 
 			histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT + histExpInbCR
 			histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSInbCR
@@ -495,6 +543,7 @@ if args.savexsec:
 
 			print("reading bhs - inbending ")
 
+			# Count Rec BH
 			# histBHInb50nA, histBHInbFD50nA, histBHInbCD50nA, histBHInbCDFT50nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_bh50nA:
 			# 	histBHInb50nA = histBHInb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
@@ -503,13 +552,26 @@ if args.savexsec:
 			# 	histBHInbCDFT50nA = histBHInbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
 			histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
+			histBHInb45nA_plus, histBHInbFD45nA_plus, histBHInbCD45nA_plus, histBHInbCDFT45nA_plus, histBHInbCR45nA_plus = 0, 0, 0, 0, 0
+			histBHInb45nA_minus, histBHInbFD45nA_minus, histBHInbCD45nA_minus, histBHInbCDFT45nA_minus, histBHInbCR45nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_bh45nA:
 				histBHInb45nA = histBHInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbFD45nA = histBHInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbCD45nA = histBHInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbCR45nA = histBHInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInb45nA_plus = histBHInb45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recplus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbFD45nA_plus = histBHInbFD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCD45nA_plus = histBHInbCD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCDFT45nA_plus = histBHInbCDFT45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCR45nA_plus = histBHInbCR45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInb45nA_minus = histBHInb45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recminus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbFD45nA_minus = histBHInbFD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCD45nA_minus = histBHInbCD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCDFT45nA_minus = histBHInbCDFT45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHInbCR45nA_minus = histBHInbCR45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4minus.npz".format(optionaltag, k, jobNum))["hist"]
 
+			# Count Gen BH
 			# histBHGenInb50nA, histBHGenInbFD50nA, histBHGenInbCD50nA, histBHGenInbCDFT50nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_bh50nA:
 			# 	histBHGenInb50nA = histBHGenInb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
@@ -518,15 +580,28 @@ if args.savexsec:
 			# 	histBHGenInbCDFT50nA = histBHGenInbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
 			histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA, histBHGenInbCR45nA = 0, 0, 0, 0, 0
+			histBHGenInb45nA_plus, histBHGenInbFD45nA_plus, histBHGenInbCD45nA_plus, histBHGenInbCDFT45nA_plus, histBHGenInbCR45nA_plus = 0, 0, 0, 0, 0
+			histBHGenInb45nA_minus, histBHGenInbFD45nA_minus, histBHGenInbCD45nA_minus, histBHGenInbCDFT45nA_minus, histBHGenInbCR45nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_bh45nA:
 				histBHGenInb45nA = histBHGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 				histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 				histBHGenInbCR45nA = histBHGenInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+				histBHGenInb45nA_plus = histBHGenInb45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen_plus.npz".format(k, jobNum))["hist"]
+				histBHGenInbFD45nA_plus = histBHGenInbFD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1_plus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCD45nA_plus = histBHGenInbCD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2_plus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCDFT45nA_plus = histBHGenInbCDFT45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3_plus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCR45nA_plus = histBHGenInbCR45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4_plus.npz".format(k, jobNum))["hist"]
+				histBHGenInb45nA_minus = histBHGenInb45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen_minus.npz".format(k, jobNum))["hist"]
+				histBHGenInbFD45nA_minus = histBHGenInbFD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1_minus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCD45nA_minus = histBHGenInbCD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2_minus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCDFT45nA_minus = histBHGenInbCDFT45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3_minus.npz".format(k, jobNum))["hist"]
+				histBHGenInbCR45nA_minus = histBHGenInbCR45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4_minus.npz".format(k, jobNum))["hist"]
 
 			print("reading vggs  - inbending")
 
+			# Count VGG Rec
 			# histVGGInb50nA, histVGGInbFD50nA, histVGGInbCD50nA, histVGGInbCDFT50nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg50nA:
 			# 	histVGGInb50nA = histVGGInb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
@@ -535,12 +610,24 @@ if args.savexsec:
 			# 	histVGGInbCDFT50nA = histVGGInbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
 			histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
+			histVGGInb45nA_plus, histVGGInbFD45nA_plus, histVGGInbCD45nA_plus, histVGGInbCDFT45nA_plus, histVGGInbCR45nA_plus = 0, 0, 0, 0, 0
+			histVGGInb45nA_minus, histVGGInbFD45nA_minus, histVGGInbCD45nA_minus, histVGGInbCDFT45nA_minus, histVGGInbCR45nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_vgg45nA:
 				histVGGInb45nA = histVGGInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbFD45nA = histVGGInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbCD45nA = histVGGInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbCR45nA = histVGGInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInb45nA_plus = histVGGInb45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recplus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbFD45nA_plus = histVGGInbFD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCD45nA_plus = histVGGInbCD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCDFT45nA_plus = histVGGInbCDFT45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCR45nA_plus = histVGGInbCR45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInb45nA_minus = histVGGInb45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recminus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbFD45nA_minus = histVGGInbFD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCD45nA_minus = histVGGInbCD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCDFT45nA_minus = histVGGInbCDFT45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGInbCR45nA_minus = histVGGInbCR45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4minus.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGInb55nA, histVGGInbFD55nA, histVGGInbCD55nA, histVGGInbCDFT55nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg55nA:
@@ -549,13 +636,7 @@ if args.savexsec:
 			# 	histVGGInbCD55nA = histVGGInbCD55nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
 			# 	histVGGInbCDFT55nA = histVGGInbCDFT55nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
-			# histVGGInb0nA, histVGGInbFD0nA, histVGGInbCD0nA, histVGGInbCDFT0nA = 0, 0, 0, 0
-			# for jobNum in runs_inb_vgg0nA:
-			# 	histVGGInb0nA = histVGGInb0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec.npz".format(k, jobNum))["hist"]
-			# 	histVGGInbFD0nA = histVGGInbFD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec1.npz".format(k, jobNum))["hist"]
-			# 	histVGGInbCD0nA = histVGGInbCD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
-			# 	histVGGInbCDFT0nA = histVGGInbCDFT0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
-
+			# Count VGG Gen
 			# histVGGGenInb50nA, histVGGGenInbFD50nA, histVGGGenInbCD50nA, histVGGGenInbCDFT50nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg50nA:
 			# 	histVGGGenInb50nA = histVGGGenInb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
@@ -564,12 +645,24 @@ if args.savexsec:
 			# 	histVGGGenInbCDFT50nA = histVGGGenInbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
 			histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
+			histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus, histVGGGenInbCD45nA_plus, histVGGGenInbCDFT45nA_plus, histVGGGenInbCR45nA_plus = 0, 0, 0, 0, 0
+			histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus, histVGGGenInbCD45nA_minus, histVGGGenInbCDFT45nA_minus, histVGGGenInbCR45nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_inb_vgg45nA:
 				histVGGGenInb45nA = histVGGGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 				histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 				histVGGGenInbCR45nA = histVGGGenInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+				histVGGGenInb45nA_plus = histVGGGenInb45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genplus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD45nA_plus = histVGGGenInbFD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1plus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD45nA_plus = histVGGGenInbCD45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2plus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT45nA_plus = histVGGGenInbCDFT45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3plus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCR45nA_plus = histVGGGenInbCR45nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4plus.npz".format(k, jobNum))["hist"]
+				histVGGGenInb45nA_minus = histVGGGenInb45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genminus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbFD45nA_minus = histVGGGenInbFD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1minus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCD45nA_minus = histVGGGenInbCD45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2minus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCDFT45nA_minus = histVGGGenInbCDFT45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3minus.npz".format(k, jobNum))["hist"]
+				histVGGGenInbCR45nA_minus = histVGGGenInbCR45nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4minus.npz".format(k, jobNum))["hist"]
 
 			# histVGGGenInb55nA, histVGGGenInbFD55nA, histVGGGenInbCD55nA, histVGGGenInbCDFT55nA = 0, 0, 0, 0
 			# for jobNum in runs_inb_vgg55nA:
@@ -577,22 +670,6 @@ if args.savexsec:
 			# 	histVGGGenInbFD55nA = histVGGGenInbFD55nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 			# 	histVGGGenInbCD55nA = histVGGGenInbCD55nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 			# 	histVGGGenInbCDFT55nA = histVGGGenInbCDFT55nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-			# histVGGGenInb0nA, histVGGGenInbFD0nA, histVGGGenInbCD0nA, histVGGGenInbCDFT0nA = 0, 0, 0, 0
-			# for jobNum in runs_inb_vgg0nA:
-			# 	histVGGGenInb0nA = histVGGGenInb0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenInbFD0nA = histVGGGenInbFD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenInbCD0nA = histVGGGenInbCD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenInbCDFT0nA = histVGGGenInbCDFT0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
-			histBkgUncInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "unccont{}".format(i)])
-			histBkgUncInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "unccont{}".format(i)])
-			histBkgUncInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "unccont{}".format(i)])
-			histBkgUncInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "unccont{}".format(i)])
-			histExpUncInbFD = np.sqrt(histExpInbFD)
-			histExpUncInbCD = np.sqrt(histExpInbCD)
-			histExpUncInbCDFT = np.sqrt(histExpInbCDFT)
-			histExpUncInbCR = np.sqrt(histExpInbCR)
 
 			# histVGGGenInbInt50nA, histVGGGenInbxB50nA, histVGGGenInbQ250nA, histVGGGenInbt150nA = 0, 0, 0, 0
 			# histVGGGenInbphi50nA, histVGGGenInbbinVol50nA = 0, 0
@@ -607,33 +684,30 @@ if args.savexsec:
 			# 	histVGGGenInbborn50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
 			# 	histVGGGenInbbinVol50nA = histVGGGenInbbinVol50nA | np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-			histVGGGenInbInt45nA, histVGGGenInbxB45nA, histVGGGenInbQ245nA, histVGGGenInbt145nA = 0, 0, 0, 0
-			histVGGGenInbphi45nA, histVGGGenInbbinVol45nA = 0, 0
+			#read the generated events
+			histVGGGenInbxB45nA, histVGGGenInbQ245nA, histVGGGenInbt145nA, histVGGGenInbphi45nA = 0, 0, 0, 0
 			histVGGGenInbrad45nA, histVGGGenInbborn45nA = [], []
 			for jobNum in runs_inb_vgg45nA:
-				histVGGGenInbInt45nA = histVGGGenInbInt45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 				histVGGGenInbxB45nA = histVGGGenInbxB45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
 				histVGGGenInbQ245nA = histVGGGenInbQ245nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
 				histVGGGenInbt145nA = histVGGGenInbt145nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
 				histVGGGenInbphi45nA = histVGGGenInbphi45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
 				histVGGGenInbrad45nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 				histVGGGenInbborn45nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-				# histVGGGenInbbinVol45nA = histVGGGenInbbinVol45nA | np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-			histBHGenInbInt45nA, histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA = 0, 0, 0, 0
-			histBHGenInbphi45nA, histBHGenInbbinVol45nA = 0, 0
+			histBHGenInbxB45nA, histBHGenInbQ245nA, histBHGenInbt145nA, histBHGenInbphi45nA = 0, 0, 0, 0
 			histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
 			for jobNum in runs_inb_bh45nA:
-				histBHGenInbInt45nA = histBHGenInbInt45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 				histBHGenInbxB45nA = histBHGenInbxB45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
 				histBHGenInbQ245nA = histBHGenInbQ245nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
 				histBHGenInbt145nA = histBHGenInbt145nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
 				histBHGenInbphi45nA = histBHGenInbphi45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"]
 				histBHGenInbrad45nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 				histBHGenInbborn45nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-				# histBHGenInbbinVol45nA = histBHGenInbbinVol45nA | np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
 			#outbending
+
+			#exp -all
 			histExpOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 			histExpOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
@@ -642,6 +716,53 @@ if args.savexsec:
 			histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
 			histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
 			histBHDVCSOutbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncOutbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncOutbFD = np.sqrt(histExpOutbFD)
+			histExpUncOutbCD = np.sqrt(histExpOutbCD)
+			histExpUncOutbCDFT = np.sqrt(histExpOutbCDFT)
+			histExpUncOutbCR = np.sqrt(histExpOutbCR)
+
+			#exp-positive helicity
+			histExpOutbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSOutbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSOutbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSOutbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
+			histBHDVCSOutbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncOutbFD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncOutbCD_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncOutbCDFT_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncOutbCR_plus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == -1) & (epgExp.polarity == 1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncOutbFD_plus = np.sqrt(histExpOutbFD_plus)
+			histExpUncOutbCD_plus = np.sqrt(histExpOutbCD_plus)
+			histExpUncOutbCDFT_plus = np.sqrt(histExpOutbCDFT_plus)
+			histExpUncOutbCR_plus = np.sqrt(histExpOutbCR_plus)
+
+			#exp-negative helicity
+			histExpOutbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histExpOutbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+			histBHDVCSOutbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(i)])
+			histBHDVCSOutbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
+			histBHDVCSOutbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
+			histBHDVCSOutbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 4), "cont{}".format(i)])
+
+			histBkgUncOutbFD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
+			histBkgUncOutbCD_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
+			histBkgUncOutbCDFT_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
+			histBkgUncOutbCR_minus, bins = np.histogramdd(epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.helicity == 1) & (epgExp.polarity == 1) & (epgExp.config == 4), "unccont{}".format(i)])
+			histExpUncOutbFD_minus = np.sqrt(histExpOutbFD_minus)
+			histExpUncOutbCD_minus = np.sqrt(histExpOutbCD_minus)
+			histExpUncOutbCDFT_minus = np.sqrt(histExpOutbCDFT_minus)
+			histExpUncOutbCR_minus = np.sqrt(histExpOutbCR_minus)
 
 			histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
 			histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
@@ -654,32 +775,69 @@ if args.savexsec:
 			ActiveAny_int = ActiveInb_int | ActiveOutb_int
 
 			print("reading bhs  - outbending")
-
+			# bh rec
 			histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA, histBHOutbCR50nA = 0, 0, 0, 0, 0
+			histBHOutb50nA_plus, histBHOutbFD50nA_plus, histBHOutbCD50nA_plus, histBHOutbCDFT50nA_plus, histBHOutbCR50nA_plus = 0, 0, 0, 0, 0
+			histBHOutb50nA_minus, histBHOutbFD50nA_minus, histBHOutbCD50nA_minus, histBHOutbCDFT50nA_minus, histBHOutbCR50nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_bh50nA:
 				histBHOutb50nA = histBHOutb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbFD50nA = histBHOutbFD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbCD50nA = histBHOutbCD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbCDFT50nA = histBHOutbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbCR50nA = histBHOutbCR50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutb50nA_plus = histBHOutb50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recplus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbFD50nA_plus = histBHOutbFD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCD50nA_plus = histBHOutbCD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCDFT50nA_plus = histBHOutbCDFT50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCR50nA_plus = histBHOutbCR50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutb50nA_minus = histBHOutb50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recminus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbFD50nA_minus = histBHOutbFD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCD50nA_minus = histBHOutbCD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCDFT50nA_minus = histBHOutbCDFT50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histBHOutbCR50nA_minus = histBHOutbCR50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4minus.npz".format(optionaltag, k, jobNum))["hist"]
 
+			# bh gen
 			histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA, histBHGenOutbCR50nA = 0, 0, 0, 0, 0
+			histBHGenOutb50nA_plus, histBHGenOutbFD50nA_plus, histBHGenOutbCD50nA_plus, histBHGenOutbCDFT50nA_plus, histBHGenOutbCR50nA_plus = 0, 0, 0, 0, 0
+			histBHGenOutb50nA_minus, histBHGenOutbFD50nA_minus, histBHGenOutbCD50nA_minus, histBHGenOutbCDFT50nA_minus, histBHGenOutbCR50nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_bh50nA:
 				histBHGenOutb50nA = histBHGenOutb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 				histBHGenOutbCDFT50nA = histBHGenOutbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 				histBHGenOutbCR50nA = histBHGenOutbCR50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+				histBHGenOutb50nA_plus = histBHGenOutb50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genplus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbFD50nA_plus = histBHGenOutbFD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1plus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCD50nA_plus = histBHGenOutbCD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2plus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCDFT50nA_plus = histBHGenOutbCDFT50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3plus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCR50nA_plus = histBHGenOutbCR50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4plus.npz".format(k, jobNum))["hist"]
+				histBHGenOutb50nA_minus = histBHGenOutb50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genminus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbFD50nA_minus = histBHGenOutbFD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1minus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCD50nA_minus = histBHGenOutbCD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2minus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCDFT50nA_minus = histBHGenOutbCDFT50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3minus.npz".format(k, jobNum))["hist"]
+				histBHGenOutbCR50nA_minus = histBHGenOutbCR50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4minus.npz".format(k, jobNum))["hist"]
 
 			print("reading vggs  - outbending")
-
+			# vgg rec
 			histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA, histVGGOutbCR50nA = 0, 0, 0, 0, 0
+			histVGGOutb50nA_plus, histVGGOutbFD50nA_plus, histVGGOutbCD50nA_plus, histVGGOutbCDFT50nA_plus, histVGGOutbCR50nA_plus = 0, 0, 0, 0, 0
+			histVGGOutb50nA_minus, histVGGOutbFD50nA_minus, histVGGOutbCD50nA_minus, histVGGOutbCDFT50nA_minus, histVGGOutbCR50nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_vgg50nA:
 				histVGGOutb50nA = histVGGOutb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbFD50nA = histVGGOutbFD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbCD50nA = histVGGOutbCD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbCDFT50nA = histVGGOutbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbCR50nA = histVGGOutbCR50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutb50nA_plus = histVGGOutb50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recplus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbFD50nA_plus = histVGGOutbFD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCD50nA_plus = histVGGOutbCD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCDFT50nA_plus = histVGGOutbCDFT50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCR50nA_plus = histVGGOutbCR50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4plus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutb50nA_minus = histVGGOutb50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Recminus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbFD50nA_minus = histVGGOutbFD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCD50nA_minus = histVGGOutbCD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCDFT50nA_minus = histVGGOutbCDFT50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3minus.npz".format(optionaltag, k, jobNum))["hist"]
+				histVGGOutbCR50nA_minus = histVGGOutbCR50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4minus.npz".format(optionaltag, k, jobNum))["hist"]
 
 			# histVGGOutb40nA, histVGGOutbFD40nA, histVGGOutbCD40nA, histVGGOutbCDFT40nA = 0, 0, 0, 0
 			# for jobNum in runs_outb_vgg40nA:
@@ -702,13 +860,26 @@ if args.savexsec:
 			# 	histVGGOutbCD40naT = histVGGOutbCD40naT + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec2.npz".format(k, jobNum))["hist"]
 			# 	histVGGOutbCDFT40naT = histVGGOutbCDFT40naT + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Rec3.npz".format(k, jobNum))["hist"]
 
+			#vgg gen
 			histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA, histVGGGenOutbCR50nA = 0, 0, 0, 0, 0
+			histVGGGenOutb50nA_plus, histVGGGenOutbFD50nA_plus, histVGGGenOutbCD50nA_plus, histVGGGenOutbCDFT50nA_plus, histVGGGenOutbCR50nA_plus = 0, 0, 0, 0, 0
+			histVGGGenOutb50nA_minus, histVGGGenOutbFD50nA_minus, histVGGGenOutbCD50nA_minus, histVGGGenOutbCDFT50nA_minus, histVGGGenOutbCR50nA_minus = 0, 0, 0, 0, 0
 			for jobNum in runs_outb_vgg50nA:
 				histVGGGenOutb50nA = histVGGGenOutb50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbCDFT50nA = histVGGGenOutbCDFT50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbCR50nA = histVGGGenOutbCR50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+				histVGGGenOutb50nA_plus = histVGGGenOutb50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genplus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD50nA_plus = histVGGGenOutbFD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1plus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD50nA_plus = histVGGGenOutbCD50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2plus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT50nA_plus = histVGGGenOutbCDFT50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3plus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCR50nA_plus = histVGGGenOutbCR50nA_plus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4plus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutb50nA_minus = histVGGGenOutb50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genminus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbFD50nA_minus = histVGGGenOutbFD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1minus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCD50nA_minus = histVGGGenOutbCD50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2minus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCDFT50nA_minus = histVGGGenOutbCDFT50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3minus.npz".format(k, jobNum))["hist"]
+				histVGGGenOutbCR50nA_minus = histVGGGenOutbCR50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4minus.npz".format(k, jobNum))["hist"]
 
 			# histVGGGenOutb40nA, histVGGGenOutbFD40nA, histVGGGenOutbCD40nA, histVGGGenOutbCDFT40nA = 0, 0, 0, 0
 			# for jobNum in runs_outb_vgg40nA:
@@ -717,13 +888,6 @@ if args.savexsec:
 			# 	histVGGGenOutbCD40nA = histVGGGenOutbCD40nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 			# 	histVGGGenOutbCDFT40nA = histVGGGenOutbCDFT40nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-			# histVGGGenOutb0nA, histVGGGenOutbFD0nA, histVGGGenOutbCD0nA, histVGGGenOutbCDFT0nA = 0, 0, 0, 0
-			# for jobNum in runs_outb_vgg0nA:
-			# 	histVGGGenOutb0nA = histVGGGenOutb0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenOutbFD0nA = histVGGGenOutbFD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenOutbCD0nA = histVGGGenOutbCD0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
-			# 	histVGGGenOutbCDFT0nA = histVGGGenOutbCDFT0nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
-
 			# histVGGGenOutb40nAT, histVGGGenOutbFD40nAT, histVGGGenOutbCD40nAT, histVGGGenOutbCDFT40nAT = 0, 0, 0, 0
 			# for jobNum in runs_outb_vgg40nAT:
 			# 	histVGGGenOutb40nAT = histVGGGenOutb40nAT + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
@@ -731,20 +895,9 @@ if args.savexsec:
 			# 	histVGGGenOutbCD40nAT = histVGGGenOutbCD40nAT + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
 			# 	histVGGGenOutbCDFT40nAT = histVGGGenOutbCDFT40nAT + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
 
-			histBkgUncOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "unccont{}".format(i)])
-			histBkgUncOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "unccont{}".format(i)])
-			histBkgUncOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "unccont{}".format(i)])
-			histBkgUncOutbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4), "unccont{}".format(i)])
-			histExpUncOutbFD = np.sqrt(histExpOutbFD)
-			histExpUncOutbCD = np.sqrt(histExpOutbCD)
-			histExpUncOutbCDFT = np.sqrt(histExpOutbCDFT)
-			histExpUncOutbCR = np.sqrt(histExpOutbCR)
-
-			histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA = 0, 0, 0, 0
-			histVGGGenOutbphi50nA, histVGGGenOutbbinVol50nA = 0, 0
+			histVGGGenOutbInt50nA, histVGGGenOutbxB50nA, histVGGGenOutbQ250nA, histVGGGenOutbt150nA, histVGGGenOutbphi50nA = 0, 0, 0, 0, 0
 			histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
 			for jobNum in runs_outb_vgg50nA:
-				histVGGGenOutbInt50nA = histVGGGenOutbInt50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbxB50nA = histVGGGenOutbxB50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbQ250nA = histVGGGenOutbQ250nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbt150nA = histVGGGenOutbt150nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
@@ -753,11 +906,9 @@ if args.savexsec:
 				histVGGGenOutbborn50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
 				# histVGGGenOutbbinVol50nA = histVGGGenOutbbinVol50nA | np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenbinVolume.npz".format(k, jobNum))["hist"].astype(int)
 
-			histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA = 0, 0, 0, 0
-			histBHGenOutbphi50nA, histBHGenOutbbinVol50nA = 0, 0
+			histBHGenOutbInt50nA, histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA, histBHGenOutbphi50nA = 0, 0, 0, 0, 0
 			histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
 			for jobNum in runs_outb_bh50nA:
-				histBHGenOutbInt50nA = histBHGenOutbInt50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenInt.npz".format(k, jobNum))["hist"]
 				histBHGenOutbxB50nA = histBHGenOutbxB50nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"]
 				histBHGenOutbQ250nA = histBHGenOutbQ250nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"]
 				histBHGenOutbt150nA = histBHGenOutbt150nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"]
@@ -771,15 +922,30 @@ if args.savexsec:
 			accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD45nA , histVGGInbCD45nA)
 			accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT45nA , histVGGInbCDFT45nA)
 			accCorrectedInbCR_VGG = divideHist(histBHDVCSInbCR*histVGGGenInbCR45nA , histVGGInbCR45nA)
+			accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG + accCorrectedInbCR_VGG
+			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
+
 			uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD45nA) + inverseHist(histVGGGenInbFD45nA))
 			uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInbCD45nA))
 			uncStatInbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT45nA) + inverseHist(histVGGGenInbCDFT45nA))
 			uncStatInbCR_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInbCR45nA))
 			uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
-
-			accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG + accCorrectedInbCR_VGG
-			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
 			uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
+
+			accCorrectedInbFDonly_VGG = divideHist(histBHDVCSInbFD*histVGGGenInb45nA , histVGGInbFD45nA)
+			accCorrectedInbCDonly_VGG = divideHist(histBHDVCSInbCD*histVGGGenInb45nA , histVGGInbCD45nA)
+			accCorrectedInbCDFTonly_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInb45nA , histVGGInbCDFT45nA)
+			accCorrectedInbCRonly_VGG = divideHist(histBHDVCSInbCR*histVGGGenInb45nA , histVGGInbCR45nA)
+
+			uncStatInbFDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD45nA) + inverseHist(histVGGGenInb45nA))
+			uncStatInbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInb45nA))
+			uncStatInbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT45nA) + inverseHist(histVGGGenInb45nA))
+			uncStatInbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInb45nA))
+			uncStatInbFDonly_VGG = divideHist(uncStatInbFDonly_VGG , accCorectedInbFDonly_VGG)
+			uncStatInbCDonly_VGG = divideHist(uncStatInbCDonly_VGG , accCorectedInbCDonly_VGG)
+			uncStatInbCDFTonly_VGG = divideHist(uncStatInbCDFTonly_VGG , accCorectedInbCDFTonly_VGG)
+			uncStatInbCRonly_VGG = divideHist(uncStatInbCRonly_VGG , accCorectedInbCRonly_VGG)
+
 			accCorrectedInb_VGG[~ActiveInb] = 0
 			uncStatInb_VGG[~ActiveInb] = 0
 
@@ -787,15 +953,30 @@ if args.savexsec:
 			accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
 			accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
 			accCorrectedInbCR_BH = divideHist(histBHDVCSInbCR*histBHGenInbCR45nA , histBHInbCR45nA)
+			accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH + accCorrectedInbCR_BH
+			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
+
 			uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
 			uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
 			uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
 			uncStatInbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
 			uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
-
-			accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH + accCorrectedInbCR_BH
-			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
 			uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
+
+			accCorrectedInbFDonly_BH = divideHist(histBHDVCSInbFD*histBHGenInb45nA , histBHInbFD45nA)
+			accCorrectedInbCDonly_BH = divideHist(histBHDVCSInbCD*histBHGenInb45nA , histBHInbCD45nA)
+			accCorrectedInbCDFTonly_BH = divideHist(histBHDVCSInbCDFT*histBHGenInb45nA , histBHInbCDFT45nA)
+			accCorrectedInbCRonly_BH = divideHist(histBHDVCSInbCR*histBHGenInb45nA , histBHInbCR45nA)
+
+			uncStatInbFDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInb45nA))
+			uncStatInbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInb45nA))
+			uncStatInbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInb45nA))
+			uncStatInbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInb45nA))
+			uncStatInbFDonly_BH = divideHist(uncStatInbFDonly_BH , accCorectedInbFDonly_BH)
+			uncStatInbCDonly_BH = divideHist(uncStatInbCDonly_BH , accCorectedInbCDonly_BH)
+			uncStatInbCDFTonly_BH = divideHist(uncStatInbCDFTonly_BH , accCorectedInbCDFTonly_BH)
+			uncStatInbCRonly_BH = divideHist(uncStatInbCRonly_BH , accCorectedInbCRonly_BH)
+
 			accCorrectedInb_BH[~ActiveInb] = 0
 			uncStatInb_BH[~ActiveInb] = 0
 
@@ -804,15 +985,30 @@ if args.savexsec:
 			accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
 			accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
 			accCorrectedOutbCR_VGG = divideHist(histBHDVCSOutbCR*histVGGGenOutbCR50nA , histVGGOutbCR50nA)
+			accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG + accCorrectedOutbCR_VGG
+			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA + histVGGGenOutbCDFT50nA + histVGGGenOutbCR50nA)
+
 			uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
 			uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
 			uncStatOutbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutbCDFT50nA))
 			uncStatOutbCR_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histVGGOutbCR50nA) + inverseHist(histVGGGenOutbCR50nA))
 			uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)
-
-			accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG + accCorrectedOutbCR_VGG
-			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA + histVGGGenOutbCDFT50nA + histVGGGenOutbCR50nA)
 			uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
+
+			accCorrectedOutbFDonly_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutb50nA , histVGGOutbFD50nA)
+			accCorrectedOutbCDonly_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutb50nA , histVGGOutbCD50nA)
+			accCorrectedOutbCDFTonly_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutb50nA , histVGGOutbCDFT50nA)
+			accCorrectedOutbCRonly_VGG = divideHist(histBHDVCSOutbCR*histVGGGenOutb50nA , histVGGOutbCR50nA)
+
+			uncStatOutbFDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutb50nA))
+			uncStatOutbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutb50nA))
+			uncStatOutbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutb50nA))
+			uncStatOutbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histVGGOutbCR50nA) + inverseHist(histVGGGenOutb50nA))
+			uncStatOutbFDonly_VGG = divideHist(uncStatOutbFDonly_VGG , accCorectedOutbFDonly_VGG)
+			uncStatOutbCDonly_VGG = divideHist(uncStatOutbCDonly_VGG , accCorectedOutbCDonly_VGG)
+			uncStatOutbCDFTonly_VGG = divideHist(uncStatOutbCDFTonly_VGG , accCorectedOutbCDFTonly_VGG)
+			uncStatOutbCRonly_VGG = divideHist(uncStatOutbCRonly_VGG , accCorectedOutbCRonly_VGG)
+
 			accCorrectedOutb_VGG[~ActiveOutb] = 0
 			uncStatOutb_VGG[~ActiveOutb] = 0
 
@@ -820,14 +1016,29 @@ if args.savexsec:
 			accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
 			accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
 			accCorrectedOutbCR_BH = divideHist(histBHDVCSOutbCR*histBHGenOutbCR50nA , histBHOutbCR50nA)
+			accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH + accCorrectedOutbCR_BH
+			accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA + histBHGenOutbCDFT50nA + histBHGenOutbCR50nA)
+
 			uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
 			uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
 			uncStatOutbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutbCDFT50nA))
 			uncStatOutbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutbCR50nA))
 			uncStatOutb_BH = np.sqrt(accCorrectedOutbFD_BH**2 *uncStatOutbFD_BH**2 + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2 + accCorrectedOutbCR_BH**2 * uncStatOutbCR_BH**2)
 
-			accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH + accCorrectedOutbCR_BH
-			accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA + histBHGenOutbCDFT50nA + histBHGenOutbCR50nA)
+			accCorrectedOutbFDonly_BH = divideHist(histBHDVCSOutbFD*histBHGenOutb50nA , histBHOutbFD50nA)
+			accCorrectedOutbCDonly_BH = divideHist(histBHDVCSOutbCD*histBHGenOutb50nA , histBHOutbCD50nA)
+			accCorrectedOutbCDFTonly_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutb50nA , histBHOutbCDFT50nA)
+			accCorrectedOutbCRonly_BH = divideHist(histBHDVCSOutbCR*histBHGenOutb50nA , histBHOutbCR50nA)
+
+			uncStatOutbFDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutb50nA))
+			uncStatOutbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutb50nA))
+			uncStatOutbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutb50nA))
+			uncStatOutbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutb50nA))
+			uncStatOutbFDonly_BH = divideHist(uncStatOutbFDonly_BH , accCorectedOutbFDonly_BH)
+			uncStatOutbCDonly_BH = divideHist(uncStatOutbCDonly_BH , accCorectedOutbCDonly_BH)
+			uncStatOutbCDFTonly_BH = divideHist(uncStatOutbCDFTonly_BH , accCorectedOutbCDFTonly_BH)
+			uncStatOutbCRonly_BH = divideHist(uncStatOutbCRonly_BH , accCorectedOutbCRonly_BH)
+
 			uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
 			accCorrectedOutb_BH[~ActiveOutb] = 0
 			uncStatOutb_BH[~ActiveOutb] = 0
@@ -903,8 +1114,24 @@ if args.savexsec:
 			charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
 			xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
 			xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+			xsecInbFDonly_VGG = divideHist(accCorrectedInbFDonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
+			xsecInbFDonly_BH = divideHist(accCorrectedInbFDonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+			xsecInbCDonly_VGG = divideHist(accCorrectedInbCDonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
+			xsecInbCDonly_BH = divideHist(accCorrectedInbCDonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+			xsecInbCDFTonly_VGG = divideHist(accCorrectedInbCDFTonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
+			xsecInbCDFTonly_BH = divideHist(accCorrectedInbCDFTonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
+			xsecInbCRonly_VGG = divideHist(accCorrectedInbCRonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
+			xsecInbCRonly_BH = divideHist(accCorrectedInbCRonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
 			xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
 			xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
+			xsecOutbFDonly_VGG = divideHist(accCorrectedOutbFDonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbbcharge_epg)
+			xsecOutbFDonly_BH = divideHist(accCorrectedOutbFDonly_BH, binVolume*rcfactors_BH)/(1.324*outbbcharge_epg)
+			xsecOutbCDonly_VGG = divideHist(accCorrectedOutbCDonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbbcharge_epg)
+			xsecOutbCDonly_BH = divideHist(accCorrectedOutbCDonly_BH, binVolume*rcfactors_BH)/(1.324*outbbcharge_epg)
+			xsecOutbCDFTonly_VGG = divideHist(accCorrectedOutbCDFTonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbbcharge_epg)
+			xsecOutbCDFTonly_BH = divideHist(accCorrectedOutbCDFTonly_BH, binVolume*rcfactors_BH)/(1.324*outbbcharge_epg)
+			xsecOutbCRonly_VGG = divideHist(accCorrectedOutbCRonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbbcharge_epg)
+			xsecOutbCRonly_BH = divideHist(accCorrectedOutbCRonly_BH, binVolume*rcfactors_BH)/(1.324*outbbcharge_epg)
 			xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG*(1.324*charges))
 			xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH*(1.324*charges))
 
@@ -925,12 +1152,48 @@ if args.savexsec:
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i), hist = xsec_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i), hist = xsec_BH)
 
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_VGG.npz".format(optionaltag, k, i), hist = xsecInbFDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_BH.npz".format(optionaltag, k, i), hist = xsecInbFDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_VGG.npz".format(optionaltag, k, i), hist = xsecInbCDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_BH.npz".format(optionaltag, k, i), hist = xsecInbCDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_VGG.npz".format(optionaltag, k, i), hist = xsecInbCDFTonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_BH.npz".format(optionaltag, k, i), hist = xsecInbCDFTonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_VGG.npz".format(optionaltag, k, i), hist = xsecInbCRonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_BH.npz".format(optionaltag, k, i), hist = xsecInbCRonly_BH)
+
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_VGG.npz".format(optionaltag, k, i), hist = xsecOutbFDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_BH.npz".format(optionaltag, k, i), hist = xsecOutbFDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_VGG.npz".format(optionaltag, k, i), hist = xsecOutbCDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_BH.npz".format(optionaltag, k, i), hist = xsecOutbCDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_VGG.npz".format(optionaltag, k, i), hist = xsecOutbCDFTonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_BH.npz".format(optionaltag, k, i), hist = xsecOutbCDFTonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_VGG.npz".format(optionaltag, k, i), hist = xsecOutbCRonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_BH.npz".format(optionaltag, k, i), hist = xsecOutbCRonly_BH)
+
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(optionaltag, k, i), hist = uncStatInb_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(optionaltag, k, i), hist = uncStatInb_BH)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(optionaltag, k, i), hist = uncStatOutb_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(optionaltag, k, i), hist = uncStatOutb_BH)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i), hist = uncStat_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i), hist = uncStat_BH)
+
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_VGG.npz".format(optionaltag, k, i), hist = uncStatInbFDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_BH.npz".format(optionaltag, k, i), hist = uncStatInbFDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_VGG.npz".format(optionaltag, k, i), hist = uncStatInbCDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_BH.npz".format(optionaltag, k, i), hist = uncStatInbCDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_VGG.npz".format(optionaltag, k, i), hist = uncStatInbCDFTonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_BH.npz".format(optionaltag, k, i), hist = uncStatInbCDFTonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_VGG.npz".format(optionaltag, k, i), hist = uncStatInbCRonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_BH.npz".format(optionaltag, k, i), hist = uncStatInbCRonly_BH)
+
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_VGG.npz".format(optionaltag, k, i), hist = uncStatOutbFDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_BH.npz".format(optionaltag, k, i), hist = uncStatOutbFDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_VGG.npz".format(optionaltag, k, i), hist = uncStatOutbCDonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_BH.npz".format(optionaltag, k, i), hist = uncStatOutbCDonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_VGG.npz".format(optionaltag, k, i), hist = uncStatOutbCDFTonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_BH.npz".format(optionaltag, k, i), hist = uncStatOutbCDFTonly_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_VGG.npz".format(optionaltag, k, i), hist = uncStatOutbCRonly_VGG)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_BH.npz".format(optionaltag, k, i), hist = uncStatOutbCRonly_BH)
 
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(optionaltag, k, i), hist = xsecTh_KM)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(optionaltag, k, i), hist = xsecTh_BH)
