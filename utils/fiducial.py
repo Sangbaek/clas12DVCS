@@ -1,7 +1,7 @@
 from utils.const import *
 from utils.physics import *
 
-def electronFiducial(df_electronRec, pol = "inbending", mc = False):
+def electronFiducial(df_electronRec, pol = "inbending", mc = False, fidlevel = 'mid'):
 	df_electronRec.loc[:, "EFid"] = 1
 
 	# #PCAL dead wires
@@ -45,8 +45,12 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 		ecal_e_sampl_sigm_2 = np.select(sector_cond, ecal_e_sampl_sigm_mc[2])
 	mean = ecal_e_sampl_mu_0 + ecal_e_sampl_mu_1/1000*pow(df_electronRec.Ep-ecal_e_sampl_mu_2,2)
 	sigma = ecal_e_sampl_sigm_0 + ecal_e_sampl_sigm_1/(10*(df_electronRec.Ep-ecal_e_sampl_sigm_2))
-	df_electronRec.loc[df_electronRec.ESamplFrac < mean - e_sampl_sigma_range*sigma, "EFid"]  = 0
-	df_electronRec.loc[df_electronRec.ESamplFrac > mean + e_sampl_sigma_range*sigma, "EFid"]  = 0
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.ESamplFrac < mean - e_sampl_sigma_range*sigma, "EFid"]  = 0
+		df_electronRec.loc[df_electronRec.ESamplFrac > mean + e_sampl_sigma_range*sigma, "EFid"]  = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (e_sampl_sigma_range-1)*sigma, "EFid"]  = 0
+		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (e_sampl_sigma_range-1)*sigma, "EFid"]  = 0
 
 
 	#passElectronNpheCut
@@ -97,7 +101,7 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False):
 	df_electronRec.loc[y_rot>=calc_max, "EFid"] = 0
 
 	# #passElectronAntiPionCut
-	# df_electronRec.loc[-df_electronRec.Edep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Edep2/event.p[index], "EFid"] = 0
+	# df_electronRec.loc[-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep, "EFid"] = 0
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
 def gammaFiducial(df_gammaRec):

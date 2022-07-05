@@ -14,7 +14,7 @@ from utils.fiducial import *
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False, fidlevel = 'mid'):
         '''
             clas init.
             Args
@@ -49,7 +49,7 @@ class root2pickle():
         self.fname = fname
 
         self.determineWidth(width = width)
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid, fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0P_DVCS(pol = pol)
@@ -100,7 +100,7 @@ class root2pickle():
             self.cuts_dvcs_CD_Outb = cuts_dvcs_CD_Outb_4sigma
             self.cuts_dvcs_FD_Outb = cuts_dvcs_FD_Outb_4sigma
 
-    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", detRes = False, smearing = 1, nofid = False):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcsnorad", detRes = False, smearing = 1, nofid = False, fidlevel = 'mid'):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -313,7 +313,7 @@ class root2pickle():
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
         else:
-            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = True)
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = True, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
@@ -669,7 +669,10 @@ class root2pickle():
             df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
 
             cut_CD = df_protonRec.Psector > 7
-            cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
+            if fidlevel == 'mid':
+                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta)
+            elif fidlevel == 'tight':
+                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta-5)
             cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
             cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
             cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
@@ -1566,6 +1569,7 @@ if __name__ == "__main__":
     parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
     parser.add_argument("-sm","--smearing", help="smearing factor", default = "1")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
+    parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
 
     
     args = parser.parse_args()
@@ -1576,7 +1580,7 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
     smearingFactor = float(args.smearing)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, fidlevel = args.fidlevel)
     df = converter.df
 
     df.to_pickle(args.out)

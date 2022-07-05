@@ -14,7 +14,7 @@ from utils.fiducial import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, width = "mid", logistics = False, nofid = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, width = "mid", logistics = False, nofid = False, fidlevel = 'mid'):
         '''
             clas init.
             Args
@@ -47,7 +47,7 @@ class root2pickle():
         self.fname = fname
  
         self.determineWidth(width = width)
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid, fidlevel = fidlevel)
         self.saveDVpi0vars()
         self.makeDVpi0P(pol = pol)
         self.save()
@@ -98,7 +98,7 @@ class root2pickle():
             # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_4sigma
             # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_4sigma
 
-    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False, fidlevel = 'mid'):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -174,7 +174,7 @@ class root2pickle():
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
         else:
-            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False)
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
@@ -507,7 +507,10 @@ class root2pickle():
             df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
 
             cut_CD = df_protonRec.Psector > 7
-            cut_right = cut_CD & (df_protonRec.Ptheta<64.23)
+            if fidlevel == 'mid':
+                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta)
+            elif fidlevel == 'tight':
+                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta-5)
             cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
             cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
             cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
@@ -1059,7 +1062,8 @@ if __name__ == "__main__":
     parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
     parser.add_argument("-l","--logistics", help="include logistics", action = "store_true")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
-    
+    parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
+
     args = parser.parse_args()
 
     if args.entry_start:
@@ -1067,7 +1071,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, width = args.width, logistics = args.logistics, nofid = args.nofid)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, width = args.width, logistics = args.logistics, nofid = args.nofid, fidlevel = args.fidlevel)
     df = converter.df
 
     df.to_pickle(args.out)
