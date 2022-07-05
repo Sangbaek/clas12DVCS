@@ -1801,10 +1801,10 @@ if args.saveplot:
 							phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
 							BSAOutb_BH = divideHist(xsecOutb_BH_plus - xsecOutb_BH_minus, xsecOutb_BH_plus + xsecOutb_BH_minus)
 							uncBSAOutb_BH = BSAOutb_BH*np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)*np.sqrt(divideHist(1, (xsecOutb_BH_plus-xsecOutb_BH_minus)**2) + divideHist(1, (xsecOutb_BH_plus+xsecOutb_BH_minus)**2))
-							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSAInb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSAOutb_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
+							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSAOutb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSAOutb_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-						BSAInb_BH = divideHist(xsec_BH_plus - xsec_BH_minus, xsec_BH_plus + xsec_BH_minus)
+						BSA_BH = divideHist(xsec_BH_plus - xsec_BH_minus, xsec_BH_plus + xsec_BH_minus)
 						uncBSA_BH = BSA_BH*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)*np.sqrt(divideHist(1, (xsec_BH_plus-xsec_BH_minus)**2) + divideHist(1, (xsec_BH_plus+xsec_BH_minus)**2))
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSA_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSA_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged.')
 						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((xsecTh_KM_plus - xsecTh_KM_minus)/(xsecTh_KM_plus + xsecTh_KM_minus))[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
