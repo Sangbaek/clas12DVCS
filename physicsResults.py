@@ -856,7 +856,7 @@ if args.saveyields:
 			accCorrectedInbCDFT_BH_minus = divideHist(histBHDVCSInbCDFT_minus*histBHGenInbCDFT45nA_minus , histBHInbCDFT45nA_minus)
 			accCorrectedInbCR_BH_minus = divideHist(histBHDVCSInbCR_minus*histBHGenInbCR45nA_minus , histBHInbCR45nA_minus)
 			accCorrectedInb_BH_minus = accCorrectedInbFD_BH_minus + accCorrectedInbCD_BH_minus + accCorrectedInbCDFT_BH_minus + accCorrectedInbCR_BH_minus
-			accCorrectedInb_BH_mius = divideHist(accCorrectedInb_BH_mius*histBHGenInb45nA_minus, histBHGenInbFD45nA_minus + histBHGenInbCD45nA_minus + histBHGenInbCDFT45nA_minus + histBHGenInbCR45nA_minus)
+			accCorrectedInb_BH_minus = divideHist(accCorrectedInb_BH_minus*histBHGenInb45nA_minus, histBHGenInbFD45nA_minus + histBHGenInbCD45nA_minus + histBHGenInbCDFT45nA_minus + histBHGenInbCR45nA_minus)
 
 			uncStatInbFD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD_minus**2+histExpUncInbFD_minus**2), histBHDVCSInbFD_minus)**2 + inverseHist(histBHInbFD45nA_minus) + inverseHist(histBHGenInbFD45nA_minus))
 			uncStatInbCD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD_minus**2+histExpUncInbCD_minus**2), histBHDVCSInbCD_minus)**2 + inverseHist(histBHInbCD45nA_minus) + inverseHist(histBHGenInbCD45nA_minus))
