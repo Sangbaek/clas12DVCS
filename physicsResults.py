@@ -1293,7 +1293,7 @@ if args.savexsec:
 
 			print("bkg scheme {}".format(i))
 			#calculate cross sections
-			charges = charge_epg*np.zeros(xsecTh_BH.shape)
+			charges = charge_epg*np.zeros(ActiveAll.shape)
 			charges[ActiveAll] = charge_epg
 			charges[(ActiveInb)&(~ActiveOutb)] = inbcharge_epg
 			charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
