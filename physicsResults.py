@@ -913,10 +913,10 @@ if args.savexsec:
 			uncStatInbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInb45nA))
 			uncStatInbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT45nA) + inverseHist(histVGGGenInb45nA))
 			uncStatInbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInb45nA))
-			uncStatInbFDonly_VGG = divideHist(uncStatInbFDonly_VGG , accCorectedInbFDonly_VGG)
-			uncStatInbCDonly_VGG = divideHist(uncStatInbCDonly_VGG , accCorectedInbCDonly_VGG)
-			uncStatInbCDFTonly_VGG = divideHist(uncStatInbCDFTonly_VGG , accCorectedInbCDFTonly_VGG)
-			uncStatInbCRonly_VGG = divideHist(uncStatInbCRonly_VGG , accCorectedInbCRonly_VGG)
+			uncStatInbFDonly_VGG = divideHist(uncStatInbFDonly_VGG , accCorrectedInbFDonly_VGG)
+			uncStatInbCDonly_VGG = divideHist(uncStatInbCDonly_VGG , accCorrectedInbCDonly_VGG)
+			uncStatInbCDFTonly_VGG = divideHist(uncStatInbCDFTonly_VGG , accCorrectedInbCDFTonly_VGG)
+			uncStatInbCRonly_VGG = divideHist(uncStatInbCRonly_VGG , accCorrectedInbCRonly_VGG)
 
 			accCorrectedInb_VGG[~ActiveInb] = 0
 			uncStatInb_VGG[~ActiveInb] = 0
@@ -944,10 +944,10 @@ if args.savexsec:
 			uncStatInbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInb45nA))
 			uncStatInbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInb45nA))
 			uncStatInbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInb45nA))
-			uncStatInbFDonly_BH = divideHist(uncStatInbFDonly_BH , accCorectedInbFDonly_BH)
-			uncStatInbCDonly_BH = divideHist(uncStatInbCDonly_BH , accCorectedInbCDonly_BH)
-			uncStatInbCDFTonly_BH = divideHist(uncStatInbCDFTonly_BH , accCorectedInbCDFTonly_BH)
-			uncStatInbCRonly_BH = divideHist(uncStatInbCRonly_BH , accCorectedInbCRonly_BH)
+			uncStatInbFDonly_BH = divideHist(uncStatInbFDonly_BH , accCorrectedInbFDonly_BH)
+			uncStatInbCDonly_BH = divideHist(uncStatInbCDonly_BH , accCorrectedInbCDonly_BH)
+			uncStatInbCDFTonly_BH = divideHist(uncStatInbCDFTonly_BH , accCorrectedInbCDFTonly_BH)
+			uncStatInbCRonly_BH = divideHist(uncStatInbCRonly_BH , accCorrectedInbCRonly_BH)
 
 			accCorrectedInb_BH[~ActiveInb] = 0
 			uncStatInb_BH[~ActiveInb] = 0
@@ -976,10 +976,10 @@ if args.savexsec:
 			uncStatOutbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutb50nA))
 			uncStatOutbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutb50nA))
 			uncStatOutbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histVGGOutbCR50nA) + inverseHist(histVGGGenOutb50nA))
-			uncStatOutbFDonly_VGG = divideHist(uncStatOutbFDonly_VGG , accCorectedOutbFDonly_VGG)
-			uncStatOutbCDonly_VGG = divideHist(uncStatOutbCDonly_VGG , accCorectedOutbCDonly_VGG)
-			uncStatOutbCDFTonly_VGG = divideHist(uncStatOutbCDFTonly_VGG , accCorectedOutbCDFTonly_VGG)
-			uncStatOutbCRonly_VGG = divideHist(uncStatOutbCRonly_VGG , accCorectedOutbCRonly_VGG)
+			uncStatOutbFDonly_VGG = divideHist(uncStatOutbFDonly_VGG , accCorrectedOutbFDonly_VGG)
+			uncStatOutbCDonly_VGG = divideHist(uncStatOutbCDonly_VGG , accCorrectedOutbCDonly_VGG)
+			uncStatOutbCDFTonly_VGG = divideHist(uncStatOutbCDFTonly_VGG , accCorrectedOutbCDFTonly_VGG)
+			uncStatOutbCRonly_VGG = divideHist(uncStatOutbCRonly_VGG , accCorrectedOutbCRonly_VGG)
 
 			accCorrectedOutb_VGG[~ActiveOutb] = 0
 			uncStatOutb_VGG[~ActiveOutb] = 0
@@ -1006,10 +1006,10 @@ if args.savexsec:
 			uncStatOutbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutb50nA))
 			uncStatOutbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutb50nA))
 			uncStatOutbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutb50nA))
-			uncStatOutbFDonly_BH = divideHist(uncStatOutbFDonly_BH , accCorectedOutbFDonly_BH)
-			uncStatOutbCDonly_BH = divideHist(uncStatOutbCDonly_BH , accCorectedOutbCDonly_BH)
-			uncStatOutbCDFTonly_BH = divideHist(uncStatOutbCDFTonly_BH , accCorectedOutbCDFTonly_BH)
-			uncStatOutbCRonly_BH = divideHist(uncStatOutbCRonly_BH , accCorectedOutbCRonly_BH)
+			uncStatOutbFDonly_BH = divideHist(uncStatOutbFDonly_BH , accCorrectedOutbFDonly_BH)
+			uncStatOutbCDonly_BH = divideHist(uncStatOutbCDonly_BH , accCorrectedOutbCDonly_BH)
+			uncStatOutbCDFTonly_BH = divideHist(uncStatOutbCDFTonly_BH , accCorrectedOutbCDFTonly_BH)
+			uncStatOutbCRonly_BH = divideHist(uncStatOutbCRonly_BH , accCorrectedOutbCRonly_BH)
 
 			uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
 			accCorrectedOutb_BH[~ActiveOutb] = 0
