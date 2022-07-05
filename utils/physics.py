@@ -271,14 +271,14 @@ def createBinEdges(binCenters):
     return np.array([start, *middle, end])
 
 def makeReduced(df):
-    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
+    columns_needed = ["helicity", "polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
     return df.loc[:, columns_needed]
 
 def readReduced(parent, jobNum, polarity, beamCurrent):
     df = pd.read_pickle(parent + "{}.pkl".format(jobNum))
     df.loc[:, "polarity"] = polarity
     df.loc[:, "beamCurrent"] = beamCurrent
-    columns_needed = ["polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
+    columns_needed = ["helicity", "polarity", "config", "beamCurrent", "xB", "Q2", "t1", "phi1"]
     return df.loc[:, columns_needed]
 
 def divideHist(df1, df2, threshold = 0):
