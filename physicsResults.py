@@ -1188,10 +1188,10 @@ if args.savekine:
 			histVGGGenOutbphi50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"])
 			histVGGGenOutbrad50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 			histVGGGenOutbborn50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbrad45nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradplus.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbborn45nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornplus.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbrad45nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradminus.npz".format(k, jobNum))["hist"])
-			histVGGGenOutbborn45nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornminus.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbrad50nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradplus.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbborn50nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornplus.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbrad50nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradminus.npz".format(k, jobNum))["hist"])
+			histVGGGenOutbborn50nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornminus.npz".format(k, jobNum))["hist"])
 
 		histBHGenOutbxB50nA, histBHGenOutbQ250nA, histBHGenOutbt150nA, histBHGenOutbphi50nA = [], [], [], []
 		histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
@@ -1204,10 +1204,10 @@ if args.savekine:
 			histBHGenOutbphi50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genphi.npz".format(k, jobNum))["hist"])
 			histBHGenOutbrad50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genrad.npz".format(k, jobNum))["hist"])
 			histBHGenOutbborn50nA.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genborn.npz".format(k, jobNum))["hist"])
-			histBHGenOutbrad45nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradplus.npz".format(k, jobNum))["hist"])
-			histBHGenOutbborn45nA_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornplus.npz".format(k, jobNum))["hist"])
-			histBHGenOutbrad45nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradminus.npz".format(k, jobNum))["hist"])
-			histBHGenOutbborn45nA_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornminus.npz".format(k, jobNum))["hist"])
+			histBHGenOutbrad50A_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradplus.npz".format(k, jobNum))["hist"])
+			histBHGenOutbborn50A_plus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornplus.npz".format(k, jobNum))["hist"])
+			histBHGenOutbrad50A_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genradminus.npz".format(k, jobNum))["hist"])
+			histBHGenOutbborn50A_minus.append(np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Genbornminus.npz".format(k, jobNum))["hist"])
 
 		phi1avg_VGG = np.mean(histVGGGenOutbphi50nA, axis = 0)
 		xBavg_VGG = np.stack([np.mean(histVGGGenOutbxB50nA, axis = 0)]*(len(phibins)-1), axis = -1)
