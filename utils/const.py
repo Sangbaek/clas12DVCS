@@ -337,7 +337,7 @@ runs_outb_vgg50nA = [4907, 4909, 4912]
 runs_outb_vgg40nA = []
 runs_outb_vgg0nA = []
 runs_outb_vgg40nAT = []
-runs_outb_bh50nA = [4905]
+runs_outb_bh50nA = [4902, 4903, 4905]
 
 runs_outb_bkg50nA = [4243, 4271, 4290]
 runs_outb_bkg40nA = [4293]
