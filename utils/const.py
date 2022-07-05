@@ -295,17 +295,19 @@ activeQ2xBtbins = np.linspace(0, 174, 175, dtype=int)[~np.isin(np.linspace(0, 17
 
 newxBbins = [x1, c0, c1, c2, c3, c4, d2]
 newQ2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5)]
+newxBbins2 = [x1, c0, c1, c2, c3, c4, c5, d2, d4]
+newQ2bins2 = [y1, 1.2, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), 7]
 newtbins = [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0, 1.25, 1.5, 1.79]
 
-collection_cont_xBbins  = [np.linspace(0.05, 0.85, 6), newxBbins, np.linspace(0.05, 0.85, 2)]
-collection_cont_Q2bins  = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins, np.linspace(1, 10.3, 2)]
-collection_cont_tbins   = [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), newtbins, np.linspace(0.09, 1.8, 2)]
-collection_cont_phibins = [np.linspace(0, 360, 6), phibins, np.linspace(0, 360, 2)]
+collection_cont_xBbins  = [np.linspace(x1, d4, 2),    np.linspace(0.05, 0.85, 6),                         newxBbins, newxBbins2]
+collection_cont_Q2bins  = [np.linspace(1, 7, 2),      np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins, newQ2bins2]
+collection_cont_tbins   = [np.linspace(0.09, 1.8, 2), np.array([0.09, 0.2, 0.4, 0.8, 1.8]),               newtbins,  newtbins]
+collection_cont_phibins = [np.linspace(0, 360, 2),    np.linspace(0, 360, 6),                             phibins,   phibins]
 
-collection_xBbins = [np.linspace(0.05, 0.85, 6), newxBbins, newxBbins]
-collection_Q2bins = [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins, newQ2bins]
-collection_tbins = [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), tbins, newtbins]
-collection_phibins = [phibins, phibins, phibins]
+collection_xBbins =  [np.linspace(0.05, 0.85, 6), 						 newxBbins, newxBbins, newxBbins2]
+collection_Q2bins =  [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]),newQ2bins, newQ2bins, newQ2bins2]
+collection_tbins =   [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), 			 tbins,     newtbins,  newtbins]
+collection_phibins = [phibins, 											 phibins,   phibins,   phibins]
 
 # simulation run numbers
 # runs_inb_vgg50nA = [3987, 4124, 4139, 4181, 4182, 4397, 4528, 4529, 4535, 4539]
