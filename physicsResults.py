@@ -51,6 +51,8 @@ parser.add_argument("-k","--binscheme", help="binning scheme number", default=No
 parser.add_argument("-kstart","--kstart", help="binning scheme start", default=None)
 parser.add_argument("-opt","--optionaltag", help="optional tag: none, eb, 2sigma, 3sigma, sm09, sm11", default=None)
 parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = "store_true")
+parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
+parser.add_argument("-sk", "--savekine", help = "save kinematic variables", action = "store_true")
 
 args = parser.parse_args()
 
@@ -426,7 +428,7 @@ if args.savebinVolume:
 						binVolume[xBind, Q2ind, tind, phiind] = (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii)*np.mean(ratio)
 		np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
 
-if args.saveyield:
+if args.saveyields:
 	print("read exp...")
 	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/epgExp.pkl".format(optionaltag))
 	for k in range(kstart, len(collection_xBbins)):
