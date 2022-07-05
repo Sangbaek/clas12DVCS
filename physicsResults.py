@@ -424,8 +424,7 @@ if args.savebinVolume:
 							cond = (nub>2 )&(nub<10.604 - 2 ) & (W2(xB, Q2, t1, phi1)>4) & (t1>tmin1) & (Kfac2(xB, Q2, t1, phi1)>0)
 							ratio.append(np.sum(cond)/N)
 						binVolume[xBind, Q2ind, tind, phiind] = (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii)*np.mean(ratio)
-		for i in range(0, len(collection_cont_xBbins)):
-			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i), hist = binVolume)
+		np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k), hist = binVolume)
 
 if args.savexsec:
 	print("read exp...")
@@ -439,11 +438,12 @@ if args.savexsec:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
+		binVolume = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+
 		for i in range(0, len(collection_cont_xBbins)):
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
 			print("bkg scheme {}".format(i))
-			binVolume = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
 			#inbending
 			#exp - all
 			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
@@ -1353,7 +1353,7 @@ if args.saveplot:
 			xsecTh_KM          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_KM.npz".format(optionaltag, k, i))["hist"]
 			xsecTh_BH          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_BH.npz".format(optionaltag, k, i))["hist"]
 			xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecTh_VGG.npz".format(optionaltag, k, i))["hist"]
-			binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}binVolume.npz".format(k, i))["hist"]
+			binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
 
 			ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
 			ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
