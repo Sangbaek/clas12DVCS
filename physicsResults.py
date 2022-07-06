@@ -54,22 +54,28 @@ parser.add_argument("-opt","--optionaltag", help="optional tag: none, eb, 2sigma
 parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = "store_true")
 parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
 parser.add_argument("-sk", "--savekine", help = "save kinematic variables", action = "store_true")
+parser.add_argument("-ss", "--savesyst", help = "save systematic uncertainties", action = "store_true")
 
 args = parser.parse_args()
 
 if args.optionaltag:
 	optionaltag = args.optionaltag
+	istart = len(collection_cont_xBbins) - 1
+	kstart = len(collection_xBbins) - 1
+	kend = len(collection_xBbins)
 else:
 	optionaltag = ''
+	istart = 0
+	kstart = 0
 
-if args.kstart:
-	kstart = int(args.kstart)
-else:
-	kstart = len(collection_xBbins) - 1 
-if args.kend:
-	kend = int(args.kend)
-else:
-	kend = len(collection_xBbins)
+	if args.kstart:
+		kstart = int(args.kstart)
+	else:
+		kstart = len(collection_xBbins) - 1 
+	if args.kend:
+		kend = int(args.kend)
+	else:
+		kend = len(collection_xBbins)
 
 inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 charge_epg = inbcharge_epg + outbcharge_epg
@@ -193,7 +199,7 @@ if args.savecont:
 	df_bkg2gs_outb = pd.concat(df_bkg2gs_outb)
 
 	i = 0	# trial
-	for i in range(len(collection_cont_xBbins)):
+	for i in range(istart, len(collection_cont_xBbins)):
 
 		xBbins = collection_cont_xBbins  [i]
 		Q2bins = collection_cont_Q2bins  [i]
@@ -443,7 +449,7 @@ if args.saveyields:
 		tbins   = collection_tbins [k]
 		phibins = collection_phibins[k]
 
-		for i in range(0, len(collection_cont_xBbins)):
+		for i in range(istart, len(collection_cont_xBbins)):
 			#inbending
 			#exp - all
 			histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
@@ -505,7 +511,7 @@ if args.saveyields:
 			histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT + histExpInbCR
 			histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSInbCR
 
-			ActiveInb = histBHDVCSInb>20
+			ActiveInb = histExpInb>20
 			if k <  2:
 				ActiveInb[:, 0, :, :] = False
 			elif k == 2:
@@ -666,7 +672,7 @@ if args.saveyields:
 			histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
 			histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
 
-			ActiveOutb = histBHDVCSOutb>20
+			ActiveOutb = histExpOutb>20
 			ActiveOutb_int = np.stack([np.sum(ActiveOutb, axis=-1)>8]*(len(phibins)-1), axis = -1)
 			ActiveAll = ActiveInb & ActiveOutb
 			ActiveAny = ActiveInb | ActiveOutb
@@ -1412,7 +1418,7 @@ if args.savexsec:
 		rcfactors_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_BH_minus.npz".format(k))["hist"]
 		rcfactors_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_VGG_minus.npz".format(k))["hist"]
 
-		for i in range(0, len(collection_cont_xBbins)):
+		for i in range(istart, len(collection_cont_xBbins)):
 			#Inbending cross sections 
 			# i = 0 #selected background estimation
 			accCorrectedInb_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG.npz".format(optionaltag, k, i))["hist"]
@@ -1545,6 +1551,9 @@ if args.savexsec:
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_VGG.npz".format(optionaltag, k, i), hist = xsecOutbCRonly_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_BH.npz".format(optionaltag, k, i), hist = xsecOutbCRonly_BH)
 
+if args.savesyst:
+	pass
+
 if args.saveplot:
 
 	for k in range(kstart, kend):
@@ -1577,7 +1586,7 @@ if args.saveplot:
 		xsecTh_VGG_minus    = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG_minus.npz".format(k))["hist"]
 		binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
 
-		for i in range(0, len(collection_cont_xBbins)):
+		for i in range(istart, len(collection_cont_xBbins)):
 
 			print("reading the xsec vars")
 
@@ -1824,7 +1833,7 @@ if args.saveplot:
 						theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
-						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma_{+}}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 						axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
@@ -1864,7 +1873,7 @@ if args.saveplot:
 						theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
-						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma_{-}}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 						axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
@@ -1904,7 +1913,7 @@ if args.saveplot:
 						theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
-						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
 						# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
@@ -1950,7 +1959,7 @@ if args.saveplot:
 						theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
-						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("BSA")
 						# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
@@ -2406,7 +2415,7 @@ if args.contplot:
 # ActiveInb_int  
 # ActiveOutb_int 
 # 	for k in range(kstart, kend):
-# 		for i in range(len(collection_cont_xBbins)):
+# 		for i in range(istart, len(collection_cont_xBbins)):
 # 			phi1avg_VGG [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
 # 			xBavg_VGG   [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i))["hist"]
 # 			Q2avg_VGG   [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}Q2avg_VGG.npz".format(k, i))["hist"]
