@@ -776,7 +776,7 @@ if args.saveyields:
 			uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
 			uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_VGG[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
+			uncStatInb_VGG[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)[:, :, 0, :]
 			uncStatInb_VGG[:, :, 0, :] = divideHist(uncStatInb_VGG[:, :, 0, :], accCorrectedInb_VGG[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
@@ -798,7 +798,7 @@ if args.saveyields:
 			uncStatInb_VGG_plus = np.sqrt(accCorrectedInbFD_VGG_plus**2 *uncStatInbFD_VGG_plus**2 + accCorrectedInbCD_VGG_plus**2 * uncStatInbCD_VGG_plus**2 + accCorrectedInbCDFT_VGG_plus**2 * uncStatInbCDFT_VGG_plus**2 + accCorrectedInbCR_VGG_plus**2 * uncStatInbCR_VGG_plus**2)
 			uncStatInb_VGG_plus = divideHist(uncStatInb_VGG_plus, accCorrectedInb_VGG_plus)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_VGG_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_plus**2 * uncStatInbCD_VGG_plus**2 + accCorrectedInbCDFT_VGG_plus**2 * uncStatInbCDFT_VGG_plus**2 + accCorrectedInbCR_VGG_plus**2 * uncStatInbCR_VGG_plus**2)
+			uncStatInb_VGG_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_plus**2 * uncStatInbCD_VGG_plus**2 + accCorrectedInbCDFT_VGG_plus**2 * uncStatInbCDFT_VGG_plus**2 + accCorrectedInbCR_VGG_plus**2 * uncStatInbCR_VGG_plus**2)[:, :, 0, :]
 			uncStatInb_VGG_plus[:, :, 0, :] = divideHist(uncStatInb_VGG_plus[:, :, 0, :], accCorrectedInb_VGG_plus[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_VGG_plus = divideHist(accCorrectedInb_VGG_plus*histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus + histVGGGenInbCD45nA_plus + histVGGGenInbCDFT45nA_plus + histVGGGenInbCR45nA_plus)
@@ -820,7 +820,7 @@ if args.saveyields:
 			uncStatInb_VGG_minus = np.sqrt(accCorrectedInbFD_VGG_minus**2 *uncStatInbFD_VGG_minus**2 + accCorrectedInbCD_VGG_minus**2 * uncStatInbCD_VGG_minus**2 + accCorrectedInbCDFT_VGG_minus**2 * uncStatInbCDFT_VGG_minus**2 + accCorrectedInbCR_VGG_minus**2 * uncStatInbCR_VGG_minus**2)
 			uncStatInb_VGG_minus = divideHist(uncStatInb_VGG_minus, accCorrectedInb_VGG_minus)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_VGG_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_minus**2 * uncStatInbCD_VGG_minus**2 + accCorrectedInbCDFT_VGG_minus**2 * uncStatInbCDFT_VGG_minus**2 + accCorrectedInbCR_VGG_minus**2 * uncStatInbCR_VGG_minus**2)
+			uncStatInb_VGG_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_minus**2 * uncStatInbCD_VGG_minus**2 + accCorrectedInbCDFT_VGG_minus**2 * uncStatInbCDFT_VGG_minus**2 + accCorrectedInbCR_VGG_minus**2 * uncStatInbCR_VGG_minus**2)[:, :, 0, :]
 			uncStatInb_VGG_minus[:, :, 0, :] = divideHist(uncStatInb_VGG_minus[:, :, 0, :], accCorrectedInb_VGG_minus[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_VGG_minus = divideHist(accCorrectedInb_VGG_minus*histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus + histVGGGenInbCD45nA_minus + histVGGGenInbCDFT45nA_minus + histVGGGenInbCR45nA_minus)
@@ -861,7 +861,7 @@ if args.saveyields:
 			uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
 			uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_BH[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
+			uncStatInb_BH[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)[:, :, 0, :]
 			uncStatInb_BH[:, :, 0, :] = divideHist(uncStatInb_BH[:, :, 0, :], accCorrectedInb_BH[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
@@ -883,7 +883,7 @@ if args.saveyields:
 			uncStatInb_BH_plus = np.sqrt(accCorrectedInbFD_BH_plus**2 *uncStatInbFD_BH_plus**2 + accCorrectedInbCD_BH_plus**2 * uncStatInbCD_BH_plus**2 + accCorrectedInbCDFT_BH_plus**2 * uncStatInbCDFT_BH_plus**2 + accCorrectedInbCR_BH_plus**2 * uncStatInbCR_BH_plus**2)
 			uncStatInb_BH_plus = divideHist(uncStatInb_BH_plus, accCorrectedInb_BH_plus)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_BH_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_plus**2 * uncStatInbCD_BH_plus**2 + accCorrectedInbCDFT_BH_plus**2 * uncStatInbCDFT_BH_plus**2 + accCorrectedInbCR_BH_plus**2 * uncStatInbCR_BH_plus**2)
+			uncStatInb_BH_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_plus**2 * uncStatInbCD_BH_plus**2 + accCorrectedInbCDFT_BH_plus**2 * uncStatInbCDFT_BH_plus**2 + accCorrectedInbCR_BH_plus**2 * uncStatInbCR_BH_plus**2)[:, :, 0, :]
 			uncStatInb_BH_plus[:, :, 0, :] = divideHist(uncStatInb_BH_plus[:, :, 0, :], accCorrectedInb_BH_plus[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_BH_plus = divideHist(accCorrectedInb_BH_plus*histBHGenInb45nA_plus, histBHGenInbFD45nA_plus + histBHGenInbCD45nA_plus + histBHGenInbCDFT45nA_plus + histBHGenInbCR45nA_plus)
@@ -905,7 +905,7 @@ if args.saveyields:
 			uncStatInb_BH_minus = np.sqrt(accCorrectedInbFD_BH_minus**2 *uncStatInbFD_BH_minus**2 + accCorrectedInbCD_BH_minus**2 * uncStatInbCD_BH_minus**2 + accCorrectedInbCDFT_BH_minus**2 * uncStatInbCDFT_BH_minus**2 + accCorrectedInbCR_BH_minus**2 * uncStatInbCR_BH_minus**2)
 			uncStatInb_BH_minus = divideHist(uncStatInb_BH_minus, accCorrectedInb_BH_minus)
 			#FD inbending threshold [:, :, 0, :]
-			uncStatInb_BH_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_minus**2 * uncStatInbCD_BH_minus**2 + accCorrectedInbCDFT_BH_minus**2 * uncStatInbCDFT_BH_minus**2 + accCorrectedInbCR_BH_minus**2 * uncStatInbCR_BH_minus**2)
+			uncStatInb_BH_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_minus**2 * uncStatInbCD_BH_minus**2 + accCorrectedInbCDFT_BH_minus**2 * uncStatInbCDFT_BH_minus**2 + accCorrectedInbCR_BH_minus**2 * uncStatInbCR_BH_minus**2)[:, :, 0, :]
 			uncStatInb_BH_minus[:, :, 0, :] = divideHist(uncStatInb_BH_minus[:, :, 0, :], accCorrectedInb_BH_minus[:, :, 0, :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedInb_BH_minus = divideHist(accCorrectedInb_BH_minus*histBHGenInb45nA_minus, histBHGenInbFD45nA_minus + histBHGenInbCD45nA_minus + histBHGenInbCDFT45nA_minus + histBHGenInbCR45nA_minus)
@@ -946,7 +946,7 @@ if args.saveyields:
 			uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)
 			uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
 			#FD inbending threshold [:, :, [0, 1], :]
-			uncStatOutb_VGG[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)
+			uncStatOutb_VGG[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)[:, :, [0, 1], :]
 			uncStatOutb_VGG[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG[:, :, [0, 1], :], accCorrectedOutb_VGG[:, :, [0, 1], :])
 			#Correct by the ratio of covered/uncovered
 			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA + histVGGGenOutbCDFT50nA + histVGGGenOutbCR50nA)
@@ -968,7 +968,7 @@ if args.saveyields:
 			uncStatOutb_VGG_plus = np.sqrt(accCorrectedOutbFD_VGG_plus**2 *uncStatOutbFD_VGG_plus**2 + accCorrectedOutbCD_VGG_plus**2 * uncStatOutbCD_VGG_plus**2 + accCorrectedOutbCDFT_VGG_plus**2 * uncStatOutbCDFT_VGG_plus**2 + accCorrectedOutbCR_VGG_plus**2 * uncStatOutbCR_VGG_plus**2)
 			uncStatOutb_VGG_plus = divideHist(uncStatOutb_VGG_plus, accCorrectedOutb_VGG_plus)
 			#FD inbending threshold [:, :, [0, 1], :]
-			uncStatOutb_VGG_plus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_plus**2 * uncStatOutbCD_VGG_plus**2 + accCorrectedOutbCDFT_VGG_plus**2 * uncStatOutbCDFT_VGG_plus**2 + accCorrectedOutbCR_VGG_plus**2 * uncStatOutbCR_VGG_plus**2)
+			uncStatOutb_VGG_plus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_plus**2 * uncStatOutbCD_VGG_plus**2 + accCorrectedOutbCDFT_VGG_plus**2 * uncStatOutbCDFT_VGG_plus**2 + accCorrectedOutbCR_VGG_plus**2 * uncStatOutbCR_VGG_plus**2)[:, :, [0, 1], :]
 			uncStatOutb_VGG_plus[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG_plus[:, :, [0, 1], :], accCorrectedOutb_VGG_plus[:, :, [0, 1], :])
 
 			accCorrectedOutb_VGG_plus = divideHist(accCorrectedOutb_VGG_plus*histVGGGenOutb50nA_plus, histVGGGenOutbFD50nA_plus + histVGGGenOutbCD50nA_plus + histVGGGenOutbCDFT50nA_plus + histVGGGenOutbCR50nA_plus)
@@ -990,7 +990,7 @@ if args.saveyields:
 			uncStatOutb_VGG_minus = np.sqrt(accCorrectedOutbFD_VGG_minus**2 *uncStatOutbFD_VGG_minus**2 + accCorrectedOutbCD_VGG_minus**2 * uncStatOutbCD_VGG_minus**2 + accCorrectedOutbCDFT_VGG_minus**2 * uncStatOutbCDFT_VGG_minus**2 + accCorrectedOutbCR_VGG_minus**2 * uncStatOutbCR_VGG_minus**2)
 			uncStatOutb_VGG_minus = divideHist(uncStatOutb_VGG_minus, accCorrectedOutb_VGG_minus)
 			#FD inbending threshold [:, :, [0, 1], :]
-			uncStatOutb_VGG_minus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_minus**2 * uncStatOutbCD_VGG_minus**2 + accCorrectedOutbCDFT_VGG_minus**2 * uncStatOutbCDFT_VGG_minus**2 + accCorrectedOutbCR_VGG_minus**2 * uncStatOutbCR_VGG_minus**2)
+			uncStatOutb_VGG_minus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_minus**2 * uncStatOutbCD_VGG_minus**2 + accCorrectedOutbCDFT_VGG_minus**2 * uncStatOutbCDFT_VGG_minus**2 + accCorrectedOutbCR_VGG_minus**2 * uncStatOutbCR_VGG_minus**2)[:, :, [0, 1], :]
 			uncStatOutb_VGG_minus[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG_minus[:, :, [0, 1], :], accCorrectedOutb_VGG_minus[:, :, [0, 1], :])
 
 			accCorrectedOutb_VGG_minus = divideHist(accCorrectedOutb_VGG_minus*histVGGGenOutb50nA_minus, histVGGGenOutbFD50nA_minus + histVGGGenOutbCD50nA_minus + histVGGGenOutbCDFT50nA_minus + histVGGGenOutbCR50nA_minus)
@@ -1736,12 +1736,13 @@ if args.saveplot:
 						axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
-						if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
-							handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
-							active = 1
-				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+						# if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+						# 	handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+						# 	active = 1
+				# lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-				plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/all_configs_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				# plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/all_configs_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/all_configs_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin))
 				plt.clf()
 
 			for tbin in range(num_plott):
@@ -1764,7 +1765,8 @@ if args.saveplot:
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsec_BH_plus[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH_plus*uncStat_BH_plus)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
-						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM_plus[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((1+polrate)/2*xsecTh_KM_plus+(1-polrate)/2*xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((1+polrate)/2*xsecTh_VGG_plus+(1-polrate)/2*xsecTh_VGG_minus)[xBbin, Q2bin, tbin, :], color = 'orange', label = 'VGG')
 						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH_plus[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
 
 						xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
@@ -1804,8 +1806,8 @@ if args.saveplot:
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsec_BH_minus[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH_minus*uncStat_BH_minus)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
-						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM_minus[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
-						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH_minus[xBbin, Q2bin, tbin, :], color = 'r', label = 'BH')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((1-polrate)/2*xsecTh_KM_plus+(1+polrate)/2*xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((1-polrate)/2*xsecTh_VGG_plus+(1+polrate)/2*xsecTh_VGG_minus)[xBbin, Q2bin, tbin, :], color = 'orange', label = 'VGG')
 
 						xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 						Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
@@ -1837,10 +1839,10 @@ if args.saveplot:
 							continue
 						if ActiveInb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
-							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsecInb_BH_plus - xsecInb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
+							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(1/polrate)*(xsecInb_BH_plus - xsecInb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
 						if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
-							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsecOutb_BH_plus - xsecOutb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
+							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(1/polrate)*(xsecOutb_BH_plus - xsecOutb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
@@ -1876,17 +1878,17 @@ if args.saveplot:
 							continue
 						if ActiveInb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
-							BSAInb_BH = divideHist(xsecInb_BH_plus - xsecInb_BH_minus, xsecInb_BH_plus + xsecInb_BH_minus)
+							BSAInb_BH = (1/polrate)*divideHist(xsecInb_BH_plus - xsecInb_BH_minus, xsecInb_BH_plus + xsecInb_BH_minus)
 							uncBSAInb_BH = BSAInb_BH*np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)*np.sqrt(divideHist(1, (xsecInb_BH_plus-xsecInb_BH_minus)**2) + divideHist(1, (xsecInb_BH_plus+xsecInb_BH_minus)**2))
 							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSAInb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSAInb_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
 						if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
-							BSAOutb_BH = divideHist(xsecOutb_BH_plus - xsecOutb_BH_minus, xsecOutb_BH_plus + xsecOutb_BH_minus)
+							BSAOutb_BH = (1/polrate)*divideHist(xsecOutb_BH_plus - xsecOutb_BH_minus, xsecOutb_BH_plus + xsecOutb_BH_minus)
 							uncBSAOutb_BH = BSAOutb_BH*np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)*np.sqrt(divideHist(1, (xsecOutb_BH_plus-xsecOutb_BH_minus)**2) + divideHist(1, (xsecOutb_BH_plus+xsecOutb_BH_minus)**2))
 							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSAOutb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSAOutb_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-						BSA_BH = divideHist(xsec_BH_plus - xsec_BH_minus, xsec_BH_plus + xsec_BH_minus)
+						BSA_BH = (1/polrate)*divideHist(xsec_BH_plus - xsec_BH_minus, xsec_BH_plus + xsec_BH_minus)
 						uncBSA_BH = BSA_BH*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)*np.sqrt(divideHist(1, (xsec_BH_plus-xsec_BH_minus)**2) + divideHist(1, (xsec_BH_plus+xsec_BH_minus)**2))
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSA_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSA_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged.')
 						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecTh_KM_plus - xsecTh_KM_minus, xsecTh_KM_plus + xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
