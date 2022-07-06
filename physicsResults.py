@@ -760,12 +760,14 @@ if args.saveyields:
 				histVGGGenOutbCR50nA_minus = histVGGGenOutbCR50nA_minus + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4minus.npz".format(k, jobNum))["hist"]
 
 			#acc correction with stat error - inbending
+			#with VGG
 			accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD45nA , histVGGInbFD45nA)
 			accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD45nA , histVGGInbCD45nA)
 			accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT45nA , histVGGInbCDFT45nA)
 			accCorrectedInbCR_VGG = divideHist(histBHDVCSInbCR*histVGGGenInbCR45nA , histVGGInbCR45nA)
 			accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG + accCorrectedInbCR_VGG
-			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_VGG[:, :, 0, :] = accCorrectedInbCD_VGG[:, :, 0, :] + accCorrectedInbCDFT_VGG[:, :, 0, :] + accCorrectedInbCR_VGG[:, :, 0, :]
 
 			uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD45nA) + inverseHist(histVGGGenInbFD45nA))
 			uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInbCD45nA))
@@ -773,6 +775,12 @@ if args.saveyields:
 			uncStatInbCR_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInbCR45nA))
 			uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
 			uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_VGG[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
+			uncStatInb_VGG[:, :, 0, :] = divideHist(uncStatInb_VGG[:, :, 0, :], accCorrectedInb_VGG[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
+			accCorrectedInb_VGG[:, :, 0, :] = divideHist(accCorrectedInb_VGG[:, :, 0, :]*histVGGGenInb45nA[:, :, 0, :], histVGGGenInbCD45nA[:, :, 0, :] + histVGGGenInbCDFT45nA[:, :, 0, :] + histVGGGenInbCR45nA[:, :, 0, :])
 
 			# plus
 			accCorrectedInbFD_VGG_plus = divideHist(histBHDVCSInbFD_plus*histVGGGenInbFD45nA_plus , histVGGInbFD45nA_plus)
@@ -780,7 +788,8 @@ if args.saveyields:
 			accCorrectedInbCDFT_VGG_plus = divideHist(histBHDVCSInbCDFT_plus*histVGGGenInbCDFT45nA_plus , histVGGInbCDFT45nA_plus)
 			accCorrectedInbCR_VGG_plus = divideHist(histBHDVCSInbCR_plus*histVGGGenInbCR45nA_plus , histVGGInbCR45nA_plus)
 			accCorrectedInb_VGG_plus = accCorrectedInbFD_VGG_plus + accCorrectedInbCD_VGG_plus + accCorrectedInbCDFT_VGG_plus + accCorrectedInbCR_VGG_plus
-			accCorrectedInb_VGG_plus = divideHist(accCorrectedInb_VGG_plus*histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus + histVGGGenInbCD45nA_plus + histVGGGenInbCDFT45nA_plus + histVGGGenInbCR45nA_plus)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_VGG_plus[:, :, 0, :] = accCorrectedInbCD_VGG_plus[:, :, 0, :] + accCorrectedInbCDFT_VGG_plus[:, :, 0, :] + accCorrectedInbCR_VGG_plus[:, :, 0, :]
 
 			uncStatInbFD_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD_plus**2+histExpUncInbFD_plus**2), histBHDVCSInbFD_plus)**2 + inverseHist(histVGGInbFD45nA_plus) + inverseHist(histVGGGenInbFD45nA_plus))
 			uncStatInbCD_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD_plus**2+histExpUncInbCD_plus**2), histBHDVCSInbCD_plus)**2 + inverseHist(histVGGInbCD45nA_plus) + inverseHist(histVGGGenInbCD45nA_plus))
@@ -788,6 +797,12 @@ if args.saveyields:
 			uncStatInbCR_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR_plus**2+histExpUncInbCR_plus**2), histBHDVCSInbCR_plus)**2 + inverseHist(histVGGInbCR45nA_plus) + inverseHist(histVGGGenInbCR45nA_plus))
 			uncStatInb_VGG_plus = np.sqrt(accCorrectedInbFD_VGG_plus**2 *uncStatInbFD_VGG_plus**2 + accCorrectedInbCD_VGG_plus**2 * uncStatInbCD_VGG_plus**2 + accCorrectedInbCDFT_VGG_plus**2 * uncStatInbCDFT_VGG_plus**2 + accCorrectedInbCR_VGG_plus**2 * uncStatInbCR_VGG_plus**2)
 			uncStatInb_VGG_plus = divideHist(uncStatInb_VGG_plus, accCorrectedInb_VGG_plus)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_VGG_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_plus**2 * uncStatInbCD_VGG_plus**2 + accCorrectedInbCDFT_VGG_plus**2 * uncStatInbCDFT_VGG_plus**2 + accCorrectedInbCR_VGG_plus**2 * uncStatInbCR_VGG_plus**2)
+			uncStatInb_VGG_plus[:, :, 0, :] = divideHist(uncStatInb_VGG_plus[:, :, 0, :], accCorrectedInb_VGG_plus[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_VGG_plus = divideHist(accCorrectedInb_VGG_plus*histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus + histVGGGenInbCD45nA_plus + histVGGGenInbCDFT45nA_plus + histVGGGenInbCR45nA_plus)
+			accCorrectedInb_VGG_plus[:, :, 0, :] = divideHist(accCorrectedInb_VGG_plus[:, :, 0, :]*histVGGGenInb45nA_plus[:, :, 0, :], histVGGGenInbCD45nA_plus[:, :, 0, :] + histVGGGenInbCDFT45nA_plus[:, :, 0, :] + histVGGGenInbCR45nA_plus[:, :, 0, :])
 
 			# minus
 			accCorrectedInbFD_VGG_minus = divideHist(histBHDVCSInbFD_minus*histVGGGenInbFD45nA_minus , histVGGInbFD45nA_minus)
@@ -795,7 +810,8 @@ if args.saveyields:
 			accCorrectedInbCDFT_VGG_minus = divideHist(histBHDVCSInbCDFT_minus*histVGGGenInbCDFT45nA_minus , histVGGInbCDFT45nA_minus)
 			accCorrectedInbCR_VGG_minus = divideHist(histBHDVCSInbCR_minus*histVGGGenInbCR45nA_minus , histVGGInbCR45nA_minus)
 			accCorrectedInb_VGG_minus = accCorrectedInbFD_VGG_minus + accCorrectedInbCD_VGG_minus + accCorrectedInbCDFT_VGG_minus + accCorrectedInbCR_VGG_minus
-			accCorrectedInb_VGG_minus = divideHist(accCorrectedInb_VGG_minus*histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus + histVGGGenInbCD45nA_minus + histVGGGenInbCDFT45nA_minus + histVGGGenInbCR45nA_minus)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_VGG_minus[:, :, 0, :] = accCorrectedInbCD_VGG_minus[:, :, 0, :] + accCorrectedInbCDFT_VGG_minus[:, :, 0, :] + accCorrectedInbCR_VGG_minus[:, :, 0, :]
 
 			uncStatInbFD_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD_minus**2+histExpUncInbFD_minus**2), histBHDVCSInbFD_minus)**2 + inverseHist(histVGGInbFD45nA_minus) + inverseHist(histVGGGenInbFD45nA_minus))
 			uncStatInbCD_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD_minus**2+histExpUncInbCD_minus**2), histBHDVCSInbCD_minus)**2 + inverseHist(histVGGInbCD45nA_minus) + inverseHist(histVGGGenInbCD45nA_minus))
@@ -803,6 +819,12 @@ if args.saveyields:
 			uncStatInbCR_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR_minus**2+histExpUncInbCR_minus**2), histBHDVCSInbCR_minus)**2 + inverseHist(histVGGInbCR45nA_minus) + inverseHist(histVGGGenInbCR45nA_minus))
 			uncStatInb_VGG_minus = np.sqrt(accCorrectedInbFD_VGG_minus**2 *uncStatInbFD_VGG_minus**2 + accCorrectedInbCD_VGG_minus**2 * uncStatInbCD_VGG_minus**2 + accCorrectedInbCDFT_VGG_minus**2 * uncStatInbCDFT_VGG_minus**2 + accCorrectedInbCR_VGG_minus**2 * uncStatInbCR_VGG_minus**2)
 			uncStatInb_VGG_minus = divideHist(uncStatInb_VGG_minus, accCorrectedInb_VGG_minus)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_VGG_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG_minus**2 * uncStatInbCD_VGG_minus**2 + accCorrectedInbCDFT_VGG_minus**2 * uncStatInbCDFT_VGG_minus**2 + accCorrectedInbCR_VGG_minus**2 * uncStatInbCR_VGG_minus**2)
+			uncStatInb_VGG_minus[:, :, 0, :] = divideHist(uncStatInb_VGG_minus[:, :, 0, :], accCorrectedInb_VGG_minus[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_VGG_minus = divideHist(accCorrectedInb_VGG_minus*histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus + histVGGGenInbCD45nA_minus + histVGGGenInbCDFT45nA_minus + histVGGGenInbCR45nA_minus)
+			accCorrectedInb_VGG_minus[:, :, 0, :] = divideHist(accCorrectedInb_VGG_minus[:, :, 0, :]*histVGGGenInb45nA_minus[:, :, 0, :], histVGGGenInbCD45nA_minus[:, :, 0, :] + histVGGGenInbCDFT45nA_minus[:, :, 0, :] + histVGGGenInbCR45nA_minus[:, :, 0, :])
 
 			#config specific
 			accCorrectedInbFDonly_VGG = divideHist(histBHDVCSInbFD*histVGGGenInb45nA , histVGGInbFD45nA)
@@ -814,11 +836,8 @@ if args.saveyields:
 			uncStatInbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInb45nA))
 			uncStatInbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT45nA) + inverseHist(histVGGGenInb45nA))
 			uncStatInbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInb45nA))
-			uncStatInbFDonly_VGG = divideHist(uncStatInbFDonly_VGG , accCorrectedInbFDonly_VGG)
-			uncStatInbCDonly_VGG = divideHist(uncStatInbCDonly_VGG , accCorrectedInbCDonly_VGG)
-			uncStatInbCDFTonly_VGG = divideHist(uncStatInbCDFTonly_VGG , accCorrectedInbCDFTonly_VGG)
-			uncStatInbCRonly_VGG = divideHist(uncStatInbCRonly_VGG , accCorrectedInbCRonly_VGG)
 
+			#don't use the low Q^2
 			accCorrectedInb_VGG[~ActiveInb] = 0
 			uncStatInb_VGG[~ActiveInb] = 0
 			accCorrectedInb_VGG_plus[~ActiveInb] = 0
@@ -826,19 +845,27 @@ if args.saveyields:
 			accCorrectedInb_VGG_minus[~ActiveInb] = 0
 			uncStatInb_VGG_minus[~ActiveInb] = 0
 
+			# acc correction inbending, with BH
 			accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
 			accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
 			accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
 			accCorrectedInbCR_BH = divideHist(histBHDVCSInbCR*histBHGenInbCR45nA , histBHInbCR45nA)
 			accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH + accCorrectedInbCR_BH
-			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_BH[:, :, 0, :] = accCorrectedInbCD_BH[:, :, 0, :] + accCorrectedInbCDFT_BH[:, :, 0, :] + accCorrectedInbCR_BH[:, :, 0, :]
 
 			uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
 			uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
 			uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
-			uncStatInbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
+			uncStatInbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInbCR45nA))
 			uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
 			uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_BH[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
+			uncStatInb_BH[:, :, 0, :] = divideHist(uncStatInb_BH[:, :, 0, :], accCorrectedInb_BH[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
+			accCorrectedInb_BH[:, :, 0, :] = divideHist(accCorrectedInb_BH[:, :, 0, :]*histBHGenInb45nA[:, :, 0, :], histBHGenInbCD45nA[:, :, 0, :] + histBHGenInbCDFT45nA[:, :, 0, :] + histBHGenInbCR45nA[:, :, 0, :])
 
 			# plus
 			accCorrectedInbFD_BH_plus = divideHist(histBHDVCSInbFD_plus*histBHGenInbFD45nA_plus , histBHInbFD45nA_plus)
@@ -846,7 +873,8 @@ if args.saveyields:
 			accCorrectedInbCDFT_BH_plus = divideHist(histBHDVCSInbCDFT_plus*histBHGenInbCDFT45nA_plus , histBHInbCDFT45nA_plus)
 			accCorrectedInbCR_BH_plus = divideHist(histBHDVCSInbCR_plus*histBHGenInbCR45nA_plus , histBHInbCR45nA_plus)
 			accCorrectedInb_BH_plus = accCorrectedInbFD_BH_plus + accCorrectedInbCD_BH_plus + accCorrectedInbCDFT_BH_plus + accCorrectedInbCR_BH_plus
-			accCorrectedInb_BH_plus = divideHist(accCorrectedInb_BH_plus*histBHGenInb45nA_plus, histBHGenInbFD45nA_plus + histBHGenInbCD45nA_plus + histBHGenInbCDFT45nA_plus + histBHGenInbCR45nA_plus)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_BH_plus[:, :, 0, :] = accCorrectedInbCD_BH_plus[:, :, 0, :] + accCorrectedInbCDFT_BH_plus[:, :, 0, :] + accCorrectedInbCR_BH_plus[:, :, 0, :]
 
 			uncStatInbFD_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD_plus**2+histExpUncInbFD_plus**2), histBHDVCSInbFD_plus)**2 + inverseHist(histBHInbFD45nA_plus) + inverseHist(histBHGenInbFD45nA_plus))
 			uncStatInbCD_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD_plus**2+histExpUncInbCD_plus**2), histBHDVCSInbCD_plus)**2 + inverseHist(histBHInbCD45nA_plus) + inverseHist(histBHGenInbCD45nA_plus))
@@ -854,6 +882,12 @@ if args.saveyields:
 			uncStatInbCR_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR_plus**2+histExpUncInbCR_plus**2), histBHDVCSInbCR_plus)**2 + inverseHist(histBHInbCR45nA_plus) + inverseHist(histBHGenInbCR45nA_plus))
 			uncStatInb_BH_plus = np.sqrt(accCorrectedInbFD_BH_plus**2 *uncStatInbFD_BH_plus**2 + accCorrectedInbCD_BH_plus**2 * uncStatInbCD_BH_plus**2 + accCorrectedInbCDFT_BH_plus**2 * uncStatInbCDFT_BH_plus**2 + accCorrectedInbCR_BH_plus**2 * uncStatInbCR_BH_plus**2)
 			uncStatInb_BH_plus = divideHist(uncStatInb_BH_plus, accCorrectedInb_BH_plus)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_BH_plus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_plus**2 * uncStatInbCD_BH_plus**2 + accCorrectedInbCDFT_BH_plus**2 * uncStatInbCDFT_BH_plus**2 + accCorrectedInbCR_BH_plus**2 * uncStatInbCR_BH_plus**2)
+			uncStatInb_BH_plus[:, :, 0, :] = divideHist(uncStatInb_BH_plus[:, :, 0, :], accCorrectedInb_BH_plus[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_BH_plus = divideHist(accCorrectedInb_BH_plus*histBHGenInb45nA_plus, histBHGenInbFD45nA_plus + histBHGenInbCD45nA_plus + histBHGenInbCDFT45nA_plus + histBHGenInbCR45nA_plus)
+			accCorrectedInb_BH_plus[:, :, 0, :] = divideHist(accCorrectedInb_BH_plus[:, :, 0, :]*histBHGenInb45nA_plus[:, :, 0, :], histBHGenInbCD45nA_plus[:, :, 0, :] + histBHGenInbCDFT45nA_plus[:, :, 0, :] + histBHGenInbCR45nA_plus[:, :, 0, :])
 
 			# minus
 			accCorrectedInbFD_BH_minus = divideHist(histBHDVCSInbFD_minus*histBHGenInbFD45nA_minus , histBHInbFD45nA_minus)
@@ -861,7 +895,8 @@ if args.saveyields:
 			accCorrectedInbCDFT_BH_minus = divideHist(histBHDVCSInbCDFT_minus*histBHGenInbCDFT45nA_minus , histBHInbCDFT45nA_minus)
 			accCorrectedInbCR_BH_minus = divideHist(histBHDVCSInbCR_minus*histBHGenInbCR45nA_minus , histBHInbCR45nA_minus)
 			accCorrectedInb_BH_minus = accCorrectedInbFD_BH_minus + accCorrectedInbCD_BH_minus + accCorrectedInbCDFT_BH_minus + accCorrectedInbCR_BH_minus
-			accCorrectedInb_BH_minus = divideHist(accCorrectedInb_BH_minus*histBHGenInb45nA_minus, histBHGenInbFD45nA_minus + histBHGenInbCD45nA_minus + histBHGenInbCDFT45nA_minus + histBHGenInbCR45nA_minus)
+			#FD inbending threshold [:, :, 0, :]
+			accCorrectedInb_BH_minus[:, :, 0, :] = accCorrectedInbCD_BH_minus[:, :, 0, :] + accCorrectedInbCDFT_BH_minus[:, :, 0, :] + accCorrectedInbCR_BH_minus[:, :, 0, :]
 
 			uncStatInbFD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD_minus**2+histExpUncInbFD_minus**2), histBHDVCSInbFD_minus)**2 + inverseHist(histBHInbFD45nA_minus) + inverseHist(histBHGenInbFD45nA_minus))
 			uncStatInbCD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD_minus**2+histExpUncInbCD_minus**2), histBHDVCSInbCD_minus)**2 + inverseHist(histBHInbCD45nA_minus) + inverseHist(histBHGenInbCD45nA_minus))
@@ -869,7 +904,14 @@ if args.saveyields:
 			uncStatInbCR_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR_minus**2+histExpUncInbCR_minus**2), histBHDVCSInbCR_minus)**2 + inverseHist(histBHInbCR45nA_minus) + inverseHist(histBHGenInbCR45nA_minus))
 			uncStatInb_BH_minus = np.sqrt(accCorrectedInbFD_BH_minus**2 *uncStatInbFD_BH_minus**2 + accCorrectedInbCD_BH_minus**2 * uncStatInbCD_BH_minus**2 + accCorrectedInbCDFT_BH_minus**2 * uncStatInbCDFT_BH_minus**2 + accCorrectedInbCR_BH_minus**2 * uncStatInbCR_BH_minus**2)
 			uncStatInb_BH_minus = divideHist(uncStatInb_BH_minus, accCorrectedInb_BH_minus)
+			#FD inbending threshold [:, :, 0, :]
+			uncStatInb_BH_minus[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH_minus**2 * uncStatInbCD_BH_minus**2 + accCorrectedInbCDFT_BH_minus**2 * uncStatInbCDFT_BH_minus**2 + accCorrectedInbCR_BH_minus**2 * uncStatInbCR_BH_minus**2)
+			uncStatInb_BH_minus[:, :, 0, :] = divideHist(uncStatInb_BH_minus[:, :, 0, :], accCorrectedInb_BH_minus[:, :, 0, :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedInb_BH_minus = divideHist(accCorrectedInb_BH_minus*histBHGenInb45nA_minus, histBHGenInbFD45nA_minus + histBHGenInbCD45nA_minus + histBHGenInbCDFT45nA_minus + histBHGenInbCR45nA_minus)
+			accCorrectedInb_BH_minus[:, :, 0, :] = divideHist(accCorrectedInb_BH_minus[:, :, 0, :]*histBHGenInb45nA_minus[:, :, 0, :], histBHGenInbCD45nA_minus[:, :, 0, :] + histBHGenInbCDFT45nA_minus[:, :, 0, :] + histBHGenInbCR45nA_minus[:, :, 0, :])
 
+			#config specific
 			accCorrectedInbFDonly_BH = divideHist(histBHDVCSInbFD*histBHGenInb45nA , histBHInbFD45nA)
 			accCorrectedInbCDonly_BH = divideHist(histBHDVCSInbCD*histBHGenInb45nA , histBHInbCD45nA)
 			accCorrectedInbCDFTonly_BH = divideHist(histBHDVCSInbCDFT*histBHGenInb45nA , histBHInbCDFT45nA)
@@ -879,10 +921,6 @@ if args.saveyields:
 			uncStatInbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInb45nA))
 			uncStatInbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInb45nA))
 			uncStatInbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInb45nA))
-			uncStatInbFDonly_BH = divideHist(uncStatInbFDonly_BH , accCorrectedInbFDonly_BH)
-			uncStatInbCDonly_BH = divideHist(uncStatInbCDonly_BH , accCorrectedInbCDonly_BH)
-			uncStatInbCDFTonly_BH = divideHist(uncStatInbCDFTonly_BH , accCorrectedInbCDFTonly_BH)
-			uncStatInbCRonly_BH = divideHist(uncStatInbCRonly_BH , accCorrectedInbCRonly_BH)
 
 			accCorrectedInb_BH[~ActiveInb] = 0
 			uncStatInb_BH[~ActiveInb] = 0
@@ -892,12 +930,14 @@ if args.saveyields:
 			uncStatInb_BH_minus[~ActiveInb] = 0
 
 			# acceptance correction with stat error - outbending
+			# with VGG
 			accCorrectedOutbFD_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutbFD50nA , histVGGOutbFD50nA)
 			accCorrectedOutbCD_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutbCD50nA , histVGGOutbCD50nA)
 			accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
 			accCorrectedOutbCR_VGG = divideHist(histBHDVCSOutbCR*histVGGGenOutbCR50nA , histVGGOutbCR50nA)
 			accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG + accCorrectedOutbCR_VGG
-			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA + histVGGGenOutbCDFT50nA + histVGGGenOutbCR50nA)
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_VGG[:, :, [0, 1], :] = accCorrectedOutbCD_VGG[:, :, [0, 1], :] + accCorrectedOutbCDFT_VGG[:, :, [0, 1], :] + accCorrectedOutbCR_VGG[:, :, [0, 1], :]
 
 			uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
 			uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
@@ -905,6 +945,12 @@ if args.saveyields:
 			uncStatOutbCR_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histVGGOutbCR50nA) + inverseHist(histVGGGenOutbCR50nA))
 			uncStatOutb_VGG = np.sqrt(accCorrectedOutbFD_VGG**2 *uncStatOutbFD_VGG**2 + accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)
 			uncStatOutb_VGG = divideHist(uncStatOutb_VGG, accCorrectedOutb_VGG)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_VGG[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG**2 * uncStatOutbCD_VGG**2 + accCorrectedOutbCDFT_VGG**2 * uncStatOutbCDFT_VGG**2 + accCorrectedOutbCR_VGG**2 * uncStatOutbCR_VGG**2)
+			uncStatOutb_VGG[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG[:, :, [0, 1], :], accCorrectedOutb_VGG[:, :, [0, 1], :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedOutb_VGG = divideHist(accCorrectedOutb_VGG*histVGGGenOutb50nA, histVGGGenOutbFD50nA + histVGGGenOutbCD50nA + histVGGGenOutbCDFT50nA + histVGGGenOutbCR50nA)
+			accCorrectedOutb_VGG[:, :, [0, 1], :] = divideHist(accCorrectedOutb_VGG[:, :, [0, 1], :]*histVGGGenOutb50nA[:, :, [0, 1], :], histVGGGenOutbCD50nA[:, :, [0, 1], :] + histVGGGenOutbCDFT50nA[:, :, [0, 1], :] + histVGGGenOutbCR50nA[:, :, [0, 1], :])
 
 			# plus
 			accCorrectedOutbFD_VGG_plus = divideHist(histBHDVCSOutbFD_plus*histVGGGenOutbFD50nA_plus , histVGGOutbFD50nA_plus)
@@ -912,7 +958,8 @@ if args.saveyields:
 			accCorrectedOutbCDFT_VGG_plus = divideHist(histBHDVCSOutbCDFT_plus*histVGGGenOutbCDFT50nA_plus , histVGGOutbCDFT50nA_plus)
 			accCorrectedOutbCR_VGG_plus = divideHist(histBHDVCSOutbCR_plus*histVGGGenOutbCR50nA_plus , histVGGOutbCR50nA_plus)
 			accCorrectedOutb_VGG_plus = accCorrectedOutbFD_VGG_plus + accCorrectedOutbCD_VGG_plus + accCorrectedOutbCDFT_VGG_plus + accCorrectedOutbCR_VGG_plus
-			accCorrectedOutb_VGG_plus = divideHist(accCorrectedOutb_VGG_plus*histVGGGenOutb50nA_plus, histVGGGenOutbFD50nA_plus + histVGGGenOutbCD50nA_plus + histVGGGenOutbCDFT50nA_plus + histVGGGenOutbCR50nA_plus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_VGG_plus[:, :, [0, 1], :] = accCorrectedOutbCD_VGG_plus[:, :, [0, 1], :] + accCorrectedOutbCDFT_VGG_plus[:, :, [0, 1], :] + accCorrectedOutbCR_VGG_plus[:, :, [0, 1], :]
 
 			uncStatOutbFD_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD_plus**2+histExpUncOutbFD_plus**2), histBHDVCSOutbFD_plus)**2 + inverseHist(histVGGOutbFD50nA_plus) + inverseHist(histVGGGenOutbFD50nA_plus))
 			uncStatOutbCD_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD_plus**2+histExpUncOutbCD_plus**2), histBHDVCSOutbCD_plus)**2 + inverseHist(histVGGOutbCD50nA_plus) + inverseHist(histVGGGenOutbCD50nA_plus))
@@ -920,6 +967,12 @@ if args.saveyields:
 			uncStatOutbCR_VGG_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR_plus**2+histExpUncOutbCR_plus**2), histBHDVCSOutbCR_plus)**2 + inverseHist(histVGGOutbCR50nA_plus) + inverseHist(histVGGGenOutbCR50nA_plus))
 			uncStatOutb_VGG_plus = np.sqrt(accCorrectedOutbFD_VGG_plus**2 *uncStatOutbFD_VGG_plus**2 + accCorrectedOutbCD_VGG_plus**2 * uncStatOutbCD_VGG_plus**2 + accCorrectedOutbCDFT_VGG_plus**2 * uncStatOutbCDFT_VGG_plus**2 + accCorrectedOutbCR_VGG_plus**2 * uncStatOutbCR_VGG_plus**2)
 			uncStatOutb_VGG_plus = divideHist(uncStatOutb_VGG_plus, accCorrectedOutb_VGG_plus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_VGG_plus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_plus**2 * uncStatOutbCD_VGG_plus**2 + accCorrectedOutbCDFT_VGG_plus**2 * uncStatOutbCDFT_VGG_plus**2 + accCorrectedOutbCR_VGG_plus**2 * uncStatOutbCR_VGG_plus**2)
+			uncStatOutb_VGG_plus[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG_plus[:, :, [0, 1], :], accCorrectedOutb_VGG_plus[:, :, [0, 1], :])
+
+			accCorrectedOutb_VGG_plus = divideHist(accCorrectedOutb_VGG_plus*histVGGGenOutb50nA_plus, histVGGGenOutbFD50nA_plus + histVGGGenOutbCD50nA_plus + histVGGGenOutbCDFT50nA_plus + histVGGGenOutbCR50nA_plus)
+			accCorrectedOutb_VGG_plus[:, :, [0, 1], :] = divideHist(accCorrectedOutb_VGG_plus[:, :, [0, 1], :]*histVGGGenOutb50nA_plus[:, :, [0, 1], :], histVGGGenOutbCD50nA_plus[:, :, [0, 1], :] + histVGGGenOutbCDFT50nA_plus[:, :, [0, 1], :] + histVGGGenOutbCR50nA_plus[:, :, [0, 1], :])
 
 			# minus
 			accCorrectedOutbFD_VGG_minus = divideHist(histBHDVCSOutbFD_minus*histVGGGenOutbFD50nA_minus , histVGGOutbFD50nA_minus)
@@ -927,7 +980,8 @@ if args.saveyields:
 			accCorrectedOutbCDFT_VGG_minus = divideHist(histBHDVCSOutbCDFT_minus*histVGGGenOutbCDFT50nA_minus , histVGGOutbCDFT50nA_minus)
 			accCorrectedOutbCR_VGG_minus = divideHist(histBHDVCSOutbCR_minus*histVGGGenOutbCR50nA_minus , histVGGOutbCR50nA_minus)
 			accCorrectedOutb_VGG_minus = accCorrectedOutbFD_VGG_minus + accCorrectedOutbCD_VGG_minus + accCorrectedOutbCDFT_VGG_minus + accCorrectedOutbCR_VGG_minus
-			accCorrectedOutb_VGG_minus = divideHist(accCorrectedOutb_VGG_minus*histVGGGenOutb50nA_minus, histVGGGenOutbFD50nA_minus + histVGGGenOutbCD50nA_minus + histVGGGenOutbCDFT50nA_minus + histVGGGenOutbCR50nA_minus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_VGG_minus[:, :, [0, 1], :] = accCorrectedOutbCD_VGG_minus[:, :, [0, 1], :] + accCorrectedOutbCDFT_VGG_minus[:, :, [0, 1], :] + accCorrectedOutbCR_VGG_minus[:, :, [0, 1], :]
 
 			uncStatOutbFD_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD_minus**2+histExpUncOutbFD_minus**2), histBHDVCSOutbFD_minus)**2 + inverseHist(histVGGOutbFD50nA_minus) + inverseHist(histVGGGenOutbFD50nA_minus))
 			uncStatOutbCD_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD_minus**2+histExpUncOutbCD_minus**2), histBHDVCSOutbCD_minus)**2 + inverseHist(histVGGOutbCD50nA_minus) + inverseHist(histVGGGenOutbCD50nA_minus))
@@ -935,7 +989,14 @@ if args.saveyields:
 			uncStatOutbCR_VGG_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR_minus**2+histExpUncOutbCR_minus**2), histBHDVCSOutbCR_minus)**2 + inverseHist(histVGGOutbCR50nA_minus) + inverseHist(histVGGGenOutbCR50nA_minus))
 			uncStatOutb_VGG_minus = np.sqrt(accCorrectedOutbFD_VGG_minus**2 *uncStatOutbFD_VGG_minus**2 + accCorrectedOutbCD_VGG_minus**2 * uncStatOutbCD_VGG_minus**2 + accCorrectedOutbCDFT_VGG_minus**2 * uncStatOutbCDFT_VGG_minus**2 + accCorrectedOutbCR_VGG_minus**2 * uncStatOutbCR_VGG_minus**2)
 			uncStatOutb_VGG_minus = divideHist(uncStatOutb_VGG_minus, accCorrectedOutb_VGG_minus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_VGG_minus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_VGG_minus**2 * uncStatOutbCD_VGG_minus**2 + accCorrectedOutbCDFT_VGG_minus**2 * uncStatOutbCDFT_VGG_minus**2 + accCorrectedOutbCR_VGG_minus**2 * uncStatOutbCR_VGG_minus**2)
+			uncStatOutb_VGG_minus[:, :, [0, 1], :] = divideHist(uncStatOutb_VGG_minus[:, :, [0, 1], :], accCorrectedOutb_VGG_minus[:, :, [0, 1], :])
 
+			accCorrectedOutb_VGG_minus = divideHist(accCorrectedOutb_VGG_minus*histVGGGenOutb50nA_minus, histVGGGenOutbFD50nA_minus + histVGGGenOutbCD50nA_minus + histVGGGenOutbCDFT50nA_minus + histVGGGenOutbCR50nA_minus)
+			accCorrectedOutb_VGG_minus[:, :, [0, 1], :] = divideHist(accCorrectedOutb_VGG_minus[:, :, [0, 1], :]*histVGGGenOutb50nA_minus[:, :, [0, 1], :], histVGGGenOutbCD50nA_minus[:, :, [0, 1], :] + histVGGGenOutbCDFT50nA_minus[:, :, [0, 1], :] + histVGGGenOutbCR50nA_minus[:, :, [0, 1], :])
+
+			#config specific
 			accCorrectedOutbFDonly_VGG = divideHist(histBHDVCSOutbFD*histVGGGenOutb50nA , histVGGOutbFD50nA)
 			accCorrectedOutbCDonly_VGG = divideHist(histBHDVCSOutbCD*histVGGGenOutb50nA , histVGGOutbCD50nA)
 			accCorrectedOutbCDFTonly_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutb50nA , histVGGOutbCDFT50nA)
@@ -945,11 +1006,8 @@ if args.saveyields:
 			uncStatOutbCDonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutb50nA))
 			uncStatOutbCDFTonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histVGGOutbCDFT50nA) + inverseHist(histVGGGenOutb50nA))
 			uncStatOutbCRonly_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histVGGOutbCR50nA) + inverseHist(histVGGGenOutb50nA))
-			uncStatOutbFDonly_VGG = divideHist(uncStatOutbFDonly_VGG , accCorrectedOutbFDonly_VGG)
-			uncStatOutbCDonly_VGG = divideHist(uncStatOutbCDonly_VGG , accCorrectedOutbCDonly_VGG)
-			uncStatOutbCDFTonly_VGG = divideHist(uncStatOutbCDFTonly_VGG , accCorrectedOutbCDFTonly_VGG)
-			uncStatOutbCRonly_VGG = divideHist(uncStatOutbCRonly_VGG , accCorrectedOutbCRonly_VGG)
 
+			#remove inactive
 			accCorrectedOutb_VGG[~ActiveOutb] = 0
 			uncStatOutb_VGG[~ActiveOutb] = 0
 			accCorrectedOutb_VGG_plus[~ActiveOutb] = 0
@@ -957,12 +1015,14 @@ if args.saveyields:
 			accCorrectedOutb_VGG_minus[~ActiveOutb] = 0
 			uncStatOutb_VGG_minus[~ActiveInb] = 0
 
+			# acc correction with BH, outbending
 			accCorrectedOutbFD_BH = divideHist(histBHDVCSOutbFD*histBHGenOutbFD50nA , histBHOutbFD50nA)
 			accCorrectedOutbCD_BH = divideHist(histBHDVCSOutbCD*histBHGenOutbCD50nA , histBHOutbCD50nA)
 			accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
 			accCorrectedOutbCR_BH = divideHist(histBHDVCSOutbCR*histBHGenOutbCR50nA , histBHOutbCR50nA)
-			accCorrectedOutb_BH = accCorrectedOutbCDFT_BH + accCorrectedOutbCD_BH + accCorrectedOutbFD_BH + accCorrectedOutbCR_BH
-			accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA + histBHGenOutbCDFT50nA + histBHGenOutbCR50nA)
+			accCorrectedOutb_BH = accCorrectedOutbFD_BH + accCorrectedOutbCD_BH + accCorrectedOutbCDFT_BH + accCorrectedOutbCR_BH
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_BH[:, :, [0, 1], :] = accCorrectedOutbCD_BH[:, :, [0, 1], :] + accCorrectedOutbCDFT_BH[:, :, [0, 1], :] + accCorrectedOutbCR_BH[:, :, [0, 1], :]
 
 			uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
 			uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
@@ -970,6 +1030,12 @@ if args.saveyields:
 			uncStatOutbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutbCR50nA))
 			uncStatOutb_BH = np.sqrt(accCorrectedOutbFD_BH**2 *uncStatOutbFD_BH**2 + accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2 + accCorrectedOutbCR_BH**2 * uncStatOutbCR_BH**2)
 			uncStatOutb_BH = divideHist(uncStatOutb_BH, accCorrectedOutb_BH)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_BH[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_BH**2 * uncStatOutbCD_BH**2 + accCorrectedOutbCDFT_BH**2 * uncStatOutbCDFT_BH**2 + accCorrectedOutbCR_BH**2 * uncStatOutbCR_BH**2)
+			uncStatOutb_BH[:, :, [0, 1], :] = divideHist(uncStatOutb_BH[:, :, [0, 1], :], accCorrectedOutb_BH[:, :, [0, 1], :])
+			#Correct by the ratio of covered/uncovered
+			accCorrectedOutb_BH = divideHist(accCorrectedOutb_BH*histBHGenOutb50nA, histBHGenOutbFD50nA + histBHGenOutbCD50nA + histBHGenOutbCDFT50nA + histBHGenOutbCR50nA)
+			accCorrectedOutb_BH[:, :, [0, 1], :] = divideHist(accCorrectedOutb_BH[:, :, [0, 1], :]*histBHGenOutb50nA[:, :, [0, 1], :], histBHGenOutbCD50nA[:, :, [0, 1], :] + histBHGenOutbCDFT50nA[:, :, [0, 1], :] + histBHGenOutbCR50nA[:, :, [0, 1], :])
 
 			# plus
 			accCorrectedOutbFD_BH_plus = divideHist(histBHDVCSOutbFD_plus*histBHGenOutbFD50nA_plus , histBHOutbFD50nA_plus)
@@ -977,7 +1043,8 @@ if args.saveyields:
 			accCorrectedOutbCDFT_BH_plus = divideHist(histBHDVCSOutbCDFT_plus*histBHGenOutbCDFT50nA_plus , histBHOutbCDFT50nA_plus)
 			accCorrectedOutbCR_BH_plus = divideHist(histBHDVCSOutbCR_plus*histBHGenOutbCR50nA_plus , histBHOutbCR50nA_plus)
 			accCorrectedOutb_BH_plus = accCorrectedOutbFD_BH_plus + accCorrectedOutbCD_BH_plus + accCorrectedOutbCDFT_BH_plus + accCorrectedOutbCR_BH_plus
-			accCorrectedOutb_BH_plus = divideHist(accCorrectedOutb_BH_plus*histBHGenOutb50nA_plus, histBHGenOutbFD50nA_plus + histBHGenOutbCD50nA_plus + histBHGenOutbCDFT50nA_plus + histBHGenOutbCR50nA_plus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_BH_plus[:, :, [0, 1], :] = accCorrectedOutbCD_BH_plus[:, :, [0, 1], :] + accCorrectedOutbCDFT_BH_plus[:, :, [0, 1], :] + accCorrectedOutbCR_BH_plus[:, :, [0, 1], :]
 
 			uncStatOutbFD_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD_plus**2+histExpUncOutbFD_plus**2), histBHDVCSOutbFD_plus)**2 + inverseHist(histBHOutbFD50nA_plus) + inverseHist(histBHGenOutbFD50nA_plus))
 			uncStatOutbCD_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD_plus**2+histExpUncOutbCD_plus**2), histBHDVCSOutbCD_plus)**2 + inverseHist(histBHOutbCD50nA_plus) + inverseHist(histBHGenOutbCD50nA_plus))
@@ -985,6 +1052,12 @@ if args.saveyields:
 			uncStatOutbCR_BH_plus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR_plus**2+histExpUncOutbCR_plus**2), histBHDVCSOutbCR_plus)**2 + inverseHist(histBHOutbCR50nA_plus) + inverseHist(histBHGenOutbCR50nA_plus))
 			uncStatOutb_BH_plus = np.sqrt(accCorrectedOutbFD_BH_plus**2 *uncStatOutbFD_BH_plus**2 + accCorrectedOutbCD_BH_plus**2 * uncStatOutbCD_BH_plus**2 + accCorrectedOutbCDFT_BH_plus**2 * uncStatOutbCDFT_BH_plus**2 + accCorrectedOutbCR_BH_plus**2 * uncStatOutbCR_BH_plus**2)
 			uncStatOutb_BH_plus = divideHist(uncStatOutb_BH_plus, accCorrectedOutb_BH_plus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_BH_plus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_BH_plus**2 * uncStatOutbCD_BH_plus**2 + accCorrectedOutbCDFT_BH_plus**2 * uncStatOutbCDFT_BH_plus**2 + accCorrectedOutbCR_BH_plus**2 * uncStatOutbCR_BH_plus**2)
+			uncStatOutb_BH_plus[:, :, [0, 1], :] = divideHist(uncStatOutb_BH_plus[:, :, [0, 1], :], accCorrectedOutb_BH_plus[:, :, [0, 1], :])
+
+			accCorrectedOutb_BH_plus = divideHist(accCorrectedOutb_BH_plus*histBHGenOutb50nA_plus, histBHGenOutbFD50nA_plus + histBHGenOutbCD50nA_plus + histBHGenOutbCDFT50nA_plus + histBHGenOutbCR50nA_plus)
+			accCorrectedOutb_BH_plus[:, :, [0, 1], :] = divideHist(accCorrectedOutb_BH_plus[:, :, [0, 1], :]*histBHGenOutb50nA_plus[:, :, [0, 1], :], histBHGenOutbCD50nA_plus[:, :, [0, 1], :] + histBHGenOutbCDFT50nA_plus[:, :, [0, 1], :] + histBHGenOutbCR50nA_plus[:, :, [0, 1], :])
 
 			# minus
 			accCorrectedOutbFD_BH_minus = divideHist(histBHDVCSOutbFD_minus*histBHGenOutbFD50nA_minus , histBHOutbFD50nA_minus)
@@ -992,7 +1065,8 @@ if args.saveyields:
 			accCorrectedOutbCDFT_BH_minus = divideHist(histBHDVCSOutbCDFT_minus*histBHGenOutbCDFT50nA_minus , histBHOutbCDFT50nA_minus)
 			accCorrectedOutbCR_BH_minus = divideHist(histBHDVCSOutbCR_minus*histBHGenOutbCR50nA_minus , histBHOutbCR50nA_minus)
 			accCorrectedOutb_BH_minus = accCorrectedOutbFD_BH_minus + accCorrectedOutbCD_BH_minus + accCorrectedOutbCDFT_BH_minus + accCorrectedOutbCR_BH_minus
-			accCorrectedOutb_BH_minus = divideHist(accCorrectedOutb_BH_minus*histBHGenOutb50nA_minus, histBHGenOutbFD50nA_minus + histBHGenOutbCD50nA_minus + histBHGenOutbCDFT50nA_minus + histBHGenOutbCR50nA_minus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			accCorrectedOutb_BH_minus[:, :, [0, 1], :] = accCorrectedOutbCD_BH_minus[:, :, [0, 1], :] + accCorrectedOutbCDFT_BH_minus[:, :, [0, 1], :] + accCorrectedOutbCR_BH_minus[:, :, [0, 1], :]
 
 			uncStatOutbFD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD_minus**2+histExpUncOutbFD_minus**2), histBHDVCSOutbFD_minus)**2 + inverseHist(histBHOutbFD50nA_minus) + inverseHist(histBHGenOutbFD50nA_minus))
 			uncStatOutbCD_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD_minus**2+histExpUncOutbCD_minus**2), histBHDVCSOutbCD_minus)**2 + inverseHist(histBHOutbCD50nA_minus) + inverseHist(histBHGenOutbCD50nA_minus))
@@ -1000,7 +1074,14 @@ if args.saveyields:
 			uncStatOutbCR_BH_minus = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR_minus**2+histExpUncOutbCR_minus**2), histBHDVCSOutbCR_minus)**2 + inverseHist(histBHOutbCR50nA_minus) + inverseHist(histBHGenOutbCR50nA_minus))
 			uncStatOutb_BH_minus = np.sqrt(accCorrectedOutbFD_BH_minus**2 *uncStatOutbFD_BH_minus**2 + accCorrectedOutbCD_BH_minus**2 * uncStatOutbCD_BH_minus**2 + accCorrectedOutbCDFT_BH_minus**2 * uncStatOutbCDFT_BH_minus**2 + accCorrectedOutbCR_BH_minus**2 * uncStatOutbCR_BH_minus**2)
 			uncStatOutb_BH_minus = divideHist(uncStatOutb_BH_minus, accCorrectedOutb_BH_minus)
+			#FD inbending threshold [:, :, [0, 1], :]
+			uncStatOutb_BH_minus[:, :, [0, 1], :] = np.sqrt(accCorrectedOutbCD_BH_minus**2 * uncStatOutbCD_BH_minus**2 + accCorrectedOutbCDFT_BH_minus**2 * uncStatOutbCDFT_BH_minus**2 + accCorrectedOutbCR_BH_minus**2 * uncStatOutbCR_BH_minus**2)
+			uncStatOutb_BH_minus[:, :, [0, 1], :] = divideHist(uncStatOutb_BH_minus[:, :, [0, 1], :], accCorrectedOutb_BH_minus[:, :, [0, 1], :])
 
+			accCorrectedOutb_BH_minus = divideHist(accCorrectedOutb_BH_minus*histBHGenOutb50nA_minus, histBHGenOutbFD50nA_minus + histBHGenOutbCD50nA_minus + histBHGenOutbCDFT50nA_minus + histBHGenOutbCR50nA_minus)
+			accCorrectedOutb_BH_minus[:, :, [0, 1], :] = divideHist(accCorrectedOutb_BH_minus[:, :, [0, 1], :]*histBHGenOutb50nA_minus[:, :, [0, 1], :], histBHGenOutbCD50nA_minus[:, :, [0, 1], :] + histBHGenOutbCDFT50nA_minus[:, :, [0, 1], :] + histBHGenOutbCR50nA_minus[:, :, [0, 1], :])
+
+			#config specific
 			accCorrectedOutbFDonly_BH = divideHist(histBHDVCSOutbFD*histBHGenOutb50nA , histBHOutbFD50nA)
 			accCorrectedOutbCDonly_BH = divideHist(histBHDVCSOutbCD*histBHGenOutb50nA , histBHOutbCD50nA)
 			accCorrectedOutbCDFTonly_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutb50nA , histBHOutbCDFT50nA)
@@ -1010,11 +1091,7 @@ if args.saveyields:
 			uncStatOutbCDonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutb50nA))
 			uncStatOutbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCDFT**2+histExpUncOutbCDFT**2), histBHDVCSOutbCDFT)**2 + inverseHist(histBHOutbCDFT50nA) + inverseHist(histBHGenOutb50nA))
 			uncStatOutbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutb50nA))
-			uncStatOutbFDonly_BH = divideHist(uncStatOutbFDonly_BH , accCorrectedOutbFDonly_BH)
-			uncStatOutbCDonly_BH = divideHist(uncStatOutbCDonly_BH , accCorrectedOutbCDonly_BH)
-			uncStatOutbCDFTonly_BH = divideHist(uncStatOutbCDFTonly_BH , accCorrectedOutbCDFTonly_BH)
-			uncStatOutbCRonly_BH = divideHist(uncStatOutbCRonly_BH , accCorrectedOutbCRonly_BH)
-
+			#remove inactive
 			accCorrectedOutb_BH[~ActiveOutb] = 0
 			uncStatOutb_BH[~ActiveOutb] = 0
 			accCorrectedOutb_BH_plus[~ActiveOutb] = 0
