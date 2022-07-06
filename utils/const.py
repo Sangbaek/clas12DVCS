@@ -306,7 +306,7 @@ collection_cont_Q2bins  = [np.linspace(1, 7, 2),      np.array([1, 1.5, 2, 2.5, 
 collection_cont_tbins   = [np.linspace(0.09, 1.8, 2), np.array([0.09, 0.2, 0.4, 0.8, 1.8]),               newtbins,  newtbins]
 collection_cont_phibins = [np.linspace(0, 360, 2),    np.linspace(0, 360, 6),                             phibins,   phibins]
 
-collection_xBbins =  [np.linspace(0.05, 0.85, 6), 						 newxBbins, newxBbins, newxBbins2]
+collection_xBbins =  [np.linspace(0.05, 0.45, 3), 						 newxBbins, newxBbins, newxBbins2]
 collection_Q2bins =  [np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]),newQ2bins, newQ2bins, newQ2bins2]
 collection_tbins =   [np.array([0.09, 0.2, 0.4, 0.8, 1.8]), 			 tbins,     newtbins,  newtbins]
 collection_phibins = [phibins, 											 phibins,   phibins,   phibins]
