@@ -25,6 +25,11 @@ if __name__ == "__main__":
 	jobnum = int(args.jobnum)
 	output = args.output
 
+	if args.kstart:
+		kstart = 0
+	else:
+		kstart = len(collection_xBbins) - 1
+
 	if jobnum in [*runs_inb_vgg50nA, *runs_inb_vgg55nA, *runs_inb_vgg45nA, *runs_inb_vgg0nA]:
 		pol = "inb"
 		mode = "dvcs"
@@ -58,7 +63,7 @@ if __name__ == "__main__":
 	df = df.loc[cond, :]
 
 	os.makedirs("{}".format(output), exist_ok = True)
-	for k in range(0, len(collection_xBbins)):
+	for k in range(kstart, len(collection_xBbins)):
 
 		os.makedirs("{}binscheme{}".format(output, k), exist_ok = True)
 		xBbins  = collection_xBbins[k]
