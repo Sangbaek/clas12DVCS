@@ -2317,7 +2317,7 @@ if args.contplot:
 	print("read exp...")
 	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/epgExp.pkl")
 
-	k = 2
+	k = 3
 	xBbins  = collection_xBbins[k]
 	Q2bins  = collection_Q2bins[k]
 	tbins   = collection_tbins [k]
@@ -2353,9 +2353,9 @@ if args.contplot:
 	plt.rcParams["figure.figsize"] = (10,6)
 	plt.rcParams['legend.title_fontsize'] = 'small'
 
-	xBbin = 4
+	xBbin = 5
 	Q2bin = 2
-	tbin = 1
+	tbin = 2
 
 	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
 	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
@@ -2378,7 +2378,7 @@ if args.contplot:
 
 	xBbin = 3
 	Q2bin = 2
-	tbin = 1
+	tbin = 2
 
 	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
 	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
