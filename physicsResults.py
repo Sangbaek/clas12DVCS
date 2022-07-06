@@ -1390,10 +1390,10 @@ if args.savexsec:
 			charges[(ActiveOutb)&(~ActiveInb)] = outbcharge_epg
 			xsecInb_VGG = divideHist(accCorrectedInb_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
 			xsecInb_BH = divideHist(accCorrectedInb_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
-			xsecInb_VGG_plus = divideHist(accCorrectedInb_VGG_plus, binVolume*rcfactors_VGG_plus)/(1.324*inbcharge_epg) #approximation. replace rcfactors later
-			xsecInb_BH_plus = divideHist(accCorrectedInb_BH_plus, binVolume*rcfactors_BH_plus)/(1.324*inbcharge_epg)
-			xsecInb_VGG_minus = divideHist(accCorrectedInb_VGG_minus, binVolume*rcfactors_VGG_minus)/(1.324*inbcharge_epg) #approximation. replace rcfactors later
-			xsecInb_BH_minus = divideHist(accCorrectedInb_BH_minus, binVolume*rcfactors_BH_minus)/(1.324*inbcharge_epg)
+			xsecInb_VGG_plus = divideHist(accCorrectedInb_VGG_plus, binVolume*rcfactors_VGG_plus)/(1.324*inbcharge_epg/2) # charge/2 for plus/minus
+			xsecInb_BH_plus = divideHist(accCorrectedInb_BH_plus, binVolume*rcfactors_BH_plus)/(1.324*inbcharge_epg/2)
+			xsecInb_VGG_minus = divideHist(accCorrectedInb_VGG_minus, binVolume*rcfactors_VGG_minus)/(1.324*inbcharge_epg/2)
+			xsecInb_BH_minus = divideHist(accCorrectedInb_BH_minus, binVolume*rcfactors_BH_minus)/(1.324*inbcharge_epg/2)
 			xsecInbFDonly_VGG = divideHist(accCorrectedInbFDonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
 			xsecInbFDonly_BH = divideHist(accCorrectedInbFDonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
 			xsecInbCDonly_VGG = divideHist(accCorrectedInbCDonly_VGG, binVolume*rcfactors_VGG)/(1.324*inbcharge_epg)
@@ -1404,10 +1404,10 @@ if args.savexsec:
 			xsecInbCRonly_BH = divideHist(accCorrectedInbCRonly_BH, binVolume*rcfactors_BH)/(1.324*inbcharge_epg)
 			xsecOutb_VGG = divideHist(accCorrectedOutb_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
 			xsecOutb_BH = divideHist(accCorrectedOutb_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
-			xsecOutb_VGG_plus = divideHist(accCorrectedOutb_VGG_plus, binVolume*rcfactors_VGG_plus)/(1.324*outbcharge_epg) #approximation. replace rcfactors later
-			xsecOutb_BH_plus = divideHist(accCorrectedOutb_BH_plus, binVolume*rcfactors_BH_plus)/(1.324*outbcharge_epg)
-			xsecOutb_VGG_minus = divideHist(accCorrectedOutb_VGG_minus, binVolume*rcfactors_VGG_minus)/(1.324*outbcharge_epg) #approximation. replace rcfactors later
-			xsecOutb_BH_minus = divideHist(accCorrectedOutb_BH_minus, binVolume*rcfactors_BH_minus)/(1.324*outbcharge_epg)
+			xsecOutb_VGG_plus = divideHist(accCorrectedOutb_VGG_plus, binVolume*rcfactors_VGG_plus)/(1.324*outbcharge_epg/2)
+			xsecOutb_BH_plus = divideHist(accCorrectedOutb_BH_plus, binVolume*rcfactors_BH_plus)/(1.324*outbcharge_epg/2)
+			xsecOutb_VGG_minus = divideHist(accCorrectedOutb_VGG_minus, binVolume*rcfactors_VGG_minus)/(1.324*outbcharge_epg/2)
+			xsecOutb_BH_minus = divideHist(accCorrectedOutb_BH_minus, binVolume*rcfactors_BH_minus)/(1.324*outbcharge_epg/2)
 			xsecOutbFDonly_VGG = divideHist(accCorrectedOutbFDonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
 			xsecOutbFDonly_BH = divideHist(accCorrectedOutbFDonly_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
 			xsecOutbCDonly_VGG = divideHist(accCorrectedOutbCDonly_VGG, binVolume*rcfactors_VGG)/(1.324*outbcharge_epg)
@@ -1418,10 +1418,10 @@ if args.savexsec:
 			xsecOutbCRonly_BH = divideHist(accCorrectedOutbCRonly_BH, binVolume*rcfactors_BH)/(1.324*outbcharge_epg)
 			xsec_VGG = divideHist(accCorrected_VGG, binVolume*rcfactors_VGG*(1.324*charges))
 			xsec_BH = divideHist(accCorrected_BH, binVolume*rcfactors_BH*(1.324*charges))
-			xsec_VGG_plus = divideHist(accCorrected_VGG_plus, binVolume*rcfactors_VGG_plus*(1.324*charges))
-			xsec_BH_plus = divideHist(accCorrected_BH_plus, binVolume*rcfactors_BH_plus*(1.324*charges))
-			xsec_VGG_minus = divideHist(accCorrected_VGG_minus, binVolume*rcfactors_VGG_minus*(1.324*charges))
-			xsec_BH_minus = divideHist(accCorrected_BH_minus, binVolume*rcfactors_BH_minus*(1.324*charges))
+			xsec_VGG_plus = divideHist(accCorrected_VGG_plus, binVolume*rcfactors_VGG_plus*(1.324*charges/2))
+			xsec_BH_plus = divideHist(accCorrected_BH_plus, binVolume*rcfactors_BH_plus*(1.324*charges/2))
+			xsec_VGG_minus = divideHist(accCorrected_VGG_minus, binVolume*rcfactors_VGG_minus*(1.324*charges/2))
+			xsec_BH_minus = divideHist(accCorrected_BH_minus, binVolume*rcfactors_BH_minus*(1.324*charges/2))
 
 
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(optionaltag, k, i), hist = xsecInb_VGG)
@@ -1755,14 +1755,14 @@ if args.saveplot:
 							continue
 						if ActiveInb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
-							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsecInb_BH_plus - xsecInb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
+							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsecInb_BH_plus - xsecInb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
 						if ActiveOutb[xBbin, Q2bin, tbin, :].any():
 							phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
-							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsecOutb_BH_plus - xsecOutb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
+							axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsecOutb_BH_plus - xsecOutb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
-						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM_plus - xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_KM_plus - xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
 
 						xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 						Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
@@ -1770,7 +1770,7 @@ if args.saveplot:
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
 						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-						axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+						# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
 						if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
@@ -1807,7 +1807,8 @@ if args.saveplot:
 						BSA_BH = divideHist(xsec_BH_plus - xsec_BH_minus, xsec_BH_plus + xsec_BH_minus)
 						uncBSA_BH = BSA_BH*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)*np.sqrt(divideHist(1, (xsec_BH_plus-xsec_BH_minus)**2) + divideHist(1, (xsec_BH_plus+xsec_BH_minus)**2))
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], BSA_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = uncBSA_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Merged.')
-						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], ((xsecTh_KM_plus - xsecTh_KM_minus)/(xsecTh_KM_plus + xsecTh_KM_minus))[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecTh_KM_plus - xsecTh_KM_minus, xsecTh_KM_plus + xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'KM15')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], divideHist(xsecTh_VGG_plus - xsecTh_VGG_minus, xsecTh_VGG_plus + xsecTh_VGG_minus)[xBbin, Q2bin, tbin, :], color = 'b', label = 'VGG')
 
 						xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 						Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
@@ -1815,7 +1816,7 @@ if args.saveplot:
 						header = xBheader +Q2header + theader
 						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
 						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
-						axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+						# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
 						if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
