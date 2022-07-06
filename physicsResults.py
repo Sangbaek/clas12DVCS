@@ -49,6 +49,7 @@ parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true"
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
 parser.add_argument("-kstart","--kstart", help="binning scheme start", default=None)
+parser.add_argument("-kend","--kend", help="binning scheme end", default=None)
 parser.add_argument("-opt","--optionaltag", help="optional tag: none, eb, 2sigma, 3sigma, sm09, sm11", default=None)
 parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = "store_true")
 parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
@@ -65,6 +66,10 @@ if args.kstart:
 	kstart = int(args.kstart)
 else:
 	kstart = len(collection_xBbins) - 1 
+if args.kend:
+	kend = int(args.kend)
+else:
+	kend = len(collection_xBbins)
 
 inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 charge_epg = inbcharge_epg + outbcharge_epg
@@ -388,7 +393,7 @@ if args.savecont:
 	epgExp.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/epgExp.pkl".format(optionaltag))
 
 if args.savebinVolume:
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(kstart, kend):
 		print("saving bin scheme {}".format(k))
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
@@ -431,7 +436,7 @@ if args.savebinVolume:
 if args.saveyields:
 	print("read exp...")
 	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/epgExp.pkl".format(optionaltag))
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(kstart, kend):
 		print("bin scheme {}".format(k))
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
@@ -1132,7 +1137,7 @@ if args.saveyields:
 
 if args.savekine:
 	# nominal only
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(kstart, kend):
 		print("bin scheme {}".format(k))
 		ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}ActiveAll.npz".format(k, 0))["hist"]
 		ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}ActiveAny.npz".format(k, 0))["hist"]
@@ -1314,7 +1319,7 @@ if args.savexsec:
 	print("read exp...")
 	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/epgExp.pkl".format(optionaltag))
 
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(kstart, kend):
 
 		print("bin scheme {}".format(k))
 		xBbins  = collection_xBbins[k]
@@ -1465,7 +1470,7 @@ if args.savexsec:
 
 if args.saveplot:
 
-	for k in range(kstart, len(collection_xBbins)):
+	for k in range(kstart, kend):
 
 		xBbins  = collection_xBbins[k]
 		Q2bins  = collection_Q2bins[k]
@@ -2270,7 +2275,7 @@ if args.contplot:
 # ActiveAny_int  
 # ActiveInb_int  
 # ActiveOutb_int 
-# 	for k in range(kstart, len(collection_xBbins)):
+# 	for k in range(kstart, kend):
 # 		for i in range(len(collection_cont_xBbins)):
 # 			phi1avg_VGG [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}phi1avg_VGG.npz".format(k, i))["hist"]
 # 			xBavg_VGG   [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}xBavg_VGG.npz".format(k, i))["hist"]
@@ -2311,7 +2316,7 @@ if args.contplot:
 # 			ActiveInb_int          [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(k, i))["hist"]
 # 			ActiveOutb_int         [k, i] = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(k, i))["hist"]
 
-# for k in range(2, len(collection_xBbins)):
+# for k in range(2, kend):
 
 # 	xBbins  = collection_xBbins[k]
 # 	Q2bins  = collection_Q2bins[k]
