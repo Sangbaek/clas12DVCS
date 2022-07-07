@@ -1815,7 +1815,7 @@ if args.savesyst2:
 	Normalization = FourierSeries(nominal, 0)/(P1_zero*P2_zero*BHDVCS_zero)
 
 	UncModel = np.abs(divideHist(FourierSeries(VGG-nominal, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
-	UncExcl = 0.5*np.abs(divideHist(FourierSeries(4sigma-2sigma, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
+	UncExcl = 0.5*np.abs(divideHist(FourierSeries(tightexcl-looseexcl, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
 	UncSmear = 0.5*np.abs(divideHist(FourierSeries(sm11-sm09, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
 	UncFid = np.abs(divideHist(FourierSeries(tightfid-nominal, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
 	UncBkg = np.abs(divideHist(FourierSeries(bkg-nominal, phibins),FourierSeries(nominal, phibins), threshold=-np.inf))
