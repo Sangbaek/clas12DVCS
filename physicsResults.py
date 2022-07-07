@@ -1826,7 +1826,7 @@ if args.savesyst2:
 
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 	for i in range(-500, 500):
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1+i*SystUnc)*(xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.3)
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1+i*SystUnc/500)*(xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/500)
 
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/(P1b*P2b)*FourierSeries(res_lsq.x, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), label = 'Fitting results', color = 'k', linestyle = '--')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
