@@ -1574,20 +1574,30 @@ if args.savesyst:
 	xsecTh_BH          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
 	xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
-	for optionaltag in ['', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
-		ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
-		ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
-		ActiveInb       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
-		ActiveOutb      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
+	for optionaltag in ['', 'bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
 
-		xsec_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i))["hist"]
-		xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
-		uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i))["hist"]
-		uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
+		if optionaltag == 'bkg':
+			i = 0
+			ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format('', k, i))["hist"]
+			ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format('', k, i))["hist"]
+			ActiveInb       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format('', k, i))["hist"]
+			ActiveOutb      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format('', k, i))["hist"]
 
-		xBbin = 3
-		Q2bin = 2
-		tbin = 2
+			xsec_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format('', k, i))["hist"]
+			xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format('', k, i))["hist"]
+			uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
+			uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
+		else:
+			i = 3
+			ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
+			ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
+			ActiveInb       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
+			ActiveOutb      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
+
+			xsec_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i))["hist"]
+			xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
+			uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i))["hist"]
+			uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
 
 		phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 		P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
