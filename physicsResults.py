@@ -2431,7 +2431,7 @@ if args.radplot:
 	Q2bin = 2
 	tbin = 2
 
-	plt.scatter(phi1avg_VGG[xBbin, Q2bin, tbin, :], divideHist(integratedBorn_BH,xsecTh_BH)phi1avg_VGG[xBbin, Q2bin, tbin, :] , color = 'k')
+	plt.scatter(phi1avg_VGG[xBbin, Q2bin, tbin, :], divideHist(integratedBorn_BH,xsecTh_BH)[xBbin, Q2bin, tbin, :] , color = 'k')
 	plt.xlim([0, 360])
 	plt.xticks([0, 90, 180, 270, 360])
 	plt.xlabel(r"$\phi$" + " ["+degree+"]")
