@@ -1621,8 +1621,8 @@ if args.savesyst:
 		if optionaltag == '':
 			axs.plot(phi1s, FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
 			axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'KM15')
-			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'BH')
+			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
+			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'Theory (BH)')
 		else:
 			axs.plot(phi1s, FourierSeries(res_lsq.x, phi1s), label = 'Fitting results {}'.format(optionaltag[1:]), color = colorscheme[scheme], linestyle = '--')
 		scheme = scheme+1
