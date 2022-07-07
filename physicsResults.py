@@ -2445,7 +2445,7 @@ if args.radplot:
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
-	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>="+"{:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$~\mathrm{GeV}^2$"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>=$"+"{:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$~\mathrm{GeV}^2$"
 	header = xBheader + Q2header + theader
 	plt.title(header, loc = 'left')
 	plt.savefig("plots/finitebin{}{}{}.pdf".format(xBbin, Q2bin, tbin))
