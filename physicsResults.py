@@ -1705,6 +1705,7 @@ if args.savesyst:
 
 if args.savesyst2:
 	k = 3
+	i = 3
 
 	xBbins  = collection_xBbins[k]
 	Q2bins  = collection_Q2bins[k]
