@@ -1579,7 +1579,7 @@ if args.savesyst:
 	tbin = 2
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
-	for optionaltag in ['', 'bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
+	for optionaltag in ['', '_bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
 
 		if optionaltag == 'bkg':
 			i = 0
