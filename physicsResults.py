@@ -55,6 +55,7 @@ parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = 
 parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
 parser.add_argument("-sk", "--savekine", help = "save kinematic variables", action = "store_true")
 parser.add_argument("-ss", "--savesyst", help = "save systematic uncertainties", action = "store_true")
+parser.add_argument("-rp", "--radplot", help = "save rad plots", action = "store_true")
 
 args = parser.parse_args()
 
@@ -2398,6 +2399,52 @@ if args.contplot:
 	header = xBheader + Q2header + theader
 	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
 	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+
+#not actively used
+if args.radplot:
+	print("read rad factors...")
+
+	k = 3
+
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
+
+	xsecTh_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
+	xsecTh_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
+
+	integratedRad_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedRad_VGG.npz".format(k))["hist"]
+	integratedBorn_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedBorn_VGG.npz".format(k))["hist"]
+	rcfactors_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_VGG.npz".format(k))["hist"]
+
+	integratedRad_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedRad_BH.npz".format(k))["hist"]
+	integratedBorn_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedBorn_BH.npz".format(k))["hist"]
+	rcfactors_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_BH.npz".format(k))["hist"]
+
+	phi1avg_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
+	xBavg_VGG   = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
+	Q2avg_VGG   = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
+	t1avg_VGG   = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
+
+	xBbin = 3
+	Q2bin = 2
+	tbin = 2
+
+	plt.scatter(phi1avg_VGG[xBbin, Q2bin, tbin, :], divideHist(integratedBorn_BH,xsecTh_BH)phi1avg_VGG[xBbin, Q2bin, tbin, :] , color = 'k')
+	plt.xlim([0, 360])
+	plt.xticks([0, 90, 180, 270, 360])
+	plt.xlabel(r"$\phi$" + " ["+degree+"]")
+	plt.ylim([0.9, 1.1])
+	plt.ylabel(r"$\frac{<d\sigma>}{d\sigma}$", rotation = 0, labelpad=40, fontsize = 40)
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+"~(\mathrm{GeV/c})^2$"+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>="+"{:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+"~\mathrm{GeV}^2$"
+	header = xBheader + Q2header + theader
+	plt.title(header, loc = 'left')
+	plt.savefig("plots/finitebin{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+
 
 # if args.readonly: 
 # 	phi1avg_VGG, xBavg_VGG, Q2avg_VGG, t1avg_VGG = {}, {}, {}, {}  
