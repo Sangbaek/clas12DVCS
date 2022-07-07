@@ -1623,16 +1623,13 @@ if args.savesyst:
 			axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'Theory (BH)')
+			P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+			P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+			BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
+			Normalization = FourierSeries(res_lsq.x, 0)/(P1_zero*P2_zero*BHDVCS_zero)
 		else:
 			axs.plot(phi1s, FourierSeries(res_lsq.x, phi1s), label = 'Fitting results {}'.format(optionaltag[1:]), color = colorscheme[scheme], linestyle = '--')
 		scheme = scheme+1
-
-	P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-	P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-	BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
-	Normalization = FourierSeries(res_lsq.x, 0)/(P1_zero*P2_zero*BHDVCS_zero)
-
-	print(P1_zero, P2_zero, BHDVCS_zero, Normalization, FourierSeries(res_lsq.x, 0), np.sum(res_lsq.x))
 
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
