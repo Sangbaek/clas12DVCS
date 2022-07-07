@@ -1629,11 +1629,11 @@ if args.savesyst:
 
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
-	axs.xlim([0, 360])
-	axs.xticks([0, 90, 180, 270, 360])
-	axs.xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.ylim([0.9, 1.1])
-	axs.ylabel(r"$\frac{<d\sigma>}{d\sigma}$", rotation = 0, labelpad=40, fontsize = 40)
+	axs.set_xlim([0, 360])
+	axs.set_xticks([0, 90, 180, 270, 360])
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_ylim([0.9, 1.1])
+	axs.set_ylabel(r"$\frac{<d\sigma>}{d\sigma}$", rotation = 0, labelpad=40, fontsize = 40)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
