@@ -1815,17 +1815,17 @@ if args.savesyst2:
 	BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
 	Normalization = FourierSeries(nominal, 0)/(P1_zero*P2_zero*BHDVCS_zero)
 
-	UncModel = np.abs(divideHist(FourierSeries(VGG-nominal, phibin),FourierSeries(nominal, phibin), threshold=-np.inf))
-	UncExcl = 0.5*np.abs(divideHist(FourierSeries(tightexcl-looseexcl, phibin),FourierSeries(nominal, phibin), threshold=-np.inf))
-	UncSmear = 0.5*np.abs(divideHist(FourierSeries(sm11-sm09, phibin),FourierSeries(nominal, phibin), threshold=-np.inf))
-	UncFid = np.abs(divideHist(FourierSeries(tightfid-nominal, phibin),FourierSeries(nominal, phibin), threshold=-np.inf))
-	UncBkg = np.abs(divideHist(FourierSeries(bkg-nominal, phibin),FourierSeries(nominal, phibin), threshold=-np.inf))
+	UncModel = np.abs(divideHist(FourierSeries(VGG-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
+	UncExcl = 0.5*np.abs(divideHist(FourierSeries(tightexcl-looseexcl, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
+	UncSmear = 0.5*np.abs(divideHist(FourierSeries(sm11-sm09, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
+	UncFid = np.abs(divideHist(FourierSeries(tightfid-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
+	UncBkg = np.abs(divideHist(FourierSeries(bkg-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
 
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2)
 	Unc = np.sqrt(uncStat_BH[xBbin, Q2bin, tbin, phibin]**2 + SystUnc**2)
 
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = Unc*xsec_BH[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
-	axs.plot(phi1s, 1/(P1b*P2b)*FourierSeries(res_lsq.x, phi1s), label = 'Fitting results', color = 'k', linestyle = '--')
+	axs.plot(phibin, 1/(P1b*P2b)*FourierSeries(res_lsq.x, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), label = 'Fitting results', color = 'k', linestyle = '--')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'Theory (BH)')
 
