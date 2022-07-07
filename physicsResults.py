@@ -1580,8 +1580,8 @@ if args.savesyst:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 	colorscheme = ['k', 'purple', 'b', 'g', 'brown', 'orange', 'pink']
+	scheme = 0
 	for optionaltag in ['', '_bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
-		scheme = 0
 		if optionaltag == '_bkg':
 			i = 0
 			ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format('', k, i))["hist"]
@@ -1623,13 +1623,12 @@ if args.savesyst:
 			axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(xsec_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'KM15')
 			axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'BH')
-
 		else:
 			axs.plot(phi1s, FourierSeries(res_lsq.x, phi1s), label = 'Fitting results {}'.format(optionaltag[1:]), color = colorscheme[scheme], linestyle = '--')
 		scheme = scheme+1
 
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.6))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
 	# fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 	plt.savefig("plots/systematics.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 
