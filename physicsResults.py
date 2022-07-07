@@ -1632,7 +1632,6 @@ if args.savesyst:
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylim([0.9, 1.1])
 	axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2(\phi)\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
