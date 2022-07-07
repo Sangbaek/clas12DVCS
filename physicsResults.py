@@ -55,6 +55,7 @@ parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = 
 parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
 parser.add_argument("-sk", "--savekine", help = "save kinematic variables", action = "store_true")
 parser.add_argument("-ss", "--savesyst", help = "save systematic uncertainties", action = "store_true")
+parser.add_argument("-ss2", "--savesyst2", help = "save systematic uncertainties", action = "store_true")
 parser.add_argument("-rp", "--radplot", help = "save rad plots", action = "store_true")
 
 args = parser.parse_args()
