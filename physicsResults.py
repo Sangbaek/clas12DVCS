@@ -1574,6 +1574,10 @@ if args.savesyst:
 	xsecTh_BH          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
 	xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
+	xBbin = 3
+	Q2bin = 2
+	tbin = 2
+
 	for optionaltag in ['', 'bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
 
 		if optionaltag == 'bkg':
