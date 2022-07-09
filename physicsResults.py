@@ -1997,17 +1997,16 @@ if args.savesyst3:
 	UncNorm = (getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
 	UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=0))
 	UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=0))
-	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=0))
-	UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))
+	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
+	UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
 	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.1
 	UncSmear = 0.5*np.abs(divideHist(xsec_BH_sm11 - xsecBH_sm09, xsec_BH, threshold=0))
-	UncSmear[(xsec_BH_sm11 == 0) & (xsecBH_sm09!=0)] = np.abs(divideHist(xsecBH_sm09 - xsec_BH, xsec_BH, threshold=0))
-	UncSmear[(xsecBH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=0))
-	UncSmear[(xsec_BH_sm11 == 0) & (xsecBH_sm09==0)] = 0.1
+	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm11 == 0) & (xsecBH_sm09!=0)]
+	UncSmear[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)]
+	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.1
 	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
 	UncFid[xsec_BH_tightfid == 0] = 0
-	UncFid = UncFid[xBbin, Q2bin, tbin, phibin]
-	UncFid[UncFid == 0] = np.mean(UncFid)
+	UncFid[UncFid == 0] = 0.1
 	UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=0))
 
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
