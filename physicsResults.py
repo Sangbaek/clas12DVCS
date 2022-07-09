@@ -2018,7 +2018,7 @@ if args.savesyst3:
 
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (uncStat_BH*xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 	for i in range(-500, 500):
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization+i*SystUnc/500*xsec_BH/Normalization[xBbin, Q2bin, tbin] )[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin]+i*SystUnc/500*xsec_BH/Normalization[xBbin, Q2bin, tbin] )[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
 
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 	Nplot = 40
