@@ -2196,8 +2196,8 @@ if args.saveplot:
 				num_plotQ2 = 6 - 1
 				num_plotxB = 3 - 1
 			if k == 3:
-				num_plotQ2 = 4
-				num_plotxB = 4
+				num_plotQ2 = 5
+				num_plotxB = 5
 
 
 			# #all config bh
