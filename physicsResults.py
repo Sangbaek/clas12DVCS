@@ -2524,6 +2524,45 @@ if args.saveplot:
 						# 	axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecOutb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
 
 						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH-xsecTh_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
+						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM - xsecTh_BH)[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
+
+						xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+						Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+						theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+						header = xBheader +Q2header + theader
+						axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
+						axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+						# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+						axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+						axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+						if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+							handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+							active = 1
+				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+				fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+				plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/unpol_diff2_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.clf()
+
+			for tbin in range(num_plott):
+				active = 0
+				ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+				fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+				for xBbin in range(num_plotxB):
+					for Q2bin in range(num_plotQ2):
+						#skip inactive bins
+						if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+							axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+							axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+							continue
+						# if ActiveInb[xBbin, Q2bin, tbin, :].any():
+						# 	phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
+						# 	axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecInb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsecInb_BH*uncStatInb_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
+						# if ActiveOutb[xBbin, Q2bin, tbin, :].any():
+						# 	phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
+						# 	axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecOutb_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsecOutb_BH*uncStatOutb_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
+
+						phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 						axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/0.7-xsecTh_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 						axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], (xsecTh_KM - xsecTh_BH)[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
 
