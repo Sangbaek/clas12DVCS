@@ -1912,7 +1912,6 @@ if args.savesyst3:
 	xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
 
-	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 	colorscheme = ['k', 'purple', 'b', 'g', 'brown', 'orange', 'pink']
 	scheme = 0
 	# for optionaltag in ['', '_bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
@@ -2016,9 +2015,10 @@ if args.savesyst3:
 				# Unc = np.sqrt(uncStat_BH[xBbin, Q2bin, tbin, phibin]**2 + SystUnc**2)
 				Normalization[xBbin, Q2bin, tbin] = FourierSeries(0, *nominal)/reduced_zero
 
+				fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (uncStat_BH*xsec_BH/Normalization[xBbin, Q2bin, tbin])[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
-				for i in range(-500, 500):
-					axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin]+i*SystUnc/500*xsec_BH/Normalization[xBbin, Q2bin, tbin] )[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
+				for iplot in range(-500, 500):
+					axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization[xBbin, Q2bin, tbin]+iplot*SystUnc/500*xsec_BH/Normalization[xBbin, Q2bin, tbin] )[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
 
 				axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 				Nplot = 40
@@ -2047,6 +2047,7 @@ if args.savesyst3:
 
 				# fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 				plt.savefig("plots/systematics3_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+				plt.clf()
 
 if args.saveplot:
 
