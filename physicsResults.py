@@ -2028,7 +2028,7 @@ if args.savesyst3:
 	phi1s = np.linspace(0, 360, Nplot)
 	P1b = P1(xBs, Q2s, t1s, phi1s)
 	P2b = P2(xBs, Q2s, t1s, phi1s)
-	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)/Normalization*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
+	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)/Normalization[xBbin, Q2bin, tbin]*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
 	axs.plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
 
