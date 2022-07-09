@@ -1921,9 +1921,9 @@ if args.savesyst3:
 	Normalization = np.ones(phi1avg_VGG.shape[:-1])
 	SystUnc = np.ones(phi1avg_VGG.shape)
 
-	for xBbin in range(len(xBbins)):
-		for Q2bin in range(len(Q2bins)):
-			for tbin in range(len(tbins)):
+	for xBbin in range(5):
+		for Q2bin in range(5):
+			for tbin in range(1, 5):
 
 				P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
 				P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
