@@ -1946,7 +1946,7 @@ if args.savesyst3:
 
 	#bkg
 	ActiveAny_bkg       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format('', k, 0))["hist"]
-	xsec_BH _bkg     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format('', k, 0))["hist"]
+	xsec_BH_bkg     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format('', k, 0))["hist"]
 
 	optionaltag = '_tightfid'
 	ActiveAny_tightfid       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
