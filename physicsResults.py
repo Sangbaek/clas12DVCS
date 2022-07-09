@@ -1877,7 +1877,7 @@ if args.savesyst2:
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2(\phi)\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
@@ -2015,7 +2015,7 @@ if args.savesyst3:
 
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (uncStat_BH*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 	for i in range(-500, 500):
-		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1+i*SystUnc/500*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
+		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization+i*SystUnc/500*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
 
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 	Nplot = 40
@@ -2035,7 +2035,7 @@ if args.savesyst3:
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2(\phi)\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
