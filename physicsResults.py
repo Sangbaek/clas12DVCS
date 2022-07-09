@@ -1870,7 +1870,6 @@ if args.savesyst2:
 	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)/Normalization*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
 	axs.plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
-	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'purple', label = 'Theory (BH)')
 
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
@@ -2028,7 +2027,6 @@ if args.savesyst3:
 	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)/Normalization*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
 	axs.plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
-	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'purple', label = 'Theory (BH)')
 
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
