@@ -83,9 +83,10 @@ else:
 inbcharge_epg, outbcharge_epg = 30398709.057119943, 32085430.046131916
 charge_epg = inbcharge_epg + outbcharge_epg
 
-def FourierSeries(args, x):
+# def FourierSeries(args, x):
+def FourierSeries(x, a, b, c):
 #     df = args
-    a, b, c = args
+    # a, b, c = args
     return a + b * np.cos(np.radians(x)) + c* np.cos(2*np.radians(x))
 
 def lstsq_FourierSeries(args, x, y):
@@ -1821,12 +1822,12 @@ if args.savesyst2:
 	popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
 	nominal = popt
 
-	Normalization = FourierSeries(nominal, 0)/reduced_zero
-	Normalization_2sigma = FourierSeries(tightexcl, 0)/reduced_zero
-	Normalization_4sigma = FourierSeries(looseexcl, 0)/reduced_zero
-	Normalization_sm09 = FourierSeries(sm09, 0)/reduced_zero
-	Normalization_sm11 = FourierSeries(sm11, 0)/reduced_zero
-	Normalization_tightfid = FourierSeries(tightfid, 0)/reduced_zero
+	Normalization = FourierSeries(0, *nominal)/reduced_zero
+	Normalization_2sigma = FourierSeries(0, *tightexcl)/reduced_zero
+	Normalization_4sigma = FourierSeries(0, *looseexcl)/reduced_zero
+	Normalization_sm09 = FourierSeries(0, *sm09)/reduced_zero
+	Normalization_sm11 = FourierSeries(0, *sm11)/reduced_zero
+	Normalization_tightfid = FourierSeries(0, *tightfid)/reduced_zero
 
 	nominal = np.divide(nominal, Normalization)
 	tightexcl = np.divide(tightexcl/Normalization_2sigma)
@@ -1835,11 +1836,11 @@ if args.savesyst2:
 	sm11 = np.divide(sm11/Normalization_sm11)
 	tightfid = np.divide(tightfid/Normalization_tightfid)
 
-	UncModel = np.abs(divideHist(FourierSeries(VGG-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
-	UncExcl = 0.5*np.abs(divideHist(FourierSeries(tightexcl-looseexcl, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
-	UncSmear = 0.5*np.abs(divideHist(FourierSeries(sm11-sm09, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
-	UncFid = np.abs(divideHist(FourierSeries(tightfid-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
-	UncBkg = np.abs(divideHist(FourierSeries(bkg-nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]),FourierSeries(nominal, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), threshold=-np.inf))
+	UncModel = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(VGG-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
+	UncExcl = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightexcl-looseexcl)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
+	UncSmear = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(sm11-sm09)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
+	UncFid = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightfid-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
+	UncBkg = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(bkg-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
 	# Unc = np.sqrt(uncStat_BH[xBbin, Q2bin, tbin, phibin]**2 + SystUnc**2)
