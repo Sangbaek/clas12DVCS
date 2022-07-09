@@ -1849,7 +1849,7 @@ if args.savesyst2:
 	for i in range(-500, 500):
 		axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1+i*SystUnc/500)*(xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 1/100)
 
-	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/(P1b*P2b*Normalization)*FourierSeries(res_lsq.x, phi1avg_BH[xBbin, Q2bin, tbin, phibin]), label = 'Fitting results', color = 'k', linestyle = '--')
+	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/(P1b*P2b*Normalization)*FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'r', label = 'Theory (BH)')
 
