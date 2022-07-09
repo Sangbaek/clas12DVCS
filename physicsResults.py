@@ -1795,13 +1795,13 @@ if args.savesyst2:
 
 	optionaltag = '_tightfid'
 	ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
-	xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
-	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
-	phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-	P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
-	P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
-	popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
-	tightfid = popt
+	xsec_BH_tightfid      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
+	# uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
+	# phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+	# P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
+	# P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
+	# popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
+	# tightfid = popt
 
 	UncNorm = (getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
 
@@ -1843,7 +1843,10 @@ if args.savesyst2:
 	UncModel = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(VGG-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 	UncExcl = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightexcl-looseexcl)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 	UncSmear = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(sm11-sm09)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
-	UncFid = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightfid-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
+	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
+	UncFid[xsec_BH_tightfid == 0] = 0
+	UncFid = UncFid[xBbin, Q2bin, tbin, phibin]
+	UncFid[UncFid == 0] = np.mean(UncFid)
 	UncBkg = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(bkg-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
