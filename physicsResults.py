@@ -1739,10 +1739,10 @@ if args.savesyst2:
 	Q2bin = 2
 	tbin = 2
 
-	# P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-	# P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-	# BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
-	reduced_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 0)
+	P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+	P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+	BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
+	# reduced_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 0)
 
 	optionaltag = '_2sigma'
 	ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
@@ -1822,19 +1822,23 @@ if args.savesyst2:
 	popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
 	nominal = popt
 
-	Normalization = FourierSeries(0, *nominal)/reduced_zero
-	Normalization_2sigma = FourierSeries(0, *tightexcl)/reduced_zero
-	Normalization_4sigma = FourierSeries(0, *looseexcl)/reduced_zero
-	Normalization_sm09 = FourierSeries(0, *sm09)/reduced_zero
-	Normalization_sm11 = FourierSeries(0, *sm11)/reduced_zero
-	Normalization_tightfid = FourierSeries(0, *tightfid)/reduced_zero
+	# Normalization = FourierSeries(0, *nominal)/reduced_zero
+	# Normalization_2sigma = FourierSeries(0, *tightexcl)/reduced_zero
+	# Normalization_4sigma = FourierSeries(0, *looseexcl)/reduced_zero
+	# Normalization_sm09 = FourierSeries(0, *sm09)/reduced_zero
+	# Normalization_sm11 = FourierSeries(0, *sm11)/reduced_zero
+	# Normalization_tightfid = FourierSeries(0, *tightfid)/reduced_zero
+	# Normalization_bkg = FourierSeries(0, *bkg)/reduced_zero
+	# Normalization_VGG = FourierSeries(0, *VGG)/reduced_zero
 
-	nominal = np.divide(nominal, Normalization)
-	tightexcl = np.divide(tightexcl,Normalization_2sigma)
-	looseexcl = np.divide(looseexcl,Normalization_4sigma)
-	sm09 = np.divide(sm09,Normalization_sm09)
-	sm11 = np.divide(sm11,Normalization_sm11)
-	tightfid = np.divide(tightfid,Normalization_tightfid)
+	# nominal = np.divide(nominal, Normalization)
+	# tightexcl = np.divide(tightexcl,Normalization_2sigma)
+	# looseexcl = np.divide(looseexcl,Normalization_4sigma)
+	# sm09 = np.divide(sm09,Normalization_sm09)
+	# sm11 = np.divide(sm11,Normalization_sm11)
+	# tightfid = np.divide(tightfid,Normalization_tightfid)
+	# bkg = np.divide(bkg,Normalization_bkg)
+	# VGG = np.divide(VGG,Normalization_VGG)
 
 	UncModel = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(VGG-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 	UncExcl = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightexcl-looseexcl)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
@@ -1857,7 +1861,7 @@ if args.savesyst2:
 	phi1s = np.linspace(0, 360, Nplot)
 	P1b = P1(xBs, Q2s, t1s, phi1s)
 	P2b = P2(xBs, Q2s, t1s, phi1s)
-	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
+	axs.plot(np.linspace(0, 360, 40), 1/(P1b*P2b)/Normalization*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
 	axs.plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'purple', label = 'Theory (BH)')
