@@ -1830,11 +1830,11 @@ if args.savesyst2:
 	Normalization_tightfid = FourierSeries(0, *tightfid)/reduced_zero
 
 	nominal = np.divide(nominal, Normalization)
-	tightexcl = np.divide(tightexcl/Normalization_2sigma)
-	looseexcl = np.divide(looseexcl/Normalization_4sigma)
-	sm09 = np.divide(sm09/Normalization_sm09)
-	sm11 = np.divide(sm11/Normalization_sm11)
-	tightfid = np.divide(tightfid/Normalization_tightfid)
+	tightexcl = np.divide(tightexcl,Normalization_2sigma)
+	looseexcl = np.divide(looseexcl,Normalization_4sigma)
+	sm09 = np.divide(sm09,Normalization_sm09)
+	sm11 = np.divide(sm11,Normalization_sm11)
+	tightfid = np.divide(tightfid,Normalization_tightfid)
 
 	UncModel = np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(VGG-nominal)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
 	UncExcl = 0.5*np.abs(divideHist(FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(tightexcl-looseexcl)),FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)), threshold=-np.inf))
