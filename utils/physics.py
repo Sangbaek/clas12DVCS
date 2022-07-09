@@ -372,7 +372,7 @@ def getBHDVCS(xB, Q2, t, phi, mode = 1):
     hc1BH=c1_BH*BHfact
     hc2BH=c2_BH*BHfact
     if mode == 0:
-        return c0_BH*BHfact*P1*P2
+        return (c0_BH-c1_BH+c2_BH)*BHfact*P1*P2
     if mode == 1:
         return hc0BH +hc1BH*np.cos(Phi_gb)+hc2BH*np.cos(2*Phi_gb)
 
