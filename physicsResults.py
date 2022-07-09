@@ -1853,11 +1853,11 @@ if args.savesyst2:
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 	Nplot = 40
 	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
+	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
+	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+	phi1s = np.linspace(0, 360, Nplot)
 
-	axs.plot(np.linspace(0, 360, Nplot), getBHDVCS(np.linspace(0, 360, Nplot), mode  =1), color = 'r', label = 'Theory (BH)')
+	axs.plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
 	axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_BH[xBbin, Q2bin, tbin, phibin], color = 'purple', label = 'Theory (BH)')
 
 	handles, labels = axs.get_legend_handles_labels()
