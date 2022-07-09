@@ -1919,8 +1919,8 @@ if args.savesyst3:
 	# 	if optionaltag == '_bkg':
 	# 		i = 0
 
-	Normalization = np.ones(xsecTh_BH.shape[:-1])
-	SystUnc = np.ones(xsecTh_BH.shape[:-1])
+	Normalization = np.ones(phi1avg_VGG.shape[:-1])
+	SystUnc = np.ones(phi1avg_VGG.shape)
 
 	xBbin = 3
 	Q2bin = 2
@@ -2012,7 +2012,7 @@ if args.savesyst3:
 	UncFid[UncFid == 0] = 0.1
 	UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=0))
 
-	SystUnc[xBbin, Q2bin, tbin, :] = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
+	SystUnc[xBbin, Q2bin, tbin, :] = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)[xBbin, Q2bin, tbin, :] 
 	# Unc = np.sqrt(uncStat_BH[xBbin, Q2bin, tbin, phibin]**2 + SystUnc**2)
 	Normalization[xBbin, Q2bin, tbin] = FourierSeries(0, *nominal)/reduced_zero
 
