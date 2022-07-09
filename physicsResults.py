@@ -2001,7 +2001,7 @@ if args.savesyst3:
 	UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
 	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.1
 	UncSmear = 0.5*np.abs(divideHist(xsec_BH_sm11 - xsec_BH_sm09, xsec_BH, threshold=0))
-	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm11 == 0) & (xsecBH_sm09!=0)]
+	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)]
 	UncSmear[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)]
 	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.1
 	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
