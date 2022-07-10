@@ -2146,6 +2146,7 @@ if args.savenorm:
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
 	Normalization = np.ones(phi1avg_VGG.shape[:-1])
+	FittingProb = np.ones(phi1avg_VGG.shape[:-1])
 
 	for xBbin in range(0, 5):
 		for Q2bin in range(2, 5):
@@ -2170,6 +2171,11 @@ if args.savenorm:
 
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 				axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
+
+				chi2fit = np.sum(( P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin] - FourierSeries(np.linspace(0, 360, 40),*(nominal)))**2/(P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin])**2)
+				dof = len(phibin)-3
+				print(xBbin, Q2bin, tbin, 1-chi2.cdf(chi2fit, dof))
+				FittingProb[xBbin, Q2bin, tbin] = 1-chi2.cdf(chi2fit, dof)
 
 				Nplot = 40
 				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
