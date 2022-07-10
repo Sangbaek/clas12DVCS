@@ -778,8 +778,10 @@ if args.saveyields:
 			accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT45nA , histVGGInbCDFT45nA)
 			accCorrectedInbCR_VGG = divideHist(histBHDVCSInbCR*histVGGGenInbCR45nA , histVGGInbCR45nA)
 			accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG + accCorrectedInbCR_VGG
+			accCorrectedInb_VGG2 = divideHist((histBHDVCSInbFD+histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histVGGGenInb45nA , histVGGInbFD45nA+histVGGInbCD45nA+histVGGInbCDFT45nA+histVGGInbCR45nA)
 			#FD inbending threshold [:, :, 0, :]
 			accCorrectedInb_VGG[:, :, 0, :] = accCorrectedInbCD_VGG[:, :, 0, :] + accCorrectedInbCDFT_VGG[:, :, 0, :] + accCorrectedInbCR_VGG[:, :, 0, :]
+			accCorrectedInb_VGG2[:, :, 0, :] = divideHist((histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histVGGGenInb45nA , histVGGInbCD45nA+histVGGInbCDFT45nA+histVGGInbCR45nA)[:, :, 0, :]
 
 			uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD45nA) + inverseHist(histVGGGenInbFD45nA))
 			uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInbCD45nA))
@@ -851,6 +853,7 @@ if args.saveyields:
 
 			#don't use the low Q^2
 			accCorrectedInb_VGG[~ActiveInb] = 0
+			accCorrectedInb_VGG2[~ActiveInb] = 0
 			uncStatInb_VGG[~ActiveInb] = 0
 			accCorrectedInb_VGG_plus[~ActiveInb] = 0
 			uncStatInb_VGG_plus[~ActiveInb] = 0
@@ -863,8 +866,10 @@ if args.saveyields:
 			accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
 			accCorrectedInbCR_BH = divideHist(histBHDVCSInbCR*histBHGenInbCR45nA , histBHInbCR45nA)
 			accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH + accCorrectedInbCR_BH
+			accCorrectedInb_BH2 = divideHist((histBHDVCSInbFD+histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histBHGenInb45nA , histBHInbFD45nA+histBHInbCD45nA+histBHInbCDFT45nA+histBHInbCR45nA)
 			#FD inbending threshold [:, :, 0, :]
 			accCorrectedInb_BH[:, :, 0, :] = accCorrectedInbCD_BH[:, :, 0, :] + accCorrectedInbCDFT_BH[:, :, 0, :] + accCorrectedInbCR_BH[:, :, 0, :]
+			accCorrectedInb_BH2[:, :, 0, :] = divideHist((histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histBHGenInb45nA , histBHInbCD45nA+histBHInbCDFT45nA+histBHInbCR45nA)[:, :, 0, :]
 
 			uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
 			uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
@@ -934,7 +939,9 @@ if args.saveyields:
 			uncStatInbCDFTonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInb45nA))
 			uncStatInbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInb45nA))
 
+			#remove inactive
 			accCorrectedInb_BH[~ActiveInb] = 0
+			accCorrectedInb_BH2[~ActiveInb] = 0
 			uncStatInb_BH[~ActiveInb] = 0
 			accCorrectedInb_BH_plus[~ActiveInb] = 0
 			uncStatInb_BH_plus[~ActiveInb] = 0
@@ -948,8 +955,10 @@ if args.saveyields:
 			accCorrectedOutbCDFT_VGG = divideHist(histBHDVCSOutbCDFT*histVGGGenOutbCDFT50nA , histVGGOutbCDFT50nA)
 			accCorrectedOutbCR_VGG = divideHist(histBHDVCSOutbCR*histVGGGenOutbCR50nA , histVGGOutbCR50nA)
 			accCorrectedOutb_VGG = accCorrectedOutbFD_VGG + accCorrectedOutbCD_VGG + accCorrectedOutbCDFT_VGG + accCorrectedOutbCR_VGG
+			accCorrectedOutb_VGG2 = divideHist((histBHDVCSOutbFD+histBHDVCSOutbCD+histBHDVCSOutbCDFT+histBHDVCSOutbCR)*histVGGGenOutb50nA , histVGGOutbFD50nA+histVGGOutbCD50nA+histVGGOutbCDFT50nA+histVGGOutbCR50nA)
 			#FD inbending threshold [:, :, [0, 1], :]
 			accCorrectedOutb_VGG[:, :, [0, 1], :] = accCorrectedOutbCD_VGG[:, :, [0, 1], :] + accCorrectedOutbCDFT_VGG[:, :, [0, 1], :] + accCorrectedOutbCR_VGG[:, :, [0, 1], :]
+			accCorrectedOutb_VGG2[:, :, [0, 1], :] = divideHist((histBHDVCSOutbCD+histBHDVCSOutbCDFT+histBHDVCSOutbCR)*histVGGGenOutb50nA , histVGGOutbCD50nA+histVGGOutbCDFT50nA+histVGGOutbCR50nA)[:, :, [0, 1], :]
 
 			uncStatOutbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histVGGOutbFD50nA) + inverseHist(histVGGGenOutbFD50nA))
 			uncStatOutbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histVGGOutbCD50nA) + inverseHist(histVGGGenOutbCD50nA))
@@ -1021,6 +1030,7 @@ if args.saveyields:
 
 			#remove inactive
 			accCorrectedOutb_VGG[~ActiveOutb] = 0
+			accCorrectedOutb_VGG2[~ActiveOutb] = 0
 			uncStatOutb_VGG[~ActiveOutb] = 0
 			accCorrectedOutb_VGG_plus[~ActiveOutb] = 0
 			uncStatOutb_VGG_plus[~ActiveOutb] = 0
@@ -1033,8 +1043,10 @@ if args.saveyields:
 			accCorrectedOutbCDFT_BH = divideHist(histBHDVCSOutbCDFT*histBHGenOutbCDFT50nA , histBHOutbCDFT50nA)
 			accCorrectedOutbCR_BH = divideHist(histBHDVCSOutbCR*histBHGenOutbCR50nA , histBHOutbCR50nA)
 			accCorrectedOutb_BH = accCorrectedOutbFD_BH + accCorrectedOutbCD_BH + accCorrectedOutbCDFT_BH + accCorrectedOutbCR_BH
+			accCorrectedOutb_BH2 = divideHist((histBHDVCSOutbFD+histBHDVCSOutbCD+histBHDVCSOutbCDFT+histBHDVCSOutbCR)*histBHGenOutb50nA , histBHOutbFD50nA+histBHOutbCD50nA+histBHOutbCDFT50nA+histBHOutbCR50nA)
 			#FD inbending threshold [:, :, [0, 1], :]
 			accCorrectedOutb_BH[:, :, [0, 1], :] = accCorrectedOutbCD_BH[:, :, [0, 1], :] + accCorrectedOutbCDFT_BH[:, :, [0, 1], :] + accCorrectedOutbCR_BH[:, :, [0, 1], :]
+			accCorrectedOutb_BH2[:, :, [0, 1], :] = divideHist((histBHDVCSOutbCD+histBHDVCSOutbCDFT+histBHDVCSOutbCR)*histBHGenOutb50nA , histBHOutbCD50nA+histBHOutbCDFT50nA+histBHOutbCR50nA)[:, :, [0, 1], :]
 
 			uncStatOutbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbFD**2+histExpUncOutbFD**2), histBHDVCSOutbFD)**2 + inverseHist(histBHOutbFD50nA) + inverseHist(histBHGenOutbFD50nA))
 			uncStatOutbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCD**2+histExpUncOutbCD**2), histBHDVCSOutbCD)**2 + inverseHist(histBHOutbCD50nA) + inverseHist(histBHGenOutbCD50nA))
@@ -1105,6 +1117,7 @@ if args.saveyields:
 			uncStatOutbCRonly_BH = np.sqrt(divideHist(np.sqrt(histBkgUncOutbCR**2+histExpUncOutbCR**2), histBHDVCSOutbCR)**2 + inverseHist(histBHOutbCR50nA) + inverseHist(histBHGenOutb50nA))
 			#remove inactive
 			accCorrectedOutb_BH[~ActiveOutb] = 0
+			accCorrectedOutb_BH2[~ActiveOutb] = 0
 			uncStatOutb_BH[~ActiveOutb] = 0
 			accCorrectedOutb_BH_plus[~ActiveOutb] = 0
 			uncStatOutb_BH_plus[~ActiveOutb] = 0
@@ -1113,10 +1126,12 @@ if args.saveyields:
 
 			#stat error - all
 			accCorrected_VGG = accCorrectedInb_VGG + accCorrectedOutb_VGG
+			accCorrected_VGG2 = accCorrectedInb_VGG2 + accCorrectedOutb_VGG2
 			uncStat_VGG = np.sqrt((accCorrectedInb_VGG*uncStatInb_VGG)**2 + (accCorrectedOutb_VGG*uncStatOutb_VGG)**2)
 			uncStat_VGG = divideHist(uncStat_VGG, accCorrected_VGG)
 
 			accCorrected_BH = accCorrectedInb_BH + accCorrectedOutb_BH
+			accCorrected_BH2 = accCorrectedInb_BH2 + accCorrectedOutb_BH2
 			uncStat_BH = np.sqrt((accCorrectedInb_BH*uncStatInb_BH)**2 + (accCorrectedOutb_BH*uncStatOutb_BH)**2)
 			uncStat_BH = divideHist(uncStat_BH, accCorrected_BH)
 
@@ -1138,6 +1153,8 @@ if args.saveyields:
 
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG.npz".format(optionaltag, k, i), hist = accCorrectedInb_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH.npz".format(optionaltag, k, i), hist = accCorrectedInb_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i), hist = accCorrected_VGG2)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i), hist = accCorrected_BH2)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_VGG.npz".format(optionaltag, k, i), hist = accCorrectedOutb_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_BH.npz".format(optionaltag, k, i), hist = accCorrectedOutb_BH)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i), hist = accCorrected_VGG)
@@ -1991,14 +2008,14 @@ if args.savesyst3:
 				UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=0))
 				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
 				UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
-				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.1
+				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.113
 				UncSmear = 0.5*np.abs(divideHist(xsec_BH_sm11 - xsec_BH_sm09, xsec_BH, threshold=0))
 				UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)]
 				UncSmear[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)]
-				UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.1
+				UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.087
 				UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
 				UncFid[xsec_BH_tightfid == 0] = 0
-				UncFid[UncFid == 0] = 0.1
+				UncFid[UncFid == 0] = 0.11
 				UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=0))
 
 				SystUnc[xBbin, Q2bin, tbin, :] = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)[xBbin, Q2bin, tbin, :] 
