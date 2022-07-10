@@ -2199,7 +2199,8 @@ if args.savenorm:
 				handles, labels = axs.get_legend_handles_labels()
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
-				axs.set_xticks([0, 90, 180, 270, 360], fontsize = 30)
+				axs.set_xticks([0, 90, 180, 270, 360])
+				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
 				axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 				axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
@@ -2236,7 +2237,8 @@ if args.savenorm:
 				handles, labels = axs.get_legend_handles_labels()
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
-				axs.set_xticks([0, 90, 180, 270, 360], fontsize = 30)
+				axs.set_xticks([0, 90, 180, 270, 360])
+				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
 				axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 				axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
