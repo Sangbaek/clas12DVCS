@@ -1446,12 +1446,12 @@ if args.savexsec:
 			# i = 0 #selected background estimation
 			accCorrectedInb_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG.npz".format(optionaltag, k, i))["hist"]
 			accCorrectedInb_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH.npz".format(optionaltag, k, i))["hist"]
-			accCorrectedInb_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG2.npz".format(optionaltag, k, i))["hist"]
-			accCorrectedInb_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH2.npz".format(optionaltag, k, i))["hist"]
 			accCorrectedOutb_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_VGG.npz".format(optionaltag, k, i))["hist"]
 			accCorrectedOutb_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_BH.npz".format(optionaltag, k, i))["hist"]
 			accCorrected_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i))["hist"]
 			accCorrected_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH.npz".format(optionaltag, k, i))["hist"]
+			accCorrected_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i))["hist"]
+			accCorrected_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i))["hist"]
 
 			accCorrectedInb_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
 			accCorrectedInb_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH_plus.npz".format(optionaltag, k, i))["hist"]
