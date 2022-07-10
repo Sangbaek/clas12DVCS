@@ -2181,7 +2181,7 @@ if args.savenorm:
 
 
 				axs.plot(phi1s, P1b*P2b*getBHDVCS(xBs, Q2s, t1s, phi1s, mode = 1), color = 'r', label = 'Theory (BH)')
-				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, phi1s, mode = 5), color = 'cyan', label = 'Theory (KM15)')
+				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', label = 'Theory (KM15)')
 				# axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 				handles, labels = axs.get_legend_handles_labels()
 				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
