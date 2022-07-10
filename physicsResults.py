@@ -1968,6 +1968,8 @@ if args.savesyst3:
 
 	xsec_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format('', k, i))["hist"]
 	xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format('', k, i))["hist"]
+	xsec_VGG2    = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG2.npz".format('', k, i))["hist"]
+	xsec_BH2     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH2.npz".format('', k, i))["hist"]
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
 
@@ -2011,6 +2013,8 @@ if args.savesyst3:
 
 				UncNorm = 0.0679#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
 				UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=0))
+				UncModel2 = np.abs(divideHist(xsec_VGG2- xsec_BH, xsec_BH, threshold=0))
+				UncModel3 = np.abs(divideHist(xsec_BH2 - xsec_BH, xsec_BH, threshold=0))
 				UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=0))
 				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
 				UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
