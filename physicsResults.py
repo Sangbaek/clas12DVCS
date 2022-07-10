@@ -2148,7 +2148,7 @@ if args.savenorm:
 	Normalization = np.ones(phi1avg_VGG.shape[:-1])
 
 	for xBbin in range(0, 5):
-		for Q2bin in range(3, 5):
+		for Q2bin in range(2, 5):
 			for tbin in range(1, 3):
 				if ~ActiveAny_int[xBbin, Q2bin, tbin, :].any():
 					continue
