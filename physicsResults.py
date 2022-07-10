@@ -2148,6 +2148,8 @@ if args.savenorm:
 	Normalization = np.ones(phi1avg_VGG.shape[:-1])
 	FittingProb = np.ones(phi1avg_VGG.shape[:-1])
 
+	order = [3, 0 ,1 ,2]
+
 	for xBbin in range(0, 5):
 		for Q2bin in range(2, 5):
 			for tbin in range(1, 3):
@@ -2197,7 +2199,7 @@ if args.savenorm:
 				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', label = 'Theory (KM15)')
 				# axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 				handles, labels = axs.get_legend_handles_labels()
-				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
+				lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
 				axs.set_xticks([0, 90, 180, 270, 360])
 				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
@@ -2237,7 +2239,7 @@ if args.savenorm:
 				axs.plot(phi1s, P1b*P2b*getBHDVCS(xBs, Q2s, t1s, phi1s, mode = 1), color = 'r', label = 'Theory (BH)')
 				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', label = 'Theory (KM15)')
 				handles, labels = axs.get_legend_handles_labels()
-				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
+				lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
 				axs.set_xticks([0, 90, 180, 270, 360])
 				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
