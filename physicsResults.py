@@ -1935,6 +1935,18 @@ if args.savesyst3:
 	xsecTh_BH          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
 	xsecTh_VGG         = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
+	integratedRad_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedRad_VGG.npz".format(k))["hist"]
+	integratedBorn_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedBorn_VGG.npz".format(k))["hist"]
+	rcfactors_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_VGG.npz".format(k))["hist"]
+	rconly_VGG = divideHist(integratedRad_VGG, integratedBorn_VGG)
+	finonly_VGG = divideHist(integratedBorn_VGG, xsecTh_VGG)
+
+	integratedRad_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedRad_BH.npz".format(k))["hist"]
+	integratedBorn_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/integratedBorn_BH.npz".format(k))["hist"]
+	rcfactors_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/rcfactors_BH.npz".format(k))["hist"]
+	rconly_BH = divideHist(integratedRad_BH, integratedBorn_BH)
+	finonly_BH = divideHist(integratedBorn_BH, xsecTh_BH)
+
 
 	colorscheme = ['k', 'purple', 'b', 'g', 'brown', 'orange', 'pink']
 	scheme = 0
@@ -1973,17 +1985,17 @@ if args.savesyst3:
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
 
-	for xBbin in range(5):
-		for Q2bin in range(5):
-			for tbin in range(1, 5):
+	# for xBbin in range(5):
+	# 	for Q2bin in range(5):
+	# 		for tbin in range(1, 5):
 
-				if ~ActiveAny_int[xBbin, Q2bin, tbin, :].any():
-					continue
+	# 			if ~ActiveAny_int[xBbin, Q2bin, tbin, :].any():
+	# 				continue
 
-				P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-				P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
-				BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
-				reduced_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 0)
+	# 			P1_zero = P1(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+	# 			P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
+	# 			BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
+	# 			reduced_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 0)
 
 				# uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
 				# phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
@@ -2011,24 +2023,28 @@ if args.savesyst3:
 				# bkg = np.divide(bkg,Normalization_bkg)
 				# VGG = np.divide(VGG,Normalization_VGG)
 
-				UncNorm = 0.0679#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
-				UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=0))
-				UncModel2 = np.abs(divideHist(xsec_VGG2- xsec_BH, xsec_BH, threshold=0))
-				UncModel3 = np.abs(divideHist(xsec_BH2 - xsec_BH, xsec_BH, threshold=0))
-				UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=0))
-				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
-				UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
-				UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.113
-				UncSmear = 0.5*np.abs(divideHist(xsec_BH_sm11 - xsec_BH_sm09, xsec_BH, threshold=0))
-				UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)]
-				UncSmear[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=0))[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)]
-				UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.087
-				UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
-				UncFid[xsec_BH_tightfid == 0] = 0
-				UncFid[UncFid == 0] = 0.11
-				UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=0))
+	UncNorm = 0.0679#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
+	UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=-np.inf))
+	UncModel2 = np.abs(divideHist(xsec_VGG2- xsec_BH, xsec_BH, threshold=-np.inf))
+	UncModel3 = np.abs(divideHist(xsec_BH2 - xsec_BH, xsec_BH, threshold=-np.inf))
+	UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=-np.inf))
+	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=-np.inf))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
+	UncExcl[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)] = np.abs(divideHist(xsec_BH_4sigma - xsec_BH, xsec_BH, threshold=-np.inf))[(xsec_BH_2sigma == 0) & (xsec_BH_4sigma!=0)]
+	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = 0.113
+	UncSmear = 0.5*np.abs(divideHist(xsec_BH_sm11 - xsec_BH_sm09, xsec_BH, threshold=-np.inf))
+	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)] = np.abs(divideHist(xsec_BH_sm09 - xsec_BH, xsec_BH, threshold=-np.inf))[(xsec_BH_sm11 == 0) & (xsec_BH_sm09!=0)]
+	UncSmear[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)] = np.abs(divideHist(xsec_BH_sm11 - xsec_BH, xsec_BH, threshold=-np.inf))[(xsec_BH_sm09 == 0) & (xsec_BH_sm11!=0)]
+	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = 0.087
+	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
+	UncFid[xsec_BH_tightfid == 0] = 0
+	UncFid[UncFid == 0] = 0.11
+	UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=-np.inf))
+	UncRadonly = np.abs(divideHist(rconly_VGG - rconly_BH, rconly_BH, threshold=-np.inf))
+	UncFinonly = np.abs(divideHist(finonly_VGG - finonly_BH, finonly_BH, threshold=-np.inf))
+	UncRad = np.abs(divideHist(rcfactors_VGG - rcfactors_BH, rcfactors_BH, threshold=-np.inf))
+	UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=-np.inf))
 
-				SystUnc[xBbin, Q2bin, tbin, :] = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)[xBbin, Q2bin, tbin, :] 
+	SystUnc[xBbin, Q2bin, tbin, :] = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)[xBbin, Q2bin, tbin, :] 
 				# Unc = np.sqrt(uncStat_BH[xBbin, Q2bin, tbin, phibin]**2 + SystUnc**2)
 
 				# fig, axs = plt.subplots(1, 1, figsize = (10, 6))
