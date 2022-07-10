@@ -182,20 +182,54 @@ def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0 ):
-	phi = np.pi - phi
-	pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-					process='ep2epgamma', exptype='fixed target', frame =frame,
-					in1energy=10.604, in1charge=-1, in1polarization=pol)
-	#     print(pt1.frame, pol)
-	#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-	#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
-	#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
-	try:
-		return th_KM15.XS(pt1)
-	except:
-		print(xB, Q2, t, phi)
-		return 0
+def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 0):
+    phi = np.pi - phi
+    pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
+    				process='ep2epgamma', exptype='fixed target', frame =frame,
+    				in1energy=10.604, in1charge=-1, in1polarization=pol)
+    pt1.prepare()
+    if mode == 0:
+        try:
+            return th_KM15.PreFacSigma(pt1)*th_KM15.PreFacBH(pt1)*pt1.P1P2*(th_KM15.cBH0unp(pt1)-th_KM15.cBH1unp(pt1)+th_KM15.cBH2unp(pt1))
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    if mode == 1:
+        try:
+            return th_KM15.PreFacSigma(pt1)*th_KM15.TBH2unp(pt1)
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    if mode == 2:
+        try:
+            return th_KM15.PreFacSigma(pt1)*th_KM15.TINTunp(pt1)
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    if mode == 3:
+        try:
+            return th_KM15.PreFacSigma(pt1)*th_KM15.TDVCS2unp(pt1)
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    if mode == 4:
+        try:
+            return th_KM15.PreFacSigma(pt1)*(th_KM15.TINTunp(pt1)+th_KM15.TDVCS2unp(pt1))
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    if mode == 5:
+        try:
+            return th_KM15.PreFacSigma(pt1)*(th_KM15.TBH2unp(pt1)+th_KM15.TINTunp(pt1)+th_KM15.TDVCS2unp(pt1))
+        except:
+            print(xB, Q2, t, phi)
+            return 0
+    else:
+        try:
+            return th_KM15.XS(pt1)
+        except:
+            print(xB, Q2, t, phi)
+            return 0
 
 def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     VGGarray = []
