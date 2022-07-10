@@ -2082,7 +2082,7 @@ if args.savesyst3:
 
 				fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (uncStat_BH*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
-				axs.fill_bewteen(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization-SystUnc*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization+SystUnc*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
+				axs.fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization-SystUnc*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], (xsec_BH/Normalization+SystUnc*xsec_BH/Normalization)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
 
 				axs.plot(phi1avg_BH[xBbin, Q2bin, tbin, phibin], xsecTh_KM[xBbin, Q2bin, tbin, phibin], color = 'cyan', label = 'Theory (KM15)')
 				Nplot = 40
