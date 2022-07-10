@@ -2174,7 +2174,7 @@ if args.savenorm:
 
 				chi2fit = np.sum(( P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin] - FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)))**2/(P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin])**2)
 				dof = len(phibin)-3
-				print(xBbin, Q2bin, tbin, 1-chi2.cdf(chi2fit, dof))
+				print(xBbin, Q2bin, tbin, 1-chi2.cdf(chi2fit, dof), Normalization[xBbin, Q2bin, tbin])
 				FittingProb[xBbin, Q2bin, tbin] = 1-chi2.cdf(chi2fit, dof)
 
 				Nplot = 40
