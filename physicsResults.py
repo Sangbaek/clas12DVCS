@@ -2200,7 +2200,7 @@ if args.savenorm:
 				plt.savefig("plots/modified{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 				plt.clf()
 
-	print(np.array([xBavg_BH[:,:,:,0][Normalization!=1],Q2avg_BH[:,:,:,0][Normalization!=1], t1avg_BH[:,:,:,0][Normalization!=1]]).T)
+	print(np.array([xBavg_BH[:,:,:,0][Normalization!=1],Q2avg_BH[:,:,:,0][Normalization!=1], t1avg_BH[:,:,:,0][Normalization!=1]. Normalization[Normalization!=1]]).T)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Normalization.npz".format(k), hist = Normalization)
 
 if args.saveplot:
