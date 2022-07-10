@@ -2172,7 +2172,7 @@ if args.savenorm:
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
 				axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
-				chi2fit = np.sum(( P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin] - FourierSeries(np.linspace(0, 360, 40),*(nominal)))**2/(P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin])**2)
+				chi2fit = np.sum(( P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin] - FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)))**2/(P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin])**2)
 				dof = len(phibin)-3
 				print(xBbin, Q2bin, tbin, 1-chi2.cdf(chi2fit, dof))
 				FittingProb[xBbin, Q2bin, tbin] = 1-chi2.cdf(chi2fit, dof)
