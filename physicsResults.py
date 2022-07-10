@@ -3187,24 +3187,24 @@ if args.contplot:
 
 	    histBHDVCSOutb[i] = histBHDVCSOutbFD[i] + histBHDVCSOutbCD[i] + histBHDVCSOutbCDFT[i]
 
-	plt.rcParams["figure.figsize"] = (10,6)
-	plt.rcParams['legend.title_fontsize'] = 'small'
+	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
 	xBbin = 5
 	Q2bin = 2
 	tbin = 2
 
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
-	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
+	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
 
 
-	plt.xlim([90, 270])
-	plt.ylim([0, 70])
-	# plt.yscale('log')
-	plt.xticks([90, 180, 270])
-	plt.xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlim([90, 270])
+	axs.set_ylim([0, 70])
+	# axs.set_yscale('log')
+	axs.set_xticks([90, 180, 270])
+	axs.set_xticklabels([90, 180, 270], fontsize = 40)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 40)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
@@ -3212,22 +3212,24 @@ if args.contplot:
 	header = xBheader + Q2header + theader
 	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
 	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+	plt.clf()
 
 	xBbin = 3
 	Q2bin = 2
 	tbin = 2
 
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
-	plt.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
-	plt.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Sig+Bkg")
+	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Sig")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[1][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color = 'brown', alpha = 0.5, label = "Bkg(1)")
+	axs.hist(phibins[:-1], phibins, weights = histExpInb[xBbin, Q2bin, tbin, :] - histBHDVCSInb[2][xBbin, Q2bin, tbin,:], histtype = 'stepfilled', color ='b', alpha = 0.5, label = "Bkg(2)")
 
 
-	plt.xlim([90, 270])
-	plt.ylim([0, 70])
-	# plt.yscale('log')
-	plt.xticks([90, 180, 270])
-	plt.xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlim([90, 270])
+	axs.set_ylim([0, 70])
+	# axs.set_yscale('log')
+	axs.set_xticks([90, 180, 270])
+	axs.set_xticklabels([90, 180, 270], fontsize = 40)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 40)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
@@ -3235,6 +3237,7 @@ if args.contplot:
 	header = xBheader + Q2header + theader
 	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
 	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+	plt.clf()
 
 #not actively used
 if args.radplot:
