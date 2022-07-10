@@ -9,6 +9,8 @@ from gepard.fits import th_KM15
 import gepard as g
 import os, subprocess
 from functools import reduce
+# from scipy import stats
+from scipy.stats import chi2
 
 def dot(vec1, vec2):
 	# dot product of two 3d vectors
