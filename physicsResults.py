@@ -2197,11 +2197,14 @@ if args.savenorm:
 				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', label = 'Theory (KM15)')
 				# axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 				handles, labels = axs.get_legend_handles_labels()
-				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
-				axs.set_xticks([0, 90, 180, 270, 360])
-				axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+				axs.set_xticks([0, 90, 180, 270, 360], fontsize = 30)
+				axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 				axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+
+				if (xBbin, Q2bin, tbin) == (4,4,2):
+					axs.set_ylim([-0.045, -0.01])
 
 				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
@@ -2231,11 +2234,14 @@ if args.savenorm:
 				axs.plot(phi1s, P1b*P2b*getBHDVCS(xBs, Q2s, t1s, phi1s, mode = 1), color = 'r', label = 'Theory (BH)')
 				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', label = 'Theory (KM15)')
 				handles, labels = axs.get_legend_handles_labels()
-				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+				lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
 				axs.set_xlim([0, 360])
-				axs.set_xticks([0, 90, 180, 270, 360])
-				axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+				axs.set_xticks([0, 90, 180, 270, 360], fontsize = 30)
+				axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 				axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+
+				if (xBbin, Q2bin, tbin) == (4,4,2):
+					axs.set_ylim([-0.045, -0.01])
 
 				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
