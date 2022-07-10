@@ -2170,6 +2170,8 @@ if args.savenorm:
 					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,21,22,23]]).flatten()
 				if (xBbin, Q2bin, tbin) == (3, 3, 2):
 					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23]]).flatten()
+				if (xBbin, Q2bin, tbin) == (4, 4, 2):
+					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23]]).flatten()
 				P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
