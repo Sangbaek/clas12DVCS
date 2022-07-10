@@ -2206,6 +2206,8 @@ if args.savenorm:
 
 				if (xBbin, Q2bin, tbin) == (4,4,2):
 					axs.set_ylim([-0.045, -0.01])
+					axs.set_yticks([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
+					axs.set_yticklabels([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 
 				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
@@ -2244,6 +2246,8 @@ if args.savenorm:
 
 				if (xBbin, Q2bin, tbin) == (4,4,2):
 					axs.set_ylim([-0.045, -0.01])
+					axs.set_yticks([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
+					axs.set_yticklabels([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 
 				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
