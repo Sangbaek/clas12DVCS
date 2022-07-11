@@ -1953,9 +1953,10 @@ if args.savesyst3:
 	rconly_BH = divideHist(integratedRad_BH, integratedBorn_BH)
 	finonly_BH = divideHist(integratedBorn_BH, xsecTh_BH)
 
+	Normalization = .745
 
-	colorscheme = ['k', 'purple', 'b', 'g', 'brown', 'orange', 'pink']
-	scheme = 0
+	# colorscheme = ['k', 'purple', 'b', 'g', 'brown', 'orange', 'pink']
+	# scheme = 0
 	# for optionaltag in ['', '_bkg', '_2sigma', '_4sigma', '_sm09', '_sm11', '_tightfid']:
 	# 	if optionaltag == '_bkg':
 	# 		i = 0
@@ -2014,8 +2015,6 @@ if args.savesyst3:
 
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
-
-	Normalization = .745
 
 	#Exclusivity Cuts
 	UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=-np.inf))
