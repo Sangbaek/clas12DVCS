@@ -3820,7 +3820,7 @@ if args.accplot:
 	Q2bin = 3
 	tbin = 2
 
-	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
 
 
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
@@ -3847,7 +3847,7 @@ if args.accplot:
 	plt.savefig("plots/rawyields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
 
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH2[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
@@ -3874,7 +3874,7 @@ if args.accplot:
 	plt.savefig("plots/accCorrectedYields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
 
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
