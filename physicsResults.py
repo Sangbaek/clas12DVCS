@@ -2445,16 +2445,16 @@ if args.saveplot2:
 					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 					continue
 
-				# phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-				# phibin = phibin[SystUnc_pol[xBbin, Q2bin, tbin, phibin]<0.5]
+				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+				phibin = phibin[SystUnc_pol[xBbin, Q2bin, tbin, phibin]<0.8]
 
-				# if len(phibin):
-				# 	pass
-				# else:
-				# 	axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
-				# 	axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
-				# 	axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
-				# 	continue
+				if len(phibin):
+					pass
+				else:
+					axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+					continue
 				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (0.5/Normalization)*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 				axs[num_plotQ2-Q2bin-1 , xBbin].fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)-SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)+SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
 				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_KM_plus - xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'tab:b', label = 'Theory (KM15)')
@@ -2492,7 +2492,7 @@ if args.saveplot2:
 					continue
 
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.5]
+				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
 				if len(phibin):
 					pass
 				else:
