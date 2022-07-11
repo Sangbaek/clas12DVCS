@@ -3239,19 +3239,107 @@ if args.accplot:
 
 	histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 	histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
 	histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
 	histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 	histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
 	histBHDVCSInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(i)])
 
-	accCorrectedInb_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG.npz".format(optionaltag, k, i))["hist"]
-	accCorrectedInb_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH.npz".format(optionaltag, k, i))["hist"]
-	accCorrectedInb_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG2.npz".format(optionaltag, k, i))["hist"]
-	accCorrectedInb_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH2.npz".format(optionaltag, k, i))["hist"]
 
-	histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT+ histBHDVCSInbCR
+	histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT + histExpInbCR
+	histBHDVCSInb = histBHDVCSInbFD + histBHDVCSInbCD + histBHDVCSInbCDFT + histBHDVCSInbCR
 
-	xBbin = 2
+	print("reading bhs - inbending ")
+
+	# Count Rec BH
+	histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
+	for jobNum in runs_inb_bh45nA:
+		histBHInb45nA = histBHInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+		histBHInbFD45nA = histBHInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+		histBHInbCD45nA = histBHInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+		histBHInbCDFT45nA = histBHInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+		histBHInbCR45nA = histBHInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+
+	# Count Gen BH
+	histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA, histBHGenInbCR45nA = 0, 0, 0, 0, 0
+	for jobNum in runs_inb_bh45nA:
+		histBHGenInb45nA = histBHGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+		histBHGenInbFD45nA = histBHGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+		histBHGenInbCD45nA = histBHGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+		histBHGenInbCDFT45nA = histBHGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+		histBHGenInbCR45nA = histBHGenInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen4.npz".format(k, jobNum))["hist"]
+
+	print("reading vggs  - inbending")
+	# Count Rec VGG
+	histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
+	for jobNum in runs_inb_vgg45nA:
+		histVGGInb45nA = histVGGInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
+		histVGGInbFD45nA = histVGGInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
+		histVGGInbCD45nA = histVGGInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
+		histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
+		histVGGInbCR45nA = histVGGInbCR45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+	#Count Gen VGG
+	histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
+	histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus, histVGGGenInbCD45nA_plus, histVGGGenInbCDFT45nA_plus, histVGGGenInbCR45nA_plus = 0, 0, 0, 0, 0
+	histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus, histVGGGenInbCD45nA_minus, histVGGGenInbCDFT45nA_minus, histVGGGenInbCR45nA_minus = 0, 0, 0, 0, 0
+	for jobNum in runs_inb_vgg45nA:
+		histVGGGenInb45nA = histVGGGenInb45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
+		histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
+		histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
+		histVGGGenInbCDFT45nA = histVGGGenInbCDFT45nA + np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/{}Gen3.npz".format(k, jobNum))["hist"]
+
+	#acc correction with stat error - inbending
+	#with VGG
+	accCorrectedInbFD_VGG = divideHist(histBHDVCSInbFD*histVGGGenInbFD45nA , histVGGInbFD45nA)
+	accCorrectedInbCD_VGG = divideHist(histBHDVCSInbCD*histVGGGenInbCD45nA , histVGGInbCD45nA)
+	accCorrectedInbCDFT_VGG = divideHist(histBHDVCSInbCDFT*histVGGGenInbCDFT45nA , histVGGInbCDFT45nA)
+	accCorrectedInbCR_VGG = divideHist(histBHDVCSInbCR*histVGGGenInbCR45nA , histVGGInbCR45nA)
+	accCorrectedInb_VGG = accCorrectedInbFD_VGG + accCorrectedInbCD_VGG + accCorrectedInbCDFT_VGG + accCorrectedInbCR_VGG
+	accCorrectedInb_VGG2 = divideHist((histBHDVCSInbFD+histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histVGGGenInb45nA , histVGGInbFD45nA+histVGGInbCD45nA+histVGGInbCDFT45nA+histVGGInbCR45nA)
+	#FD inbending threshold [:, :, 0, :]
+	accCorrectedInb_VGG[:, :, 0, :] = accCorrectedInbCD_VGG[:, :, 0, :] + accCorrectedInbCDFT_VGG[:, :, 0, :] + accCorrectedInbCR_VGG[:, :, 0, :]
+	accCorrectedInb_VGG2[:, :, 0, :] = divideHist((histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histVGGGenInb45nA , histVGGInbCD45nA+histVGGInbCDFT45nA+histVGGInbCR45nA)[:, :, 0, :]
+
+	uncStatInbFD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histVGGInbFD45nA) + inverseHist(histVGGGenInbFD45nA))
+	uncStatInbCD_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histVGGInbCD45nA) + inverseHist(histVGGGenInbCD45nA))
+	uncStatInbCDFT_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histVGGInbCDFT45nA) + inverseHist(histVGGGenInbCDFT45nA))
+	uncStatInbCR_VGG = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histVGGInbCR45nA) + inverseHist(histVGGGenInbCR45nA))
+	uncStatInb_VGG = np.sqrt(accCorrectedInbFD_VGG**2 *uncStatInbFD_VGG**2 + accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)
+	uncStatInb_VGG = divideHist(uncStatInb_VGG, accCorrectedInb_VGG)
+	#FD inbending threshold [:, :, 0, :]
+	uncStatInb_VGG[:, :, 0, :] = np.sqrt(accCorrectedInbCD_VGG**2 * uncStatInbCD_VGG**2 + accCorrectedInbCDFT_VGG**2 * uncStatInbCDFT_VGG**2 + accCorrectedInbCR_VGG**2 * uncStatInbCR_VGG**2)[:, :, 0, :]
+	uncStatInb_VGG[:, :, 0, :] = divideHist(uncStatInb_VGG[:, :, 0, :], accCorrectedInb_VGG[:, :, 0, :])
+	#Correct by the ratio of covered/uncovered
+	accCorrectedInb_VGG = divideHist(accCorrectedInb_VGG*histVGGGenInb45nA, histVGGGenInbFD45nA + histVGGGenInbCD45nA + histVGGGenInbCDFT45nA + histVGGGenInbCR45nA)
+	accCorrectedInb_VGG[:, :, 0, :] = divideHist(accCorrectedInb_VGG[:, :, 0, :]*histVGGGenInb45nA[:, :, 0, :], histVGGGenInbCD45nA[:, :, 0, :] + histVGGGenInbCDFT45nA[:, :, 0, :] + histVGGGenInbCR45nA[:, :, 0, :])
+
+
+	# acc correction inbending, with BH
+	accCorrectedInbFD_BH = divideHist(histBHDVCSInbFD*histBHGenInbFD45nA , histBHInbFD45nA)
+	accCorrectedInbCD_BH = divideHist(histBHDVCSInbCD*histBHGenInbCD45nA , histBHInbCD45nA)
+	accCorrectedInbCDFT_BH = divideHist(histBHDVCSInbCDFT*histBHGenInbCDFT45nA , histBHInbCDFT45nA)
+	accCorrectedInbCR_BH = divideHist(histBHDVCSInbCR*histBHGenInbCR45nA , histBHInbCR45nA)
+	accCorrectedInb_BH = accCorrectedInbFD_BH + accCorrectedInbCD_BH + accCorrectedInbCDFT_BH + accCorrectedInbCR_BH
+	accCorrectedInb_BH2 = divideHist((histBHDVCSInbFD+histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histBHGenInb45nA , histBHInbFD45nA+histBHInbCD45nA+histBHInbCDFT45nA+histBHInbCR45nA)
+	#FD inbending threshold [:, :, 0, :]
+	accCorrectedInb_BH[:, :, 0, :] = accCorrectedInbCD_BH[:, :, 0, :] + accCorrectedInbCDFT_BH[:, :, 0, :] + accCorrectedInbCR_BH[:, :, 0, :]
+	accCorrectedInb_BH2[:, :, 0, :] = divideHist((histBHDVCSInbCD+histBHDVCSInbCDFT+histBHDVCSInbCR)*histBHGenInb45nA , histBHInbCD45nA+histBHInbCDFT45nA+histBHInbCR45nA)[:, :, 0, :]
+
+	uncStatInbFD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbFD**2+histExpUncInbFD**2), histBHDVCSInbFD)**2 + inverseHist(histBHInbFD45nA) + inverseHist(histBHGenInbFD45nA))
+	uncStatInbCD_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCD**2+histExpUncInbCD**2), histBHDVCSInbCD)**2 + inverseHist(histBHInbCD45nA) + inverseHist(histBHGenInbCD45nA))
+	uncStatInbCDFT_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCDFT**2+histExpUncInbCDFT**2), histBHDVCSInbCDFT)**2 + inverseHist(histBHInbCDFT45nA) + inverseHist(histBHGenInbCDFT45nA))
+	uncStatInbCR_BH = np.sqrt(divideHist(np.sqrt(histBkgUncInbCR**2+histExpUncInbCR**2), histBHDVCSInbCR)**2 + inverseHist(histBHInbCR45nA) + inverseHist(histBHGenInbCR45nA))
+	uncStatInb_BH = np.sqrt(accCorrectedInbFD_BH**2 *uncStatInbFD_BH**2 + accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)
+	uncStatInb_BH = divideHist(uncStatInb_BH, accCorrectedInb_BH)
+	#FD inbending threshold [:, :, 0, :]
+	uncStatInb_BH[:, :, 0, :] = np.sqrt(accCorrectedInbCD_BH**2 * uncStatInbCD_BH**2 + accCorrectedInbCDFT_BH**2 * uncStatInbCDFT_BH**2 + accCorrectedInbCR_BH**2 * uncStatInbCR_BH**2)[:, :, 0, :]
+	uncStatInb_BH[:, :, 0, :] = divideHist(uncStatInb_BH[:, :, 0, :], accCorrectedInb_BH[:, :, 0, :])
+	#Correct by the ratio of covered/uncovered
+	accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
+	accCorrectedInb_BH[:, :, 0, :] = divideHist(accCorrectedInb_BH[:, :, 0, :]*histBHGenInb45nA[:, :, 0, :], histBHGenInbCD45nA[:, :, 0, :] + histBHGenInbCDFT45nA[:, :, 0, :] + histBHGenInbCR45nA[:, :, 0, :])
+
+	xBbin = 4
 	Q2bin = 3
 	tbin = 2
 
@@ -3297,6 +3385,7 @@ if args.accplot:
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
+	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.7, 0.8), ncol = 2, title = header)
 
 	plt.savefig("plots/accCorrectedYields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
@@ -3319,6 +3408,7 @@ if args.accplot:
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
+	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.7, 0.8), ncol = 2, title = header)
 
 	plt.savefig("plots/EffectiveAcc{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
