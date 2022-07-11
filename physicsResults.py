@@ -2116,7 +2116,6 @@ if args.savesyst3:
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncBkg.npz".format(k), hist = UncBkg)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/SystUnc.npz".format(k), hist = SystUnc)
 
-	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncNorm_pol.npz".format(k), hist = UncNorm_pol)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncModel_pol.npz".format(k), hist = UncModel_pol)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncExcl_pol.npz".format(k), hist = UncExcl_pol)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncSmear_pol.npz".format(k), hist = UncSmear_pol)
