@@ -3249,7 +3249,7 @@ if args.accplot:
 
 
 	xBbin = 4
-	Q2bin = 2
+	Q2bin = 3
 	tbin = 2
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
@@ -3263,7 +3263,7 @@ if args.accplot:
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
@@ -3287,7 +3287,7 @@ if args.accplot:
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_title("Acc. Corrected Yields", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
@@ -3309,7 +3309,7 @@ if args.accplot:
 	# axs.set_ylim([0, 200])
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_title("Effective Acceptances", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
