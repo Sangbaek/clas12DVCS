@@ -2442,6 +2442,7 @@ if args.saveplot2:
 				if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 					axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 					continue
 				# if ActiveInb[xBbin, Q2bin, tbin, :].any():
 				# 	phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
@@ -2469,7 +2470,7 @@ if args.saveplot2:
 				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (0.2, 0.7))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/polsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2484,6 +2485,7 @@ if args.saveplot2:
 				if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
 					axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 					continue
 
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
@@ -2512,7 +2514,7 @@ if args.saveplot2:
 				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (0.2, 0.7))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/unpolsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
