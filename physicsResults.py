@@ -2171,12 +2171,12 @@ if args.savenorm:
 				P2_zero = P2(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0)
 				BHDVCS_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)
 				reduced_zero = getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 0)
-				# if (xBbin, Q2bin, tbin) == (2, 2, 2):
-				# 	ActiveAny[xBbin, Q2bin, tbin, [3, 4, 14]] = False
-				# if (xBbin, Q2bin, tbin) == (3, 3, 2):
-				# 	ActiveAny[xBbin, Q2bin, tbin, [21, 22]] = False
-				# if (xBbin, Q2bin, tbin) == (4, 4, 2):
-				# 	ActiveAny[xBbin, Q2bin, tbin, 15] = False
+				if (xBbin, Q2bin, tbin) == (2, 2, 2):
+					ActiveAny[xBbin, Q2bin, tbin, [3, 4, 14]] = False
+				if (xBbin, Q2bin, tbin) == (3, 3, 2):
+					ActiveAny[xBbin, Q2bin, tbin, [21, 22]] = False
+				if (xBbin, Q2bin, tbin) == (4, 4, 2):
+					ActiveAny[xBbin, Q2bin, tbin, 15] = False
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 				P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
