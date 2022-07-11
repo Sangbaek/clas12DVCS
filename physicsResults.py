@@ -3456,10 +3456,12 @@ if args.accplot:
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
 
 	axs.set_xlim([0, 360])
-	# axs.set_ylim([0, 200])
+	axs.set_ylim([0, 300])
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xticklabels([0, 90, 180, 270, 360])
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+	axs.set_yticks([0, 50, 100, 150, 200, 250, 300])
+	axs.set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
@@ -3468,7 +3470,7 @@ if args.accplot:
 	header = xBheader + Q2header + theader
 	axs.set_title("Raw Yields", fontsize = 30)
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.4, 1.1), ncol = 2, title = header)
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.8, 1.1), ncol = 2, title = header)
 
 	plt.savefig("plots/rawyields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
@@ -3483,7 +3485,7 @@ if args.accplot:
 	# axs.set_ylim([0, 200])
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xticklabels([0, 90, 180, 270, 360])
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_title("Acc. Corrected Yields", fontsize = 30)
 
@@ -3492,7 +3494,7 @@ if args.accplot:
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.4, 1.1), title = header)
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.8, 1.1), title = header)
 
 	plt.savefig("plots/accCorrectedYields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
@@ -3507,6 +3509,7 @@ if args.accplot:
 	# axs.set_ylim([0, 200])
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_title("Effective Acceptances", fontsize = 30)
 
@@ -3515,7 +3518,7 @@ if args.accplot:
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.4, 1.1), title = header)
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.8, 1.1), title = header)
 
 	plt.savefig("plots/EffectiveAcc{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
