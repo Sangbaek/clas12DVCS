@@ -3189,7 +3189,7 @@ if args.contplot:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-	xBbin = 5
+	xBbin = 4
 	Q2bin = 2
 	tbin = 2
 
@@ -3203,18 +3203,20 @@ if args.contplot:
 	axs.set_ylim([0, 70])
 	# axs.set_yscale('log')
 	axs.set_xticks([90, 180, 270])
-	axs.set_xticklabels([90, 180, 270], fontsize = 40)
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 40)
+	axs.set_xticklabels([90, 180, 270], fontsize = 30)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
-	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
-	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+	handles, labels = axs.get_legend_handles_labels()
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+
+	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
-	xBbin = 3
+	xBbin = 2
 	Q2bin = 2
 	tbin = 2
 
@@ -3228,15 +3230,17 @@ if args.contplot:
 	axs.set_ylim([0, 70])
 	# axs.set_yscale('log')
 	axs.set_xticks([90, 180, 270])
-	axs.set_xticklabels([90, 180, 270], fontsize = 40)
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 40)
+	axs.set_xticklabels([90, 180, 270], fontsize = 30)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
-	leg = plt.legend(loc = 'upper right', title = header, ncol = 2)
-	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin))
+	handles, labels = axs.get_legend_handles_labels()
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+
+	plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
 #not actively used
