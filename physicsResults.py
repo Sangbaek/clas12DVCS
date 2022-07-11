@@ -48,6 +48,7 @@ parser.add_argument("-sx","--savexsec", help="save xsec", action = "store_true")
 parser.add_argument("-ct","--contplot", help="save cont plots", action = "store_true")
 parser.add_argument("-ac","--accplot", help="save acc plots", action = "store_true")
 parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true")
+parser.add_argument("-sp2","--saveplot2", help="save plots2", action = "store_true")
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
 parser.add_argument("-kstart","--kstart", help="binning scheme start", default=None)
@@ -57,8 +58,8 @@ parser.add_argument("-sb", "--savebinVolume", help = "save binVolume", action = 
 parser.add_argument("-sy", "--saveyields", help = "save yields", action = "store_true")
 parser.add_argument("-sk", "--savekine", help = "save kinematic variables", action = "store_true")
 parser.add_argument("-ss", "--savesyst", help = "save systematic uncertainties", action = "store_true")
-parser.add_argument("-ss2", "--savesyst2", help = "save systematic uncertainties", action = "store_true")
-parser.add_argument("-ss3", "--savesyst3", help = "save systematic uncertainties", action = "store_true")
+parser.add_argument("-ss2", "--savesyst2", help = "save systematic uncertainties2", action = "store_true")
+parser.add_argument("-ss3", "--savesyst3", help = "save systematic uncertainties3", action = "store_true")
 parser.add_argument("-sn", "--savenorm", help = "save normalization", action = "store_true")
 parser.add_argument("-rp", "--radplot", help = "save rad plots", action = "store_true")
 
@@ -2303,8 +2304,95 @@ if args.saveplot2:
 	xsecTh_BH_minus     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_BH_minus.npz".format(k))["hist"]
 	xsecTh_VGG_minus    = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG_minus.npz".format(k))["hist"]
 	binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+	SystUnc            = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/SystUnc.npz".format(k))["hist"]
 
-	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/SystUnc.npz".format(k), hist = SystUnc)
+	ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
+	ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
+	ActiveInb       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
+	ActiveOutb      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
+
+	ActiveAll_int       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveAny_int       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveInb_int       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveOutb_int      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG  = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH   = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH  = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG  = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH   = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH  = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH_plus.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH_minus.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInbFDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbFDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDFTonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDFTonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCRonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCRonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	xsecOutbFDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbFDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDFTonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDFTonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCRonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCRonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH_plus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH_plus.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH_minus = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH_minus.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInbFDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbFDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDFTonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDFTonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCRonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCRonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatOutbFDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbFDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDFTonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDFTonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCRonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCRonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
 
 
 if args.saveplot:
