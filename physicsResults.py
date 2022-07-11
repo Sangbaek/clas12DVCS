@@ -2177,7 +2177,7 @@ if args.savenorm:
 				if (xBbin, Q2bin, tbin) == (3, 3, 2):
 					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23]]).flatten()
 				if (xBbin, Q2bin, tbin) == (4, 4, 2):
-					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23]]).flatten()
+					phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23]]).flatten()
 				P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
@@ -2393,6 +2393,75 @@ if args.saveplot2:
 	uncStatOutbCDFTonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
 	uncStatOutbCRonly_VGG = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
 	uncStatOutbCRonly_BH = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+	def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
+		# else:
+		return ~ActiveAny_int[xBbin, Q2bin, tbin, :].any()
+
+	def badBinCondxBQ2(xBbin, Q2bin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
+		# else:
+		return ~ActiveAny_int[xBbin, Q2bin, :, :].any()
+
+	def badBinCondxBt(xBbin, tbin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and tbin == 0)
+		# else:
+		return ~ActiveAny_int[xBbin, :, tbin, :].any()
+
+	num_plotQ2 = len(Q2bins) - 1
+	num_plotxB = len(xBbins) - 1
+	num_plott = len(tbins) - 1
+
+	if k == 0:
+		num_plotQ2 = 6 - 1
+		num_plotxB = 3 - 1
+	if k == 3:
+		num_plotQ2 = 5
+		num_plotxB = 5
+
+
+	for tbin in range(num_plott):
+		active = 0
+		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+		for xBbin in range(num_plotxB):
+			for Q2bin in range(num_plotQ2):
+				#skip inactive bins
+				if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+					axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+					continue
+				# if ActiveInb[xBbin, Q2bin, tbin, :].any():
+				# 	phibin = np.argwhere(ActiveInb[xBbin, Q2bin, tbin, :]).flatten()
+				# 	axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(1/polrate)*(xsecInb_BH_plus - xsecInb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecInb_BH_plus*uncStatInb_BH_plus)**2+(xsecInb_BH_minus*uncStatInb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'g', label = 'Inb.')
+				# if ActiveOutb[xBbin, Q2bin, tbin, :].any():
+				# 	phibin = np.argwhere(ActiveOutb[xBbin, Q2bin, tbin, :]).flatten()
+				# 	axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(1/polrate)*(xsecOutb_BH_plus - xsecOutb_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsecOutb_BH_plus*uncStatOutb_BH_plus)**2+(xsecOutb_BH_minus*uncStatOutb_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'cyan', label = 'Outb.')
+
+				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 0.5*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_KM_plus - xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
+				# axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_VGG_plus - xsecTh_VGG_minus)[xBbin, Q2bin, tbin, :], color = 'orange', label = 'VGG')
+
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header + theader
+				axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
+				axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+				axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/pol_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
 
 
 if args.saveplot:
