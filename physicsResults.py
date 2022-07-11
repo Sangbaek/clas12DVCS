@@ -2624,7 +2624,7 @@ if args.saveplot2:
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend([handles[idx] for idx in order_unpoldiff],[labels[idx] for idx in order_unpoldiff], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
+	lgd = plt.figlegend([handles[idx] for idx in order_unpoldiff],[labels[idx] for idx in order_unpoldiff], loc='upper left', bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([-0.04, 0.03])
 	axs.set_xticks([0, 90, 180, 270, 360])
@@ -2663,7 +2663,7 @@ if args.saveplot2:
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (0.5/Normalization)*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([-0.03, 0.03])
 	axs.set_xticks([0, 90, 180, 270, 360])
@@ -2705,7 +2705,7 @@ if args.saveplot2:
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (0.5/Normalization)*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([-0.02, 0.02])
 	axs.set_xticks([0, 90, 180, 270, 360])
