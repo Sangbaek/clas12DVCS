@@ -3834,12 +3834,13 @@ if args.accplot:
 	axs.set_yticks([0, 50, 100, 150, 200, 250, 300])
 	axs.set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+	axs.set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
-	axs.set_title("Raw Yields", fontsize = 30)
+	axs.set_title(r"$BH^2 + Int. + DVCS^2 $" + " Yields", fontsize = 30)
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.8, 1.1), ncol = 2, title = header)
 
@@ -3857,7 +3858,10 @@ if args.accplot:
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+	axs.set_yticks([0, 1000, 2000, 3000, 4000, 5000, 6000])
+	axs.set_yticklabels([0, 1000, 2000, 3000, 4000, 5000, 6000])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+	axs.set_ylabel("Acc. Corrected Counts (bkg. subtracted)", fontsize = 30)
 	axs.set_title("Acc. Corrected Yields", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
@@ -3881,7 +3885,10 @@ if args.accplot:
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+	axs.set_yticks([0, 0.02, 0.04, 0.06, 0.08])
+	axs.set_yticklabels([0, 0.02, 0.04, 0.06, 0.08])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+	axs.set_ylabel("Effective Acceptances", fontsize = 30)
 	axs.set_title("Effective Acceptances", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
