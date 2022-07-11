@@ -2669,7 +2669,7 @@ if args.saveplot2:
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 24)
-	axs.set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]", fontsize)
+	axs.set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]", fontsize = 24)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
