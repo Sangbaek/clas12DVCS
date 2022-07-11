@@ -93,6 +93,12 @@ def FourierSeries(x, a, b, c):
     # a, b, c = args
     return a + b * np.cos(np.radians(x)) + c* np.cos(2*np.radians(x))
 
+def FourierSeries2(x, b, c):
+#     df = args
+    # a, b, c = args
+    return b * np.cos(np.radians(x)) + c* np.cos(2*np.radians(x))
+
+
 def lstsq_FourierSeries(args, x, y):
 #     print(args, x, y)
     return FourierSeries(args, x) - y
@@ -2622,7 +2628,7 @@ if args.saveplot2:
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_ylabel(r"$\frac{d\sigma_{Int.+DVCS^2}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
