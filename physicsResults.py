@@ -2012,6 +2012,7 @@ if args.savesyst3:
 	xsec_VGG_minus     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG_minus.npz".format('', k, i))["hist"]
 	xsec_BH_minus      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH_minus.npz".format('', k, i))["hist"]
 	xsec_BH_pol       = 0.5*(xsec_BH_plus-xsec_BH_minus)/Normalization
+	xsec_VGG_pol       = 0.5*(xsec_VGG_plus-xsec_VGG_minus)/Normalization
 
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
@@ -2094,8 +2095,8 @@ if args.savesyst3:
 
 	#Acc
 	UncModel_pol = np.abs(divideHist(xsec_VGG_pol - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
-	UncModel_pol2 = np.abs(divideHist(xsec_VGG2_pol- xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
-	UncModel_pol3 = np.abs(divideHist(xsec_BH2_pol - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
+	# UncModel_pol2 = np.abs(divideHist(xsec_VGG2_pol- xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
+	# UncModel_pol3 = np.abs(divideHist(xsec_BH2_pol - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
 	# UncAcc = np.max([UncModel_pol, UncModel_pol2, UncModel_pol3], axis = 0)
 	print(UncModel_pol[(UncModel_pol < 0.5)&(UncModel_pol>0)].mean())
 	UncModel_pol[UncModel_pol == 0] = UncModel_pol[(UncModel_pol < 0.5)&(UncModel_pol>0)].mean()
