@@ -1158,6 +1158,10 @@ if args.saveyields:
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_BH.npz".format(optionaltag, k, i), hist = accCorrectedOutb_BH)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i), hist = accCorrected_VGG)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH.npz".format(optionaltag, k, i), hist = accCorrected_BH)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG2.npz".format(optionaltag, k, i), hist = accCorrectedInb_VGG2)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH2.npz".format(optionaltag, k, i), hist = accCorrectedInb_BH2)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_VGG2.npz".format(optionaltag, k, i), hist = accCorrectedOutb_VGG2)
+			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedOutb_BH2.npz".format(optionaltag, k, i), hist = accCorrectedOutb_BH2)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i), hist = accCorrected_VGG2)
 			np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i), hist = accCorrected_BH2)
 
@@ -3238,10 +3242,10 @@ if args.accplot:
 	histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
 	histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 
-	accCorrected_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i))["hist"]
-	accCorrected_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH.npz".format(optionaltag, k, i))["hist"]
-	accCorrected_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i))["hist"]
-	accCorrected_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i))["hist"]
+	accCorrectedInb_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG.npz".format(optionaltag, k, i))["hist"]
+	accCorrectedInb_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH.npz".format(optionaltag, k, i))["hist"]
+	accCorrectedInb_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_VGG2.npz".format(optionaltag, k, i))["hist"]
+	accCorrectedInb_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrectedInb_BH2.npz".format(optionaltag, k, i))["hist"]
 
 
 	xBbin = 4
@@ -3274,9 +3278,9 @@ if args.accplot:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-	axs.hist(phibins[:-1], phibins, weights = accCorrected_BH2[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
-	axs.hist(phibins[:-1], phibins, weights = accCorrected_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
-	axs.hist(phibins[:-1], phibins, weights = accCorrected_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH2[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
 	axs.set_xlim([0, 360])
 	# axs.set_ylim([0, 200])
@@ -3297,9 +3301,9 @@ if args.accplot:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrected_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
-	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrected_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
-	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrected_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
 	axs.set_xlim([0, 360])
 	# axs.set_ylim([0, 200])
