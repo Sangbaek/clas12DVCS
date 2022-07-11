@@ -2539,7 +2539,7 @@ if args.saveplot2:
 	# 	plt.clf()
 
 	order_unpoldiff = [1, 0]
-	for tbin in range(num_plott):
+	for tbin in range(5):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
 		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
