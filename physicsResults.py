@@ -2106,7 +2106,7 @@ if args.savesyst3:
 	UncBkg_pol[UncBkg_pol == 0] = UncBkg_pol[(UncBkg_pol < 0.5)&(UncBkg_pol>0)].mean()
 
 	SystUnc_pol = np.sqrt(UncNorm**2+ UncModel_pol**2 + UncExcl_pol**2 + UncSmear_pol**2 + UncFid_pol**2 + UncBkg_pol**2 + UncRad**2 + 0.04**2)
-	print(SystUc_pol[(SystUnc_pol < 0.5)&(SystUnc_pol>0)].mean())
+	print(SystUnc_pol[(SystUnc_pol < 0.5)&(SystUnc_pol>0)].mean())
 
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncNorm.npz".format(k), hist = UncNorm)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/UncModel.npz".format(k), hist = UncModel)
