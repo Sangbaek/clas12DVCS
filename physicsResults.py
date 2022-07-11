@@ -46,6 +46,7 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 parser.add_argument("-sc","--savecont", help="save cont", action = "store_true")
 parser.add_argument("-sx","--savexsec", help="save xsec", action = "store_true")
 parser.add_argument("-ct","--contplot", help="save cont plots", action = "store_true")
+parser.add_argument("-ac","--accplot", help="save acc plots", action = "store_true")
 parser.add_argument("-sp","--saveplot", help="save plots", action = "store_true")
 parser.add_argument("-pr","--parent", help="parent", default = "/volatile/clas12/sangbaek/nov2021/")
 parser.add_argument("-k","--binscheme", help="binning scheme number", default=None)
@@ -3220,6 +3221,100 @@ if args.contplot:
 
 		plt.savefig("plots/contamination{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
+
+if args.accplot:
+	print("read exp...")
+	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/epgExp.pkl")
+
+	k = 3
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
+
+	histExpInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histExpInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins])
+	histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(i)])
+	histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
+
+	accCorrected_VGG	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_VGG2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH2	 = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i))["hist"]
+
+
+	xBbin = 4
+	Q2bin = 2
+	tbin = 2
+
+	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+
+	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+
+	axs.set_xlim([0, 360])
+	# axs.set_ylim([0, 200])
+	# axs.set_yscale('log')
+	axs.set_xticks([0, 90, 180, 270, 360])
+	axs.set_xticklabels([0, 90, 180, 270, 360])
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
+	header = xBheader + Q2header + theader
+	axs.title("Raw Yields", fontsize = 30)
+	handles, labels = axs.get_legend_handles_labels()
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.7, 0.8), ncol = 2, title = header)
+
+	plt.savefig("plots/rawyields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+
+	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH2[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
+
+	axs.set_xlim([0, 360])
+	# axs.set_ylim([0, 200])
+	# axs.set_yscale('log')
+	axs.set_xticks([0, 90, 180, 270, 360])
+	axs.set_xticklabels([0, 90, 180, 270, 360])
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_title("Acc. Corrected Yields", fontsize = 30)
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
+	header = xBheader + Q2header + theader
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.7, 0.8), ncol = 2, title = header)
+
+	plt.savefig("plots/accCorrectedYields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+
+	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
+	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
+
+	axs.set_xlim([0, 360])
+	# axs.set_ylim([0, 200])
+	# axs.set_yscale('log')
+	axs.set_xticks([0, 90, 180, 270, 360])
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_title("Effective Acceptances", fontsize = 30)
+
+	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
+	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
+	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
+	header = xBheader + Q2header + theader
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.7, 0.8), ncol = 2, title = header)
+
+	plt.savefig("plots/EffectiveAcc{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
 
 #not actively used
 if args.radplot:
