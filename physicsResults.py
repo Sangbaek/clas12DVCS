@@ -3227,6 +3227,7 @@ if args.accplot:
 	epgExp = pd.read_pickle("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/epgExp.pkl")
 
 	k = 3
+	i = 3
 	xBbins  = collection_xBbins[k]
 	Q2bins  = collection_Q2bins[k]
 	tbins   = collection_tbins [k]
