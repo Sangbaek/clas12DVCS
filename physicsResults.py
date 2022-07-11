@@ -3190,7 +3190,7 @@ if args.contplot:
 	    histBHDVCSOutb[i] = histBHDVCSOutbFD[i] + histBHDVCSOutbCD[i] + histBHDVCSOutbCDFT[i]+ histBHDVCSInbCR[i]
 
 
-	for idx in [(4, 2, 2), (4, 3, 2) (2, 2, 2), (2, 3, 2)]:
+	for idx in [(4, 2, 2), (4, 3, 2), (2, 2, 2), (2, 3, 2)]:
 		xBbin, Q2bin, tbin = idx
 
 		fig, axs = plt.subplots(1, 1, figsize = (10, 6))
