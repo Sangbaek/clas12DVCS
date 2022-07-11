@@ -2587,12 +2587,12 @@ if args.saveplot2:
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma_{Int.+DVCS^2}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 	# 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
-	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
 	# 			ymin = (1/Normalization*(xsec_BH-SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin].min()
 	# 			ymin = ymin - 0.3*np.abs(ymin)
 	# 			ymax = (1/Normalization*(xsec_BH-SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin].max()
 	# 			ymax = ymax + 0.3*np.abs(ymax)
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([ymin, ymax])
+	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
 	# 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
@@ -2627,8 +2627,10 @@ if args.saveplot2:
 	lgd = plt.figlegend([handles[idx] for idx in order_unpoldiff],[labels[idx] for idx in order_unpoldiff], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\frac{d\sigma_{Int.+DVCS^2}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 24)
+	axs.set_ylabel(r"$\frac{d\sigma_{Int.+DVCS^2}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]", fontsize = 24)
+	axs.set_ylim([ymin, ymax])
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
@@ -2637,7 +2639,7 @@ if args.saveplot2:
 	axs.set_title(header, loc = 'left')
 
 	# fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/unpoldiff_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig("plots/unpoldiff_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight', fontsize = 24, title_fontsize = 24)
 	plt.clf()
 
 
@@ -2663,9 +2665,11 @@ if args.saveplot2:
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
 	axs.set_xlim([0, 360])
+	axs.set_ylim([-0.03, 0.03])
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 24)
+	axs.set_ylabel(r"$\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]", fontsize)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
@@ -2703,9 +2707,11 @@ if args.saveplot2:
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
 	axs.set_xlim([0, 360])
+	axs.set_ylim([-0.02, 0.02])
 	axs.set_xticks([0, 90, 180, 270, 360])
-	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
-	axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2(\phi)\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 24)
+	axs.set_ylabel(r"$\mathcal{P}_1(\phi)\mathcal{P}_2(\phi)\frac{d\sigma_{pol.}}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]", fontsize = 24)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
