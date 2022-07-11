@@ -2432,7 +2432,7 @@ if args.saveplot2:
 		num_plotxB = 5
 
 
-	order_pol = [1,0,2]
+	order_pol = [1,0]
 	for tbin in range(num_plott):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
@@ -2474,11 +2474,12 @@ if args.saveplot2:
 				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+		lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
 		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/polsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
+	order_unpol = [2, 0, 1]
 	for tbin in range(num_plott):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
@@ -2525,7 +2526,7 @@ if args.saveplot2:
 				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
-		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+		lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
 		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/unpolsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
