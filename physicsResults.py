@@ -2624,7 +2624,7 @@ if args.saveplot2:
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
 	handles, labels = axs.get_legend_handles_labels()
-	lgd = plt.figlegend([handles[idx] for idx in order_unpoldiff],[labels[idx] for idx in order_unpoldiff], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8))
+	lgd = plt.figlegend([handles[idx] for idx in order_unpoldiff],[labels[idx] for idx in order_unpoldiff], loc='upper left', fontsize= 20, bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([-0.04, 0.03])
 	axs.set_xticks([0, 90, 180, 270, 360])
@@ -2639,7 +2639,7 @@ if args.saveplot2:
 	axs.set_title(header, loc = 'left')
 
 	# fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-	plt.savefig("plots/unpoldiff_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight', fontsize = 24, title_fontsize = 24)
+	plt.savefig("plots/unpoldiff_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
 
