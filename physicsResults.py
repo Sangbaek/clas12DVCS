@@ -3203,10 +3203,12 @@ if args.contplot:
 
 
 		axs.set_xlim([90, 270])
-		axs.set_ylim([0, 70])
+		axs.set_ylim([0, 150])
+		axs.set_yticks([0, 30, 60, 90, 120, 150])
+		axs.set_yticklabels([0, 30, 60, 90, 120, 150], fontsize = 22)
 		# axs.set_yscale('log')
 		axs.set_xticks([90, 180, 270])
-		axs.set_xticklabels([90, 180, 270], fontsize = 30)
+		axs.set_xticklabels([90, 180, 270], fontsize = 22)
 		axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 
 		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
