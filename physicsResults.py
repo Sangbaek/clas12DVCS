@@ -2605,12 +2605,14 @@ if args.saveplot2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 	Nplot = 40
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
-	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
+	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
+	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
 	phi1s = np.linspace(0, 360, Nplot)
-
 	axs.plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+
+	phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+	phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
 
 	axs.fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1/Normalization*(xsec_BH-SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin], (1/Normalization*(xsec_BH+SystUnc*xsec_BH) -xsecTh_BH)[xBbin, Q2bin, tbin, phibin], color = 'orange', alpha = 0.4)#, label = r'$1\sigma_{syst.}$'+' band')
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
@@ -2640,12 +2642,15 @@ if args.saveplot2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 	Nplot = 40
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
-	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
+	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
+	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
 	phi1s = np.linspace(0, 360, Nplot)
-
 	axs.plot(phi1s, 0.5*(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5, pol = 1) - printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5, pol = -1)), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+
+	phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+	phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
+
 	axs.fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)-SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)+SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], color = 'orange', alpha = 0.4)#, label = r'$1\sigma_{syst.}$'+' band')
 	axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (0.5/Normalization)*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
@@ -2673,14 +2678,16 @@ if args.saveplot2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 	Nplot = 40
-	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
-	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+	xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
+	Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
+	t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
 	phi1s = np.linspace(0, 360, Nplot)
 	P1b = P1(xBs, Q2s, t1s, phi1s)
 	P2b = P2(xBs, Q2s, t1s, phi1s)
-
 	axs.plot(phi1s, 0.5*P1b*P2b*(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5, pol = 1) - printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5, pol = -1)), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+
+	phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+	phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
 
 	P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 	P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
