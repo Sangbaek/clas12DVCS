@@ -2025,7 +2025,7 @@ if args.savesyst3:
 	UncBkg[UncBkg == 0] = UncBkg[(UncBkg < 0.5)&(UncBkg>0)].mean()
 
 	#Normalization
-	UncNorm = 0.0679#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
+	UncNorm = 0.1#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
 
 	#RC
 	UncRadonly = np.abs(divideHist(rconly_VGG - rconly_BH, rconly_BH, threshold=-np.inf))
@@ -2045,7 +2045,7 @@ if args.savesyst3:
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
 	print(SystUnc[(SystUnc < 0.5)&(SystUnc>0)].mean())
 
-	Normalization = .777
+	Normalization = .745
 
 	for xBbin in range(5):
 		for Q2bin in range(5):
@@ -2273,9 +2273,14 @@ if args.savenorm:
 	print(np.array([xBavg_BH[:,:,:,0][Normalization!=1],Q2avg_BH[:,:,:,0][Normalization!=1], t1avg_BH[:,:,:,0][Normalization!=1], Normalization[Normalization!=1]]).T)
 	np.savez("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/Normalization.npz".format(k), hist = Normalization)
 
+	# result
+	#np.array([[0.13171396, 1.7032761, 0.32311068, 0.8437142 ], [0.1751856, 1.68307439, 0.32053269, 0.69137832],  [0.17354599, 2.23313966, 0.32024147, 0.74456482],  [0.18312073, 2.7573199,  0.3206363,  0.65925951],  [0.22839352, 2.92787118, 0.19586454, 0.8263123 ],  [0.2282563,  2.92906351, 0.31860188, 0.7062453 ]])
+	#mean: 0.77
+	#std: 6.8%
+
 if args.saveplot2:
 
-	Normalization = .777
+	Normalization = .745
 
 	k = 3
 	i = 3
@@ -2466,7 +2471,7 @@ if args.saveplot2:
 
 if args.saveplot:
 
-	Normalization = .777
+	Normalization = .745
 
 	for k in range(kstart, kend):
 
