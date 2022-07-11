@@ -2312,6 +2312,7 @@ if args.saveplot2:
 	xsecTh_VGG_minus    = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/xsecTh_VGG_minus.npz".format(k))["hist"]
 	binVolume          = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
 	SystUnc            = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/SystUnc.npz".format(k))["hist"]
+	SystUnc_pol            = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms/binscheme{}/SystUnc_pol.npz".format(k))["hist"]
 
 	ActiveAll       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
 	ActiveAny       = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
@@ -2450,7 +2451,7 @@ if args.saveplot2:
 
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], (0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = (0.5/Normalization)*np.sqrt((xsec_BH_plus*uncStat_BH_plus)**2+(xsec_BH_minus*uncStat_BH_minus)**2)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
-				axs[num_plotQ2-Q2bin-1 , xBbin].flil_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)-SystUnc*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], )
+				axs[num_plotQ2-Q2bin-1 , xBbin].flil_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)-SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], ((0.5/Normalization)*(xsec_BH_plus-xsec_BH_minus)-SystUnc_pol*(0.5/Normalization)*(xsec_BH_plus+xsec_BH_minus))[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
 				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_KM_plus - xsecTh_KM_minus)[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
 				# axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], 0.5*(xsecTh_VGG_plus - xsecTh_VGG_minus)[xBbin, Q2bin, tbin, :], color = 'orange', label = 'VGG')
 
@@ -2468,8 +2469,44 @@ if args.saveplot2:
 					active = 1
 		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
 		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
-		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/pol_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/polsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
+
+	for tbin in range(num_plott):
+		active = 0
+		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
+		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+		for xBbin in range(num_plotxB):
+			for Q2bin in range(num_plotQ2):
+				#skip inactive bins
+				if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+					axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+					continue
+
+				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
+				axs[num_plotQ2-Q2bin-1 , xBbin].flil_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*(xsec_BH-SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], (xsec_BH+SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'Theory (BH)')
+
+				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
+				theader = r"$<|t|>=$"+" {:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])
+				header = xBheader +Q2header + theader
+				axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, fontsize = 20)
+				axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + "nb/GeV"+r"$^4$")
+				axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+				axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+				axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]")
+				if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+					active = 1
+		lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, title = ttitle, bbox_to_anchor = (1.0, 0.6))
+		fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
+		plt.savefig("/volatile/clas12/sangbaek/clas12DVCS/plots{}/binscheme{}/unpolsyst_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
 	for xBbin in range(5):
 		for Q2bin in range(5):
 			for tbin in range(1, 5):
