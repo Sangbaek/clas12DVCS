@@ -2491,15 +2491,6 @@ if args.saveplot2:
 					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 					continue
-				Nplot = 40
-				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
-				Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
-				t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
-				phi1s = np.linspace(0, 360, Nplot)
-
-				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', linewidth =3, label = 'Theory (BH)')
-				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
-
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
 				if len(phibin):
@@ -2509,6 +2500,15 @@ if args.saveplot2:
 					axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 					axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 					continue
+				Nplot = 40
+				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
+				Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
+				t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+				phi1s = np.linspace(0, 360, Nplot)
+
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', linewidth =3, label = 'Theory (BH)')
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+
 				axs[num_plotQ2-Q2bin-1 , xBbin].fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*(xsec_BH-SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], (xsec_BH+SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], color = 'orange', alpha = 0.4)#, label = r'$1\sigma_{syst.}$'+' band')
 				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 
