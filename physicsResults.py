@@ -2015,6 +2015,8 @@ if args.savesyst3:
 	uncStat_VGG     = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format('', k, i))["hist"]
 	uncStat_BH      = np.load("/volatile/clas12/sangbaek/clas12DVCS/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format('', k, i))["hist"]
 
+	Normalization = .745
+
 	#Exclusivity Cuts
 	UncExcl = 0.5*np.abs(divideHist(xsec_BH_4sigma - xsec_BH_2sigma, xsec_BH, threshold=-np.inf))
 	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)] = np.abs(divideHist(xsec_BH_2sigma - xsec_BH, xsec_BH, threshold=-np.inf))[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma!=0)]
@@ -2102,8 +2104,6 @@ if args.savesyst3:
 
 	SystUnc = np.sqrt(UncNorm**2+ UncModel**2 + UncExcl**2 + UncSmear**2 + UncFid**2 + UncBkg**2 + 0.04**2)
 	print(SystUnc[(SystUnc < 0.5)&(SystUnc>0)].mean())
-
-	Normalization = .745
 
 	for xBbin in range(5):
 		for Q2bin in range(5):
