@@ -2080,7 +2080,7 @@ if args.savesyst3:
 	UncExcl_pol[(xsec_BH_pol_4sigma == 0) & (xsec_BH_pol_2sigma==0)] = UncExcl_pol[(UncExcl_pol < 0.5)&(UncExcl_pol>0)].mean()
 
 	#Tight Fid
-	UncFid_pol = np.abs(divideHist(xsec_BH - xsec_BH_pol_tightfid, xsec_BH_pol, threshold = 0 ))
+	UncFid_pol = np.abs(divideHist(xsec_BH_pol - xsec_BH_pol_tightfid, xsec_BH_pol, threshold = 0 ))
 	UncFid_pol[xsec_BH_pol_tightfid == 0] = 0
 	print(UncFid_pol[(UncFid_pol < 0.5)&(UncFid_pol>0)].mean())
 	UncFid_pol[UncFid_pol == 0] = UncFid_pol[(UncFid_pol < 0.5)&(UncFid_pol>0)].mean()
@@ -2093,9 +2093,9 @@ if args.savesyst3:
 	UncSmear_pol[(xsec_BH_pol_sm11 == 0) & (xsec_BH_pol_sm09==0)] = UncSmear_pol[(UncSmear_pol < 0.5)&(UncSmear_pol>0)].mean()
 
 	#Acc
-	UncModel_pol = np.abs(divideHist(xsec_VGG - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
-	UncModel_pol2 = np.abs(divideHist(xsec_VGG2- xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
-	UncModel_pol3 = np.abs(divideHist(xsec_BH2 - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
+	UncModel_pol = np.abs(divideHist(xsec_VGG_pol - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
+	UncModel_pol2 = np.abs(divideHist(xsec_VGG2_pol- xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
+	UncModel_pol3 = np.abs(divideHist(xsec_BH2_pol - xsec_BH_pol, xsec_BH_pol, threshold=-np.inf))
 	# UncAcc = np.max([UncModel_pol, UncModel_pol2, UncModel_pol3], axis = 0)
 	print(UncModel_pol[(UncModel_pol < 0.5)&(UncModel_pol>0)].mean())
 	UncModel_pol[UncModel_pol == 0] = UncModel_pol[(UncModel_pol < 0.5)&(UncModel_pol>0)].mean()
@@ -2487,8 +2487,15 @@ if args.saveplot2:
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 				axs[num_plotQ2-Q2bin-1 , xBbin].errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental Data')
 				axs[num_plotQ2-Q2bin-1 , xBbin].fill_between(phi1avg_BH[xBbin, Q2bin, tbin, phibin], 1/Normalization*(xsec_BH-SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], (xsec_BH+SystUnc*xsec_BH)[xBbin, Q2bin, tbin, phibin], color = 'g', alpha = 0.2)
-				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_KM[xBbin, Q2bin, tbin, :], color = 'cyan', label = 'Theory (KM15)')
-				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1avg_BH[xBbin, Q2bin, tbin, :], xsecTh_BH[xBbin, Q2bin, tbin, :], color = 'r', label = 'Theory (BH)')
+
+				Nplot = 40
+				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
+				Q2s = np.ones(Nplot)*Q2avg_BH[xBbin, Q2bin, tbin, phibin][0]
+				t1s = np.ones(Nplot)*t1avg_BH[xBbin, Q2bin, tbin, phibin][0]
+				phi1s = np.linspace(0, 360, Nplot)
+
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, getBHDVCS(xBs, Q2s, t1s, phi1s, mode  =1), color = 'r', label = 'Theory (BH)')
+				axs[num_plotQ2-Q2bin-1 , xBbin].plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =5), color = 'cyan', label = 'Theory (KM15)')
 
 				xBheader = r"$<x_B>=$"+" {:.3f}, ".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = r"$<Q^2>=$"+" {:.3f}, ".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])
