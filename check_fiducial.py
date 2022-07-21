@@ -84,6 +84,16 @@ pi0SimOutbFD = pi0SimOutb.loc[(pi0SimOutb.config == 1)]
 # title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
 # unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  degree, degree, GeV, GeV2, GeV2, GeVc]
 
+contInbCD = len(pi0ExpInbCD)*len(bkgSimInbCD)/len(pi0SimInbCD)/len(epgExpInbCD)
+contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
+contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
+contInb = len(pi0ExpInb)*len(bkgSimInb)/len(pi0SimInb)/len(epgExpInb)
+
+contOutbCD = len(pi0ExpOutbCD)*len(bkgSimOutbCD)/len(pi0SimOutbCD)/len(epgExpOutbCD)
+contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
+contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
+contOutb = len(pi0ExpOutb)*len(bkgSimOutb)/len(pi0SimOutb)/len(epgExpOutb)
+
 varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 title = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
 unit = [degree, GeV2,  degree, degree, GeV, GeV2, GeV2, GeVc]
