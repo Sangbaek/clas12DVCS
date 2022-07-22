@@ -55,7 +55,7 @@ class root2pickle():
         self.makeDVpi0P_DVCS(pol = pol)
         self.pi02gSubtraction()
         if not raw:
-            self.makeDVCS(pol = pol)
+            self.makeDVCS(pol = pol, nofid = nofid)
         self.save(raw = raw, pol = pol, gen = gen)
 
     def readFile(self):
@@ -1168,7 +1168,7 @@ class root2pickle():
 
         self.df_epg = df_epg
 
-    def makeDVCS(self, pol = "inbending"):
+    def makeDVCS(self, pol = "inbending", nofid = False):
         #make dvcs pairs
         df_dvcs = self.df_epg
 
@@ -1207,22 +1207,24 @@ class root2pickle():
         cuts_dvcs_FD_Outb = self.cuts_dvcs_FD_Outb
 
         if pol == "inbending":
-            vzdiffCD_lb,    vzdiffCD_ub    = -1.268, 1.478
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.398, 3.611
-            vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.633, 3.756
-            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.714, 3.831
-            vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.406, 3.548
-            vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.289, 3.519
-            vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.561, 3.748
+            if nofid:
+                pass
+            else:
+                vzdiffCD_lb,    vzdiffCD_ub    = -1.268, 1.478
+                vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.398, 3.611
+                vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.633, 3.756
+                vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.714, 3.831
+                vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.406, 3.548
+                vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.289, 3.519
+                vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.561, 3.748
 
-            df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
-
+                df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
@@ -1314,21 +1316,24 @@ class root2pickle():
                         cut_mpt_FD & cut_recon_FD & cut_coplanarity_FD & cut_mmepg1_FD & cut_mmepg2_FD)
 
         elif pol == "outbending":
-            vzdiffCD_lb,    vzdiffCD_ub    = -1.473, 1.657
-            vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.407, 3.015
-            vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.389, 2.971
-            vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.480, 3.054
-            vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.387, 2.972
-            vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.383, 2.960
-            vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.573, 3.088
-            
-            df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
-            df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
+            if nofid:
+                pass
+            else:
+                vzdiffCD_lb,    vzdiffCD_ub    = -1.473, 1.657
+                vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.407, 3.015
+                vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.389, 2.971
+                vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.480, 3.054
+                vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.387, 2.972
+                vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.383, 2.960
+                vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.573, 3.088
+                
+                df_dvcs.loc[ (df_dvcs.Psector>4000) & ((df_dvcs.vzdiff<vzdiffCD_lb)   | (df_dvcs.vzdiff>vzdiffCD_ub)  ), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==1)   & ((df_dvcs.vzdiff<vzdiffFD_S1_lb) | (df_dvcs.vzdiff>vzdiffFD_S1_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==2)   & ((df_dvcs.vzdiff<vzdiffFD_S2_lb) | (df_dvcs.vzdiff>vzdiffFD_S2_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==3)   & ((df_dvcs.vzdiff<vzdiffFD_S3_lb) | (df_dvcs.vzdiff>vzdiffFD_S3_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==4)   & ((df_dvcs.vzdiff<vzdiffFD_S4_lb) | (df_dvcs.vzdiff>vzdiffFD_S4_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==5)   & ((df_dvcs.vzdiff<vzdiffFD_S5_lb) | (df_dvcs.vzdiff>vzdiffFD_S5_ub)), "PFid"] = 0
+                df_dvcs.loc[ (df_dvcs.Psector==6)   & ((df_dvcs.vzdiff<vzdiffFD_S6_lb) | (df_dvcs.vzdiff>vzdiffFD_S6_ub)), "PFid"] = 0
             #CDFT
             cut_Pp1_CDFT = df_dvcs.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_dvcs.Psector>7
