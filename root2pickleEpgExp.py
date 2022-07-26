@@ -293,6 +293,7 @@ class root2pickle():
         #prepare for proton energy loss corrections correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pp'] = mag(pro)
+        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
 
