@@ -1107,6 +1107,8 @@ class root2pickle():
         df_epg.loc[:,'reconGam'] = angle(gam, VmissG)
         df_epg.loc[:,'coplanarity'] = angle(v3h, v3g)
 
+        df_epg.loc[:,'closeness2'] = np.abs(df_epg.MM2_ep)
+
         eps = 2*M*df_epg.xB / np.sqrt(df_epg.Q2)
         df_epg.loc[:,'ycol1'] = (df_epg.Q2-df_epg.t2)/(df_epg.Q2-df_epg.xB*df_epg.t2)
         df_epg.loc[:,'ycol2'] = 1 - (1-df_epg.xB)*df_epg.t2/df_epg.Q2
@@ -1432,7 +1434,7 @@ class root2pickle():
         df_dvcs = df_dvcs[df_dvcs.config>0]
 
         # dealing with duplicates
-        df_dvcs = df_dvcs.sort_values(by=['reconGam', 'Ge', 'Pe'], ascending = [True, False, False])
+        df_dvcs = df_dvcs.sort_values(by=['reconGam', 'closeness2'], ascending = [True, True])
         df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
         df_dvcs = df_dvcs.sort_values(by='event')
 
@@ -1504,7 +1506,7 @@ class root2pickle():
 
             df_Rec = df_Rec[df_Rec.config>0]
 
-            df_Rec = df_Rec.sort_values(by=['reconGam', 'Ge', 'Pe'], ascending = [True, False, False])
+            df_Rec = df_Rec.sort_values(by=['reconGam', 'closeness2'], ascending = [True, True])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), ]
             df_Rec = df_Rec.sort_values(by='event')
 

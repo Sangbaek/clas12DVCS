@@ -735,6 +735,7 @@ class root2pickle():
         df_epgg.loc[:, 'vzdiff'] = df_epgg.Evz - df_epgg.Pvz
         
         df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
+        df_epgg.loc[:, "closeness2"] = np.abs(df_epgg.loc[:, "MM2_ep"] - .1349766**2)
 
         # encode unassigned bin as -1
         df_epgg.loc[:, "Q2bin"] = -1
@@ -1045,7 +1046,7 @@ class root2pickle():
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
         #For now, duplicated proton is not considered.
-        df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+        df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
         df_dvpi0p = df_dvpi0p.loc[~df_dvpi0p.event.duplicated(), :]
         df_dvpi0p = df_dvpi0p.sort_values(by='event')        
         self.df_dvpi0p = df_dvpi0p #done with saving x

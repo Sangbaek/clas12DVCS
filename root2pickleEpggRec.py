@@ -807,6 +807,7 @@ class root2pickle():
         df_epgg.loc[:,'openingAngle'] = angle(gam, gam2)
 
         df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
+        df_epgg.loc[:, "closeness2"] = np.abs(df_epgg.loc[:, "MM2_ep"] - .1349766**2)
 
         df_epgg.loc[:, 'vzdiff'] = df_epgg.Evz - df_epgg.Pvz
 
@@ -1118,7 +1119,7 @@ class root2pickle():
         #Take only one gg's that makes pi0 invariant mass
         #This case is very rare.
         #For now, duplicated proton is not considered.
-        df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+        df_dvpi0p = df_dvpi0p.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
         df_dvpi0p = df_dvpi0p.loc[~df_dvpi0p.event.duplicated(), :]
         df_dvpi0p = df_dvpi0p.sort_values(by='event')        
         self.df_dvpi0p = df_dvpi0p #done with saving x
@@ -1187,7 +1188,7 @@ class root2pickle():
 
             df_Rec = df_Rec[df_Rec.config>0]
 
-            df_Rec = df_Rec.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+            df_Rec = df_Rec.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
             df_Rec = df_Rec.sort_values(by='event')
 
@@ -1267,7 +1268,7 @@ class root2pickle():
 
             df_Rec = df_Rec[df_Rec.config>0]
 
-            df_Rec = df_Rec.sort_values(by=['closeness', 'Psector', 'Gsector'], ascending = [True, True, True])
+            df_Rec = df_Rec.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
             df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
             df_Rec = df_Rec.sort_values(by='event')
 
