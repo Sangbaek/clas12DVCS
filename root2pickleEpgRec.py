@@ -505,6 +505,7 @@ class root2pickle():
         #inbending proton energy loss correction
         if nocorr:
             print("no correction applied")
+            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
         else:
             if pol == "inbending":
                 const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
