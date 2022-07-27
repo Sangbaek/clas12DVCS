@@ -412,6 +412,9 @@ class root2pickle():
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
+        df_protonRec.loc[:, "PpOrig"] = df_protonRec.Pp
+        df_protonRec.loc[:, "PthetaOrig"] = df_protonRec.Ptheta
+        df_protonRec.loc[:, "PphiOrig"] = df_protonRec.Pphi
 
         df_protonRec.loc[:, "PDc1theta"] = -100000
 
@@ -483,9 +486,6 @@ class root2pickle():
             print("no correction applied")
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
         else:
-            df_protonRec.loc[:, "PpOrig"] = df_protonRec.Pp
-            df_protonRec.loc[:, "PthetaOrig"] = df_protonRec.Ptheta
-            df_protonRec.loc[:, "PphiOrig"] = df_protonRec.Pphi
             if pol == "inbending":
                 const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
                 coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
