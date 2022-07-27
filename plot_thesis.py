@@ -48,6 +48,7 @@ matplotlib.rcParams.update(pgf_with_latex)
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-ch","--chapter", help="chapter", default = "2")
+args = parser.parse_args()
 
 if args.chapter:
 	chapter = int(args.chapter)
