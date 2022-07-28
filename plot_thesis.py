@@ -102,7 +102,7 @@ if chapter == 2:
 		for yind in range(0,3):
 			Esector = 3*xind + yind  +1
 			h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = 100, cmap = cmap, rasterized = True)
-			plt.colorbar(h[3])
+			plt.colorbar(h[3], ax = axs[xind, yind])
 			mean = ecal_e_sampl_mu_mc[0][Esector-1] + ecal_e_sampl_mu_mc[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu_mc[2][Esector-1],2);
 			sigma = ecal_e_sampl_sigm_mc[0][Esector-1] + ecal_e_sampl_sigm_mc[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm_mc[2][Esector-1]));
 			axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
@@ -186,7 +186,7 @@ if chapter == 2:
 		for yind in range(0,3):
 			Esector = 3*(xind) + yind + 1
 			h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep2"]/expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "Eedep1"]/expSample.loc[expSample.Esector==Esector, "Ep"], cmin =1, bins = np.linspace(0, 0.3, 101), cmap = cmap, rasterized = True)
-			plt.colorbar(h[3])
+			plt.colorbar(h[3], ax = axs[xind, yind])
 			axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
 			axs[xind, yind].set_xlim([0.0, 0.3])
 			axs[xind, yind].set_ylim([0.0, 0.3])
