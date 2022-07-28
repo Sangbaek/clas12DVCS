@@ -897,7 +897,8 @@ class root2pickle():
 
         if pol == "inbending":
             if nofid:
-                pass
+                CD_Ptheta_lb = 0
+                FD_Ptheta_inb_ub = 90
             else:
                 vzdiffCD_lb,    vzdiffCD_ub    = -1.268, 1.478
                 vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.398, 3.611
@@ -1006,7 +1007,8 @@ class root2pickle():
 
         elif pol == "outbending":
             if nofid:
-                pass
+                CD_Ptheta_lb = 0
+                FD_Ptheta_outb_ub = 90
             else:
                 vzdiffCD_lb,    vzdiffCD_ub    = -1.473, 1.657
                 vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.407, 3.015
