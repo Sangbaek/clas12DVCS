@@ -458,9 +458,9 @@ class root2pickle():
                 CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
             print("energy loss correction applied for " + pol)
-            df_protonRec.loc[:, "PpEloss"] = CorrectedPp_CD
-            df_protonRec.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
-            df_protonRec.loc[:, "PphiEloss"] = CorrectedPphi_CD
+            df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
+            df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
+            df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
 
             #proton correction
             df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
