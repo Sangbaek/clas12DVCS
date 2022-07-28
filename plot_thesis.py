@@ -184,20 +184,20 @@ if chapter == 2:
 	x = np.linspace(0, 0.3, 101)
 	for xind in range(0, 2):
 	    for yind in range(0,3):
-	        Esector = 3*(xind) + yind + 1
-	        h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep2"]/expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "Eedep1"]/expSample.loc[expSample.Esector==Esector, "Ep"], cmin =1, bins = np.linspace(0, 0.3, 101), cmap = cmap, rasterized = True)
+			Esector = 3*(xind) + yind + 1
+			h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep2"]/expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "Eedep1"]/expSample.loc[expSample.Esector==Esector, "Ep"], cmin =1, bins = np.linspace(0, 0.3, 101), cmap = cmap, rasterized = True)
 			axs[xind, yind].colorbar(h[3])
-	        axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
-	        axs[xind, yind].set_xlim([0.0, 0.3])
-	        axs[xind, yind].set_ylim([0.0, 0.3])
-	        axs[xind, yind].arrow(0.2, 0.2, 0.01, 0.01, linewidth = 5)
-	        axs[xind, yind].plot(x, 0.2-x, linestyle = '--', color = 'k', linewidth = 5)
-	        axs[xind, yind].set_yticks([0, 0.1, 0.2, 0.3])
-	        axs[xind, yind].set_yticklabels([0, 0.1, 0.2, 0.3])
-	        axs[xind, yind].set_xticks([0, 0.1, 0.2, 0.3])
-	        axs[xind, yind].set_xticklabels(["", 0.1, 0.2, 0.3])
-	        axs[xind, yind].set_xlabel(r"$E_{dep.,~\mathrm{ECAL-inner}}/p_{e'}$")
-	        axs[xind, yind].set_ylabel(r"$E_{dep.,~\mathrm{PCAL}}/p_{e'}$")
+			axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
+			axs[xind, yind].set_xlim([0.0, 0.3])
+			axs[xind, yind].set_ylim([0.0, 0.3])
+			axs[xind, yind].arrow(0.2, 0.2, 0.01, 0.01, linewidth = 5)
+			axs[xind, yind].plot(x, 0.2-x, linestyle = '--', color = 'k', linewidth = 5)
+			axs[xind, yind].set_yticks([0, 0.1, 0.2, 0.3])
+			axs[xind, yind].set_yticklabels([0, 0.1, 0.2, 0.3])
+			axs[xind, yind].set_xticks([0, 0.1, 0.2, 0.3])
+			axs[xind, yind].set_xticklabels(["", 0.1, 0.2, 0.3])
+			axs[xind, yind].set_xlabel(r"$E_{dep.,~\mathrm{ECAL-inner}}/p_{e'}$")
+			axs[xind, yind].set_ylabel(r"$E_{dep.,~\mathrm{PCAL}}/p_{e'}$")
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precutAntiPion.pdf")
 	plt.clf()
@@ -490,7 +490,7 @@ if chapter == 2:
 
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap)
+	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
 	plt.colorbar(h[3])
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
@@ -502,7 +502,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap)
+	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
 	axs.colorbar(h[3])
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
@@ -514,7 +514,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap)
+	h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
 	axs.colorbar(h[3])
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
@@ -524,7 +524,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap)
+	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
 	axs.colorbar(h[3])
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
@@ -538,7 +538,7 @@ if chapter == 2:
 	ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
 	GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
 	GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, norm = LogNorm())
+	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, norm = LogNorm(), rasterized = True)
 	plt.colorbar(h[3])
 	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
