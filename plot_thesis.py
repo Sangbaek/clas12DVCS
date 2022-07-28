@@ -589,7 +589,7 @@ if chapter == 2:
 	ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
 	GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
 	GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, norm = LogNorm(), rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
