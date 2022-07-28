@@ -90,8 +90,8 @@ if chapter == 2:
 	axs.set_xticklabels([2, 10, 20, 30, 40, 50])
 	axs.set_yticks([0, 0.02, 0.04, 0.06, 0.08, 0.1])
 	axs.set_yticklabels([0, 0.02, 0.04, 0.06, 0.08, 0.1])
-	plt.legend()
 	axs.set_xlabel("Number of Photoelectrons in HTCC (" + r"$n_{phe.})$")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/Enphe.pdf")
 	plt.clf()
 
@@ -157,6 +157,7 @@ if chapter == 2:
 	# plt.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), density = True, histtype = 'step')
 	plt.legend(loc='upper right', bbox_to_anchor = (1.05, 0.95), title = 'Inbending', framealpha = 1)
 	axs.set_xlabel("$vz_{e'}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precutVz_inb.pdf")
 	plt.clf()
 
@@ -175,6 +176,7 @@ if chapter == 2:
 	plt.legend(loc='upper right', bbox_to_anchor = (1.05, 0.95), title = 'Outbending', framealpha = 1)
 	# axs.set_xlabel("Number of Photoelectrons in HTCC (" + r"$n_{phe.})$")
 	axs.set_xlabel("$vz_{e'}$"+ " [cm]")
+	plt.tight_layout()	
 	plt.savefig("plots/ch2/precutVz_outb.pdf")
 	plt.clf()
 
@@ -208,6 +210,7 @@ if chapter == 2:
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Inbending")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_efidDC.pdf")
 	plt.clf()
 
@@ -219,6 +222,7 @@ if chapter == 2:
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Outbending")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_efidDCOutb.pdf")
 	plt.clf()
 
@@ -233,6 +237,7 @@ if chapter == 2:
 	axs.set_xticklabels([0, 5, 9, "", 15, 20, 25, 30])
 	axs.set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
 	axs.set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_efidV.pdf")
 	plt.clf()
 
@@ -246,6 +251,7 @@ if chapter == 2:
 	axs.set_xticklabels([0, 5, 9, "", 15, 20, 25, 30])
 	axs.set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
 	axs.set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_efidW.pdf")
 	plt.clf()
 
@@ -258,8 +264,7 @@ if chapter == 2:
 	axs.set_yticklabels([-6, -4, -2 ,0, 2, 4, 6])
 	axs.set_xlabel(r"$p_{p'}$"+ " ["+GeVc+"]")
 	axs.set_ylabel(r"$\chi$")
-	axs.axvline(1)
-	axs.axhline(-4)
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfidchi.pdf")
 	plt.clf()
 
@@ -269,6 +274,7 @@ if chapter == 2:
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfidDC.pdf")
 	plt.clf()
 
@@ -278,6 +284,7 @@ if chapter == 2:
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfidDCOutb.pdf")
 	plt.clf()
 
@@ -289,6 +296,7 @@ if chapter == 2:
 	plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
 	axs.set_xticks([30, 40, 50, 60, 64.23, 70, 80])
 	axs.set_xticklabels([30, 40, 50, "", 64.23, 70, 80])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd.pdf")#plt.show()
 	plt.clf()
 
@@ -300,6 +308,7 @@ if chapter == 2:
 	plt.xlabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 	axs.set_xticks([40, 44.5, 50, 60, 70, 80, 90])
 	axs.set_xticklabels(["", 44.5, 50, 60, 70, 80, 90])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd_cvt.pdf")#plt.show()
 	plt.clf()
 
@@ -324,6 +333,7 @@ if chapter == 2:
 	axs.plot(x1, 44.5 + 0*x1, color = 'r', linewidth = 4, linestyle = '--')
 	y1 = np.linspace(-2.924+1.274*64.23, -3.523+1.046*64.23, 101)
 	axs.plot(y1*0 + 64.23, y1, color = 'r', linewidth = 4, linestyle = '--')
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd2.pdf")
 	plt.clf()
 
@@ -343,6 +353,7 @@ if chapter == 2:
 	plt.axvline(40,  color ='r', linestyle = '--', linewidth = 4)
 	plt.axvline(143,  color ='r', linestyle = '--', linewidth = 4)
 	plt.axvline(158,  color ='r', linestyle = '--', linewidth = 4)
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd3.pdf")
 	plt.clf()
 
@@ -364,6 +375,7 @@ if chapter == 2:
 	axs.set_xlim([60, 66])
 	axs.set_xticks([60, 62, 64.23, 66])
 	axs.set_xticklabels([60, 62, 64.23, 66])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd4.pdf")
 	plt.clf()
 
@@ -385,6 +397,7 @@ if chapter == 2:
 	axs.set_xticklabels([40, 44.5, 50, 60, 70, 80])
 	axs.set_xlabel(r"$\theta_{\mathrm{CVT}}$"+ " ["+degree+"]")
 	axs.set_ylabel(r"$n_{exp.}/n_{sim.}$")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd5.pdf")
 	plt.clf()
 
@@ -423,6 +436,7 @@ if chapter == 2:
 	axs.axvline(158,  color ='k', linestyle = '--')
 	axs.set_xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
 	axs.set_ylabel(r"$n_{exp.}/n_{sim.}$")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd7.pdf")
 	plt.clf()
 
@@ -452,6 +466,7 @@ if chapter == 2:
 	plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
 	plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
 	plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
+	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_gfidFT.pdf")
 	plt.clf()
 
@@ -464,7 +479,7 @@ if chapter == 2:
 	axs.set_xlim([-450, 450])
 	axs.set_ylim([-450, 450])
 	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_gfidPCAL.pdf")
+	plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
 	plt.clf()
 
 	#after the fiducial cuts
@@ -482,6 +497,7 @@ if chapter == 2:
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Inbending")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_efidDC.pdf")
 	plt.clf()
 
@@ -493,6 +509,7 @@ if chapter == 2:
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Outbending")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_efidDCOutb.pdf")
 	plt.clf()
 
@@ -502,6 +519,7 @@ if chapter == 2:
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_pfidDC.pdf")
 	plt.clf()
 
@@ -511,6 +529,7 @@ if chapter == 2:
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_pfidDCOutb.pdf")
 	plt.clf()
 
@@ -525,6 +544,7 @@ if chapter == 2:
 	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_xlim([-450, 450])
 	axs.set_ylim([-450, 450])
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_gfidPCAL.pdf")
 	plt.clf()
 
@@ -555,6 +575,7 @@ if chapter == 2:
 	plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
 	plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
 
+	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_gfidFT.pdf")
 	plt.clf()
 
