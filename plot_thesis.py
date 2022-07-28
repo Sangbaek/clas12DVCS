@@ -127,7 +127,7 @@ if chapter == 2:
 		for yind in range(0,3):
 			Esector = 3*(xind) + yind + 1
 			h  = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep1"],  expSample.loc[expSample.Esector==Esector, "Eedep2"]+expSample.loc[expSample.Esector==Esector, "Eedep3"], cmin =1, bins = 100, cmap = cmap, rasterized = True)
-			plt.colorbar(h[3])
+			plt.colorbar(h[3], ax = axs)
 			axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
 			axs[xind, yind].set_xlim([0.03, 0.8])
 			axs[xind, yind].set_ylim([0.03, 0.8])
@@ -204,7 +204,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Inbending")
@@ -216,7 +216,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Outbending")
@@ -229,7 +229,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EcalV1, expSample.ESamplFrac, bins = [np.linspace(0, 30, 101), np.linspace(0.16, 0.34, 101)], cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.axvline(9, color = 'k', linestyle = '--', linewidth = 5)
 	axs.set_xlabel(r"$l_{V}$"+ " [cm]")
 	axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
@@ -243,7 +243,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EcalW1, expSample.ESamplFrac, bins = [np.linspace(0, 30, 101), np.linspace(0.16, 0.34, 101)], cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.axvline(9, color = 'k', linestyle = '--', linewidth = 5)
 	axs.set_xlabel(r"$l_{W}$"+ " [cm]")
 	axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
@@ -257,7 +257,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.loc[expSample.config>1].Pp, expSample.loc[expSample.config>1].Pchi2pid, bins = [np.linspace(0, 1.8, 101), np.linspace(-6, 6, 101)], cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xticks([0, 0.5, 1, 1.5, 2])
 	axs.set_xticklabels([0, 0.5, 1, 1.5, 2])
 	axs.set_yticks([-6, -4, -2 ,0, 2, 4, 6])
@@ -270,7 +270,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -280,7 +280,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -318,7 +318,7 @@ if chapter == 2:
 		return a + b * x
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.loc[expSample.config>1, "Ptheta"], expSample.loc[expSample.config>1, "PCvt12theta"], bins = [np.linspace(30,70, 101), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	plt.ylabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 	plt.xlabel(r"$\theta_{~p'}$" + " ["+degree+"]")
 	axs.set_xticks([30, 35,40, 45,50,55, 60, 65, 70])
@@ -339,7 +339,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.loc[expSample.config>1, "PCvt12phi"], expSample.loc[expSample.config>1, "PCvt12theta"], bins = [np.linspace(-180,180, 361), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	# plt.axvline(62)
 	plt.ylabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 	plt.xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
@@ -442,7 +442,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.loc[expSample.config==3, "GcX"], expSample.loc[expSample.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 	axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
 	theta = np.linspace(0, 2*np.pi, 101)
@@ -473,7 +473,7 @@ if chapter == 2:
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	df_gammaRec = pd.concat([expSample.loc[expSample.config<3], expSampleOutb.loc[expSampleOutb.config<3]])
 	h = axs.hist2d(df_gammaRec.GcX, df_gammaRec.GcY, bins = 101, cmin = 1, cmap = cmap, norm=LogNorm(), rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_xlim([-450, 450])
@@ -491,7 +491,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Inbending")
@@ -503,7 +503,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlim([-300, 300])
 	axs.set_ylim([-300, 300])
 	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Outbending")
@@ -515,7 +515,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -525,7 +525,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
 	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -539,7 +539,7 @@ if chapter == 2:
 	GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
 	GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
 	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, norm = LogNorm(), rasterized = True)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 	axs.set_xlim([-450, 450])
@@ -550,7 +550,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.loc[expSample.config==3, "GcX"], expSample.loc[expSample.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1)
-	plt.colorbar(h[3])
+	plt.colorbar(h[3], ax = axs)
 	axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 	axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
 	theta = np.linspace(0, 2*np.pi, 101)
