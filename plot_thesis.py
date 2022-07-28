@@ -183,7 +183,7 @@ if chapter == 2:
 	fig, axs = plt.subplots(2, 3, figsize = (15,10))
 	x = np.linspace(0, 0.3, 101)
 	for xind in range(0, 2):
-	    for yind in range(0,3):
+		for yind in range(0,3):
 			Esector = 3*(xind) + yind + 1
 			h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep2"]/expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "Eedep1"]/expSample.loc[expSample.Esector==Esector, "Ep"], cmin =1, bins = np.linspace(0, 0.3, 101), cmap = cmap, rasterized = True)
 			axs[xind, yind].colorbar(h[3])
@@ -358,8 +358,8 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	dvcsPthetahist, bins = np.histogram(dvcsSample.loc[(dvcsSample.config>1), "Ptheta"], bins = np.linspace(60, 66, 101))
-	expPthetahist, bins = np.histogram(expSample.loc[(expSample.config>1), "Ptheta"], bins = np.linspace(60, 66, 101))
+	dvcsPthetahist, bins = np.histogram(dvcsSample.loc[(dvcsSample.config>1), "Ptheta"], bins = np.linspace(60, 70, 101))
+	expPthetahist, bins = np.histogram(expSample.loc[(expSample.config>1), "Ptheta"], bins = np.linspace(60, 70, 101))
 	bincenters = (bins[:-1] + bins[1:])/2
 	axs.errorbar(bincenters, expPthetahist/np.sum(expPthetahist)/ (dvcsPthetahist/np.sum(dvcsPthetahist)), xerr = 0.03, yerr =expPthetahist/np.sum(expPthetahist)/ (dvcsPthetahist/np.sum(dvcsPthetahist))*np.sqrt(1/dvcsPthetahist + 1/expPthetahist), linestyle = '', color = 'k')
 	axs.axvline(64.23, color = 'k', linestyle = '--')
@@ -372,9 +372,9 @@ if chapter == 2:
 			break
 	axs.set_xlabel(r"$\theta_{p'}$"+ " ["+degree+"]")
 	axs.set_ylabel(r"$n_{exp.}/n_{sim.}$")
-	axs.set_xlim([60, 66])
-	axs.set_xticks([60, 62, 64.23, 66])
-	axs.set_xticklabels([60, 62, 64.23, 66])
+	axs.set_xlim([60, 70])
+	axs.set_xticks([60, 62, 64.23, 66, 68, 70])
+	axs.set_xticklabels([60, 62, 64.23, 66, 68, 70])
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd4.pdf")
 	plt.clf()
