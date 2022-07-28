@@ -14,7 +14,7 @@ from utils.fiducial import *
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid'):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False):
         '''
             clas init.
             Args
@@ -28,6 +28,7 @@ class root2pickle():
             detRes: include detector responses in the output (full skim)
             width: data selection window width
             nofid: do not apply fid cuts.
+            allowsamesector: allow same sectors.
 
             Attributes
             --------------------
@@ -55,7 +56,7 @@ class root2pickle():
         self.makeDVpi0P_DVCS(pol = pol)
         self.pi02gSubtraction()
         if not raw:
-            self.makeDVCS(pol = pol, nofid = nofid)
+            self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
         self.save(raw = raw, pol = pol, gen = gen)
 
     def readFile(self):
@@ -1173,7 +1174,7 @@ class root2pickle():
 
         self.df_epg = df_epg
 
-    def makeDVCS(self, pol = "inbending", nofid = False):
+    def makeDVCS(self, pol = "inbending", nofid = False, allowsamesector = False):
         #make dvcs pairs
         df_dvcs = self.df_epg
 
@@ -1184,8 +1185,12 @@ class root2pickle():
         cut_W = df_dvcs["W"] > 2  # W
         cut_Ee = df_dvcs["Ee"] > 2  # Ee
         cut_Ge = df_dvcs["Ge"] > 2  # Ge
-        cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
-        cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
+        if allowsamesector:
+            cut_Esector = 1
+            cut_Psector = 1
+        else:
+            cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
+            cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvcs.Ptheta > 0 #Ptheta
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
@@ -1583,6 +1588,7 @@ if __name__ == "__main__":
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
+    parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
 
     
     args = parser.parse_args()
@@ -1593,7 +1599,7 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
     smearingFactor = float(args.smearing)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector)
     df = converter.df
 
     df.to_pickle(args.out)

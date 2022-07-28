@@ -14,7 +14,7 @@ from utils.fiducial import *
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, width = "mid", dvcs = False, smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid'):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, width = "mid", dvcs = False, smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False):
         '''
             clas init.
             Args
@@ -29,6 +29,7 @@ class root2pickle():
             width: data selection window width
             nofid: do not apply fid cuts.
             nocorr: do not apply the momentum correction
+            allowsamesector: allow same sectors.
 
             Attributes
             --------------------
@@ -51,7 +52,7 @@ class root2pickle():
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
         self.saveDVpi0vars()
         if not raw:
-            self.makeDVpi0P(pol = pol, nofid = nofid)
+            self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
         self.save(raw = raw, dvcs = dvcs, pol = pol)
 
     def readFile(self):
@@ -866,7 +867,7 @@ class root2pickle():
 
         self.df_epgg = df_epgg
 
-    def makeDVpi0P(self, pol = "inbending", nofid = False):
+    def makeDVpi0P(self, pol = "inbending", nofid = False, allowsamesector = False):
         #make dvpi0 pairs
         df_dvpi0p = self.df_epgg
 
@@ -877,8 +878,12 @@ class root2pickle():
         cut_W = df_dvpi0p.loc[:, "W"] > 2  # W
         cut_Ee = df_dvpi0p["Ee"] > 2  # Ee
         cut_Ge2 = df_dvpi0p["Ge2"] > self.Ge2Threshold  # Ge cut. Ge>3 for DVCS module.
-        cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
-        cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
+        if allowsamesector:
+            cut_Esector = 1
+            cut_Psector = 1
+        else:
+            cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
+            cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvpi0p.Ptheta > 0  # Ptheta
         cut_EFid = df_dvpi0p.EFid == 1
@@ -1303,6 +1308,7 @@ if __name__ == "__main__":
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
+    parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
 
     args = parser.parse_args()
 
@@ -1312,7 +1318,7 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
     smearingFactor = float(args.smearing)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, dvcs = args.dvcs, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, dvcs = args.dvcs, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector)
     df = converter.df
 
     df.to_pickle(args.out)
