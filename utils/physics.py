@@ -281,17 +281,20 @@ def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         BHarray.append(printBHonly(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printBHonly(xB, Q2, t, phi, globalfit = True):
-	if globalfit:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
-	else:
-		dstot = subprocess.check_output(['/home/sangbaek/printDVCSBH/dvcsgen', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
-	try:
-		dstot = float(dstot.splitlines()[-1].decode("utf-8"))
-		return dstot
-	except:
-		print(xB, Q2, t, phi)
-		return 0
+def printBHonly(xB, Q2, t, phi, globalfit = True, local = False):
+    path = "/home/sangbaek/printDVCSBH/"
+    if local:
+        path = "/Users/sangbaek/CLAS12/dvcs/print/"
+    if globalfit:
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
+    else:
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi)])
+    try:
+        dstot = float(dstot.splitlines()[-1].decode("utf-8"))
+        return dstot
+    except:
+        print(xB, Q2, t, phi)
+        return 0
 
 def nphistmean(hist, bins):
     s=0

@@ -1216,10 +1216,18 @@ class root2pickle():
         cuts_dvcs_CD_Outb = self.cuts_dvcs_CD_Outb 
         cuts_dvcs_FD_Outb = self.cuts_dvcs_FD_Outb
 
+        CD_Ptheta_ub = CD_Ptheta_ub_nominal
+        CD_Ptheta_lb = CD_Ptheta_lb_nominal
+        FD_Ptheta_inb_ub = FD_Ptheta_inb_ub_nominal
+        FD_Ptheta_outb_ub = FD_Ptheta_outb_ub_nominal
+        FD_Ptheta_lb = FD_Ptheta_lb_nominal
+        if nofid:
+            CD_Ptheta_lb = 0
+            FD_Ptheta_inb_ub = 90
+
         if pol == "inbending":
             if nofid:
-                CD_Ptheta_lb = 0
-                FD_Ptheta_inb_ub = 90
+                pass
             else:
                 vzdiffCD_lb,    vzdiffCD_ub    = -1.268, 1.478
                 vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.398, 3.611
@@ -1328,8 +1336,7 @@ class root2pickle():
 
         elif pol == "outbending":
             if nofid:
-                CD_Ptheta_lb = 0
-                FD_Ptheta_outb_ub = 90
+                pass
             else:
                 vzdiffCD_lb,    vzdiffCD_ub    = -1.473, 1.657
                 vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.407, 3.015

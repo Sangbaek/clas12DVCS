@@ -396,11 +396,11 @@ def numberingDF(total, Q2bin_i=Q2bin_i, Q2bin_f=Q2bin_f, xBbin_i=xBbin_i, xBbin_
     total = pd.concat(df_allBins.values()).sort_values( by = 'event')
     return total
 
-CD_Ptheta_ub = 80
-CD_Ptheta_lb = 40
-FD_Ptheta_inb_ub = 40
-FD_Ptheta_outb_ub = 40
-FD_Ptheta_lb = 5
+CD_Ptheta_ub_nominal = 80
+CD_Ptheta_lb_nominal = 40
+FD_Ptheta_inb_ub_nominal = 40
+FD_Ptheta_outb_ub_nominal = 40
+FD_Ptheta_lb_nominal = 5
 
 Ge2Threshold_default = 0
 Ge2Threshold_tight = 0.6
