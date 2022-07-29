@@ -53,7 +53,7 @@ class root2pickle():
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
-        self.makeDVpi0P_DVCS(pol = pol)
+        self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
         self.pi02gSubtraction()
         self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
         self.save()
@@ -743,7 +743,7 @@ class root2pickle():
 
         self.df_epgg = df_epgg
 
-    def makeDVpi0P_DVCS(self, pol = "inbending"):
+    def makeDVpi0P_DVCS(self, pol = "inbending", nofid = False):
         #make dvpi0 pairs
         df_dvpi0p = self.df_epgg
 

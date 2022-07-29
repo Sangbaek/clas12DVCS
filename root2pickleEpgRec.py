@@ -53,7 +53,7 @@ class root2pickle():
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
-        self.makeDVpi0P_DVCS(pol = pol)
+        self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
         self.pi02gSubtraction()
         if not raw:
             self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
@@ -844,7 +844,7 @@ class root2pickle():
 
         self.df_epgg = df_epgg
 
-    def makeDVpi0P_DVCS(self, pol = "inbending"):
+    def makeDVpi0P_DVCS(self, pol = "inbending", nofid = False):
         #make dvpi0 pairs
         df_dvpi0p = self.df_epgg
 
@@ -880,7 +880,7 @@ class root2pickle():
         if nofid:
             CD_Ptheta_lb = 0
             FD_Ptheta_inb_ub = 90
-            
+
         if pol == 'inbending':
             #CDFT
             cut_Pp1_CDFT = df_dvpi0p.Pp > 0.3  # Pp
