@@ -771,6 +771,15 @@ class root2pickle():
         cut_proton = 1
 
         df_dvpi0p.loc[:, "config"] = 0
+
+        CD_Ptheta_ub = CD_Ptheta_ub_nominal
+        CD_Ptheta_lb = CD_Ptheta_lb_nominal
+        FD_Ptheta_inb_ub = FD_Ptheta_inb_ub_nominal
+        FD_Ptheta_outb_ub = FD_Ptheta_outb_ub_nominal
+        FD_Ptheta_lb = FD_Ptheta_lb_nominal
+        if nofid:
+            CD_Ptheta_lb = 0
+            FD_Ptheta_inb_ub = 90
         
         if pol == 'inbending':
             #CDFT
