@@ -326,7 +326,7 @@ if chapter == 2:
 	axs.set_xticks([30, 40, 50, 60, 64.23, 70, 80])
 	axs.set_xticklabels([30, 40, 50, "", 64.23, 70, 80])
 	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_pfid_cd.pdf")#plt.show()
+	plt.savefig("plots/ch2/precut_pfid_cd.pdf")
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
@@ -338,7 +338,7 @@ if chapter == 2:
 	axs.set_xticks([40, 44.5, 50, 60, 70, 80, 90])
 	axs.set_xticklabels(["", 44.5, 50, 60, 70, 80, 90])
 	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_pfid_cd_cvt.pdf")#plt.show()
+	plt.savefig("plots/ch2/precut_pfid_cd_cvt.pdf")
 	plt.clf()
 
 	def linearfit(args, x):
@@ -637,10 +637,27 @@ if chapter == 2:
 if chapter == 3:
 	'''
 	The chapter 3 is about the methodologies
-	data set 2: with fiducial cut. no momenutm correction cut.
+	data set 2: with fiducial cut. no momenutm correction cut. allowing the same sectors
+	data set 3: with fiducial cut. no momenutm correction cut. not allowing the same sectors.
 	'''
+	parent_dir = "/volatile/clas12/sngbaek/nov2021/convPkl_full_fid_noCorr_samesectors"
+	parent_exp = parent_dir + "/inb/exp/"
+	epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
+	parent_exp = parent_dir + "/outb/exp/"
+	epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
+
+	epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
+	epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
+	epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
+
+	epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
+	epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+	epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+
+	epgExp = pd.concat([epgExpInb, epgExpOutb])
+
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm())
+	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -652,45 +669,288 @@ if chapter == 3:
 	axs.set_xlabel(r"$\theta_{\gamma}$"+ " ["+degree+"]")
 	axs.set_ylabel(r"$\theta_{p'}$"+ " ["+degree+"]")
 	plt.tight_layout()
-	plt.savefig("proton_correlation.pdf")
-	plt.show()
+	plt.savefig("plots/ch3/proton_correlation.pdf")
+	plt.clf()
 
 
 	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
-	h = axs[0, 0].hist2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[0, 0].hist2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	h = axs[0, 1].hist2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[0, 1].hist2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	h = axs[0, 2].hist2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[0, 2].hist2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	h = axs[1, 0].hist2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[1, 0].hist2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	h = axs[1, 1].hist2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[1, 1].hist2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	h = axs[1, 2].hist2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs[1, 2].hist2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs[2, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
-	    for yind in range(3):
-	        axs[xind, yind].set_xlabel(r"$x_B$")
-	        axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
-	        axs[xind, yind].set_title(titles[xind*3+yind])
-	plt.savefig("Q2xB_binning.pdf")
-	plt.show()
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$x_B$")
+			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/Q2xB_binning.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
+
+	H1, xedges, yedges = np.histogram2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbFD.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,0])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCD.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,1])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCDFT.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,2])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbFD.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,0])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbCD.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,1])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbCDFT.tmin1)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,2])
+	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
 
 
+	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
+	for xind in range(2):
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$x_B$")
+			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/Q2xB_binning_tmin.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
+
+	H1, xedges, yedges = np.histogram2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbFD.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,0])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCD.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,1])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCDFT.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[0,2])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbFD.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,0])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbCD.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,1])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
+	H1 = H1.T
+	H2, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpOutbCDFT.tcol)
+	H2 = H2.T
+	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
+	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
+	cbar = plt.colorbar(plot2d, ax = axs[1,2])
+	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+
+	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
+	for xind in range(2):
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$x_B$")
+			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/Q2xB_binning_tcol.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
+
+	h = axs[0, 0].hist2d(epgExpInbFD.phi1, epgExpInbFD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 0])
+	h = axs[0, 1].hist2d(epgExpInbCD.phi1, epgExpInbCD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 1])
+	h = axs[0, 2].hist2d(epgExpInbCDFT.phi1, epgExpInbCDFT.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 2])
+	h = axs[1, 0].hist2d(epgExpOutbFD.phi1, epgExpOutbFD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 0])
+	h = axs[1, 1].hist2d(epgExpOutbCD.phi1, epgExpOutbCD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 1])
+	h = axs[1, 2].hist2d(epgExpOutbCDFT.phi1, epgExpOutbCDFT.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 2])
+
+	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
+	for xind in range(2):
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$\phi$" + " [" +degree+"]")
+			axs[xind, yind].set_ylabel(r"$|t|$"+ " [" + GeV2 + "]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/tphi_binning.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
+	h = axs[0, 0].hist2d(epgExpInbFD.Etheta, epgExpInbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 0])
+	h = axs[0, 1].hist2d(epgExpInbCD.Etheta, epgExpInbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 1])
+	h = axs[0, 2].hist2d(epgExpInbCDFT.Etheta, epgExpInbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 2])
+	h = axs[1, 0].hist2d(epgExpOutbFD.Etheta, epgExpOutbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 0])
+	h = axs[1, 1].hist2d(epgExpOutbCD.Etheta, epgExpOutbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 1])
+	h = axs[1, 2].hist2d(epgExpOutbCDFT.Etheta, epgExpOutbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 2])
+
+	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
+	for xind in range(2):
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
+			axs[xind, yind].set_ylabel(r"$\theta_{e'\gamma}$"+ " [" + degree + "]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/coneAngle_etheta_samesector.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k')
+	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	plt.savefig("plots/ch3/samesectors.pdf")
+	plt.clf()
+
+
+	# different sectors
+	parent_dir = "/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr"
+	parent_exp = parent_dir + "/inb/exp/"
+	epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
+	parent_exp = parent_dir + "/outb/exp/"
+	epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
+
+	epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
+	epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
+	epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
+
+	epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
+	epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+	epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+
+	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
+	h = axs[0, 0].hist2d(epgExpInbFD.Etheta, epgExpInbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 0])
+	h = axs[0, 1].hist2d(epgExpInbCD.Etheta, epgExpInbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 1])
+	h = axs[0, 2].hist2d(epgExpInbCDFT.Etheta, epgExpInbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[0, 2])
+	h = axs[1, 0].hist2d(epgExpOutbFD.Etheta, epgExpOutbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 0])
+	h = axs[1, 1].hist2d(epgExpOutbCD.Etheta, epgExpOutbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 1])
+	h = axs[1, 2].hist2d(epgExpOutbCDFT.Etheta, epgExpOutbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+	cbar = plt.colorbar(h[3], ax = axs[1, 0])
+
+	x = np.linspace(0, 50)
+
+	axs[0, 0].plot(x, np.poly1d([0.0214, -0.379, 21.998])(x), color = 'k', linestyle = '--')
+	axs[0, 0].plot(x, np.poly1d([0.0280, -1.001, 49.895])(x), color = 'k', linestyle = '--')
+	axs[1, 0].plot(x, np.poly1d([0.0214, -0.379, 21.998])(x), color = 'k', linestyle = '--')
+	axs[1, 0].plot(x, np.poly1d([0.0280, -1.001, 49.895])(x), color = 'k', linestyle = '--')
+
+	axs[0, 1].plot(x, np.poly1d([0.0164, 0.408, 4.901])(x), color = 'k', linestyle = '--')
+	axs[0, 1].plot(x, np.poly1d([0.0470, -1.677, 46.014])(x), color = 'k', linestyle = '--')
+	axs[1, 1].plot(x, np.poly1d([0.0164, 0.408, 4.901])(x), color = 'k', linestyle = '--')
+	axs[1, 1].plot(x, np.poly1d([0.0470, -1.677, 46.014])(x), color = 'k', linestyle = '--')
+
+	axs[0, 2].plot(x, np.poly1d([0.0267, -0.0625, 7.730])(x), color = 'k', linestyle = '--')
+	axs[0, 2].plot(x, np.poly1d([-0.00221, 0.863, 10.287])(x), color = 'k', linestyle = '--')
+	axs[1, 2].plot(x, np.poly1d([0.0267, -0.0625, 7.730])(x), color = 'k', linestyle = '--')
+	axs[1, 2].plot(x, np.poly1d([-0.00221, 0.863, 10.287])(x), color = 'k', linestyle = '--')
+
+	x = np.linspace(0, 18)
+	axs[0, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'b', linestyle = ':')
+	axs[0, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'b', linestyle = ':')
+
+	axs[1, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'b', linestyle = ':')
+	axs[1, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'b', linestyle = ':')
+
+	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
+	for xind in range(2):
+		for yind in range(3):
+			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
+			axs[xind, yind].set_ylabel(r"$\theta_{e'\gamma}$"+ " [" + degree + "]")
+			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.savefig("plots/ch3/coneAngle_etheta_diffsector.pdf")
+	plt.clf()
 
 if chapter == 4:
 	'''
