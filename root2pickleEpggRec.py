@@ -9,6 +9,7 @@ from copy import copy
 from utils.const import *
 from utils.physics import *
 from utils.fiducial import *
+pd.options.mode.chained_assignment = None 
 
 class root2pickle():
     '''class to read root to make epg pairs'''
