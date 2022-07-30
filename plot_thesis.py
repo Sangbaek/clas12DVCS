@@ -551,7 +551,7 @@ if chapter == 2:
 	plt.savefig("plots/ch2/postcut_gfidFT.pdf")
 	plt.clf()
 
-	if polarity == "outbending:"
+	if polarity == "outbending":
 		dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
 
