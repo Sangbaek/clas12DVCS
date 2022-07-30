@@ -49,6 +49,7 @@ matplotlib.rcParams.update(pgf_with_latex)
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("-ch","--chapter", help="chapter", default = "2")
+parser.add_argument("-pol","--polarity", help="polarity", default = "inbending")
 args = parser.parse_args()
 
 if args.chapter:
@@ -65,12 +66,6 @@ if chapter == 2:
 	data set 2: with fiducial cut. no momenutm correction cut.
 	'''
 
-	# before the fiducial cuts!
-	dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
-	expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
-	dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
-	expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
-
 	ecal_e_sampl_mu = [[  0.2531,  0.2550,  0.2514,  0.2494,  0.2528,  0.2521 ],[-0.6502, -0.7472, -0.7674, -0.4913, -0.3988, -0.703  ],[  4.939,  5.350,  5.102,  6.440,  6.149,  4.957  ]]
 	ecal_e_sampl_sigm = [[ 2.726e-3,  4.157e-3,  5.222e-3,  5.398e-3,  8.453e-3,  6.533e-3 ],[1.062,  0.859,  0.5564,  0.6576,  0.3242,  0.4423],[-4.089, -3.318, -2.078, -2.565, -0.8223, -1.274]]
 
@@ -80,6 +75,10 @@ if chapter == 2:
 	ecal_e_sampl_sigm_mc = [[7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3 ],
 	[ 0.215861, 0.215861, 0.215861, 0.215861, 0.215861, 0.215861   ],
 	[-0.319801, -0.319801, -0.319801, -0.319801, -0.319801, -0.319801]]
+
+	# before the fiducial cuts!
+	dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+	expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 
@@ -149,7 +148,6 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 
-
 	axs.hist(expSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'experiment')
 	axs.hist(dvcsSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'simulation')
 	axs.axvline(-13, color = 'k', linestyle = '--', linewidth = 5)
@@ -164,25 +162,6 @@ if chapter == 2:
 	axs.set_xlabel("$vz_{e'}$"+ " [cm]")
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precutVz_inb.pdf")
-	plt.clf()
-
-
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	axs.hist(expSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'experiment')
-	axs.hist(dvcsSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'simulation')
-	axs.axvline(-18, color = 'k', linestyle = '--', linewidth = 5)
-	axs.axvline(10, color = 'k', linestyle = '--', linewidth = 5)
-	axs.set_xlim([-20, 15])
-	axs.set_xticks([-20, -18, -15, -10, -5, 0, 5, 10, 15])
-	axs.set_xticklabels(["", -18,  -15, -10, -5, 0, 5, 10, 15])
-	axs.set_yticks([0, 0.05, 0.1, 0.15, 0.2])
-	axs.set_yticklabels([0, 0.05, 0.1, 0.15, 0.2])
-	# plt.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), density = True, histtype = 'step')
-	plt.legend(loc='upper right', bbox_to_anchor = (1.05, 0.95), title = 'Outbending', framealpha = 1)
-	# axs.set_xlabel("Number of Photoelectrons in HTCC (" + r"$n_{phe.})$")
-	axs.set_xlabel("$vz_{e'}$"+ " [cm]")
-	plt.tight_layout()	
-	plt.savefig("plots/ch2/precutVz_outb.pdf")
 	plt.clf()
 
 	fig, axs = plt.subplots(2, 3, figsize = (15,10))
@@ -224,23 +203,6 @@ if chapter == 2:
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_efidDC.pdf")
 	plt.clf()
-
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-	ticks = [1, 10, 100, 1000, 5000]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_xlim([-300, 300])
-	axs.set_ylim([-300, 300])
-	axs.set_xticks([-300, -150, 0, 150, 300])
-	axs.set_yticks([-300, -150, 0, 150, 300])
-	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Outbending")
-	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
-	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
-	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_efidDCOutb.pdf")
-	plt.clf()
-
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EcalV1, expSample.ESamplFrac, bins = [np.linspace(0, 30, 101), np.linspace(0.16, 0.34, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 500))
@@ -301,20 +263,6 @@ if chapter == 2:
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfidDC.pdf")
-	plt.clf()
-
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
-	ticks = [1, 10, 100, 300]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
-	# axs.set_xticks([-400, -200, 0, 200, 400])
-	# axs.set_yticks([-400, -200, 0, 200, 400])
-	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
-	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
-	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_pfidDCOutb.pdf")
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
@@ -524,9 +472,6 @@ if chapter == 2:
 	#after the fiducial cuts
 	dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/dvcs/4893.pkl")
 	expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
-	dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/dvcs/4907.pkl")
-	expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
-
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
@@ -545,22 +490,6 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-	ticks = [1, 10, 100, 1000, 5000]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_xlim([-300, 300])
-	axs.set_ylim([-300, 300])
-	axs.set_xticks([-300, -150, 0, 150, 300])
-	axs.set_yticks([-300, -150, 0, 150, 300])
-	axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Outbending")
-	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
-	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
-	plt.tight_layout()
-	plt.savefig("plots/ch2/postcut_efidDCOutb.pdf")
-	plt.clf()
-
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 200))
 	ticks = [1, 10, 100, 200]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
@@ -570,18 +499,6 @@ if chapter == 2:
 	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
 	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_pfidDC.pdf")
-	plt.clf()
-
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 100))
-	ticks = [1, 10, 100]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
-	axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
-	axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
-	plt.tight_layout()
-	plt.savefig("plots/ch2/postcut_pfidDCOutb.pdf")
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
@@ -633,6 +550,94 @@ if chapter == 2:
 	plt.tight_layout()
 	plt.savefig("plots/ch2/postcut_gfidFT.pdf")
 	plt.clf()
+
+	if polarity == "outbending:"
+		dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
+
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		axs.hist(expSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'experiment')
+		axs.hist(dvcsSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'simulation')
+		axs.axvline(-18, color = 'k', linestyle = '--', linewidth = 5)
+		axs.axvline(10, color = 'k', linestyle = '--', linewidth = 5)
+		axs.set_xlim([-20, 15])
+		axs.set_xticks([-20, -18, -15, -10, -5, 0, 5, 10, 15])
+		axs.set_xticklabels(["", -18,  -15, -10, -5, 0, 5, 10, 15])
+		axs.set_yticks([0, 0.05, 0.1, 0.15, 0.2])
+		axs.set_yticklabels([0, 0.05, 0.1, 0.15, 0.2])
+		# plt.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), density = True, histtype = 'step')
+		plt.legend(loc='upper right', bbox_to_anchor = (1.05, 0.95), title = 'Outbending', framealpha = 1)
+		# axs.set_xlabel("Number of Photoelectrons in HTCC (" + r"$n_{phe.})$")
+		axs.set_xlabel("$vz_{e'}$"+ " [cm]")
+		plt.tight_layout()	
+		plt.savefig("plots/ch2/precutVz_outb.pdf")
+		plt.clf()
+
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_xlim([-300, 300])
+		axs.set_ylim([-300, 300])
+		axs.set_xticks([-300, -150, 0, 150, 300])
+		axs.set_yticks([-300, -150, 0, 150, 300])
+		axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Pre-fiducial, Outbending")
+		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
+		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_efidDCOutb.pdf")
+		plt.clf()
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
+		ticks = [1, 10, 100, 300]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial")
+		# axs.set_xticks([-400, -200, 0, 200, 400])
+		# axs.set_yticks([-400, -200, 0, 200, 400])
+		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
+		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_pfidDCOutb.pdf")
+		plt.clf()
+
+		#after the fiducial cuts
+		dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/dvcs/4907.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_xlim([-300, 300])
+		axs.set_ylim([-300, 300])
+		axs.set_xticks([-300, -150, 0, 150, 300])
+		axs.set_yticks([-300, -150, 0, 150, 300])
+		axs.set_title(r"$e'$"+" DC Outmost Layer Hits, Post-fiducial, Outbending")
+		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
+		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_efidDCOutb.pdf")
+		plt.clf()
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 100))
+		ticks = [1, 10, 100]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$p'$"+" DC Outmost Layer Hits, Post-fiducial")
+		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
+		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_pfidDCOutb.pdf")
+		plt.clf()
+
+
 
 if chapter == 3:
 	'''
