@@ -4,8 +4,6 @@ A simple script to save data in pickle.
 """
 
 import uproot
-import pandas as pd
-import numpy as np
 import argparse
 from copy import copy
 from utils.const import *

@@ -4,6 +4,7 @@ Modules help pandas algebra without using ROOT.
 """
 import numpy as np
 import pandas as pd
+pd.options.mode.chained_assignment = None 
 from utils.const import *
 from gepard.fits import th_KM15
 import gepard as g
