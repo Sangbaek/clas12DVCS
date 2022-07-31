@@ -1292,8 +1292,8 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_outb_phi.pdf")
 
-	inbending_1 = inbending[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0]
-	inbending_2 = inbending[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0]
+	inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, ""]
+	inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, ""]
 
 	fig, axs = plt.subplots(2,3, figsize = (15, 10))
 	for row in range(2):
@@ -1356,56 +1356,52 @@ if chapter == 4:
 	plt.tight_layout()
 	plt.savefig('separator2.pdf')
 
+	params_p = []
+	uncertainties_p = []
+	x0 = [-4.80389058e-05,  4.53222098e-03]
+	for i in range(12):
+		thetaCond = (inbending_check1.Ptheta >= 2.5*i+5) & (inbending_check1.Ptheta < 2.5*(i+1)+5)
+		dfi = copy(inbending_check1.loc[thetaCond, ["Pp", "GenPp"]])
+		dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(x0, dfi["Pp"]))<0.01])
+		for i in range (0, 5):
+			res_lsq = least_squares(fun, x0, args=(dffit["Pp"], (dffit["GenPp"]-dffit["Pp"])))    
+			dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))<0.01])
+			x0 = res_lsq.x
 
-	# inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
-	# inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
+		params_p.append(res_lsq.x)
+		# uncertainty
+		# https://github.com/scipy/scipy/blob/2526df72e5d4ca8bad6e2f4b3cbdfbc33e805865/scipy/optimize/minpack.py#L739
+		_, s, VT = np.linalg.svd(res_lsq.jac, full_matrices=False)
+		threshold = np.finfo(float).eps * max(res_lsq.jac.shape) * s[0]
+		s = s[s > threshold]
+		VT = VT[:s.size]
+		pcov = np.dot(VT.T / s**2, VT)
+		s_sq = np.sum((dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))**2) / (len(dfi) - len(x0))
+		pcov = pcov * s_sq
+		uncertainties_p.append(np.sqrt(np.diag(pcov)))
+		params_p = np.array(params_p)
+		consts_p = params_p[:, 0]
+		coeffs_p = params_p[:, 1]
 
-	# params_p = []
-	# uncertainties_p = []
-	# x0 = [-4.80389058e-05,  4.53222098e-03]
-	# for i in range(12):
-	# 	thetaCond = (inbending_check1.Ptheta >= 2.5*i+5) & (inbending_check1.Ptheta < 2.5*(i+1)+5)
-	# 	dfi = copy(inbending_check1.loc[thetaCond, ["Pp", "GenPp"]])
-	# 	dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(x0, dfi["Pp"]))<0.01])
-	# 	for i in range (0, 5):
-	# 		res_lsq = least_squares(fun, x0, args=(dffit["Pp"], (dffit["GenPp"]-dffit["Pp"])))    
-	# 		dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))<0.01])
-	# 		x0 = res_lsq.x
-
-	# 	params_p.append(res_lsq.x)
-	# 	# uncertainty
-	# 	# https://github.com/scipy/scipy/blob/2526df72e5d4ca8bad6e2f4b3cbdfbc33e805865/scipy/optimize/minpack.py#L739
-	# 	_, s, VT = np.linalg.svd(res_lsq.jac, full_matrices=False)
-	# 	threshold = np.finfo(float).eps * max(res_lsq.jac.shape) * s[0]
-	# 	s = s[s > threshold]
-	# 	VT = VT[:s.size]
-	# 	pcov = np.dot(VT.T / s**2, VT)
-	# 	s_sq = np.sum((dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))**2) / (len(dfi) - len(x0))
-	# 	pcov = pcov * s_sq
-	# 	uncertainties_p.append(np.sqrt(np.diag(pcov)))
-	# 	params_p = np.array(params_p)
-	# 	consts_p = params_p[:, 0]
-	# 	coeffs_p = params_p[:, 1]
-
-	# uncertainties_p = np.array(uncertainties_p)
-	# consts_uncertainties_p = uncertainties_p[:, 0]
-	# coeffs_uncertainties_p = uncertainties_p[:, 1]
-	# fig, ax = plt.subplots(1,2, figsize=(15,5))
-	# ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
-	# ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
-	# ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
-	# ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
-	# ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
-	# ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
-	# ax[0].set_xlim([5, 35])
-	# ax[0].set_xticks(np.linspace(5, 35, 7))
-	# ax[1].set_xlim([5, 35])
-	# ax[1].set_xticks(np.linspace(5, 35, 7))
-	# ax[1].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
-	# ax[1].set_ylabel(r"$B(\theta_{rec.})$"+" ["+GeVc2+"]")
-	# plt.tight_layout()
-	# # plt.show()
-	# plt.savefig("plots/ch4/coeff_example.pdf")
+	uncertainties_p = np.array(uncertainties_p)
+	consts_uncertainties_p = uncertainties_p[:, 0]
+	coeffs_uncertainties_p = uncertainties_p[:, 1]
+	fig, ax = plt.subplots(1,2, figsize=(15,5))
+	ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
+	ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
+	ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
+	ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
+	ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
+	ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
+	ax[0].set_xlim([5, 35])
+	ax[0].set_xticks(np.linspace(5, 35, 7))
+	ax[1].set_xlim([5, 35])
+	ax[1].set_xticks(np.linspace(5, 35, 7))
+	ax[1].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
+	ax[1].set_ylabel(r"$B(\theta_{rec.})$"+" ["+GeVc2+"]")
+	plt.tight_layout()
+	# plt.show()
+	plt.savefig("plots/ch4/coeff_example.pdf")
 
 
 if chapter == 5:
