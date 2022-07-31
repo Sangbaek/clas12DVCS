@@ -156,13 +156,13 @@ if chapter == 2:
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
 
-        expSample = electronFiducial(expSample, pol = "inbending", mc = False)
-        expSample = protonFiducial(expSample, pol = "inbending")
-        expSample = gammaFiducial(expSample)
+		expSample = electronFiducial(expSample, pol = "inbending", mc = False)
+		expSample = protonFiducial(expSample, pol = "inbending")
+		expSample = gammaFiducial(expSample)
 
-        expSampleOutb = electronFiducial(expSampleOutb, pol = "outbending", mc = False)
-        expSampleOutb = protonFiducial(expSampleOutb, pol = "outbending")
-        expSampleOutb = gammaFiducial(expSampleOutb)
+		expSampleOutb = electronFiducial(expSampleOutb, pol = "outbending", mc = False)
+		expSampleOutb = protonFiducial(expSampleOutb, pol = "outbending")
+		expSampleOutb = gammaFiducial(expSampleOutb)
 
 		columns_needed = ["GcX", "GcY", "config", "Gsector"]
 		expSample = expSample.loc[:, columns_needed]
@@ -656,13 +656,13 @@ if chapter == 2:
 		plt.clf()
 
 		#after the fiducial cuts
-        dvcsSample = electronFiducial(dvcsSample, pol = polarity, mc = True)
-        dvcsSample = protonFiducial(dvcsSample, pol = polarity)
-        dvcsSample = gammaFiducial(dvcsSample)
+		dvcsSample = electronFiducial(dvcsSample, pol = polarity, mc = True)
+		dvcsSample = protonFiducial(dvcsSample, pol = polarity)
+		dvcsSample = gammaFiducial(dvcsSample)
 
-        expSample = electronFiducial(expSample, pol = polarity, mc = False)
-        expSample = protonFiducial(expSample, pol = polarity)
-        expSample = gammaFiducial(expSample)
+		expSample = electronFiducial(expSample, pol = polarity, mc = False)
+		expSample = protonFiducial(expSample, pol = polarity)
+		expSample = gammaFiducial(expSample)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
@@ -751,13 +751,13 @@ if chapter == 2:
 		plt.clf()
 
 		#after the fiducial cuts
-        dvcsSampleOutb = electronFiducial(dvcsSampleOutb, pol = polarity, mc = True)
-        dvcsSampleOutb = protonFiducial(dvcsSampleOutb, pol = polarity)
-        dvcsSampleOutb = gammaFiducial(dvcsSampleOutb)
+		dvcsSampleOutb = electronFiducial(dvcsSampleOutb, pol = polarity, mc = True)
+		dvcsSampleOutb = protonFiducial(dvcsSampleOutb, pol = polarity)
+		dvcsSampleOutb = gammaFiducial(dvcsSampleOutb)
 
-        expSampleOutb = electronFiducial(expSampleOutb, pol = polarity, mc = False)
-        expSampleOutb = protonFiducial(expSampleOutb, pol = polarity)
-        expSampleOutb = gammaFiducial(expSampleOutb)
+		expSampleOutb = electronFiducial(expSampleOutb, pol = polarity, mc = False)
+		expSampleOutb = protonFiducial(expSampleOutb, pol = polarity)
+		expSampleOutb = gammaFiducial(expSampleOutb)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
@@ -1323,7 +1323,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
 			else:
 				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
-	            
+			
 	axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
 	axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
 	axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
@@ -1354,7 +1354,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
 			else:
 				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
-	            
+			
 	axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
 	axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
 	axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
