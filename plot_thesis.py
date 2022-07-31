@@ -730,6 +730,8 @@ if chapter == 3:
 
 	epgExp = pd.concat([epgExpInb, epgExpOutb])
 
+	titles = ["Inb., (FD, FD)", "Inb., (CD, FD)", "Inb., (CD, FT)", "Outb., (FD, FD)", "Outb., (CD, FD)", "Outb., (CD, FT)"]
+
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000, 10000]
@@ -767,7 +769,6 @@ if chapter == 3:
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$x_B$")
@@ -840,7 +841,6 @@ if chapter == 3:
 	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
 
 
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$x_B$")
@@ -912,7 +912,6 @@ if chapter == 3:
 	cbar.ax.set_yticklabels(ticks)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
 
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$x_B$")
@@ -944,12 +943,13 @@ if chapter == 3:
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$\phi$" + " [" +degree+"]")
 			axs[xind, yind].set_ylabel(r"$|t|$"+ " [" + GeV2 + "]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+			axs[xind, yind].set_xlim([0, 360])
+			axs[xind, yind].set_xticks([0, 90, 180, 270, 360])
 	plt.tight_layout()
 	plt.savefig("plots/ch3/tphi_binning.pdf")
 	plt.clf()
@@ -975,7 +975,6 @@ if chapter == 3:
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
@@ -1055,7 +1054,6 @@ if chapter == 3:
 	axs[1, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'k', linestyle = ':', linewidth = 3)
 	axs[1, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'k', linestyle = ':', linewidth = 3)
 
-	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
