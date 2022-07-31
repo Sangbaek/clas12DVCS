@@ -103,10 +103,37 @@ if chapter == 2:
 	fig, axs = plt.subplots(2, 3, figsize = (15,10))
 	partp = np.linspace(2, 8.6, 101)
 
+fig, axs = plt.subplots(2, 3, figsize = (15,10))
+partp = np.linspace(2, 8.6, 101)
+# plt.subplots_adjust(left = 0.4)
+
+	for xind in range(0, 2):
+	    for yind in range(0,3):
+	        Esector = 3*(xind) + yind + 1
+	        axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
+	        mean = ecal_e_sampl_mu[0][Esector-1] + ecal_e_sampl_mu[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu[2][Esector-1],2);
+	        sigma = ecal_e_sampl_sigm[0][Esector-1] + ecal_e_sampl_sigm[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm[2][Esector-1]));
+	        axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
+	        axs[xind, yind].plot(partp, mean-3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
+	        axs[xind, yind].set_title(r"$e'$" + " Samp. Frac. Sector {}".format(Esector))
+	        axs[xind, yind].set_xlim([2, 8.6])
+	        axs[xind, yind].set_ylim([0, 0.37])
+	#         axs[xind, yind].set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
+	#         axs[xind, yind].set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
+	        axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
+	        axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
+	        axs[xind, yind].set_xticks([2, 4, 6, 8, 8.6])
+	        axs[xind, yind].set_xticklabels([2, 4, 6, "", 8.6])
+	        axs[xind, yind].set_xlabel(r"$p_{e'}$" + " ["+GeVc+"]")
+	        axs[xind, yind].set_ylabel(r"$E_{dep.}/p_{e'}$")
+	plt.tight_layout()
+	plt.savefig("plots/ch2/precutSampling.pdf")
+
+
 	for xind in range(0, 2):
 		for yind in range(0,3):
 			Esector = 3*xind + yind  +1
-			h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = 100, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
+			h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
 			ticks = [1, 10, 100, 1000, 2000]
 			cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
@@ -133,7 +160,7 @@ if chapter == 2:
 	for xind in range(0, 2):
 		for yind in range(0,3):
 			Esector = 3*(xind) + yind + 1
-			h  = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep1"],  expSample.loc[expSample.Esector==Esector, "Eedep2"]+expSample.loc[expSample.Esector==Esector, "Eedep3"], cmin =1, bins = 100, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+			h  = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep1"],  expSample.loc[expSample.Esector==Esector, "Eedep2"]+expSample.loc[expSample.Esector==Esector, "Eedep3"], cmin =1, bins = np.linspace(0, 0.8, 100), cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
 			ticks = [1, 10, 100, 1000]
 			cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
@@ -194,7 +221,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 	ticks = [1, 10, 100, 1000, 5000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -460,7 +487,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.GcX, expSample.GcY, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+	h = axs.hist2d(expSample.loc[expSample.config<3, "GcX"], expSample.loc[expSample.config<3, "GcY"], bins = bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 	ticks = [1, 10, 100, 1000, 5000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -479,7 +506,7 @@ if chapter == 2:
 	expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
+	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
 	ticks = [1, 10, 100, 1000, 2000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -510,7 +537,7 @@ if chapter == 2:
 	ang = -np.radians((expSample.loc[expSample.Gsector<7, "Gsector"]-1) * 60)
 	GcX_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.sin(ang) + expSample.loc[expSample.Gsector<7, "GcX"] * np.cos(ang)
 	GcY_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.cos(ang) - expSample.loc[expSample.Gsector<7, "GcX"] * np.sin(ang)
-	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+	h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -580,7 +607,7 @@ if chapter == 2:
 
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 		ticks = [1, 10, 100, 1000, 5000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
@@ -614,7 +641,7 @@ if chapter == 2:
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = 100, cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 		ticks = [1, 10, 100, 1000, 5000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
