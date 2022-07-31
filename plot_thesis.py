@@ -388,12 +388,12 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSample.loc[expSample.config>1].Pp, expSample.loc[expSample.config>1].Pchi2pid, bins = [np.linspace(0, 1.8, 101), np.linspace(-6, 6, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		h = axs.hist2d(expSample.loc[expSample.config>1].Pp, expSample.loc[expSample.config>1].Pchi2pid, bins = [np.linspace(0, 1.6, 101), np.linspace(-6, 6, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
 		ticks = [1, 10, 100, 1000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
-		axs.set_xticks([0, 0.5, 1, 1.5, 2])
-		axs.set_xticklabels([0, 0.5, 1, 1.5, 2])
+		axs.set_xticks([0, 0.4, 0.8, 1.2, 1.6])
+		axs.set_xticklabels([0, 0.4, 0.8, 1.2, 1.6])
 		axs.set_yticks([-6, -4, -2 ,0, 2, 4, 6])
 		axs.set_yticklabels([-6, -4, -2 ,0, 2, 4, 6])
 		axs.set_xlabel(r"$p_{p'}$"+ " ["+GeVc+"]")
@@ -715,8 +715,8 @@ if chapter == 3:
 	epgExp = pd.concat([epgExpInb, epgExpOutb])
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 5000), rasterized = True)
-	ticks = [1, 10, 100, 1000, 5000]
+	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
+	ticks = [1, 10, 100, 1000, 10000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	axs.set_xlim([0, 35])
