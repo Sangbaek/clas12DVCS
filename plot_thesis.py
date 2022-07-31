@@ -406,7 +406,7 @@ if chapter == 2:
 		axs.set_yticks([0, 0.05, 0.1, 0.15, 0.2])
 		axs.set_yticklabels([0, 0.05, 0.1, 0.15, 0.2])
 		# plt.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), density = True, histtype = 'step')
-		plt.legend(loc='lower left', bbox_to_anchor = (0.7, 0.6), title = 'Inbending', framealpha = 0.5)
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), title = 'Inb.', framealpha = 0.5)
 		axs.set_xlabel("$vz_{e'}$"+ " [cm]")
 		plt.tight_layout()
 		plt.savefig("plots/ch2/precutVz_inb.pdf")
@@ -544,8 +544,7 @@ if chapter == 2:
 		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
 		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
-		plt.legend(loc='lower left', bbox_to_anchor = (0.7, 0.6), framealpha = 0.5)
-		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), framealpha =.		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
 		axs.set_title("(a)", loc = 'left')
 		axs.set_xticks([30, 40, 50, 60, 64.23, 70, 80])
 		axs.set_xticklabels([30, 40, 50, "", 64.23, 70, 80])
@@ -559,8 +558,7 @@ if chapter == 2:
 		expSample.loc[(expSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
 		dvcsSample.loc[(dvcsSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(44.5, color = 'k', linestyle = '--', linewidth = 2)
-		plt.legend(loc='lower left', bbox_to_anchor = (0.7, 0.6), framealpha = 0.5)
-		plt.xlabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), framealpha =.		plt.xlabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 		axs.set_title("(a)", loc = 'left')
 		axs.set_xticks([40, 44.5, 50, 60, 70, 80, 90])
 		axs.set_xticklabels(["", 44.5, 50, 60, 70, 80, 90])
@@ -680,8 +678,7 @@ if chapter == 2:
 		plt.xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
 		axs.set_xticks([-180, -90, 0, 90, 180])
 		axs.set_xticklabels([-180, -90, 0, 90, 180])
-		plt.legend(loc='lower left', bbox_to_anchor = (0.7, 0.6), framealpha = 0.5)
-		axs.set_xlim([-180, 180])
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), framealpha =.		axs.set_xlim([-180, 180])
 		axs.set_ylim([0, 0.006])
 		axs.set_yticks([0, 0.002, 0.004, 0.006])
 		axs.set_title("(a)", loc = 'left')
@@ -773,7 +770,7 @@ if chapter == 2:
 		axs.set_yticks([0, 0.05, 0.1, 0.15, 0.2])
 		axs.set_yticklabels([0, 0.05, 0.1, 0.15, 0.2])
 		# plt.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), density = True, histtype = 'step')
-		plt.legend(loc='lower left', bbox_to_anchor = (0.7, 0.6), title = 'Outbending', framealpha = 0.5)
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), title = 'Out.g', framealpha = 0.5)
 		# axs.set_xlabel("Number of Photoelectrons in HTCC (" + r"$n_{phe.})$")
 		axs.set_xlabel("$vz_{e'}$"+ " [cm]")
 		plt.tight_layout()	
@@ -1407,13 +1404,14 @@ if chapter == 4:
 		axs[1, 0].hist2d(outb_FD.Pp, outb_FD.GenPp - outb_FD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		axs[1, 1].hist2d(outb_CD.Pp, outb_CD.GenPp - outb_CD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 
-		axs[0, 0].set_title("Inbending, Forward Detector")
-		axs[0, 1].set_title("Inbending, Central Detector")
-		axs[1, 0].set_title("Outbending, Forward Detector")
-		axs[1, 1].set_title("Outbending, Central Detector")
+		axs[0, 0].set_title("Inb., FD")
+		axs[0, 1].set_title("Inb., CD")
+		axs[1, 0].set_title("Outb., FD")
+		axs[1, 1].set_title("Outb., CD")
 
 		plt.tight_layout()
 		plt.savefig("plots/ch4/protons_all_conf.pdf")
+		plt.clf()
 
 		fig, axs = plt.subplots(2,3, figsize = (15, 10))
 		for row in range(2):
@@ -1441,6 +1439,7 @@ if chapter == 4:
 
 		plt.tight_layout()
 		plt.savefig('plots/ch4/separator1.pdf')
+		plt.clf()
 
 		inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
 		inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
@@ -1474,6 +1473,7 @@ if chapter == 4:
 		plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.4)
 		plt.tight_layout()
 		plt.savefig('plots/ch4/separator2.pdf')
+		plt.clf()
 
 		params_p = []
 		uncertainties_p = []
@@ -1521,6 +1521,9 @@ if chapter == 4:
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/coeff_example.pdf")
+		plt.clf()
+
+		exit()
 	else:
 		pass
 
