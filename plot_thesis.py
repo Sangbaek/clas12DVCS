@@ -87,7 +87,7 @@ if chapter == 2:
 		ticks = [1, 10, 100, 1000, 10000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
-		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Pre-fiducial")
+		axs.set_title("(a) " + r"$\gamma$"+" FT-Cal Hits, Pre-fiducial")
 		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
 		theta = np.linspace(0, 2*np.pi, 101)
@@ -124,7 +124,7 @@ if chapter == 2:
 		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_xlim([-450, 450])
 		axs.set_ylim([-450, 450])
-		axs.set_title(r"$\gamma$"+" PCAL Hits, Pre-fiducial")
+		axs.set_title("(a) " + r"$\gamma$"+" PCAL Hits, Pre-fiducial")
 		axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
 		axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
 		plt.tight_layout()
@@ -145,7 +145,7 @@ if chapter == 2:
 		ticks = [1, 10, 100, 1000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
-		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
+		axs.set_title("(b) " + r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
 		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
 		theta = np.linspace(0, 2*np.pi, 101)
@@ -182,7 +182,7 @@ if chapter == 2:
 		ticks = [1, 10, 100, 1000, 5000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
-		axs.set_title(r"$\gamma$"+" PCAL Hits, Post-fiducial")
+		axs.set_title("(b) " + r"$\gamma$"+" PCAL Hits, Post-fiducial")
 		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_xlim([-450, 450])
