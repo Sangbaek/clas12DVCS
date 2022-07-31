@@ -1387,6 +1387,8 @@ if chapter == 4:
 		inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, :]
 		inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, :]
 
+		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
+
 		fig, axs = plt.subplots(2,3, figsize = (15, 10))
 		for row in range(2):
 			for col in range(3):
@@ -1414,7 +1416,6 @@ if chapter == 4:
 		plt.tight_layout()
 		plt.savefig('separator1.pdf')
 
-		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
 		inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
 		inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
 
