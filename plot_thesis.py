@@ -1228,6 +1228,11 @@ if chapter == 4:
 	inbending = inbending.loc[:, columns_needed]
 	outbending = outbending.loc[:, columns_needed]
 
+
+	def corr(x, t):
+		x0, x1, x2, x3 = x
+		return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
+
 	if args.figureofmerit == "electron":
 		print("Drawing electron plots...")
 
