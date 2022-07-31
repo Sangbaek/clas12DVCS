@@ -1029,6 +1029,7 @@ if chapter == 4:
 	outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/dvcs/4907.pkl")
 	columns_needed = ["Ep", "Etheta", "Ephi", "GenEp", "GenEtheta", "GenEphi", "Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta"]
 	inbending = inbending.loc[:, columns_needed]
+	outbending = outbending.loc[:, columns_needed]
 	print("Drawing electron plots...")
 
 	fig, axs = plt.subplots(2,5, figsize=(20,16))
