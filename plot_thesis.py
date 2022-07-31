@@ -803,7 +803,7 @@ if chapter == 3:
 	ticks = [0.001, 0.01, 0.1, 1, 5]
 	cbar = plt.colorbar(plot2d, ax = axs[0,0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
 	H2, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCD.tmin1)
@@ -812,7 +812,7 @@ if chapter == 3:
 	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -822,7 +822,7 @@ if chapter == 3:
 	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -832,7 +832,7 @@ if chapter == 3:
 	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -842,7 +842,7 @@ if chapter == 3:
 	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -852,7 +852,7 @@ if chapter == 3:
 	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{min}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{min}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 
 	for xind in range(2):
@@ -875,7 +875,7 @@ if chapter == 3:
 	ticks = [0.1, 1, 10]
 	cbar = plt.colorbar(plot2d, ax = axs[0,0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
 	H2, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], weights = epgExpInbCD.tcol)
@@ -884,7 +884,7 @@ if chapter == 3:
 	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -894,7 +894,7 @@ if chapter == 3:
 	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -904,7 +904,7 @@ if chapter == 3:
 	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -914,7 +914,7 @@ if chapter == 3:
 	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -924,7 +924,7 @@ if chapter == 3:
 	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
-	cbar.ax.set_title(r"$-t_{col}$"+ " [ " + GeV2+"]\n", fontsize = 20)
+	cbar.ax.set_title(r"$~~~~-t_{col}$"+ " [" + GeV2+"]\n", fontsize = 20)
 
 	for xind in range(2):
 		for yind in range(3):
