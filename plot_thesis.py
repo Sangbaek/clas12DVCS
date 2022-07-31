@@ -103,32 +103,32 @@ if chapter == 2:
 	fig, axs = plt.subplots(2, 3, figsize = (15,10))
 	partp = np.linspace(2, 8.6, 101)
 
-fig, axs = plt.subplots(2, 3, figsize = (15,10))
-partp = np.linspace(2, 8.6, 101)
-# plt.subplots_adjust(left = 0.4)
+	fig, axs = plt.subplots(2, 3, figsize = (15,10))
+	partp = np.linspace(2, 8.6, 101)
+	# plt.subplots_adjust(left = 0.4)
 
 	for xind in range(0, 2):
-	    for yind in range(0,3):
-	        Esector = 3*(xind) + yind + 1
-	        axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
-	        mean = ecal_e_sampl_mu[0][Esector-1] + ecal_e_sampl_mu[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu[2][Esector-1],2);
-	        sigma = ecal_e_sampl_sigm[0][Esector-1] + ecal_e_sampl_sigm[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm[2][Esector-1]));
-	        axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
-	        axs[xind, yind].plot(partp, mean-3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
-	        axs[xind, yind].set_title(r"$e'$" + " Samp. Frac. Sector {}".format(Esector))
-	        axs[xind, yind].set_xlim([2, 8.6])
-	        axs[xind, yind].set_ylim([0, 0.37])
-	#         axs[xind, yind].set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
-	#         axs[xind, yind].set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
-	        axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
-	        axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
-	        axs[xind, yind].set_xticks([2, 4, 6, 8, 8.6])
-	        axs[xind, yind].set_xticklabels([2, 4, 6, "", 8.6])
-	        axs[xind, yind].set_xlabel(r"$p_{e'}$" + " ["+GeVc+"]")
-	        axs[xind, yind].set_ylabel(r"$E_{dep.}/p_{e'}$")
+		for yind in range(0,3):
+			Esector = 3*(xind) + yind + 1
+			axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
+			mean = ecal_e_sampl_mu[0][Esector-1] + ecal_e_sampl_mu[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu[2][Esector-1],2);
+			sigma = ecal_e_sampl_sigm[0][Esector-1] + ecal_e_sampl_sigm[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm[2][Esector-1]));
+			axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
+			axs[xind, yind].plot(partp, mean-3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
+			axs[xind, yind].set_title(r"$e'$" + " Samp. Frac. Sector {}".format(Esector))
+			axs[xind, yind].set_xlim([2, 8.6])
+			axs[xind, yind].set_ylim([0, 0.37])
+			#         axs[xind, yind].set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
+			#         axs[xind, yind].set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
+			axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
+			axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
+			axs[xind, yind].set_xticks([2, 4, 6, 8, 8.6])
+			axs[xind, yind].set_xticklabels([2, 4, 6, "", 8.6])
+			axs[xind, yind].set_xlabel(r"$p_{e'}$" + " ["+GeVc+"]")
+			axs[xind, yind].set_ylabel(r"$E_{dep.}/p_{e'}$")
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precutSampling.pdf")
-
+	plt.clf()
 
 	for xind in range(0, 2):
 		for yind in range(0,3):
