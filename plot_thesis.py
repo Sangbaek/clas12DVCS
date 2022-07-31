@@ -222,11 +222,11 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(2, 3, figsize = (15,10))
-		partp = np.linspace(2, 8.6, 101)
+		partp = np.linspace(2, 8, 101)
 		for xind in range(0, 2):
 			for yind in range(0,3):
 				Esector = 3*(xind) + yind + 1
-				h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+				h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
 				ticks = [1, 10, 100, 1000]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
 				cbar.ax.set_yticklabels(ticks)
@@ -241,8 +241,8 @@ if chapter == 2:
 				#         axs[xind, yind].set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
 				axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
 				axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
-				axs[xind, yind].set_xticks([2, 4, 6, 8, 8.6])
-				axs[xind, yind].set_xticklabels([2, 4, 6, "", 8.6])
+				axs[xind, yind].set_xticks([2, 4, 6, 8])
+				axs[xind, yind].set_xticklabels([2, 4, 6, 8])
 				axs[xind, yind].set_xlabel(r"$p_{e'}$" + " ["+GeVc+"]")
 				axs[xind, yind].set_ylabel(r"$E_{dep.}/p_{e'}$")
 		plt.tight_layout()
@@ -250,11 +250,11 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(2, 3, figsize = (15,10))
-		partp = np.linspace(2, 8.6, 101)
+		partp = np.linspace(2, 8, 101)
 		for xind in range(0, 2):
 			for yind in range(0,3):
 				Esector = 3*xind + yind  +1
-				h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+				h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 				ticks = [1, 10, 100, 1000, 5000]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
 				cbar.ax.set_yticklabels(ticks)
@@ -267,8 +267,8 @@ if chapter == 2:
 				axs[xind, yind].set_ylim([0, 0.37])
 				axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
 				axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
-				axs[xind, yind].set_xticks([2, 4, 6, 8, 8.6])
-				axs[xind, yind].set_xticklabels([2, 4, 6, "", 8.6])
+				axs[xind, yind].set_xticks([2, 4, 6, 8])
+				axs[xind, yind].set_xticklabels([2, 4, 6, 8])
 				axs[xind, yind].set_xlabel(r"$p_{e'}$" + " ["+GeVc+"]")
 				axs[xind, yind].set_ylabel(r"$E_{dep.}/p_{e'}$")
 		plt.tight_layout()
