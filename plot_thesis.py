@@ -154,9 +154,6 @@ if chapter == 2:
 		plt.clf()
 
 		#after the fiducial cuts
-		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
-		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
-
 		expSample = electronFiducial(expSample, pol = "inbending", mc = False)
 		expSample = protonFiducial(expSample, pol = "inbending")
 		expSample = gammaFiducial(expSample)
