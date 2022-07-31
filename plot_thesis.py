@@ -454,8 +454,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	df_gammaRec = pd.concat([expSample.loc[expSample.config<3], expSampleOutb.loc[expSampleOutb.config<3]])
-	h = axs.hist2d(df_gammaRec.GcX, df_gammaRec.GcY, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+	h = axs.hist2d(expSample.GcX, expSample.GcY, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 	ticks = [1, 10, 100, 1000, 5000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
@@ -502,10 +501,9 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	df_gammaRec = pd.concat([expSample.loc[expSample.config<3], expSampleOutb.loc[expSampleOutb.config<3]])
-	ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
-	GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
-	GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+	ang = -np.radians((expSample.loc[expSample.Gsector<7, "Gsector"]-1) * 60)
+	GcX_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.sin(ang) + expSample.loc[expSample.Gsector<7, "GcX"] * np.cos(ang)
+	GcY_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.cos(ang) - expSample.loc[expSample.Gsector<7, "GcX"] * np.sin(ang)
 	h = axs.hist2d(GcX_rot, GcY_rot, bins = 101, cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
