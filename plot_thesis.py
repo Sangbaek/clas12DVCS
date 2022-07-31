@@ -247,7 +247,7 @@ if chapter == 2:
 		axs.set_xlabel(r"$l_{V}$"+ " [cm]")
 		axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
 		axs.set_xticks([0, 5, 9, 10, 15, 20, 25, 30])
-		axs.set_xticklabels([0, 5, 9, "", 15, 20, 25, 30])
+		axs.set_xticklabels([0, 5, "", 10, 15, 20, 25, 30])
 		axs.set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
 		axs.set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
 		plt.tight_layout()
@@ -263,7 +263,7 @@ if chapter == 2:
 		axs.set_xlabel(r"$l_{W}$"+ " [cm]")
 		axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
 		axs.set_xticks([0, 5, 9, 10, 15, 20, 25, 30])
-		axs.set_xticklabels([0, 5, 9, "", 15, 20, 25, 30])
+		axs.set_xticklabels([0, 5, "", 10, 15, 20, 25, 30])
 		axs.set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
 		axs.set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
 		plt.tight_layout()
@@ -585,8 +585,8 @@ if chapter == 2:
 		df_gammaRec = pd.concat([expSample, expSampleOutb])
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
-		ticks = [1, 10, 100, 1000]
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
 		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
@@ -617,8 +617,8 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
-		ticks = [1, 10, 100, 1000, 3000]
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
 		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
@@ -636,8 +636,8 @@ if chapter == 2:
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
-		ticks = [1, 10, 100, 300]
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		ticks = [1, 10, 100, 1000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticks)
 		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
