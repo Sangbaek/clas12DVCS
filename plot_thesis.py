@@ -156,6 +156,14 @@ if chapter == 2:
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
 
+        expSample = electronFiducial(expSample, pol = "inbending", mc = False)
+        expSample = protonFiducial(expSample, pol = "inbending")
+        expSample = gammaFiducial(expSample)
+
+        expSampleOutb = electronFiducial(expSampleOutb, pol = "outbending", mc = False)
+        expSampleOutb = protonFiducial(expSampleOutb, pol = "outbending")
+        expSampleOutb = gammaFiducial(expSampleOutb)
+
 		columns_needed = ["GcX", "GcY", "config", "Gsector"]
 		expSample = expSample.loc[:, columns_needed]
 		expSampleOutb = expSampleOutb.loc[:, columns_needed]
@@ -648,8 +656,13 @@ if chapter == 2:
 		plt.clf()
 
 		#after the fiducial cuts
-		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/dvcs/4893.pkl")
-		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
+        dvcsSample = electronFiducial(dvcsSample, pol = polarity, mc = True)
+        dvcsSample = protonFiducial(dvcsSample, pol = polarity)
+        dvcsSample = gammaFiducial(dvcsSample)
+
+        expSample = electronFiducial(expSample, pol = polarity, mc = False)
+        expSample = protonFiducial(expSample, pol = polarity)
+        expSample = gammaFiducial(expSample)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
@@ -738,8 +751,13 @@ if chapter == 2:
 		plt.clf()
 
 		#after the fiducial cuts
-		dvcsSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/dvcs/4907.pkl")
-		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
+        dvcsSampleOutb = electronFiducial(dvcsSampleOutb, pol = polarity, mc = True)
+        dvcsSampleOutb = protonFiducial(dvcsSampleOutb, pol = polarity)
+        dvcsSampleOutb = gammaFiducial(dvcsSampleOutb)
+
+        expSampleOutb = electronFiducial(expSampleOutb, pol = polarity, mc = False)
+        expSampleOutb = protonFiducial(expSampleOutb, pol = polarity)
+        expSampleOutb = gammaFiducial(expSampleOutb)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
