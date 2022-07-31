@@ -128,7 +128,7 @@ if chapter == 2:
 		axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
 		axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
 		plt.tight_layout()
-		plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
+		plt.savefig("plots/ch2/precut_gfidPCAL.pdf")
 		plt.clf()
 
 		#after the fiducial cuts
