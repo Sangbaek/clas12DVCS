@@ -133,8 +133,8 @@ if chapter == 2:
 	for xind in range(0, 2):
 		for yind in range(0,3):
 			Esector = 3*xind + yind  +1
-			h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
-			ticks = [1, 10, 100, 1000]
+			h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8.6, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+			ticks = [1, 10, 100, 1000, 5000]
 			cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
 			mean = ecal_e_sampl_mu_mc[0][Esector-1] + ecal_e_sampl_mu_mc[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu_mc[2][Esector-1],2);
