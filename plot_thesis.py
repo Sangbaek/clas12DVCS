@@ -271,9 +271,9 @@ if chapter == 2:
 		ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
 		GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
 		GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-		ticks = [1, 10, 100, 1000, 5000]
-		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
+		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$\gamma$"+" PCAL Hits, Post-fiducial")
@@ -728,9 +728,9 @@ if chapter == 2:
 		expSample = gammaFiducial(expSample)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-		ticks = [1, 10, 100, 1000, 5000]
-		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
+		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
+		ticks = [1, 10, 100, 1000, 10000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
@@ -745,9 +745,9 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 200))
-		ticks = [1, 10, 100, 200]
-		ticklabels = [one, ten, hundred, two+times+hundred]
+		h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
+		ticklabels = [one, ten, hundred, three+times+hundred]
+		ticks = [1, 10, 100, 300]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$p'$"+" DC Outmost Layer Hits, Post-fiducial (Inb.)")
@@ -823,9 +823,9 @@ if chapter == 2:
 		expSampleOutb = gammaFiducial(expSampleOutb)
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-		ticks = [1, 10, 100, 1000, 5000]
-		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
+		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
