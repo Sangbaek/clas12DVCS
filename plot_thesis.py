@@ -566,7 +566,7 @@ if chapter == 2:
 		plt.xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
 		axs.set_xticks([-180, -90, 0, 90, 180])
 		axs.set_xticklabels([-180, -90, 0, 90, 180])
-		plt.legend(loc='upper right', bbox_to_anchor = (1.2, 0.95), framealpha = 1)
+		plt.legend(loc='upper right', bbox_to_anchor = (1.2, 1), framealpha = 0.5)
 		axs.set_xlim([-180, 180])
 		axs.set_ylim([0, 0.006])
 		axs.set_yticks([0, 0.002, 0.004, 0.006])
