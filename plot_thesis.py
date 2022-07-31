@@ -1238,9 +1238,9 @@ if chapter == 4:
 				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = inbending.Etheta>=25
-				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 				cbar.ax.set_yticklabels(ticklabels)
 				axs[row, col].set_xlim([0, 9])
@@ -1250,7 +1250,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_mom.pdf")
@@ -1262,9 +1262,9 @@ if chapter == 4:
 				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = outbending.Etheta>=23
-				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 				cbar.ax.set_yticklabels(ticklabels)
 				axs[row, col].set_xlim([0, 9])
@@ -1274,7 +1274,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_mom.pdf")
@@ -1286,9 +1286,9 @@ if chapter == 4:
 				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = inbending.Etheta>=25
-				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 				cbar.ax.set_yticklabels(ticklabels)
 				axs[row, col].set_xlim([0, 9])
@@ -1298,7 +1298,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_theta.pdf")
@@ -1311,8 +1311,8 @@ if chapter == 4:
 				if ind == 9:
 					thetaCond = outbending.Etheta>=23
 				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
 				axs[row, col].set_xticks([0, 3, 6, 9])
 				axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
@@ -1322,7 +1322,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_theta.pdf")
@@ -1335,8 +1335,8 @@ if chapter == 4:
 				if ind == 9:
 					thetaCond = inbending.Etheta>=25
 				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
 				axs[row, col].set_xticks([0, 3, 6, 9])
 				axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
@@ -1346,7 +1346,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_phi.pdf")
@@ -1359,8 +1359,8 @@ if chapter == 4:
 				if ind == 9:
 					thetaCond = outbending.Etheta>=23
 				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-				ticks = [1, 100]
-				ticklabels = [one, hundred]
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
 				axs[row, col].set_xticks([0, 3, 6, 9])
 				axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
@@ -1370,7 +1370,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_phi.pdf")
@@ -1393,12 +1393,12 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-		axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-		axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		t = np.linspace(0.03, 1.7, 101)
 		axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
 		axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
@@ -1424,12 +1424,12 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-		axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-		axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-		axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 
 		t = np.linspace(0.03, 1.7, 101)
 		axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
