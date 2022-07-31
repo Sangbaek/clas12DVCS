@@ -703,8 +703,8 @@ if chapter == 3:
 	epgExp = pd.concat([epgExpInb, epgExpOutb])
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
-	ticks = [1, 10, 100, 1000]
+	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 5000), rasterized = True)
+	ticks = [1, 10, 100, 1000, 5000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	axs.set_xlim([0, 35])
@@ -731,7 +731,7 @@ if chapter == 3:
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	h = axs[1, 0].hist2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
-	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
+	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	h = axs[1, 1].hist2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
@@ -745,6 +745,7 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$x_B$")
 			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/Q2xB_binning.pdf")
 	plt.clf()
 
@@ -817,6 +818,7 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$x_B$")
 			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/Q2xB_binning_tmin.pdf")
 	plt.clf()
 
@@ -888,6 +890,7 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$x_B$")
 			axs[xind, yind].set_ylabel(r"$Q^2$" + " [" +GeVc+"]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/Q2xB_binning_tcol.pdf")
 	plt.clf()
 
@@ -919,6 +922,7 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$\phi$" + " [" +degree+"]")
 			axs[xind, yind].set_ylabel(r"$|t|$"+ " [" + GeV2 + "]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/tphi_binning.pdf")
 	plt.clf()
 
@@ -949,12 +953,14 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
 			axs[xind, yind].set_ylabel(r"$\theta_{e'\gamma}$"+ " [" + degree + "]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/coneAngle_etheta_samesector.pdf")
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k')
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	plt.tight_layout()
 	plt.savefig("plots/ch3/samesectors.pdf")
 	plt.clf()
 
@@ -992,7 +998,7 @@ if chapter == 3:
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.Etheta, epgExpOutbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
-	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
+	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 
 	x = np.linspace(0, 50)
@@ -1025,6 +1031,7 @@ if chapter == 3:
 			axs[xind, yind].set_xlabel(r"$\theta_{e'}$" + " [" +degree+"]")
 			axs[xind, yind].set_ylabel(r"$\theta_{e'\gamma}$"+ " [" + degree + "]")
 			axs[xind, yind].set_title(titles[xind*3+yind])
+	plt.tight_layout()
 	plt.savefig("plots/ch3/coneAngle_etheta_diffsector.pdf")
 	plt.clf()
 
