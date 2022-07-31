@@ -1233,6 +1233,14 @@ if chapter == 4:
 		x0, x1, x2, x3 = x
 		return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
+	def correction(x, t):
+		x0, x1 = x
+		return x0 + x1/t
+
+	def correction4(x, t):
+		x0, x1, x2 = x
+		return x0 + x1*np.exp(x2*t)
+
 	if args.figureofmerit == "electron":
 		print("Drawing electron plots...")
 
@@ -1388,7 +1396,6 @@ if chapter == 4:
 		inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, :]
 
 		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
-
 
 		fig, axs = plt.subplots(2,2, figsize = (15, 10))
 		for row in range(2):
