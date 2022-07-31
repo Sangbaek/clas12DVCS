@@ -14,6 +14,7 @@ from scipy.optimize import least_squares
 from scipy.optimize import curve_fit
 from utils.const import *
 from utils.physics import *
+from utils.fiducial import *
 from matplotlib.colors import LogNorm
 import argparse
 
