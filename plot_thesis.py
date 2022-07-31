@@ -538,7 +538,7 @@ partp = np.linspace(2, 8.6, 101)
 	GcX_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.sin(ang) + expSample.loc[expSample.Gsector<7, "GcX"] * np.cos(ang)
 	GcY_rot = expSample.loc[expSample.Gsector<7, "GcY"] * np.cos(ang) - expSample.loc[expSample.Gsector<7, "GcX"] * np.sin(ang)
 	h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
-	ticks = [1, 10, 100, 1000]
+	ticks = [1, 10, 100, 1000, 2000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
