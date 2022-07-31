@@ -507,7 +507,7 @@ if chapter == 2:
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 2000))
-	ticks = [1, 10, 100, 1000, 2000]
+	ticks = [1, 10, 100, 1000, 5000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	axs.set_xlim([-300, 300])
@@ -550,7 +550,7 @@ if chapter == 2:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(expSample.loc[expSample.config==3, "GcX"], expSample.loc[expSample.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1)
+	h = axs.hist2d(expSample.loc[expSample.config==3, "GcX"], expSample.loc[expSample.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
 	ticks = [1, 10, 100, 1000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
