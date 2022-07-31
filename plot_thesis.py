@@ -366,7 +366,7 @@ if chapter == 2:
 	plt.axvline(40,  color = 'k', linestyle = '--', linewidth = 4)
 	plt.axvline(143,  color = 'k', linestyle = '--', linewidth = 4)
 	plt.axvline(158,  color = 'k', linestyle = '--', linewidth = 4)
-	plt.axhline(44.5,  color = 'k', linestyle = '--', linewidth = 4)
+	# plt.axhline(44.5,  color = 'k', linestyle = '--', linewidth = 4)
 	plt.tight_layout()
 	plt.savefig("plots/ch2/precut_pfid_cd3.pdf")
 	plt.clf()
