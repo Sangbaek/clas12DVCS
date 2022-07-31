@@ -1227,263 +1227,270 @@ if chapter == 4:
 	columns_needed = ["Ep", "Etheta", "Ephi", "GenEp", "GenEtheta", "GenEphi", "Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta"]
 	inbending = inbending.loc[:, columns_needed]
 	outbending = outbending.loc[:, columns_needed]
-	print("Drawing electron plots...")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_inb_mom.pdf")
+	if fom == "electron":
+		print("Drawing electron plots...")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_outb_mom.pdf")
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = inbending.Etheta>=25
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_inb_mom.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_inb_theta.pdf")
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = outbending.Etheta>=23
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_outb_mom.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_outb_theta.pdf")
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = inbending.Etheta>=25
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_inb_theta.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_inb_phi.pdf")
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = outbending.Etheta>=23
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_outb_theta.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,10))
-	for row in range(2):
-		for col in range(5):
-			ind =col+5*row
-			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
-			if ind == 9:
-				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
-			ticks = [1, 100]
-			ticklabels = [one, hundred]
-			axs[row, col].set_xlim([0, 9])
-			axs[row, col].set_xticks([0, 3, 6, 9])
-			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
-			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticklabels)
-			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-			axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
-			if ind == 9:
-				axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/electron_outb_phi.pdf")
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = inbending.Etheta>=25
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+7)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_inb_phi.pdf")
 
-	inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, ""]
-	inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, ""]
+		fig, axs = plt.subplots(2,5, figsize=(20,10))
+		for row in range(2):
+			for col in range(5):
+				ind =col+5*row
+				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
+				if ind == 9:
+					thetaCond = outbending.Etheta>=23
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				ticks = [1, 100]
+				ticklabels = [one, hundred]
+				axs[row, col].set_xlim([0, 9])
+				axs[row, col].set_xticks([0, 3, 6, 9])
+				axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
+				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+				cbar.ax.set_yticklabels(ticklabels)
+				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
+				if ind == 9:
+					axs[row, col].set_title(str(2*ind+5)+" "+degree + r"$\le \theta<$")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/electron_outb_phi.pdf")
+		exit()
 
-	fig, axs = plt.subplots(2,3, figsize = (15, 10))
-	for row in range(2):
-		for col in range(3):
-			axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
-			if col == 0:
-				axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
-			elif col == 1:
-				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
-			else:
-				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
-			
-	axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-	axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-	axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	t = np.linspace(0.03, 1.7, 101)
-	axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
-	axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
-	t = np.linspace(0.3, 1.7, 101)
-	axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
-	axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+	elif fom == "benchmark":
+		pass()
+	elif fom == "fitting":
+		inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, :]
+		inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, :]
 
-	plt.tight_layout()
-	plt.savefig('separator1.pdf')
+		fig, axs = plt.subplots(2,3, figsize = (15, 10))
+		for row in range(2):
+			for col in range(3):
+				axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
+				if col == 0:
+					axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
+				elif col == 1:
+					axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
+				else:
+					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
+				
+		axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+		axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+		axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		t = np.linspace(0.03, 1.7, 101)
+		axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+		axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+		t = np.linspace(0.3, 1.7, 101)
+		axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+		axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
 
-	params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
-	inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
-	inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
+		plt.tight_layout()
+		plt.savefig('separator1.pdf')
 
-	fig, axs = plt.subplots(2,3, figsize = (15, 10))
-	for row in range(2):
-		for col in range(3):
-			axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
-			if col == 0:
-				axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
-			elif col == 1:
-				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
-			else:
-				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
-			
-	axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-	axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
-	axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
-	axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
+		inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
+		inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
 
-	t = np.linspace(0.03, 1.7, 101)
-	axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
-	axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+		fig, axs = plt.subplots(2,3, figsize = (15, 10))
+		for row in range(2):
+			for col in range(3):
+				axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
+				if col == 0:
+					axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
+				elif col == 1:
+					axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
+				else:
+					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
+				
+		axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+		axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+		axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+		axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
 
-	t = np.linspace(0.3, 1.7, 101)
-	axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
-	axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+		t = np.linspace(0.03, 1.7, 101)
+		axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+		axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
 
-	plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.4)
-	plt.tight_layout()
-	plt.savefig('separator2.pdf')
+		t = np.linspace(0.3, 1.7, 101)
+		axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+		axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
 
-	params_p = []
-	uncertainties_p = []
-	x0 = [-4.80389058e-05,  4.53222098e-03]
-	for i in range(12):
-		thetaCond = (inbending_check1.Ptheta >= 2.5*i+5) & (inbending_check1.Ptheta < 2.5*(i+1)+5)
-		dfi = copy(inbending_check1.loc[thetaCond, ["Pp", "GenPp"]])
-		dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(x0, dfi["Pp"]))<0.01])
-		for i in range (0, 5):
-			res_lsq = least_squares(fun, x0, args=(dffit["Pp"], (dffit["GenPp"]-dffit["Pp"])))    
-			dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))<0.01])
-			x0 = res_lsq.x
+		plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.4)
+		plt.tight_layout()
+		plt.savefig('separator2.pdf')
 
-		params_p.append(res_lsq.x)
-		# uncertainty
-		# https://github.com/scipy/scipy/blob/2526df72e5d4ca8bad6e2f4b3cbdfbc33e805865/scipy/optimize/minpack.py#L739
-		_, s, VT = np.linalg.svd(res_lsq.jac, full_matrices=False)
-		threshold = np.finfo(float).eps * max(res_lsq.jac.shape) * s[0]
-		s = s[s > threshold]
-		VT = VT[:s.size]
-		pcov = np.dot(VT.T / s**2, VT)
-		s_sq = np.sum((dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))**2) / (len(dfi) - len(x0))
-		pcov = pcov * s_sq
-		uncertainties_p.append(np.sqrt(np.diag(pcov)))
-		params_p = np.array(params_p)
-		consts_p = params_p[:, 0]
-		coeffs_p = params_p[:, 1]
+		params_p = []
+		uncertainties_p = []
+		x0 = [-4.80389058e-05,  4.53222098e-03]
+		for i in range(12):
+			thetaCond = (inbending_check1.Ptheta >= 2.5*i+5) & (inbending_check1.Ptheta < 2.5*(i+1)+5)
+			dfi = copy(inbending_check1.loc[thetaCond, ["Pp", "GenPp"]])
+			dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(x0, dfi["Pp"]))<0.01])
+			for i in range (0, 5):
+				res_lsq = least_squares(fun, x0, args=(dffit["Pp"], (dffit["GenPp"]-dffit["Pp"])))    
+				dffit = copy(dfi[np.abs(dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))<0.01])
+				x0 = res_lsq.x
 
-	uncertainties_p = np.array(uncertainties_p)
-	consts_uncertainties_p = uncertainties_p[:, 0]
-	coeffs_uncertainties_p = uncertainties_p[:, 1]
-	fig, ax = plt.subplots(1,2, figsize=(15,5))
-	ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
-	ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
-	ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
-	ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
-	ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
-	ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
-	ax[0].set_xlim([5, 35])
-	ax[0].set_xticks(np.linspace(5, 35, 7))
-	ax[1].set_xlim([5, 35])
-	ax[1].set_xticks(np.linspace(5, 35, 7))
-	ax[1].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
-	ax[1].set_ylabel(r"$B(\theta_{rec.})$"+" ["+GeVc2+"]")
-	plt.tight_layout()
-	# plt.show()
-	plt.savefig("plots/ch4/coeff_example.pdf")
+			params_p.append(res_lsq.x)
+			# uncertainty
+			# https://github.com/scipy/scipy/blob/2526df72e5d4ca8bad6e2f4b3cbdfbc33e805865/scipy/optimize/minpack.py#L739
+			_, s, VT = np.linalg.svd(res_lsq.jac, full_matrices=False)
+			threshold = np.finfo(float).eps * max(res_lsq.jac.shape) * s[0]
+			s = s[s > threshold]
+			VT = VT[:s.size]
+			pcov = np.dot(VT.T / s**2, VT)
+			s_sq = np.sum((dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))**2) / (len(dfi) - len(x0))
+			pcov = pcov * s_sq
+			uncertainties_p.append(np.sqrt(np.diag(pcov)))
+			params_p = np.array(params_p)
+			consts_p = params_p[:, 0]
+			coeffs_p = params_p[:, 1]
 
+		uncertainties_p = np.array(uncertainties_p)
+		consts_uncertainties_p = uncertainties_p[:, 0]
+		coeffs_uncertainties_p = uncertainties_p[:, 1]
+		fig, ax = plt.subplots(1,2, figsize=(15,5))
+		ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
+		ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
+		ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
+		ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
+		ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
+		ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
+		ax[0].set_xlim([5, 35])
+		ax[0].set_xticks(np.linspace(5, 35, 7))
+		ax[1].set_xlim([5, 35])
+		ax[1].set_xticks(np.linspace(5, 35, 7))
+		ax[1].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
+		ax[1].set_ylabel(r"$B(\theta_{rec.})$"+" ["+GeVc2+"]")
+		plt.tight_layout()
+		# plt.show()
+		plt.savefig("plots/ch4/coeff_example.pdf")
+	else:
+		pass()
 
 if chapter == 5:
 	'''
