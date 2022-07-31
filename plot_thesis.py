@@ -235,7 +235,7 @@ if chapter == 2:
 				axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
 				axs[xind, yind].plot(partp, mean-3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
 				axs[xind, yind].set_title(r"$e'$" + " Samp. Frac. Sector {}".format(Esector))
-				axs[xind, yind].set_xlim([2, 8.6])
+				axs[xind, yind].set_xlim([2, 8])
 				axs[xind, yind].set_ylim([0, 0.37])
 				#         axs[xind, yind].set_yticks([0.15, 0.2, 0.25, 0.3, 0.35])
 				#         axs[xind, yind].set_yticklabels([0.15, 0.2, 0.25, 0.3, 0.35])
@@ -263,7 +263,7 @@ if chapter == 2:
 				axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
 				axs[xind, yind].plot(partp, mean-3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
 				axs[xind, yind].set_title(r"$e'$" + " Samp. Frac. Sector {}".format(Esector))
-				axs[xind, yind].set_xlim([2, 8.6])
+				axs[xind, yind].set_xlim([2, 8])
 				axs[xind, yind].set_ylim([0, 0.37])
 				axs[xind, yind].set_yticks([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
 				axs[xind, yind].set_yticklabels([0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35])
@@ -276,8 +276,6 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(2, 3, figsize = (15,10))
-		partp = np.linspace(2, 8.6, 101)
-
 		for xind in range(0, 2):
 			for yind in range(0,3):
 				Esector = 3*(xind) + yind + 1
