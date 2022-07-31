@@ -72,6 +72,125 @@ if chapter == 2:
 	data set 2: with fiducial cut. no momenutm correction cut.
 	'''
 
+	#photon
+	if args.figureofmerit == "photon":
+		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
+
+		columns_needed = ["GcX", "GcY", "config", "Gsector"]
+		expSample = expSample.loc[:, columns_needed]
+		expSampleOutb = expSampleOutb.loc[:, columns_needed]
+		df_gammaRec = pd.concat([expSample, expSampleOutb])
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Pre-fiducial")
+		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
+		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
+		theta = np.linspace(0, 2*np.pi, 101)
+		circleCenterX1 = -8.419
+		circleCenterY1 = 9.889
+		circleRadius1 = 1.6
+
+		circleCenterX2 = -9.89
+		circleCenterY2 = -5.327
+		circleRadius2 = 1.6
+
+		circleCenterX3 = -6.15
+		circleCenterY3 = -13
+		circleRadius3 = 2.3
+		        
+		circleCenterX4 = 3.7
+		circleCenterY4 = -6.5
+		circleRadius4 = 2
+
+		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_gfidFT.pdf")
+		plt.clf()
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
+		ticks = [1, 10, 100, 1000, 5000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_xlim([-450, 450])
+		axs.set_ylim([-450, 450])
+		axs.set_title(r"$\gamma$"+" PCAL Hits, Pre-fiducial")
+		axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
+		axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
+		plt.clf()
+
+		#after the fiducial cuts
+		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
+
+		columns_needed = ["GcX", "GcY", "config", "Gsector"]
+		expSample = expSample.loc[:, columns_needed]
+		expSampleOutb = expSampleOutb.loc[:, columns_needed]
+		df_gammaRec = pd.concat([expSample, expSampleOutb])
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		ticks = [1, 10, 100, 1000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
+		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
+		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
+		theta = np.linspace(0, 2*np.pi, 101)
+		circleCenterX1 = -8.419
+		circleCenterY1 = 9.889
+		circleRadius1 = 1.6
+
+		circleCenterX2 = -9.89
+		circleCenterY2 = -5.327
+		circleRadius2 = 1.6
+
+		circleCenterX3 = -6.15
+		circleCenterY3 = -13
+		circleRadius3 = 2.3
+		        
+		circleCenterX4 = 3.7
+		circleCenterY4 = -6.5
+		circleRadius4 = 2
+
+		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
+
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_gfidFT.pdf")
+		plt.clf()
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+		GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+		GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
+		ticks = [1, 10, 100, 1000, 3000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$\gamma$"+" PCAL Hits, Post-fiducial")
+		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_xlim([-450, 450])
+		axs.set_ylim([-450, 450])
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_gfidPCAL.pdf")
+		plt.clf()
+		exit()
 	ecal_e_sampl_mu = [[  0.2531,  0.2550,  0.2514,  0.2494,  0.2528,  0.2521 ],[-0.6502, -0.7472, -0.7674, -0.4913, -0.3988, -0.703  ],[  4.939,  5.350,  5.102,  6.440,  6.149,  4.957  ]]
 	ecal_e_sampl_sigm = [[ 2.726e-3,  4.157e-3,  5.222e-3,  5.398e-3,  8.453e-3,  6.533e-3 ],[1.062,  0.859,  0.5564,  0.6576,  0.3242,  0.4423],[-4.089, -3.318, -2.078, -2.565, -0.8223, -1.274]]
 
@@ -572,117 +691,6 @@ if chapter == 2:
 		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
 		plt.tight_layout()
 		plt.savefig("plots/ch2/postcut_pfidDCOutb.pdf")
-		plt.clf()
-
-	#photon
-	if args.figureofmerit == "photon":
-		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
-		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
-
-		columns_needed = ["GcX", "GcY", "config", "Gsector"]
-		expSample = expSample.loc[:, columns_needed]
-		expSampleOutb = expSampleOutb.loc[:, columns_needed]
-		df_gammaRec = pd.concat([expSample, expSampleOutb])
-
-		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-		ticks = [1, 10, 100, 1000, 5000]
-		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
-		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
-		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
-		theta = np.linspace(0, 2*np.pi, 101)
-		circleCenterX1 = -8.419
-		circleCenterY1 = 9.889
-		circleRadius1 = 1.6
-
-		circleCenterX2 = -9.89
-		circleCenterY2 = -5.327
-		circleRadius2 = 1.6
-
-		circleCenterX3 = -6.15
-		circleCenterY3 = -13
-		circleRadius3 = 2.3
-		        
-		circleCenterX4 = 3.7
-		circleCenterY4 = -6.5
-		circleRadius4 = 2
-
-		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
-		plt.tight_layout()
-		plt.savefig("plots/ch2/precut_gfidFT.pdf")
-		plt.clf()
-
-		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
-		ticks = [1, 10, 100, 1000, 5000]
-		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
-		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
-		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
-		axs.set_xlim([-450, 450])
-		axs.set_ylim([-450, 450])
-		axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
-		axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
-		plt.tight_layout()
-		plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
-		plt.clf()
-
-		#after the fiducial cuts
-		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
-		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
-
-		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
-		ticks = [1, 10, 100, 1000]
-		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
-		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
-		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
-		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
-		theta = np.linspace(0, 2*np.pi, 101)
-		circleCenterX1 = -8.419
-		circleCenterY1 = 9.889
-		circleRadius1 = 1.6
-
-		circleCenterX2 = -9.89
-		circleCenterY2 = -5.327
-		circleRadius2 = 1.6
-
-		circleCenterX3 = -6.15
-		circleCenterY3 = -13
-		circleRadius3 = 2.3
-		        
-		circleCenterX4 = 3.7
-		circleCenterY4 = -6.5
-		circleRadius4 = 2
-
-		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
-		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
-
-		plt.tight_layout()
-		plt.savefig("plots/ch2/postcut_gfidFT.pdf")
-		plt.clf()
-
-		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
-		GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
-		GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
-		ticks = [1, 10, 100, 1000, 3000]
-		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
-		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
-		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
-		axs.set_xlim([-450, 450])
-		axs.set_ylim([-450, 450])
-		plt.tight_layout()
-		plt.savefig("plots/ch2/postcut_gfidPCAL.pdf")
 		plt.clf()
 
 
