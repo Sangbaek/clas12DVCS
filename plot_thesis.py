@@ -58,6 +58,11 @@ else:
 	print("no chapter given.")
 	exit()
 
+if args.polarity in ["inbending", "outbending"]:
+	polarity = args.polarity
+else:
+	print("The polarity must be within inb and outb.")
+	exit()
 #chapter 2
 if chapter == 2:
 	'''
