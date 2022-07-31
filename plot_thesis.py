@@ -1377,7 +1377,7 @@ if chapter == 4:
 		exit()
 
 	elif fom == "benchmark":
-		pass()
+		pass
 	elif fom == "fitting":
 		inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, :]
 		inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, :]
@@ -1490,7 +1490,7 @@ if chapter == 4:
 		# plt.show()
 		plt.savefig("plots/ch4/coeff_example.pdf")
 	else:
-		pass()
+		pass
 
 if chapter == 5:
 	'''
