@@ -676,7 +676,7 @@ if chapter == 3:
 	data set 2: with fiducial cut. no momenutm correction cut. allowing the same sectors
 	data set 3: with fiducial cut. no momenutm correction cut. not allowing the same sectors.
 	'''
-	parent_dir = "/volatile/clas12/sngbaek/nov2021/convPkl_full_fid_noCorr_samesectors"
+	parent_dir = "/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr_samesectors"
 	parent_exp = parent_dir + "/inb/exp/"
 	epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
 	parent_exp = parent_dir + "/outb/exp/"
