@@ -302,8 +302,8 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 
-		axs.hist(expSample.Enphe, bins = np.linspace(0, 50, 51), histtype = 'step', color = 'k', density = True, label = 'experimental')
-		axs.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), histtype = 'step', color = 'r', density = True, label = 'simulation')
+		axs.hist(expSample.Enphe, bins = np.linspace(0, 50, 51), histtype = 'step', color = 'k', density = True, label = 'Experimental Data')
+		axs.hist(dvcsSample.Enphe, bins = np.linspace(0, 50, 51), histtype = 'step', color = 'r', density = True, label = 'Simulation')
 		axs.axvline(2, color = 'k', linestyle = '--', linewidth = 5)
 		axs.set_xlim([0, 50])
 		axs.set_xticks([2, 10, 20, 30, 40, 50])
@@ -396,8 +396,8 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 
-		axs.hist(expSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'experiment')
-		axs.hist(dvcsSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'simulation')
+		axs.hist(expSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'Experimental Data')
+		axs.hist(dvcsSample.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'Simulation')
 		axs.axvline(-13, color = 'k', linestyle = '--', linewidth = 5)
 		axs.axvline(12, color = 'k', linestyle = '--', linewidth = 5)
 		axs.set_xlim([-20, 15])
@@ -541,8 +541,8 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'experiment')
-		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'simulation')
+		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='upper left', bbox_to_anchor = (0.0, 0.95), framealpha = 1)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
@@ -556,8 +556,8 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'experiment')
-		dvcsSample.loc[(dvcsSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'simulation')
+		expSample.loc[(expSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "PCvt12theta"].hist(bins = np.linspace(40, 90, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(44.5, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='upper right', bbox_to_anchor = (1.05, 0.95), framealpha = 1)
 		plt.xlabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
@@ -675,8 +675,8 @@ if chapter == 2:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config>1), "PCvt12phi"].hist(bins = np.linspace(-180, 180, 181), histtype = 'step', density = True, ax = axs, color = 'k', label = 'experiment')
-		dvcsSample.loc[(dvcsSample.config>1), "PCvt12phi"].hist(bins = np.linspace(-180, 180, 181), histtype = 'step', density = True, ax = axs, color = 'r', label = 'simulation')
+		expSample.loc[(expSample.config>1), "PCvt12phi"].hist(bins = np.linspace(-180, 180, 181), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "PCvt12phi"].hist(bins = np.linspace(-180, 180, 181), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
 		axs.set_xticks([-180, -90, 0, 90, 180])
 		axs.set_xticklabels([-180, -90, 0, 90, 180])
@@ -763,8 +763,8 @@ if chapter == 2:
 
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		axs.hist(expSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'experiment')
-		axs.hist(dvcsSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'simulation')
+		axs.hist(expSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'k', density = True, label = 'Experimental Data')
+		axs.hist(dvcsSampleOutb.Evz, bins = np.linspace(-20, 15, 35*4+1), histtype = 'step', color = 'r', density = True, label = 'Simulation')
 		axs.axvline(-18, color = 'k', linestyle = '--', linewidth = 5)
 		axs.axvline(10, color = 'k', linestyle = '--', linewidth = 5)
 		axs.set_xlim([-20, 15])
@@ -1219,7 +1219,7 @@ if chapter == 4:
 	'''
 	The chapter 4 is about the momentum correction.
 	data set 3: with fiducial cut. no momenutm correction cut.
-	data set 4: with fiducial cut. energy loss correction only (simulation only).
+	data set 4: with fiducial cut. energy loss correction only (Simulation only).
 	'''
 
 	inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/dvcs/4893.pkl")
@@ -1389,6 +1389,25 @@ if chapter == 4:
 
 		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
 
+
+		fig, axs = plt.subplots(2,2, figsize = (15, 10))
+		for row in range(2):
+			for col in range(2):
+				axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
+				axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
+		axs[0, 0].hist2d(inb_FD.Pp, inb_FD.GenPp - inb_FD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[0, 1].hist2d(inb_CD.Pp, inb_CD.GenPp - inb_CD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 0].hist2d(outb_FD.Pp, outb_FD.GenPp - outb_FD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		axs[1, 1].hist2d(outb_CD.Pp, outb_CD.GenPp - outb_CD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+
+		axs[0, 0].set_title("Inbending, Forward Detector")
+		axs[0, 1].set_title("Inbending, Central Detector")
+		axs[1, 0].set_title("Outbending, Forward Detector")
+		axs[1, 1].set_title("Outbending, Central Detector")
+
+		plt.tight_layout()
+		plt.savefig("plots/ch4/protons_all_conf.pdf")
+
 		fig, axs = plt.subplots(2,3, figsize = (15, 10))
 		for row in range(2):
 			for col in range(3):
@@ -1414,7 +1433,7 @@ if chapter == 4:
 		axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
 
 		plt.tight_layout()
-		plt.savefig('separator1.pdf')
+		plt.savefig('plots/ch4/separator1.pdf')
 
 		inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
 		inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
@@ -1447,7 +1466,7 @@ if chapter == 4:
 
 		plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.4)
 		plt.tight_layout()
-		plt.savefig('separator2.pdf')
+		plt.savefig('plots/ch4/separator2.pdf')
 
 		params_p = []
 		uncertainties_p = []
