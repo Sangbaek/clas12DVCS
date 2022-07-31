@@ -1031,11 +1031,11 @@ if chapter == 3:
 	axs[1, 2].plot(x, np.poly1d([-0.00221, 0.863, 10.287])(x), color = 'k', linestyle = '--')
 
 	x = np.linspace(0, 18)
-	axs[0, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'b', linestyle = ':')
-	axs[0, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'b', linestyle = ':')
+	axs[0, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'k', linestyle = ':', linewidth = 3)
+	axs[0, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'k', linestyle = ':', linewidth = 3)
 
-	axs[1, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'b', linestyle = ':')
-	axs[1, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'b', linestyle = ':')
+	axs[1, 2].plot(x, np.poly1d([-0.000382, 0.777, 0.867])(x), color = 'k', linestyle = ':', linewidth = 3)
+	axs[1, 2].plot(x, np.poly1d([0.0510, -0.0470, -0.492])(x), color = 'k', linestyle = ':', linewidth = 3)
 
 	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
