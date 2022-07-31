@@ -1250,7 +1250,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_mom.pdf")
@@ -1274,7 +1274,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_mom.pdf")
@@ -1298,7 +1298,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_theta.pdf")
@@ -1310,7 +1310,7 @@ if chapter == 4:
 				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = outbending.Etheta>=23
-				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 				ticks = [1, 10, 100, 1000, 5000]
 				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
@@ -1322,7 +1322,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_theta.pdf")
@@ -1334,7 +1334,7 @@ if chapter == 4:
 				thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = inbending.Etheta>=25
-				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 				ticks = [1, 10, 100, 1000, 5000]
 				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
@@ -1346,7 +1346,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+7)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+7)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_inb_phi.pdf")
@@ -1358,7 +1358,7 @@ if chapter == 4:
 				thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 				if ind == 9:
 					thetaCond = outbending.Etheta>=23
-				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+				h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 				ticks = [1, 10, 100, 1000, 5000]
 				ticklabels = [one, ten, hundred, thousand, five+times+thousand]
 				axs[row, col].set_xlim([0, 9])
@@ -1370,7 +1370,7 @@ if chapter == 4:
 				axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 				axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
 				if ind == 9:
-					axs[row, col].set_title(r"$theta\ge$" + str(2*ind+5)+" "+degree)
+					axs[row, col].set_title(r"$\theta\ge$" + str(2*ind+5)+" "+degree)
 		plt.tight_layout()
 		# plt.show()
 		plt.savefig("plots/ch4/electron_outb_phi.pdf")
