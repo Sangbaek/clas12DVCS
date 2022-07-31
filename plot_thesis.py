@@ -233,9 +233,9 @@ if chapter == 2:
 		df_gammaRec = df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
-		ticks = [1, 10, 100, 1000]
-		ticklabels = [one, ten, hundred, thousand]
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
