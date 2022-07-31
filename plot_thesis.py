@@ -50,6 +50,7 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 
 parser.add_argument("-ch","--chapter", help="chapter", default = "2")
 parser.add_argument("-pol","--polarity", help="polarity", default = "inbending")
+parser.add_argument("-fom","--figureofmerit", help="figure of merit", default = None)
 args = parser.parse_args()
 
 if args.chapter:
@@ -574,110 +575,115 @@ if chapter == 2:
 		plt.clf()
 
 	#photon
-	expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
-	expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
+	if args.figureofmerit == "photon":
+		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/exp/dvcs.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
 
-	columns_needed = ["GcX", "GcY", "config", "Gsector"]
-	expSample = expSample.loc[:, columns_needed]
-	expSampleOutb = expSampleOutb.loc[:, columns_needed]
-	df_gammaRec = pd.concat([expSample, expSampleOutb])
+		columns_needed = ["GcX", "GcY", "config", "Gsector"]
+		expSample = expSample.loc[:, columns_needed]
+		expSampleOutb = expSampleOutb.loc[:, columns_needed]
+		df_gammaRec = pd.concat([expSample, expSampleOutb])
 
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
-	ticks = [1, 10, 100, 1000]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
-	axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
-	theta = np.linspace(0, 2*np.pi, 101)
-	circleCenterX1 = -8.419
-	circleCenterY1 = 9.889
-	circleRadius1 = 1.6
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		ticks = [1, 10, 100, 1000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
+		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
+		theta = np.linspace(0, 2*np.pi, 101)
+		circleCenterX1 = -8.419
+		circleCenterY1 = 9.889
+		circleRadius1 = 1.6
 
-	circleCenterX2 = -9.89
-	circleCenterY2 = -5.327
-	circleRadius2 = 1.6
+		circleCenterX2 = -9.89
+		circleCenterY2 = -5.327
+		circleRadius2 = 1.6
 
-	circleCenterX3 = -6.15
-	circleCenterY3 = -13
-	circleRadius3 = 2.3
-	        
-	circleCenterX4 = 3.7
-	circleCenterY4 = -6.5
-	circleRadius4 = 2
+		circleCenterX3 = -6.15
+		circleCenterY3 = -13
+		circleRadius3 = 2.3
+		        
+		circleCenterX4 = 3.7
+		circleCenterY4 = -6.5
+		circleRadius4 = 2
 
-	plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
-	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_gfidFT.pdf")
-	plt.clf()
+		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_gfidFT.pdf")
+		plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
-	ticks = [1, 10, 100, 1000, 3000]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
-	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
-	axs.set_xlim([-450, 450])
-	axs.set_ylim([-450, 450])
-	axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
-	axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
-	plt.tight_layout()
-	plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
-	plt.clf()
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
+		ticks = [1, 10, 100, 1000, 3000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_xlim([-450, 450])
+		axs.set_ylim([-450, 450])
+		axs.set_xticks([-450, -300, -150, 0, 150, 300, 450])
+		axs.set_yticks([-450, -300, -150, 0, 150, 300, 450])
+		plt.tight_layout()
+		plt.savefig("plots/ch2/precut_gfidPCAL.pdf", bbox_inches = 'tight')
+		plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
-	ticks = [1, 10, 100, 300]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
-	axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
-	axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
-	theta = np.linspace(0, 2*np.pi, 101)
-	circleCenterX1 = -8.419
-	circleCenterY1 = 9.889
-	circleRadius1 = 1.6
+		#after the fiducial cuts
+		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/exp/dvcs.pkl")
+		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/exp/dvcs.pkl")
 
-	circleCenterX2 = -9.89
-	circleCenterY2 = -5.327
-	circleRadius2 = 1.6
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
+		ticks = [1, 10, 100, 300]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_title(r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
+		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
+		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
+		theta = np.linspace(0, 2*np.pi, 101)
+		circleCenterX1 = -8.419
+		circleCenterY1 = 9.889
+		circleRadius1 = 1.6
 
-	circleCenterX3 = -6.15
-	circleCenterY3 = -13
-	circleRadius3 = 2.3
-	        
-	circleCenterX4 = 3.7
-	circleCenterY4 = -6.5
-	circleRadius4 = 2
+		circleCenterX2 = -9.89
+		circleCenterY2 = -5.327
+		circleRadius2 = 1.6
 
-	plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
-	plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
+		circleCenterX3 = -6.15
+		circleCenterY3 = -13
+		circleRadius3 = 2.3
+		        
+		circleCenterX4 = 3.7
+		circleCenterY4 = -6.5
+		circleRadius4 = 2
 
-	plt.tight_layout()
-	plt.savefig("plots/ch2/postcut_gfidFT.pdf")
-	plt.clf()
+		plt.plot(circleRadius1*np.cos(theta) + circleCenterX1, circleRadius1*np.sin(theta) + circleCenterY1, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius2*np.cos(theta) + circleCenterX2, circleRadius2*np.sin(theta) + circleCenterY2, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius3*np.cos(theta) + circleCenterX3, circleRadius3*np.sin(theta) + circleCenterY3, color = 'k', linewidth = 1, linestyle = '--')
+		plt.plot(circleRadius4*np.cos(theta) + circleCenterX4, circleRadius4*np.sin(theta) + circleCenterY4, color = 'k', linewidth = 1, linestyle = '--')
 
-	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
-	GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
-	GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-	h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
-	ticks = [1, 10, 100, 1000, 3000]
-	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
-	axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
-	axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
-	axs.set_xlim([-450, 450])
-	axs.set_ylim([-450, 450])
-	plt.tight_layout()
-	plt.savefig("plots/ch2/postcut_gfidPCAL.pdf")
-	plt.clf()
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_gfidFT.pdf")
+		plt.clf()
+
+		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
+		ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+		GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+		GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
+		ticks = [1, 10, 100, 1000, 3000]
+		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
+		cbar.ax.set_yticklabels(ticks)
+		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
+		axs.set_xlim([-450, 450])
+		axs.set_ylim([-450, 450])
+		plt.tight_layout()
+		plt.savefig("plots/ch2/postcut_gfidPCAL.pdf")
+		plt.clf()
 
 
 if chapter == 3:
@@ -1049,17 +1055,20 @@ if chapter == 4:
 	outbending = outbending.loc[:, columns_needed]
 	print("Drawing electron plots...")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
@@ -1069,17 +1078,20 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_inb_mom.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
@@ -1089,17 +1101,20 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_outb_mom.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
@@ -1109,15 +1124,18 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_inb_theta.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
@@ -1129,15 +1147,18 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_outb_theta.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (inbending.Etheta >= 2*ind+7) & (inbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = inbending.Etheta>=25
-			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
@@ -1149,15 +1170,18 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_inb_phi.pdf")
 
-	fig, axs = plt.subplots(2,5, figsize=(20,16))
+	fig, axs = plt.subplots(2,5, figsize=(20,10))
 	for row in range(2):
 		for col in range(5):
 			ind =col+5*row
 			thetaCond = (outbending.Etheta >= 2*ind+5) & (outbending.Etheta < 2*ind+9)
 			if ind == 9:
 				thetaCond = outbending.Etheta>=23
-			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(1.5, 10, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
+			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			axs[row, col].set_xlim([0, 9])
+			axs[row, col].set_xticks([0, 3, 6, 9])
+			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 			cbar.ax.set_yticklabels(ticks)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
@@ -1169,11 +1193,70 @@ if chapter == 4:
 	# plt.show()
 	plt.savefig("plots/ch4/electron_outb_phi.pdf")
 
+	inbending_1 = inbending[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0]
+	inbending_2 = inbending[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0]
+
+	fig, axs = plt.subplots(2,3, figsize = (15, 10))
+	for row in range(2):
+		for col in range(3):
+			axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
+			if col == 0:
+				axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
+			elif col == 1:
+				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
+			else:
+				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
+	            
+	axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+	axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+	axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	t = np.linspace(0.03, 1.7, 101)
+	axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+	axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+	t = np.linspace(0.3, 1.7, 101)
+	axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+	axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+
+	plt.tight_layout()
+	plt.savefig('separator1.pdf')
 
 	params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
-	def corr(x, t):
-		x0, x1, x2, x3 = x
-		return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
+	inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
+	inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
+
+	fig, axs = plt.subplots(2,3, figsize = (15, 10))
+	for row in range(2):
+		for col in range(3):
+			axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
+			if col == 0:
+				axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
+			elif col == 1:
+				axs[row, col].set_ylabel(r"$\theta_{\mathrm{DC, region 1}}$"+" ["+degree+"]")
+			else:
+				axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
+	            
+	axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+	axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1)
+	axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+	axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1)
+
+	t = np.linspace(0.03, 1.7, 101)
+	axs[0, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+	axs[1, 0].plot(t, 0.4*0.022/t**1.5, color = 'k', linewidth = 3)
+
+	t = np.linspace(0.3, 1.7, 101)
+	axs[0, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+	axs[1, 1].plot(t, corr(params, t), color = 'k', linewidth = 3)
+
+	plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.4)
+	plt.tight_layout()
+	plt.savefig('separator2.pdf')
+
 
 	# inbending_check1 = inbending.loc[inbending.PDc1theta < corr(params, inbending.Pp), :]
 	# inbending_check2 = inbending.loc[inbending.PDc1theta > corr(params, inbending.Pp), :]
