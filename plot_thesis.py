@@ -64,6 +64,25 @@ if args.polarity in ["inbending", "outbending"]:
 else:
 	print("The polarity must be within inb and outb.")
 	exit()
+
+one = r"$1$"
+two = r"$2$"
+three = r"$3$"
+four = r"$4$"
+five = r"$5$"
+six = r"$6$"
+seven = r"$7$"
+eight = r"$8$"
+nine = r"$9$"
+times = r"$\times$"
+ten = r"$10$"
+hundred = r"$10^2$"
+thousand = r"$10^3$"
+tenthousands = r"$10^4$"
+tenth = r"$10^{-1}$"
+hundredth = r"$10^{-2}$"
+thousandth = r"$10^{-3}$"
+
 #chapter 2
 if chapter == 2:
 	'''
@@ -85,8 +104,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(a) " + r"$\gamma$"+" FT-Cal Hits, Pre-fiducial")
 		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
@@ -118,8 +138,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config<3, "GcX"], df_gammaRec.loc[df_gammaRec.config<3, "GcY"], bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_xlim([-450, 450])
@@ -143,8 +164,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(df_gammaRec.loc[df_gammaRec.config==3, "GcX"], df_gammaRec.loc[df_gammaRec.config==3, "GcY"], bins = [np.linspace(-20, 20, 101), np.linspace(-20, 20, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
 		ticks = [1, 10, 100, 1000]
+		ticklabels = [one, ten, hundred, thousand]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$\gamma$"+" FT-Cal Hits, Post-fiducial")
 		axs.set_ylabel(r"$y_{\mathrm{FT}}$" + " ["+degree+"]")
 		axs.set_xlabel(r"$x_{\mathrm{FT}}$" + " ["+degree+"]")
@@ -180,8 +202,9 @@ if chapter == 2:
 		GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
 		h = axs.hist2d(GcX_rot, GcY_rot, bins = np.linspace(-450, 450, 100), cmin = 1, cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$\gamma$"+" PCAL Hits, Post-fiducial")
 		axs.set_xlabel("$x_{\mathrm{PCAL}}$"+" (cm)")
 		axs.set_ylabel("$y_{\mathrm{PCAL}}$"+" (cm)")
@@ -227,9 +250,10 @@ if chapter == 2:
 			for yind in range(0,3):
 				Esector = 3*(xind) + yind + 1
 				h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+				ticklabels = [one, ten, hundred, thousand]
 				ticks = [1, 10, 100, 1000]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
-				cbar.ax.set_yticklabels(ticks)
+				cbar.ax.set_yticklabels(ticklabels)
 				mean = ecal_e_sampl_mu[0][Esector-1] + ecal_e_sampl_mu[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu[2][Esector-1],2);
 				sigma = ecal_e_sampl_sigm[0][Esector-1] + ecal_e_sampl_sigm[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm[2][Esector-1]));
 				axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
@@ -255,9 +279,10 @@ if chapter == 2:
 			for yind in range(0,3):
 				Esector = 3*xind + yind  +1
 				h = axs[xind, yind].hist2d(dvcsSample.loc[dvcsSample.Esector==Esector, "Ep"],  dvcsSample.loc[dvcsSample.Esector==Esector, "ESamplFrac"], cmin =1, bins = [np.linspace(2, 8, 100), np.linspace(0, 0.35, 100)], cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+				ticklabels = [one, ten, hundred, thousand, tenthousands]
 				ticks = [1, 10, 100, 1000, 10000]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
-				cbar.ax.set_yticklabels(ticks)
+				cbar.ax.set_yticklabels(ticklabels)
 				mean = ecal_e_sampl_mu_mc[0][Esector-1] + ecal_e_sampl_mu_mc[1][Esector-1]/1000*pow(partp-ecal_e_sampl_mu_mc[2][Esector-1],2);
 				sigma = ecal_e_sampl_sigm_mc[0][Esector-1] + ecal_e_sampl_sigm_mc[1][Esector-1]/(10*(partp-ecal_e_sampl_sigm_mc[2][Esector-1]));
 				axs[xind, yind].plot(partp, mean+3.5*sigma, color = 'k', linestyle = '--', linewidth = 5)
@@ -280,9 +305,10 @@ if chapter == 2:
 			for yind in range(0,3):
 				Esector = 3*(xind) + yind + 1
 				h  = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep1"],  expSample.loc[expSample.Esector==Esector, "Eedep2"]+expSample.loc[expSample.Esector==Esector, "Eedep3"], cmin =1, bins = np.linspace(0, 0.8, 100), cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 200))
+				ticklabels = [one, ten, hundred, two+times+hundred]
 				ticks = [1, 10, 100, 200]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
-				cbar.ax.set_yticklabels(ticks)
+				cbar.ax.set_yticklabels(ticklabels)
 				axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
 				axs[xind, yind].set_xlim([0.03, 0.8])
 				axs[xind, yind].set_ylim([0.03, 0.8])
@@ -321,9 +347,10 @@ if chapter == 2:
 			for yind in range(0,3):
 				Esector = 3*(xind) + yind + 1
 				h = axs[xind, yind].hist2d(expSample.loc[expSample.Esector==Esector, "Eedep2"]/expSample.loc[expSample.Esector==Esector, "Ep"],  expSample.loc[expSample.Esector==Esector, "Eedep1"]/expSample.loc[expSample.Esector==Esector, "Ep"], cmin =1, bins = np.linspace(0, 0.3, 101), cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+				ticklabels = [one, ten, hundred, thousand]
 				ticks = [1, 10, 100, 1000]
 				cbar = plt.colorbar(h[3], ax = axs[xind, yind], ticks = ticks)
-				cbar.ax.set_yticklabels(ticks)
+				cbar.ax.set_yticklabels(ticklabels)
 				axs[xind, yind].set_title(r"$e',~E_{dep.}$" + " Sector {}".format(Esector))
 				axs[xind, yind].set_xlim([0.0, 0.3])
 				axs[xind, yind].set_ylim([0.0, 0.3])
@@ -341,9 +368,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		ticks = [1, 10, 100, 1000, 10000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
 		axs.set_ylim([-300, 300])
 		axs.set_xticks([-300, -150, 0, 150, 300])
@@ -357,9 +385,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EcalV1, expSample.ESamplFrac, bins = [np.linspace(0, 30, 101), np.linspace(0.16, 0.34, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 500))
+		ticklabels = [one, ten, hundred, five+times+hundred]
 		ticks = [1, 10, 100, 500]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.axvline(9, color = 'k', linestyle = '--', linewidth = 5)
 		axs.set_xlabel(r"$l_{V}$"+ " [cm]")
 		axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
@@ -374,9 +403,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EcalW1, expSample.ESamplFrac, bins = [np.linspace(0, 30, 101), np.linspace(0.16, 0.34, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 500))
+		ticklabels = [one, ten, hundred, five+times+hundred]
 		ticks = [1, 10, 100, 500]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.axvline(9, color = 'k', linestyle = '--', linewidth = 5)
 		axs.set_xlabel(r"$l_{W}$"+ " [cm]")
 		axs.set_ylabel(r"$E_{dep.}/p_{e'}$")
@@ -392,9 +422,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.loc[expSample.config==1].Pp, expSample.loc[expSample.config==1].Pchi2pid, bins = [np.linspace(0, 1.6, 101), np.linspace(-6, 6, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		ticklabels = [one, ten, hundred, thousand]
 		ticks = [1, 10, 100, 1000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xticks([0, 0.4, 0.8, 1.2, 1.6])
 		axs.set_xticklabels([0, 0.4, 0.8, 1.2, 1.6])
 		axs.set_yticks([-6, -4, -2 ,0, 2, 4, 6])
@@ -408,9 +439,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.loc[expSample.config>1].Pp, expSample.loc[expSample.config>1].Pchi2pid, bins = [np.linspace(0, 1.6, 101), np.linspace(-6, 6, 101)], cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 1000))
+		ticklabels = [one, ten, hundred, thousand]
 		ticks = [1, 10, 100, 1000]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xticks([0, 0.4, 0.8, 1.2, 1.6])
 		axs.set_xticklabels([0, 0.4, 0.8, 1.2, 1.6])
 		axs.set_yticks([-6, -4, -2 ,0, 2, 4, 6])
@@ -424,9 +456,10 @@ if chapter == 2:
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
+		ticklabels = [one, ten, hundred, three+times+hundred]
 		ticks = [1, 10, 100, 300]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(a) " + r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial (Inb.)")
 		# axs.set_xticks([-400, -200, 0, 200, 400])
 		# axs.set_yticks([-400, -200, 0, 200, 400])
@@ -473,8 +506,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.loc[expSample.config>1, "Ptheta"], expSample.loc[expSample.config>1, "PCvt12theta"], bins = [np.linspace(30,70, 101), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 3000))
 		ticks = [1, 10, 100, 1000, 3000]
+		ticklabels = [one, ten, hundred, thousand, three + times + thousand]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		plt.ylabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 		plt.xlabel(r"$\theta_{~p'}$" + " ["+degree+"]")
 		axs.set_xticks([30, 35,40, 45,50,55, 60, 65, 70])
@@ -497,8 +531,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.loc[expSample.config>1, "PCvt12phi"], expSample.loc[expSample.config>1, "PCvt12theta"], bins = [np.linspace(-180,180, 361), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, rasterized = True, norm = LogNorm(vmin = 1, vmax = 100))
 		ticks = [1, 10, 100]
+		ticklabels = [one, ten, hundred]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		# plt.axvline(62)
 		plt.ylabel(r"$\theta_{\mathrm{CVT}}$" + " ["+degree+"]")
 		plt.xlabel(r"$\phi_{\mathrm{CVT}}$" + " ["+degree+"]")
@@ -619,8 +654,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.EDc3Hitx, expSample.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
 		axs.set_ylim([-300, 300])
 		axs.set_xticks([-300, -150, 0, 150, 300])
@@ -635,8 +671,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSample.PDc3Hitx, expSample.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 200))
 		ticks = [1, 10, 100, 200]
+		ticklabels = [one, ten, hundred, two+times+hundred]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$p'$"+" DC Outmost Layer Hits, Post-fiducial (Inb.)")
 		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -671,8 +708,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 10000))
 		ticks = [1, 10, 100, 1000, 10000]
+		ticklabels = [one, ten, hundred, thousand, tenthousands]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
 		axs.set_ylim([-300, 300])
 		axs.set_xticks([-300, -150, 0, 150, 300])
@@ -687,8 +725,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
 		ticks = [1, 10, 100, 300]
+		ticklabels = [one, ten, hundred, three + times + hundred]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(a) " + r"$p'$"+" DC Outmost Layer Hits, Pre-fiducial (Outb.)")
 		# axs.set_xticks([-400, -200, 0, 200, 400])
 		# axs.set_yticks([-400, -200, 0, 200, 400])
@@ -705,8 +744,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.EDc3Hitx, expSampleOutb.EDc3Hity, bins = np.linspace(-300, 300, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 5000))
 		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five + times + thousand]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_xlim([-300, 300])
 		axs.set_ylim([-300, 300])
 		axs.set_xticks([-300, -150, 0, 150, 300])
@@ -721,8 +761,9 @@ if chapter == 2:
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 		h = axs.hist2d(expSampleOutb.PDc3Hitx, expSampleOutb.PDc3Hity, bins = np.linspace(-400, 400, 100), cmin =1 , cmap = cmap, rasterized = True, norm = LogNorm(vmin = 1, vmax = 300))
 		ticks = [1, 10, 100, 300]
+		ticklabels = [one, ten, hundred, three + times + hundred]
 		cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-		cbar.ax.set_yticklabels(ticks)
+		cbar.ax.set_yticklabels(ticklabels)
 		axs.set_title("(b) " + r"$p'$"+" DC Outmost Layer Hits, Post-fiducial (Outb.)")
 		axs.set_xlabel(r"$x_{\mathrm{DC}}$"+ " [cm]")
 		axs.set_ylabel(r"$y_{\mathrm{DC}}$"+ " [cm]")
@@ -758,8 +799,9 @@ if chapter == 3:
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
 	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50000), rasterized = True)
 	ticks = [1, 10, 100, 1000, 10000, 50000]
+	ticklabels = [one, ten, hundred, thousand, tenthousands, five + times + tenthousands]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	axs.set_xlim([0, 35])
 	axs.set_xticks([0, 5, 10, 15, 20, 25, 30, 35])
 	axs.set_xticklabels([0, 5, 10, 15, 20, 25, 30, 35])
@@ -775,23 +817,24 @@ if chapter == 3:
 	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
 	h = axs[0, 0].hist2d(epgExpInbFD.xB, epgExpInbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000, 10000]
+	ticklabels = [one, ten, hundred, thousand, tenthousands]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 1].hist2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 2].hist2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 0].hist2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 1].hist2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	for xind in range(2):
 		for yind in range(3):
 			axs[xind, yind].set_xlabel(r"$x_B$")
@@ -810,8 +853,9 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	ticks = [0.001, 0.01, 0.1, 1, 5]
+	ticklabels = [thousandth, hundredth, tenth, one, five]
 	cbar = plt.colorbar(plot2d, ax = axs[0,0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -820,7 +864,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -830,7 +874,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -840,7 +884,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -850,7 +894,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -860,7 +904,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.001, vmax =5), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{min}$"+ " [" + GeV2+"]", fontsize = 20)
 
 
@@ -882,8 +926,9 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	ticks = [0.1, 1, 10]
+	ticklabels = [tenth, one, ten]
 	cbar = plt.colorbar(plot2d, ax = axs[0,0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 	H1, xedges, yedges = np.histogram2d(epgExpInbCD.xB, epgExpInbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
 	H1 = H1.T
@@ -892,7 +937,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpInbCDFT.xB, epgExpInbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -902,7 +947,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[0, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[0,2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbFD.xB, epgExpOutbFD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -912,7 +957,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 0].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCD.xB, epgExpOutbCD.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -922,7 +967,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 1].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	H1, xedges, yedges = np.histogram2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)])
@@ -932,7 +977,7 @@ if chapter == 3:
 	H = np.divide(H2, H1, out=np.zeros_like(H2), where=H1!=0)
 	plot2d = axs[1, 2].imshow(H, interpolation='none', origin='lower', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]],aspect='auto',cmap=cmap, norm = LogNorm(vmin = 0.1, vmax =10), rasterized = True)
 	cbar = plt.colorbar(plot2d, ax = axs[1,2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	cbar.ax.set_title(r"$-t_{col}$"+ " [" + GeV2+"]", fontsize = 20)
 
 	for xind in range(2):
@@ -948,23 +993,24 @@ if chapter == 3:
 
 	h = axs[0, 0].hist2d(epgExpInbFD.phi1, epgExpInbFD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	ticks = [1, 10, 100, 1000]
+	ticklabels = [one, ten, hundred, thousand]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 1].hist2d(epgExpInbCD.phi1, epgExpInbCD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 2].hist2d(epgExpInbCDFT.phi1, epgExpInbCDFT.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 0].hist2d(epgExpOutbFD.phi1, epgExpOutbFD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 1].hist2d(epgExpOutbCD.phi1, epgExpOutbCD.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.phi1, epgExpOutbCDFT.t1, bins = [np.linspace(0, 360, 181), np.linspace(0, 1.8, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 
 	for xind in range(2):
 		for yind in range(3):
@@ -980,23 +1026,24 @@ if chapter == 3:
 	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
 	h = axs[0, 0].hist2d(epgExpInbFD.Etheta, epgExpInbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000, 10000]
+	ticklabels = [one, ten, hundred, thousand, tenthousands]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 1].hist2d(epgExpInbCD.Etheta, epgExpInbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 2].hist2d(epgExpInbCDFT.Etheta, epgExpInbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 0].hist2d(epgExpOutbFD.Etheta, epgExpOutbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 1].hist2d(epgExpOutbCD.Etheta, epgExpOutbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.Etheta, epgExpOutbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 
 	for xind in range(2):
 		for yind in range(3):
@@ -1035,23 +1082,24 @@ if chapter == 3:
 	fig, axs = plt.subplots(2, 3, figsize = (16, 10))
 	h = axs[0, 0].hist2d(epgExpInbFD.Etheta, epgExpInbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	ticks = [1, 10, 100, 1000, 10000]
+	ticklabels = [one, ten, hundred, thousand, tenthousands]
 	cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 1].hist2d(epgExpInbCD.Etheta, epgExpInbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[0, 2].hist2d(epgExpInbCDFT.Etheta, epgExpInbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 0].hist2d(epgExpOutbFD.Etheta, epgExpOutbFD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 1].hist2d(epgExpOutbCD.Etheta, epgExpOutbCD.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.Etheta, epgExpOutbCDFT.coneAngle, bins = [np.linspace(0, 40, 101), np.linspace(0, 50, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
 	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
-	cbar.ax.set_yticklabels(ticks)
+	cbar.ax.set_yticklabels(ticklabels)
 
 	x = np.linspace(0, 50)
 
@@ -1109,8 +1157,9 @@ if chapter == 4:
 				thetaCond = inbending.Etheta>=25
 			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEp"] - inbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
@@ -1132,8 +1181,9 @@ if chapter == 4:
 				thetaCond = outbending.Etheta>=23
 			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEp"] - outbending.loc[thetaCond, "Ep"], bins = [np.linspace(2, 9, 101), np.linspace(-0.04, 0.04, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-0.04, -0.02, 0, 0.02, 0.04])
@@ -1155,8 +1205,9 @@ if chapter == 4:
 				thetaCond = inbending.Etheta>=25
 			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEtheta"] - inbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
@@ -1178,11 +1229,12 @@ if chapter == 4:
 				thetaCond = outbending.Etheta>=23
 			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEtheta"] - outbending.loc[thetaCond, "Etheta"], bins = [np.linspace(2, 9, 101), np.linspace(-0.2, 0.2, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
 			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
@@ -1201,11 +1253,12 @@ if chapter == 4:
 				thetaCond = inbending.Etheta>=25
 			h = axs[row, col].hist2d(inbending.loc[thetaCond, "Ep"], inbending.loc[thetaCond, "GenEphi"] - inbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 			axs[row, col].set_title(str(2*ind+7)+" "+degree + r" $\le\theta<$ " + str(2*ind+9)+" "+degree)
@@ -1224,11 +1277,12 @@ if chapter == 4:
 				thetaCond = outbending.Etheta>=23
 			h = axs[row, col].hist2d(outbending.loc[thetaCond, "Ep"], outbending.loc[thetaCond, "GenEphi"] - outbending.loc[thetaCond, "Ephi"], bins = [np.linspace(2, 9, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, rasterized = True, norm = LogNorm())
 			ticks = [1, 100]
+			ticklabels = [one, hundred]
 			axs[row, col].set_xlim([0, 9])
 			axs[row, col].set_xticks([0, 3, 6, 9])
 			axs[row, col].set_yticks([-1, -0.5, 0, 0.5, 1])
 			cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-			cbar.ax.set_yticklabels(ticks)
+			cbar.ax.set_yticklabels(ticklabels)
 			axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 			axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
 			axs[row, col].set_title(str(2*ind+5)+" "+degree + r" $\le\theta<$ " + str(2*ind+7)+" "+degree)
