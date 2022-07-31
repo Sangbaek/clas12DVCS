@@ -1228,7 +1228,7 @@ if chapter == 4:
 	inbending = inbending.loc[:, columns_needed]
 	outbending = outbending.loc[:, columns_needed]
 
-	if fom == "electron":
+	if args.figureofmerit == "electron":
 		print("Drawing electron plots...")
 
 		fig, axs = plt.subplots(2,5, figsize=(20,10))
@@ -1376,9 +1376,9 @@ if chapter == 4:
 		plt.savefig("plots/ch4/electron_outb_phi.pdf")
 		exit()
 
-	elif fom == "benchmark":
+	elif args.figureofmerit == "benchmark":
 		pass
-	elif fom == "fitting":
+	elif args.figureofmerit == "fitting":
 		inbending_1 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5<0, :]
 		inbending_2 = inbending.loc[inbending.GenPp - inbending.Pp - 0.4*0.022/inbending.Pp**1.5>0, :]
 
