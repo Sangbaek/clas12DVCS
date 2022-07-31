@@ -727,7 +727,7 @@ if chapter == 3:
 	cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	h = axs[1, 2].hist2d(epgExpOutbCDFT.xB, epgExpOutbCDFT.Q2, bins = [np.linspace(0, 1, 101), np.linspace(0, 10, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
-	cbar = plt.colorbar(h[3], ax = axs[2, 2], ticks = ticks)
+	cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	titles = ["Inb, (FD, FD)", "Inb, (CD, FD)", "Inb, (CD, FT)", "Outb, (FD, FD)", "Outb, (CD, FD)", "Outb, (CD, FT)"]
 	for xind in range(2):
