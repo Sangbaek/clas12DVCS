@@ -733,8 +733,8 @@ if chapter == 3:
 	titles = ["Inb., (FD, FD)", "Inb., (CD, FD)", "Inb., (CD, FT)", "Outb., (FD, FD)", "Outb., (CD, FD)", "Outb., (CD, FT)"]
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 10000), rasterized = True)
-	ticks = [1, 10, 100, 1000, 10000]
+	h = axs.hist2d(epgExp.Gtheta, epgExp.Ptheta, bins = [np.linspace(0, 35, 101), np.linspace(0, 70, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50000), rasterized = True)
+	ticks = [1, 10, 100, 1000, 10000, 50000]
 	cbar = plt.colorbar(h[3], ax = axs, ticks = ticks)
 	cbar.ax.set_yticklabels(ticks)
 	axs.set_xlim([0, 35])
@@ -985,7 +985,7 @@ if chapter == 3:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k', histtype = 'step')
+	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k', histtype = 'stepfilled')
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
 	axs.set_xlim([0, 360])
 	axs.set_xticks([0, 90, 180, 270, 360])
