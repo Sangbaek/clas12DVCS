@@ -98,8 +98,8 @@ if chapter == 2:
 		expSampleOutb = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/exp/dvcs.pkl")
 
 		columns_needed = ["GcX", "GcY", "config", "Gsector"]
-		expSample = expSample.loc[:, columns_needed]
-		expSampleOutb = expSampleOutb.loc[:, columns_needed]
+		# expSample = expSample.loc[:, columns_needed]
+		# expSampleOutb = expSampleOutb.loc[:, columns_needed]
 		df_gammaRec = pd.concat([expSample, expSampleOutb])
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
