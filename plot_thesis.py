@@ -986,8 +986,10 @@ if chapter == 3:
 	plt.clf()
 
 	fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k')
+	(epgExpOutb.loc[epgExpOutb.Esector == epgExpOutb.Gsector, "phi1"]).hist( bins = np.linspace(0, 360, 361), ax = axs, color ='k', histtype = 'step')
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]")
+	axs.set_xlim([0, 360])
+	axs.set_xticks([0, 90, 180, 270, 360])
 	plt.tight_layout()
 	plt.savefig("plots/ch3/samesectors.pdf")
 	plt.clf()
