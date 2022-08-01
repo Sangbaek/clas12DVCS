@@ -1235,13 +1235,47 @@ if chapter == 4:
 		x0, x1, x2, x3 = x
 		return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
 
+	def fun(x, t, y):
+		return x[0] + x[1]/t - y
 	def correction(x, t):
 		x0, x1 = x
 		return x0 + x1/t
 
+	def fun2(x, t, y):
+		return x[0] + x[1]*t- y
+	def correction2(x, t):
+		x0, x1 = x
+		return x0 + x1*t
+
+	def fun3(x, t, y):
+		return x[0] + x[1]*t + x[2]*t*t - y
+	def correction3(x, t):
+		x0, x1, x2 = x
+		return x0 + x1*t + x2*t*t
+
+	def fun4(x, t, y):
+		return x[0] + x[1]*np.exp(x[2]*t) - y
 	def correction4(x, t):
 		x0, x1, x2 = x
 		return x0 + x1*np.exp(x2*t)
+
+	def fun5(x, t, y):
+		return correction5(x, t) - y
+	def correction5(x,t):
+		x0, x1, x2, x3 = x
+		return x0 + x1*t + x2*t*t +x3*t*t*t
+
+	def fun6(x, t, y):
+		return correction6(x,t) - y
+	def correction6(x, t):
+		x0, x1 = x
+		return x0 + x1/t**2
+
+	def fun7(x, t, y):
+		return correction7(x,t) - y
+	def correction7(x, t):
+		x0, x1 = x
+		return x0 + x1/t
 
 	if args.figureofmerit == "electron":
 		print("Drawing electron plots...")
@@ -1396,6 +1430,8 @@ if chapter == 4:
 	elif args.figureofmerit == "fitting":
 		inb_FD = inbending.loc[inbending.Psector<7, :]
 		inb_CD = inbending.loc[inbending.Psector>7, :]
+		outb_FD = outbending.loc[outbending.Psector<7, :]
+		outb_CD = outbending.loc[outbending.Psector>7, :]
 		fig, axs = plt.subplots(2,2, figsize = (15, 10))
 		for row in range(2):
 			for col in range(2):
@@ -1515,8 +1551,10 @@ if chapter == 4:
 		fig, ax = plt.subplots(1,2, figsize=(15,5))
 		ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
 		ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
-		ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
-		ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
+		# ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'b')
+		# ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'b')
+		ax[0].plot(np.linspace(5, 35, 101), correction2([-0.00051894, -0.00018104], np.linspace(5, 35, 101)), color = 'b')
+		ax[1].plot(np.linspace(5, 35, 101), correction3([ 3.29466917e-03,  5.73663160e-04, -1.40807209e-05], np.linspace(5, 35, 101)), color = 'b')
 		ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
 		ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
 		ax[0].set_xlim([5, 35])
