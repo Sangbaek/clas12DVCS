@@ -1586,6 +1586,12 @@ if chapter == 4:
 		uncertainties_p = np.array(uncertainties_p)
 		consts_uncertainties_p = uncertainties_p[:, 0]
 		coeffs_uncertainties_p = uncertainties_p[:, 1]
+		x = np.linspace(0, 11, 12)*2.5+ 5 + 1.25
+		x = x[:-4]
+		res_lsq = least_squares(fun2, [0.005, -0.002], args=(x, consts_p[:-4]))    
+		param1_p = res_lsq.x
+		res_lsq = least_squares(fun3, [0, 0, 0], args=(x, coeffs_p[:-4]))    
+		param2_p = res_lsq.x
 		fig, ax = plt.subplots(1,2, figsize=(15,5))
 		ax[0].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, consts_p, xerr= 1.25, yerr = consts_uncertainties_p, color='k', linestyle = '')
 		ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
