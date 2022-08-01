@@ -1541,10 +1541,9 @@ if chapter == 4:
 			s_sq = np.sum((dfi["GenPp"]-dfi["Pp"]-correction(res_lsq.x, dfi["Pp"]))**2) / (len(dfi) - len(x0))
 			pcov = pcov * s_sq
 			uncertainties_p.append(np.sqrt(np.diag(pcov)))
-			params_p = np.array(params_p)
-			consts_p = params_p[:, 0]
-			coeffs_p = params_p[:, 1]
-
+		params_p = np.array(params_p)
+		consts_p = params_p[:, 0]
+		coeffs_p = params_p[:, 1]
 		uncertainties_p = np.array(uncertainties_p)
 		consts_uncertainties_p = uncertainties_p[:, 0]
 		coeffs_uncertainties_p = uncertainties_p[:, 1]
