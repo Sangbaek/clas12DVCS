@@ -1438,18 +1438,18 @@ if chapter == 4:
 			axs[row].set_xticks([0, 0.5, 1, 1.5])
 			axs[row].set_xlabel(r"$p$"+" ["+GeVc+"]")
 			axs[row].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
-		ticks = [1, 100]
-		ticklabels = [one, hundred]
-		h = axs[0].hist2d(inb_FD.Pp, inb_FD.GenPp - inb_FD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five+times+thousand]
+		h = axs[0].hist2d(inb_FD.Pp, inb_FD.GenPp - inb_FD.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1].hist2d(inb_CD.Pp, inb_CD.GenPp - inb_CD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1].hist2d(inb_CD.Pp, inb_CD.GenPp - inb_CD.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[2].hist2d(outb_FD.Pp, outb_FD.GenPp - outb_FD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[2].hist2d(outb_FD.Pp, outb_FD.GenPp - outb_FD.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[2], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[3].hist2d(outb_CD.Pp, outb_CD.GenPp - outb_CD.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[3].hist2d(outb_CD.Pp, outb_CD.GenPp - outb_CD.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[3], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 
@@ -1478,24 +1478,24 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		ticks = [1, 100]
-		ticklabels = [one, hundred]
-		h = axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five+times+thousand]
+		h = axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 0].hist2d(inbending_2.Pp, inbending_2.GenPp - inbending_2.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[0, 1].hist2d(inbending_1.Pp, inbending_1.PDc1theta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 1].hist2d(inbending_2.Pp, inbending_2.PDc1theta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[0, 2].hist2d(inbending_1.Pp, inbending_1.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 2].hist2d(inbending_2.Pp, inbending_2.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 		t = np.linspace(0.03, 1.7, 101)
@@ -1523,24 +1523,24 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		ticks = [1, 100]
-		ticklabels = [one, hundred]
-		h = axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		ticks = [1, 10, 100, 1000, 5000]
+		ticklabels = [one, ten, hundred, thousand, five+times+thousand]
+		h = axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0.3, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 0].hist2d(inbending_check2.Pp, inbending_check2.GenPp - inbending_check2.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[0, 1].hist2d(inbending_check1.Pp, inbending_check1.PDc1theta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 1], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 1].hist2d(inbending_check2.Pp, inbending_check2.PDc1theta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 1], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[0, 2].hist2d(inbending_check1.Pp, inbending_check1.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 2], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
-		h = axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0.3, 1.5, 101), np.linspace(0, 45, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
+		h = axs[1, 2].hist2d(inbending_check2.Pp, inbending_check2.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(0, 40, 101)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[1, 2], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
 
@@ -1597,12 +1597,13 @@ if chapter == 4:
 		ax[1].errorbar(np.linspace(0, 11, 12)*2.5+ 5 + 1.25, coeffs_p, xerr= 1.25, yerr = coeffs_uncertainties_p, color='k', linestyle = '')
 		ax[0].plot(np.linspace(5, 35, 101), correction2(param1_p, np.linspace(5, 35, 101)), color = 'r', linestyle = '--')
 		ax[1].plot(np.linspace(5, 35, 101), correction3(param2_p, np.linspace(5, 35, 101)), color = 'r', linestyle = '--')
-		ax[0].plot(np.linspace(5, 35, 101), correction2([-0.00051894, -0.00018104], np.linspace(5, 35, 101)), color = 'b')
-		ax[1].plot(np.linspace(5, 35, 101), correction3([ 3.29466917e-03,  5.73663160e-04, -1.40807209e-05], np.linspace(5, 35, 101)), color = 'b')
+		# ax[0].plot(np.linspace(5, 35, 101), correction2([-0.00051894, -0.00018104], np.linspace(5, 35, 101)), color = 'b')
+		# ax[1].plot(np.linspace(5, 35, 101), correction3([ 3.29466917e-03,  5.73663160e-04, -1.40807209e-05], np.linspace(5, 35, 101)), color = 'b')
 		ax[0].set_xlabel(r"$\theta_{rec.}$"+" ["+degree+"]")
 		ax[0].set_ylabel(r"$A(\theta_{rec.})$"+" ["+GeVc+"]")
 		ax[0].set_xlim([5, 35])
 		ax[0].set_ylim([-0.05, 0.01])
+		ax[0].set_yticks([-0.05, -0.04, -0.03,-0.02, -0.01, 0, 0.01])
 		ax[0].set_xticks(np.linspace(5, 35, 7))
 		ax[1].set_xlim([5, 35])
 		ax[1].set_ylim([0, 0.03])
