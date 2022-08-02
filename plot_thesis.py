@@ -1621,8 +1621,8 @@ if chapter == 4:
 
 		x = np.linspace(0, 11, 12)*2.5+ 5 + 1.25
 		fig, axs = plt.subplots(2, 5, figsize=(20,10))
-		ticks = [1, 200]
-		ticklabels = [one, two+times+hundred]
+		ticks = [1, 10, 100, 200]
+		ticklabels = [one, ten, hundred, two+times+hundred]
 		for row in range(2):
 			for col in range(5):
 				ind =col+5*row
