@@ -1621,26 +1621,26 @@ if chapter == 4:
 
 		x = np.linspace(0, 11, 12)*2.5+ 5 + 1.25
 		fig, axs = plt.subplots(2, 5, figsize=(20,10))
-		ticks = [1, 100]
-		ticklabels = [one, hundred]
+		ticks = [1, 200]
+		ticklabels = [one, two+times+hundred]
 		for row in range(2):
 			for col in range(5):
 				ind =col+5*row
 				thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
-				h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+				h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax= 200), rasterized = True)
 				cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 				cbar.ax.set_yticklabels(ticklabels)
 				param = params_p[ind]
 				axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-				axs[row, col].set_xlim([0.25, 1.75])
+				axs[row, col].set_xlim([0, 2])
 				axs[row, col].set_ylim([-0.05, 0.05])
 				axs[row, col].set_yticks([-0.05, 0, 0.05])
-				axs[row, col].set_xticks([0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75])
+				axs[row, col].set_xticks([0, 1, 2])
+				axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2])
 				axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 				axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
 				axs[row, col].set_title(str(2.5*ind+5)+degree + r" $\le\theta_{rec.}<$ " + str(2.5*(ind+1)+5)+degree)
 		plt.tight_layout()
-		# plt.show()
 		plt.savefig("plots/ch4/protonFD_inb_mom_1_procedure.pdf")
 		plt.clf()
 		exit()
