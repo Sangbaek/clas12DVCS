@@ -1478,8 +1478,8 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		ticks = [1, 10, 100, 1000, 2000]
-		ticklabels = [one, ten, hundred, thousand, two+times+thousand]
+		ticks = [1, 10, 100, 1000, 3000]
+		ticklabels = [one, ten, hundred, thousand, three+times+thousand]
 		h = axs[0, 0].hist2d(inbending_1.Pp, inbending_1.GenPp - inbending_1.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 2000), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
@@ -1507,7 +1507,7 @@ if chapter == 4:
 		axs[0, 0].set_title("(a)", loc = 'left')
 		axs[0, 1].set_title("(b)", loc = 'left')
 		axs[0, 2].set_title("(c)", loc = 'left')
-		plt.suptitle("FD "+r"$p'$"+" Divided in "+r"$\delta p-p$"+".")
+		#plt.suptitle("FD "+r"$p'$"+" Divided in "+r"$\delta p-p$"+".", size = 40)
 		plt.tight_layout()
 		plt.savefig('plots/ch4/separator1.pdf')
 		plt.clf()
@@ -1526,8 +1526,8 @@ if chapter == 4:
 				else:
 					axs[row, col].set_ylabel(r"$\theta_{rec}$"+" ["+degree+"]")
 				
-		ticks = [1, 10, 100, 1000, 2000]
-		ticklabels = [one, ten, hundred, thousand, two+times+thousand]
+		ticks = [1, 10, 100, 1000, 3000]
+		ticklabels = [one, ten, hundred, thousand, three+times+thousand]
 		h = axs[0, 0].hist2d(inbending_check1.Pp, inbending_check1.GenPp - inbending_check1.Pp, bins = [np.linspace(0, 1.5, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 2000), rasterized = True)
 		cbar = plt.colorbar(h[3], ax = axs[0, 0], ticks = ticks)
 		cbar.ax.set_yticklabels(ticklabels)
@@ -1557,7 +1557,7 @@ if chapter == 4:
 		axs[0, 0].set_title("(a)", loc = 'left')
 		axs[0, 1].set_title("(b)", loc = 'left')
 		axs[0, 2].set_title("(c)", loc = 'left')
-		plt.suptitle("FD "+r"$p'$"+" Divided in "+r"$\theta_{\mathrm{DC, region 1}}-p$"+".")
+		#plt.suptitle("FD "+r"$p'$"+" Divided in "+r"$\theta_{\mathrm{DC, region 1}}-p$"+".", fontsize = 40)
 		plt.tight_layout()
 		plt.savefig('plots/ch4/separator2.pdf')
 		plt.clf()
