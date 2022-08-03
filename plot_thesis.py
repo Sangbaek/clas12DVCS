@@ -1910,6 +1910,9 @@ if chapter == 4:
 				ticklabels = [one, ten, hundred, two+times+hundred]
 
 				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				const_FD = 0.05083242 -0.00469777*x + 0.0001082*x*x
+				coeff_FD = -1.47443264*0.01 + 1.58220893*0.001*x -3.19490013*0.00001*x*x
+				params_p = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
@@ -1932,12 +1935,15 @@ if chapter == 4:
 				plt.clf()
 
 				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				const_FD = -2.56460305*10 + 3.29877542*x -1.43106886*0.1*x*x + 2.08341898*0.001*x*x*x
+				coeff_FD =  9.12532740*10 -1.20100762*10*x + 5.27654711*0.1*x*x -7.72656759*0.001*x*x*x
+				params_theta = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
 						ind =col+3*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
-						param = [correction5(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
+						param = params_theta[ind]
 						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-1, 1, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1954,12 +1960,15 @@ if chapter == 4:
 				plt.clf()
 
 				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				const_FD = -20.4780893 + 1.67020488*x - 0.03419348*x*x
+				coeff_FD = 35.02807194 - 2.9098043*x +  0.06037906*x*x
+				params_phi = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
 						ind =col+3*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
-						param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
+						param = params_phi[ind]
 						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1981,6 +1990,9 @@ if chapter == 4:
 				ticklabels = [one, ten, hundred, two+times+hundred]
 
 				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				const_FD = 0.09832589 -0.0066463*x + 0.00010312*x*x
+				coeff_FD = -9.61421691*0.01 + 6.85638807*0.001*x -9.75766427*0.00001*x*x
+				params_p = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
@@ -2003,6 +2015,9 @@ if chapter == 4:
 				plt.clf()
 
 				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				const_FD = -1.68873940 + 9.56867163*0.01*x -1.43741464*0.001*x*x
+				coeff_FD = 1.49978357*10 -1.40137094*x + 4.38501543*0.01*x*x -4.57982872*0.0001*x*x*x
+				params_theta = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
@@ -2026,6 +2041,9 @@ if chapter == 4:
 				plt.clf()
 
 				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				const_FD = 6.75359137 - 0.43199851*x + 0.0068995*x*x
+				coeff_FD = -1.68588219 + 1.05609627*0.1*x -1.50452832*0.001*x*x
+				params_phi = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
 					for col in range(4):
