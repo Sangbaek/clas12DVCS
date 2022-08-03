@@ -1418,7 +1418,129 @@ if chapter == 4:
 		exit()
 
 	elif args.figureofmerit == "benchmark":
-		pass
+		columns_needed = ["Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta", "Psector", "MM2_ep"]
+
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+
+		inb_FD = inbending.loc[inbending.Psector<7, columns_needed]
+		outb_FD = outbending.loc[outbending.Psector<7, columns_needed]
+		inb_CD = inbending.loc[inbending.Psector>7, columns_needed]
+		outb_CD = outbending.loc[outbending.Psector>7, columns_needed]
+
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr/inb/dvcs/4893.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr/outb/dvcs/4907.pkl")
+
+		inb_FD_corr = inbending.loc[inbending.Psector<7, columns_needed]
+		outb_FD_corr = outbending.loc[outbending.Psector<7, columns_needed]
+		inb_CD_corr = inbending.loc[inbending.Psector>7, columns_needed]
+		outb_CD_corr = outbending.loc[outbending.Psector>7, columns_needed]
+
+		fig, axs = plt.subplots(2,2, figsize = (15, 10))
+		for row in range(2):
+			for col in range(2):
+				axs[row, col].set_xlabel(r"$MM^2_{ep}$"+" ["+GeV2+"]")
+				axs[row, col].set_xlim([-0.4, 0.4])
+		bins = np.linspace(-0.4, 0.4, 101)
+		bins2 = np.linspace(-0.005, 0.005, 101)
+
+		inb_FD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
+		inb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
+		axs[0, 0].set_title("Inb. FD  " + r"$MM^2_{ep}$")
+
+		outb_FD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[0,1])
+		outb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[0,1])
+		axs[0, 1].set_title("Outb. FD  " + r"$MM^2_{ep}$")
+
+		inb_CD.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
+		inb_CD_corr.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
+		axs[1, 0].set_title("Inb. CD  " + r"$MM^2_{epg}$")
+
+		outb_CD.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
+		outb_CD_corr.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
+		axs[1, 1].set_title("Outb. CD  " + r"$MM^2_{epg}$")
+		plt.suptitle("(a)", loc = left, size = 40)
+		plt.tight_layout()
+		plt.savefig("benchmarks_excl.pdf")	
+
+		fig, axs = plt.subplots(2,2, figsize = (15, 10))
+		for row in range(2):
+			for col in range(2):
+				axs[row, col].set_xlabel(r"$\delta p$"+" ["+GeVc+"]")
+				axs[row, col].set_xlim([-0.1, 0.1])
+		bins_p = np.linspace(-0.1, 0.1, 101)
+
+		(inb_FD.GenPp - inb_FD.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
+		(inb_FD_corr.GenPp - inb_FD_corr.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
+		axs[0, 0].set_title("Inb. FD  " + r"$\delta p$")
+
+		(outb_FD.GenPp - outb_FD.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'r', ax = axs[0,1])
+		(outb_FD_corr.GenPp - outb_FD_corr.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'b', ax = axs[0,1])
+		axs[0, 1].set_title("Outb. FD  " + r"$\delta p$")
+
+		(inb_CD.GenPp - inb_CD.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
+		(inb_CD_corr.GenPp - inb_CD_corr.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
+		axs[1, 0].set_title("Inb. CD  " + r"$\delta p$")
+
+		(outb_CD.GenPp - outb_CD.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
+		(outb_CD_corr.GenPp - outb_CD_corr.Pp).hist(bins = bins_p, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
+		axs[1, 1].set_title("Outb. CD  " + r"$\delta p$")
+		plt.suptitle("(b)", loc = left, size = 40)
+		plt.tight_layout()
+		plt.savefig("benchmarks_p.pdf")
+
+		fig, axs = plt.subplots(2,2, figsize = (15, 10))
+		for row in range(2):
+			for col in range(2):
+				axs[row, col].set_xlabel(r"$\delta \theta$"+" ["+degree+"]")
+				axs[row, col].set_xlim([-5, 5])
+		bins_theta = np.linspace(-5, 5, 101)
+
+		(inb_FD.GenPtheta - inb_FD.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
+		(inb_FD_corr.GenPtheta - inb_FD_corr.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
+		axs[0, 0].set_title("Inb. FD  " + r"$\delta \theta$")
+
+		(outb_FD.GenPtheta - outb_FD.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'r', ax = axs[0,1])
+		(outb_FD_corr.GenPtheta - outb_FD_corr.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'b', ax = axs[0,1])
+		axs[0, 1].set_title("Outb. FD  " + r"$\delta \theta$")
+
+		(inb_CD.GenPtheta - inb_CD.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
+		(inb_CD_corr.GenPtheta - inb_CD_corr.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
+		axs[1, 0].set_title("Inb. CD  " + r"$\delta \theta$")
+
+		(outb_CD.GenPtheta - outb_CD.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
+		(outb_CD_corr.GenPtheta - outb_CD_corr.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
+		axs[1, 1].set_title("Outb. CD  " + r"$\delta \theta$")
+		plt.suptitle("(c)", loc = left, size = 40)
+		plt.tight_layout()
+		plt.savefig("benchmarks_theta.pdf")
+
+		fig, axs = plt.subplots(2,2, figsize = (15, 10))
+		for row in range(2):
+			for col in range(2):
+				axs[row, col].set_xlabel(r"$\delta \phi$"+" ["+degree+"]")
+				axs[row, col].set_xlim([-5, 5])
+		bins_phi = np.linspace(-5, 5, 101)
+
+		(inb_FD.GenPphi - inb_FD.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
+		(inb_FD_corr.GenPphi - inb_FD_corr.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
+		axs[0, 0].set_title("Inb. FD  " + r"$\delta \phi$")
+
+		(outb_FD.GenPphi - outb_FD.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'r', ax = axs[0,1])
+		(outb_FD_corr.GenPphi - outb_FD_corr.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'b', ax = axs[0,1])
+		axs[0, 1].set_title("Outb. FD  " + r"$\delta \phi$")
+
+		(inb_CD.GenPphi - inb_CD.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
+		(inb_CD_corr.GenPphi - inb_CD_corr.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
+		axs[1, 0].set_title("Inb. CD  " + r"$\delta \phi$")
+
+		(outb_CD.GenPphi - outb_CD.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
+		(outb_CD_corr.GenPphi - outb_CD_corr.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
+		axs[1, 1].set_title("Outb. CD  " + r"$\delta \phi$")
+		plt.suptitle("(d)", loc = left, size = 40)
+		plt.tight_layout()
+		plt.savefig("benchmarks_phi.pdf")
+
 	elif args.figureofmerit == "fitting":
 		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
 		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
