@@ -1732,8 +1732,8 @@ if chapter == 4:
 
 			if args.detector == "FD2":
 				inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
-				ticks = [1, 10, 100, 500]
-				ticklabels = [one, ten, hundred, five+times+hundred]
+				ticks = [1, 10, 100, 300]
+				ticklabels = [one, ten, hundred, three+times+hundred]
 
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				for row in range(2):
