@@ -1446,7 +1446,6 @@ if chapter == 4:
 				axs[row, col].set_xlabel(r"$MM^2_{ep}$"+" ["+GeV2+"]")
 				axs[row, col].set_xlim([-0.4, 0.4])
 		bins = np.linspace(-0.4, 0.4, 101)
-		bins2 = np.linspace(-0.005, 0.005, 101)
 
 		inb_FD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
 		inb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
@@ -1456,13 +1455,13 @@ if chapter == 4:
 		outb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[0,1])
 		axs[0, 1].set_title("Outb. FD  " + r"$MM^2_{ep}$")
 
-		inb_CD.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
-		inb_CD_corr.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
-		axs[1, 0].set_title("Inb. CD  " + r"$MM^2_{epg}$")
+		inb_CD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[1,0])
+		inb_CD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[1,0])
+		axs[1, 0].set_title("Inb. CD  " + r"$MM^2_{ep}$")
 
-		outb_CD.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
-		outb_CD_corr.MM2_ep.hist(bins = bins2, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
-		axs[1, 1].set_title("Outb. CD  " + r"$MM^2_{epg}$")
+		outb_CD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[1,1])
+		outb_CD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[1,1])
+		axs[1, 1].set_title("Outb. CD  " + r"$MM^2_{ep}$")
 		plt.suptitle("(a)", x = 0.05, size = 40)
 		plt.tight_layout()
 		plt.savefig("plots/ch4/benchmarks_excl.pdf")	
@@ -1497,8 +1496,8 @@ if chapter == 4:
 		for row in range(2):
 			for col in range(2):
 				axs[row, col].set_xlabel(r"$\delta \theta$"+" ["+degree+"]")
-				axs[row, col].set_xlim([-5, 5])
-		bins_theta = np.linspace(-5, 5, 101)
+				axs[row, col].set_xlim([-4, 4])
+		bins_theta = np.linspace(-4, 4, 101)
 
 		(inb_FD.GenPtheta - inb_FD.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
 		(inb_FD_corr.GenPtheta - inb_FD_corr.Ptheta).hist(bins = bins_theta, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
@@ -1523,8 +1522,8 @@ if chapter == 4:
 		for row in range(2):
 			for col in range(2):
 				axs[row, col].set_xlabel(r"$\delta \phi$"+" ["+degree+"]")
-				axs[row, col].set_xlim([-5, 5])
-		bins_phi = np.linspace(-5, 5, 101)
+				axs[row, col].set_xlim([-2, 2])
+		bins_phi = np.linspace(-2, 2, 101)
 
 		(inb_FD.GenPphi - inb_FD.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'r', ax = axs[0,0])
 		(inb_FD_corr.GenPphi - inb_FD_corr.Pphi).hist(bins = bins_phi, histtype = 'step', edgecolor = 'b', ax = axs[0,0])
