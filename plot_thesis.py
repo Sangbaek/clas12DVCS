@@ -1684,7 +1684,7 @@ if chapter == 4:
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				param1_theta, param2_theta = [-0.16742969,  0.00697925], [ 0.23352115, -0.01338697]
 				ticks = [1, 10, 50]
-				ticklabels = [one, ten, five+times+ten]
+				ticklabels = [one, ten, r'$50$']
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
@@ -1903,7 +1903,7 @@ if chapter == 4:
 			if args.detector == "FD1":
 				outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
 				ticks = [1, 10, 50]
-				ticklabels = [one, ten, five+times+ten]
+				ticklabels = [one, ten, r'$50$']
 
 				x = np.linspace(0, 9, 10)*1.5 + 16.5 + 1.5/2
 				const_FD = 0.05083242 -0.00469777*x + 0.0001082*x*x
