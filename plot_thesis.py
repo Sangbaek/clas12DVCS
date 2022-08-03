@@ -1732,6 +1732,8 @@ if chapter == 4:
 
 			if args.detector == "FD2":
 				inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
 
 				fig, axs = plt.subplots(2,5, figsize=(20,8))
 				for row in range(2):
@@ -1808,6 +1810,9 @@ if chapter == 4:
 				plt.clf()
 
 			if args.detector == "CD":
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
+
 				theta = np.linspace(0, 14, 15)*2+41
 				const_CD = 1.93686914 - 0.116288824*theta + 0.00223685833*theta**2 - 1.40771969 * 10**(-5)*theta**3
 				coeff_CD = -0.738047800 + 0.0443343685*theta - 8.50985972*10**(-4)*theta*theta + 5.36810280 * 10**(-6) * theta**3
@@ -1901,6 +1906,9 @@ if chapter == 4:
 
 			if args.detector == "FD1":
 				outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
+
 				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
@@ -1969,6 +1977,9 @@ if chapter == 4:
 
 			if args.detector == "FD2":
 				outb_FD_2 = outb_FD.loc[outb_FD.PDc1theta > corr(params, outb_FD.Pp), :]
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
+
 				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
 				for row in range(3):
@@ -2038,6 +2049,9 @@ if chapter == 4:
 				plt.clf()
 
 			if args.detector == "CD":
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
+
 				theta = np.linspace(0, 14, 15)*2+41
 				const_CD = 1.92657376 - 0.113836734*theta + 0.00215038526*theta**2 - 1.32525053 * 10**(-5)*theta**3
 				coeff_CD = -0.755650043 + 0.0445538936*theta - 8.38241864*10**(-4)*theta*theta + 5.16887255 * 10**(-6) * theta**3
