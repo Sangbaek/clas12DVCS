@@ -1642,6 +1642,7 @@ if chapter == 4:
 		if polarity == "inbending":
 			inb_FD = inbending.loc[inbending.Psector<7, :]
 			inb_CD = inbending.loc[inbending.Psector>7, :]
+			params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
 			inbending_check1 = inb_FD.loc[inb_FD.PDc1theta < corr(params, inb_FD.Pp), :]
 			inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
 
