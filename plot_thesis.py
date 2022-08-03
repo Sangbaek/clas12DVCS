@@ -1638,7 +1638,7 @@ if chapter == 4:
 		plt.savefig("plots/ch4/protonFD_inb_mom_1_procedure.pdf")
 		plt.clf()
 		exit()
-	elif figureofmerit == "proton":
+	elif args.figureofmerit == "proton":
 		if polarity == "inbending":
 			inb_FD = inbending.loc[inbending.Psector<7, :]
 			inb_CD = inbending.loc[inbending.Psector>7, :]
