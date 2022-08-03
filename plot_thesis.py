@@ -1726,9 +1726,9 @@ if chapter == 4:
 				for col in range(5):
 					ind =col+5*row
 					thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
+					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, rasterized = True)#norm = LogNorm(), 
+					# cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+					# cbar.ax.set_yticklabels(ticklabels)
 					theta = np.linspace(23, 41, 10)[ind]+1
 					const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*theta - 2.86486404*10**(-4)*theta*theta
 					coeff_FD =  2.01023276*10**(-1) - 1.13312215*10**(-2)*theta + 1.82487916*10**(-4)*theta*theta
