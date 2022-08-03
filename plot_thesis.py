@@ -1461,7 +1461,7 @@ if chapter == 4:
 		axs[1, 1].set_title("Outb. CD  " + r"$MM^2_{epg}$")
 		plt.suptitle("(a)", x = 0.05, size = 40)
 		plt.tight_layout()
-		plt.savefig("benchmarks_excl.pdf")	
+		plt.savefig("plots/ch4/benchmarks_excl.pdf")	
 
 		fig, axs = plt.subplots(2,2, figsize = (15, 10))
 		for row in range(2):
@@ -1487,7 +1487,7 @@ if chapter == 4:
 		axs[1, 1].set_title("Outb. CD  " + r"$\delta p$")
 		plt.suptitle("(b)", x = 0.05, size = 40)
 		plt.tight_layout()
-		plt.savefig("benchmarks_p.pdf")
+		plt.savefig("plots/ch4/benchmarks_p.pdf")
 
 		fig, axs = plt.subplots(2,2, figsize = (15, 10))
 		for row in range(2):
@@ -1513,7 +1513,7 @@ if chapter == 4:
 		axs[1, 1].set_title("Outb. CD  " + r"$\delta \theta$")
 		plt.suptitle("(c)", x = 0.05, size = 40)
 		plt.tight_layout()
-		plt.savefig("benchmarks_theta.pdf")
+		plt.savefig("plots/ch4/benchmarks_theta.pdf")
 
 		fig, axs = plt.subplots(2,2, figsize = (15, 10))
 		for row in range(2):
@@ -1539,7 +1539,7 @@ if chapter == 4:
 		axs[1, 1].set_title("Outb. CD  " + r"$\delta \phi$")
 		plt.suptitle("(d)", x = 0.05, size = 40)
 		plt.tight_layout()
-		plt.savefig("benchmarks_phi.pdf")
+		plt.savefig("plots/ch4/benchmarks_phi.pdf")
 
 	elif args.figureofmerit == "fitting":
 		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
