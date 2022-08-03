@@ -2027,7 +2027,6 @@ if chapter == 4:
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_theta[ind]
-						param = [correction3(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
 						#axs[row, col].set_xlim(0.3, 1.2)
 						axs[row, col].set_xlim([0, 2])
@@ -2053,7 +2052,6 @@ if chapter == 4:
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_phi[ind]
-						param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
 						#axs[row, col].set_xlim(0.3, 1.2)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
