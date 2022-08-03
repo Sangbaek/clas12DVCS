@@ -1706,11 +1706,13 @@ if chapter == 4:
 				plt.savefig("plots/ch4/protonFD_inb_theta_1.pdf")
 
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				ticks = [1, 10, 100, 1000, 3000]
+				ticklabels = [one, ten, hundred, thousand, three+times+thousand]
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
-						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 3000), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						const_FD = 0.21192125 -0.0115175 * x[ind]
