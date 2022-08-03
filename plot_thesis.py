@@ -1706,7 +1706,9 @@ if chapter == 4:
 					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 					cbar.ax.set_yticklabels(ticklabels)
 					theta = 2*ind + 6
-					param = params_phi[ind]
+					const_FD = 0.21192125 -0.0115175 * theta
+					coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * theta -8.90617559*0.001 * theta * theta + 1.64803754*0.0001 * theta * theta * theta
+					param = [const_FD, coeff_FD]
 					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
 					#axs[row, col].set_ylim(-2, 2)
 					axs[row, col].set_xlim([0, 2])
