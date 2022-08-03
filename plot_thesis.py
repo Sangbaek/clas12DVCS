@@ -1682,17 +1682,15 @@ if chapter == 4:
 				plt.savefig("plots/ch4/protonFD_inb_mom_1.pdf")
 				plt.clf()
 
-				x = 2*np.linspace(0, 9, 10)+6
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				param1_theta, param2_theta = [-0.16742969,  0.00697925], [ 0.23352115, -0.01338697]
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
-						thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
+						thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
 						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPtheta"] - inbending_check1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-1, 1 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
-						theta = (ind) + 5 + 0.5
 						param = [correction2(param1_theta, x[ind]), correction2(param2_theta, x[ind])]
 						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
 						#axs[row, col].set_ylim(-2, 2)
@@ -1701,22 +1699,20 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-						axs[row, col].set_title(str(2*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+5)+degree)
+						axs[row, col].set_title(str(2.5*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2.5*(ind+1)+5)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonFD_inb_theta_1.pdf")
 
-				x = np.linspace(0, 9, 10)
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
-						thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
+						thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
 						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
-						theta = 2*ind + 6
-						const_FD = 0.21192125 -0.0115175 * theta
-						coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * theta -8.90617559*0.001 * theta * theta + 1.64803754*0.0001 * theta * theta * theta
+						const_FD = 0.21192125 -0.0115175 * x
+						coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * x -8.90617559*0.001 * x * x + 1.64803754*0.0001 * x * x * x
 						param = [const_FD, coeff_FD]
 						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
 						#axs[row, col].set_ylim(-2, 2)
@@ -1725,7 +1721,7 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-						axs[row, col].set_title(str(ind+5)+degree + r" $<\theta_{rec.}<$ " + str((ind+1)+5)+degree)
+						axs[row, col].set_title(str(2.5*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2.5*(ind+1)+5)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonFD_inb_phi_1.pdf")
 				plt.clf()
