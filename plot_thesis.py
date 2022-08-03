@@ -1697,7 +1697,7 @@ if chapter == 4:
 			plt.savefig("plots/ch4/protonFD_inb_theta_1.pdf")
 
 			x = np.linspace(0, 9, 10)
-			fig, axs = plt.subplots(2,5, figsize=(20,12))
+			fig, axs = plt.subplots(2,5, figsize=(20,10))
 			for row in range(2):
 				for col in range(5):
 					ind =col+5*row
@@ -1746,7 +1746,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 9, 10)
-			fig, axs = plt.subplots(2,5, figsize=(20,12))
+			fig, axs = plt.subplots(2,5, figsize=(20,10))
 			param1_theta, param2_theta = [ 2.04334532e+01, -1.81052405e+00,  5.32556360e-02, -5.23157558e-04], [ 8.74233279e+00, -7.63869344e-01,  2.22376362e-02, -2.16457260e-04]
 			for row in range(2):
 				for col in range(5):
@@ -1770,11 +1770,11 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 19, 20)
-			fig, axs = plt.subplots(4,5, figsize=(20,12))
-			for row in range(4):
+			fig, axs = plt.subplots(2,5, figsize=(20,10))
+			for row in range(2):
 				for col in range(5):
 					ind =col+5*row
-					thetaCond = (inbending_check2.Ptheta >= ind+23) & (inbending_check2.Ptheta < (ind+1)+23)
+					thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
 					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-10, 10 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 					cbar.ax.set_yticklabels(ticklabels)
@@ -1790,7 +1790,7 @@ if chapter == 4:
 					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(ind+23)+degree + r" $<\theta_{rec.}<$ " + str((ind+1)+23)+degree)
+					axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
 					plt.tight_layout()
 			plt.savefig("plots/ch4/protonFD_inb_phi_2.pdf")
 			plt.clf()
@@ -1887,7 +1887,7 @@ if chapter == 4:
 			outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
 			outb_FD_2 = outb_FD.loc[outb_FD.PDc1theta > corr(params, outb_FD.Pp), :]
 			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
@@ -1909,7 +1909,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
@@ -1932,7 +1932,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
@@ -1955,7 +1955,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
@@ -1977,7 +1977,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
@@ -1999,7 +1999,7 @@ if chapter == 4:
 			plt.clf()
 
 			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,12))
+			fig, axs = plt.subplots(3,4, figsize=(20,10))
 			for row in range(3):
 				for col in range(4):
 					ind =col+3*row
