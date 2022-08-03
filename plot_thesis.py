@@ -1421,9 +1421,9 @@ if chapter == 4:
 		columns_needed = ["Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "Psector", "MM2_ep"]
 
 		print("reading inbending no corr..")
-		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/inb/dvcs/4893.pkl")
 		print("reading outbending no corr..")
-		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_noCorr/outb/dvcs/4907.pkl")
 
 		inb_FD = inbending.loc[inbending.Psector<7, columns_needed]
 		outb_FD = outbending.loc[outbending.Psector<7, columns_needed]
@@ -1431,9 +1431,9 @@ if chapter == 4:
 		outb_CD = outbending.loc[outbending.Psector>7, columns_needed]
 
 		print("reading inbending with corr..")
-		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr/inb/dvcs/4893.pkl")
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_Corr/inb/dvcs/4893.pkl")
 		print("reading outbending with corr..")
-		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr/outb/dvcs/4907.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_fid_Corr/outb/dvcs/4907.pkl")
 
 		inb_FD_corr = inbending.loc[inbending.Psector<7, columns_needed]
 		outb_FD_corr = outbending.loc[outbending.Psector<7, columns_needed]
