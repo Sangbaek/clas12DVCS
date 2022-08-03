@@ -1810,8 +1810,8 @@ if chapter == 4:
 				plt.clf()
 
 			if args.detector == "CD":
-				ticks = [1, 10, 100, 1000, 10000]
-				ticklabels = [one, ten, hundred, thousand, tenthousands]
+				ticks = [1, 10, 100, 1000, 5000]
+				ticklabels = [one, ten, hundred, thousand, five + times + thousand]
 
 				theta = np.linspace(0, 14, 15)*2.5+40 + 1.25
 				const_CD = 1.93686914 - 0.116288824*theta + 0.00223685833*theta**2 - 1.40771969 * 10**(-5)*theta**3
@@ -1824,7 +1824,7 @@ if chapter == 4:
 						if ind >12:
 							continue
 						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
-						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPp"] - inbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPp"] - inbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 5000), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_p[ind]
@@ -1851,7 +1851,7 @@ if chapter == 4:
 						if ind >12:
 							continue
 						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
-						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPtheta"] - inbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPtheta"] - inbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 5000), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_theta[ind]
@@ -1877,7 +1877,7 @@ if chapter == 4:
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
-						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPphi"] - inbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPphi"] - inbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 5000), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_theta[ind]
@@ -1902,18 +1902,18 @@ if chapter == 4:
 
 			if args.detector == "FD1":
 				outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
-				ticks = [1, 10, 100, 200]
-				ticklabels = [one, ten, hundred, two+times+hundred]
+				ticks = [1, 10, 100, 1000, 10000]
+				ticklabels = [one, ten, hundred, thousand, tenthousands]
 
-				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				x = np.linspace(0, 9, 10)*1.5 + 15 + 1.5/2
 				const_FD = 0.05083242 -0.00469777*x + 0.0001082*x*x
 				coeff_FD = -1.47443264*0.01 + 1.58220893*0.001*x -3.19490013*0.00001*x*x
 				params_p = np.array([const_FD, coeff_FD]).T
-				fig, axs = plt.subplots(3,4, figsize=(20,10))
-				for row in range(3):
-					for col in range(4):
-						ind =col+3*row
-						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+				fig, axs = plt.subplots(2, 5, figsize=(20,10))
+				for row in range(2):
+					for col in range(5):
+						ind =col+2*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+15) & (outb_FD_1.Ptheta < 1.5*(ind+1)+15)
 						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPp"] - outb_FD_1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1925,20 +1925,19 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+						axs[row, col].set_title(str(1.5*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.5*(ind+1)+15)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonFD_outb_mom_1.pdf")
 				plt.clf()
 
-				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
 				const_FD = -2.56460305*10 + 3.29877542*x -1.43106886*0.1*x*x + 2.08341898*0.001*x*x*x
 				coeff_FD =  9.12532740*10 -1.20100762*10*x + 5.27654711*0.1*x*x -7.72656759*0.001*x*x*x
 				params_theta = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
-				for row in range(3):
-					for col in range(4):
-						ind =col+3*row
-						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+				for row in range(2):
+					for col in range(5):
+						ind =col+2*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+15) & (outb_FD_1.Ptheta < 1.5*(ind+1)+15)
 						param = params_theta[ind]
 						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
@@ -1950,20 +1949,19 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+degree+"]")
 						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+						axs[row, col].set_title(str(1.5*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.5*(ind+1)+15)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonFD_outb_theta_1.pdf")
 				plt.clf()
 
-				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
 				const_FD = -20.4780893 + 1.67020488*x - 0.03419348*x*x
 				coeff_FD = 35.02807194 - 2.9098043*x +  0.06037906*x*x
 				params_phi = np.array([const_FD, coeff_FD]).T
 				fig, axs = plt.subplots(3,4, figsize=(20,10))
-				for row in range(3):
-					for col in range(4):
-						ind =col+3*row
-						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+				for row in range(2):
+					for col in range(5):
+						ind =col+2*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+15) & (outb_FD_1.Ptheta < 1.5*(ind+1)+15)
 						param = params_phi[ind]
 						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
@@ -1975,7 +1973,7 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+						axs[row, col].set_title(str(1.5*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.5*(ind+1)+15)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonFD_outb_phi_1.pdf")
 				plt.clf()
