@@ -1641,8 +1641,8 @@ if chapter == 4:
 
 		fig, axs = plt.subplots(2,3, figsize = (15, 10))
 		for row in range(2):
-			axs[row, 0].set_xticks([0, 0.5, 1, 1.5])
 			for col in range(3):
+				axs[row, col].set_xticks([0, 0.5, 1, 1.5])
 				axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
 				if col == 0:
 					axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
@@ -1691,6 +1691,7 @@ if chapter == 4:
 		fig, axs = plt.subplots(2,3, figsize = (15, 10))
 		for row in range(2):
 			for col in range(3):
+				axs[row, col].set_xticks([0, 0.5, 1, 1.5])
 				axs[row, col].set_xlabel(r"$p$"+" ["+GeVc+"]")
 				if col == 0:
 					axs[row, col].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
