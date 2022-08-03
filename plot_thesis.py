@@ -1783,7 +1783,7 @@ if chapter == 4:
 				plt.savefig("plots/ch4/protonFD_inb_theta_2.pdf")
 				plt.clf()
 
-				x = np.linspace(0, 19, 20)
+				x = np.linspace(0, 9, 10)
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				for row in range(2):
 					for col in range(5):
