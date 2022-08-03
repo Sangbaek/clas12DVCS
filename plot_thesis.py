@@ -2070,7 +2070,7 @@ if chapter == 4:
 						ind =col+5*row
 						if ind >12:
 							continue
-						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
+						thetaCond = (outbendingCD.Ptheta >= 2.5*(ind)+40) & (outbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPp"] - outbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -2098,7 +2098,7 @@ if chapter == 4:
 						ind =col+5*row
 						if ind >12:
 							continue
-						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
+						thetaCond = (outbendingCD.Ptheta >= 2.5*(ind)+40) & (outbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPtheta"] - outbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -2127,7 +2127,7 @@ if chapter == 4:
 						ind =col+5*row
 						if ind >12:
 							continue
-						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
+						thetaCond = (outbendingCD.Ptheta >= 2.5*(ind)+40) & (outbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPphi"] - outbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
