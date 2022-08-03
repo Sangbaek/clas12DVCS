@@ -1684,11 +1684,13 @@ if chapter == 4:
 
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				param1_theta, param2_theta = [-0.16742969,  0.00697925], [ 0.23352115, -0.01338697]
+				ticks = [1, 10, 100, 1000]
+				ticklabels = [one, ten, hundred, thousand]
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
-						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPtheta"] - inbending_check1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-1, 1 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPtheta"] - inbending_check1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-1, 1 , 21)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 1000), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = [correction2(param1_theta, x[ind]), correction2(param2_theta, x[ind])]
@@ -1711,8 +1713,8 @@ if chapter == 4:
 						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
-						const_FD = 0.21192125 -0.0115175 * x
-						coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * x -8.90617559*0.001 * x * x + 1.64803754*0.0001 * x * x * x
+						const_FD = 0.21192125 -0.0115175 * x[ind]
+						coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * x[ind] -8.90617559*0.001 * x[ind] * x[ind] + 1.64803754*0.0001 * x[ind] * x[ind] * x[ind]
 						param = [const_FD, coeff_FD]
 						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
 						#axs[row, col].set_ylim(-2, 2)
@@ -1731,7 +1733,7 @@ if chapter == 4:
 				ticks = [1, 10, 100, 200]
 				ticklabels = [one, ten, hundred, two+times+hundred]
 
-				fig, axs = plt.subplots(2,5, figsize=(20,8))
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
@@ -1788,7 +1790,7 @@ if chapter == 4:
 						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-10, 10 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
-						theta = 23.5 + ind
+						theta = 2*ind + 23 + 1
 						const_FD = 0.54697831 -0.04896981*theta +  0.00111376*theta*theta
 						coeff_FD = -4.06733541*10**2 + 2.43696202*10*theta -3.36144736*10**(-1)*theta*theta
 						coeff2_FD = 2.06378660*10 - 1.42866062*theta + 2.01085440*10**(-2)*theta*theta
