@@ -1902,8 +1902,8 @@ if chapter == 4:
 
 			if args.detector == "FD1":
 				outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
-				ticks = [1, 10, 100, 1000, 10000]
-				ticklabels = [one, ten, hundred, thousand, tenthousands]
+				ticks = [1, 10, 50]
+				ticklabels = [one, ten, five+times+ten]
 
 				x = np.linspace(0, 9, 10)*1.5 + 16.5 + 1.5/2
 				const_FD = 0.05083242 -0.00469777*x + 0.0001082*x*x
@@ -1914,7 +1914,7 @@ if chapter == 4:
 					for col in range(5):
 						ind =col+2*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+16.5) & (outb_FD_1.Ptheta < 1.5*(ind+1)+16.5)
-						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPp"] - outb_FD_1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPp"] - outb_FD_1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						param = params_p[ind]
@@ -1939,7 +1939,7 @@ if chapter == 4:
 						ind =col+2*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+16.5) & (outb_FD_1.Ptheta < 1.5*(ind+1)+16.5)
 						param = params_theta[ind]
-						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color = 'k', linewidth=2, linestyle = '--')
@@ -1963,7 +1963,7 @@ if chapter == 4:
 						ind =col+2*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.5*ind+16.5) & (outb_FD_1.Ptheta < 1.5*(ind+1)+16.5)
 						param = params_phi[ind]
-						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
