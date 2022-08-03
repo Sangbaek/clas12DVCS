@@ -1732,15 +1732,15 @@ if chapter == 4:
 
 			if args.detector == "FD2":
 				inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
-				ticks = [1, 10, 100, 200]
-				ticklabels = [one, ten, hundred, two+times+hundred]
+				ticks = [1, 10, 100, 500]
+				ticklabels = [one, ten, hundred, five+times+hundred]
 
 				fig, axs = plt.subplots(2,5, figsize=(20,10))
 				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin =1, vmax = 300), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						theta = np.linspace(23, 41, 10)[ind]+1
@@ -1766,7 +1766,7 @@ if chapter == 4:
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPtheta"] - inbending_check2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPtheta"] - inbending_check2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin =1, vmax = 300), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						theta = 2*ind + 23 + 1
@@ -1789,7 +1789,7 @@ if chapter == 4:
 					for col in range(5):
 						ind =col+5*row
 						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-10, 10, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-10, 10, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin =1, vmax = 300), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						theta = 2*ind + 23 + 1
@@ -1813,17 +1813,17 @@ if chapter == 4:
 				ticks = [1, 10, 100, 200]
 				ticklabels = [one, ten, hundred, two+times+hundred]
 
-				theta = np.linspace(0, 14, 15)*2+41
+				theta = np.linspace(0, 14, 15)*2.5+40 + 1.25
 				const_CD = 1.93686914 - 0.116288824*theta + 0.00223685833*theta**2 - 1.40771969 * 10**(-5)*theta**3
 				coeff_CD = -0.738047800 + 0.0443343685*theta - 8.50985972*10**(-4)*theta*theta + 5.36810280 * 10**(-6) * theta**3
 				params_p = np.array([const_CD, coeff_CD]).T
-				fig, axs = plt.subplots(3,5, figsize=(20,16))
-				for row in range(3):
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
 						if ind >12:
 							continue
-						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPp"] - inbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1835,23 +1835,22 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_title(str(2.5*ind+40)+degree + r" $\le\theta<$ " + str(2.5*(ind+1)+40)+degree)
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonCD_inb_mom.pdf")
 				plt.clf()
 
-				theta = np.linspace(0, 14, 15)*2+41
 				const_CD = -1.09849291*100 + 8.86664014 * theta - 0.26643881 * theta**2 + 3.53814210 * 10**(-3) * theta**3 - 1.75297107 * 10**(-5) * theta**4
 				coeff_CD = 9.52034523*100 -5.74808292 * 10 * theta + 1.15386949 * theta**2 - 7.57970373 * 0.001 * theta**3
 				coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * theta - 2.37730217*0.1 * theta**2 + 1.55153003*0.001*theta**3
 				params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
-				fig, axs = plt.subplots(3,5, figsize=(20,16))
-				for row in range(3):
+				fig, axs = plt.subplots(2,5, figsize=(20,16))
+				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
 						if ind >12:
 							continue
-						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPtheta"] - inbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1863,24 +1862,21 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_title(str(2.5*ind+40)+degree + r" $\le\theta<$ " + str(2.5*(ind+1)+40)+degree)
 						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonCD_inb_theta.pdf")
 				plt.clf()
 
-				theta = np.linspace(0, 14, 15)*2+41
 				const_CD = 4.94546178 -3.26662886*0.1 * theta +  7.39069603 * 0.001 * theta**2 -6.83599356*10**(-5) * theta**3 + 2.12303103*10**(-7) * theta**4
 				coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * theta + 4.00923146*10**(2) * theta**2 - 5.12792347 * theta**3 + 2.41793167*10**(-2) * theta**4
 				coeff2_CD =  1.20477219*10**(2) -5.86630228 * theta + 7.44007875*10**(-2) * theta**2 -2.42652473*10**(-4) * theta**3
 				params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
-				fig, axs = plt.subplots(3,5, figsize=(20,16))
-				for row in range(3):
+				fig, axs = plt.subplots(2,5, figsize=(20,16))
+				for row in range(2):
 					for col in range(5):
 						ind =col+5*row
-						if ind >12:
-							continue
-						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						thetaCond = (inbendingCD.Ptheta >= 2.5*(ind)+40) & (inbendingCD.Ptheta < 2.5*(ind+1)+40)
 						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPphi"] - inbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
@@ -1892,7 +1888,7 @@ if chapter == 4:
 						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
 						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
 						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_title(str(2.5*ind+40)+degree + r" $\le\theta<$ " + str(2.5*(ind+1)+40)+degree)
 						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
 				plt.tight_layout()
 				plt.savefig("plots/ch4/protonCD_inb_phi.pdf")
@@ -1944,7 +1940,7 @@ if chapter == 4:
 						ind =col+3*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
 						param = params_theta[ind]
-						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-1, 1, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-1, 1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color = 'k', linewidth=2, linestyle = '--')
@@ -1969,7 +1965,7 @@ if chapter == 4:
 						ind =col+3*row
 						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
 						param = params_phi[ind]
-						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
 						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 						cbar.ax.set_yticklabels(ticklabels)
 						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
