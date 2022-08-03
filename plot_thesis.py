@@ -1638,7 +1638,7 @@ if chapter == 4:
 		plt.savefig("plots/ch4/protonFD_inb_mom_1_procedure.pdf")
 		plt.clf()
 		exit()
-	elif fom == "proton":
+	elif figureofmerit == "proton":
 		if polarity == "inbending":
 			inb_FD = inbending.loc[inbending.Psector<7, :]
 			inb_CD = inbending.loc[inbending.Psector>7, :]
@@ -1654,7 +1654,7 @@ if chapter == 4:
 				for col in range(5):
 					ind =col+5*row
 					thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
-					h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+					h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 200), rasterized = True)
 					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
 					cbar.ax.set_yticklabels(ticklabels)
 					param = [correction2(param1_p, x[ind]), correction3(param2_p, x[ind])]
