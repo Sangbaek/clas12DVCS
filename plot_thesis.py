@@ -1603,10 +1603,11 @@ if chapter == 4:
 		inb_CD = inbending.loc[inbending.Psector>7, :]
 		outb_FD = outbending.loc[outbending.Psector<7, :]
 		outb_CD = outbending.loc[outbending.Psector>7, :]
-		fig, axs = plt.subplots(1, 4, figsize = (20, 8))
+		fig, axs = plt.subplots(1, 4, figsize = (20, 5))
 		for row in range(4):
 			axs[row].set_xlim([0, 1.5])
 			axs[row].set_xticks([0, 0.5, 1, 1.5])
+			axs[row].set_yticks([-0.05, 0, 0.05, 0.1])
 			axs[row].set_xlabel(r"$p$"+" ["+GeVc+"]")
 			axs[row].set_ylabel(r"$\delta p$"+" ["+GeVc+"]")
 		ticks = [1, 10, 100, 1000, 2000]
