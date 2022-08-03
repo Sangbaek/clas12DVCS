@@ -52,6 +52,7 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 parser.add_argument("-ch","--chapter", help="chapter", default = "2")
 parser.add_argument("-pol","--polarity", help="polarity", default = "inbending")
 parser.add_argument("-fom","--figureofmerit", help="figure of merit", default = None)
+parser.add_argument("-det","--detector", help="detector", default = None)
 args = parser.parse_args()
 
 if args.chapter:
@@ -1223,13 +1224,6 @@ if chapter == 4:
 	data set 3: with fiducial cut. no momenutm correction cut.
 	data set 4: with fiducial cut. energy loss correction only (Simulation only).
 	'''
-
-	inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
-	outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
-	columns_needed = ["Ep", "Etheta", "Ephi", "GenEp", "GenEtheta", "GenEphi", "Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta", "Psector"]
-	inbending = inbending.loc[:, columns_needed]
-	outbending = outbending.loc[:, columns_needed]
-
 	def corr(x, t):
 		x0, x1, x2, x3 = x
 		return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
@@ -1278,6 +1272,12 @@ if chapter == 4:
 
 	if args.figureofmerit == "electron":
 		print("Drawing electron plots...")
+
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+		columns_needed = ["Ep", "Etheta", "Ephi", "GenEp", "GenEtheta", "GenEphi", "Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta", "Psector"]
+		inbending = inbending.loc[:, columns_needed]
+		outbending = outbending.loc[:, columns_needed]
 
 		fig, axs = plt.subplots(2,5, figsize=(20,10))
 		for row in range(2):
@@ -1421,6 +1421,12 @@ if chapter == 4:
 	elif args.figureofmerit == "benchmark":
 		pass
 	elif args.figureofmerit == "fitting":
+		inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+		outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+		columns_needed = ["Ep", "Etheta", "Ephi", "GenEp", "GenEtheta", "GenEphi", "Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta", "Psector"]
+		inbending = inbending.loc[:, columns_needed]
+		outbending = outbending.loc[:, columns_needed]
+
 		inb_FD = inbending.loc[inbending.Psector<7, :]
 		inb_CD = inbending.loc[inbending.Psector>7, :]
 		outb_FD = outbending.loc[outbending.Psector<7, :]
@@ -1639,472 +1645,483 @@ if chapter == 4:
 		plt.clf()
 		exit()
 	elif args.figureofmerit == "proton":
+		columns_needed = ["Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "PDc1theta", "Psector"]
+		params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
+
 		if polarity == "inbending":
+			inbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/inb/dvcs/4893.pkl")
+			inbending = inbending.loc[:, columns_needed]
 			inb_FD = inbending.loc[inbending.Psector<7, :]
 			inbendingCD = inbending.loc[inbending.Psector>7, :]
-			params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
-			inbending_check1 = inb_FD.loc[inb_FD.PDc1theta < corr(params, inb_FD.Pp), :]
-			inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
+			if args.detector == "FD1":
+				inbending_check1 = inb_FD.loc[inb_FD.PDc1theta < corr(params, inb_FD.Pp), :]
+				param1_p, param2_p = [-0.00051894, -0.00018104], [ 3.29466917e-03,  5.73663160e-04, -1.40807209e-05]
+				x = np.linspace(0, 11, 12)*2.5+ 5 + 1.25
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				ticks = [1, 10, 100, 200]
+				ticklabels = [one, ten, hundred, two+times+hundred]
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
+						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 200), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = [correction2(param1_p, x[ind]), correction3(param2_p, x[ind])]
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_ylim([-0.05, 0.05])
+						axs[row, col].set_yticks([-0.05, 0, 0.05])
+						axs[row, col].set_xticklabels(['', '', '', '', '', '', '', '', ''], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(2.5*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2.5*(ind+1)+5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_mom_1.pdf")
+				plt.clf()
 
-			param1_p, param2_p = [-0.00051894, -0.00018104], [ 3.29466917e-03,  5.73663160e-04, -1.40807209e-05]
-			x = np.linspace(0, 11, 12)*2.5+ 5 + 1.25
-			fig, axs = plt.subplots(2,5, figsize=(20,10))
-			ticks = [1, 10, 100, 200]
-			ticklabels = [one, ten, hundred, two+times+hundred]
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check1.Ptheta >= 2.5*ind+5) & (inbending_check1.Ptheta < 2.5*(ind+1)+5)
-					h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPp"] - inbending_check1.loc[thetaCond, "Pp"], bins = [np.linspace(0.3, 1.7, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(vmin = 1, vmax = 200), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = [correction2(param1_p, x[ind]), correction3(param2_p, x[ind])]
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_ylim([-0.05, 0.05])
-					axs[row, col].set_yticks([-0.05, 0, 0.05])
-					axs[row, col].set_xticklabels(['', '', '', '', '', '', '', '', ''], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(2.5*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2.5*(ind+1)+5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_mom_1.pdf")
-			plt.clf()
+				x = 2*np.linspace(0, 9, 10)+6
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				param1_theta, param2_theta = [-0.16742969,  0.00697925], [ 0.23352115, -0.01338697]
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
+						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPtheta"] - inbending_check1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-1, 1 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						theta = (ind) + 5 + 0.5
+						param = [correction2(param1_theta, x[ind]), correction2(param2_theta, x[ind])]
+						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_ylim(-2, 2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_theta_1.pdf")
 
-			x = 2*np.linspace(0, 9, 10)+6
-			fig, axs = plt.subplots(2,5, figsize=(20,10))
-			param1_theta, param2_theta = [-0.16742969,  0.00697925], [ 0.23352115, -0.01338697]
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
-					h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPtheta"] - inbending_check1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-1, 1 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					theta = (ind) + 5 + 0.5
-					param = [correction2(param1_theta, x[ind]), correction2(param2_theta, x[ind])]
-					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_ylim(-2, 2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+5)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_theta_1.pdf")
+				x = np.linspace(0, 9, 10)
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
+						h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						theta = 2*ind + 6
+						const_FD = 0.21192125 -0.0115175 * theta
+						coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * theta -8.90617559*0.001 * theta * theta + 1.64803754*0.0001 * theta * theta * theta
+						param = [const_FD, coeff_FD]
+						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_ylim(-2, 2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+						axs[row, col].set_title(str(ind+5)+degree + r" $<\theta_{rec.}<$ " + str((ind+1)+5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_phi_1.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 9, 10)
-			fig, axs = plt.subplots(2,5, figsize=(20,10))
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check1.Ptheta >= 2*ind+5) & (inbending_check1.Ptheta < 2*(ind+1)+5)
-					h = axs[row, col].hist2d(inbending_check1.loc[thetaCond, "Pp"], inbending_check1.loc[thetaCond, "GenPphi"] - inbending_check1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 21), np.linspace(-5, 5 , 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					theta = 2*ind + 6
-					const_FD = 0.21192125 -0.0115175 * theta
-					coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * theta -8.90617559*0.001 * theta * theta + 1.64803754*0.0001 * theta * theta * theta
-					param = [const_FD, coeff_FD]
-					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_ylim(-2, 2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(ind+5)+degree + r" $<\theta_{rec.}<$ " + str((ind+1)+5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_phi_1.pdf")
-			plt.clf()
+			if args.detector == "FD2":
+				inbending_check2 = inb_FD.loc[inb_FD.PDc1theta > corr(params, inb_FD.Pp), :]
 
-			fig, axs = plt.subplots(2,5, figsize=(20,8))
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					theta = np.linspace(23, 41, 10)[ind]+1
-					const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*theta - 2.86486404*10**(-4)*theta*theta
-					coeff_FD =  2.01023276*10**(-1) - 1.13312215*10**(-2)*theta + 1.82487916*10**(-4)*theta*theta
-					param = [const_FD, coeff_FD]
-					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_mom_2.pdf")
-			plt.clf()
+				fig, axs = plt.subplots(2,5, figsize=(20,8))
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPp"] - inbending_check2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.1, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						theta = np.linspace(23, 41, 10)[ind]+1
+						const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*theta - 2.86486404*10**(-4)*theta*theta
+						coeff_FD =  2.01023276*10**(-1) - 1.13312215*10**(-2)*theta + 1.82487916*10**(-4)*theta*theta
+						param = [const_FD, coeff_FD]
+						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_mom_2.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 9, 10)
-			fig, axs = plt.subplots(2,5, figsize=(20,10))
-			param1_theta, param2_theta = [ 2.04334532e+01, -1.81052405e+00,  5.32556360e-02, -5.23157558e-04], [ 8.74233279e+00, -7.63869344e-01,  2.22376362e-02, -2.16457260e-04]
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPtheta"] - inbending_check2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 26), np.linspace(-2, 2 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					theta = 2*ind + 23 + 1
-					param = [correction5(param1_theta, theta), correction5(param2_theta, theta)]
-					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_theta_2.pdf")
-			plt.clf()
+				x = np.linspace(0, 9, 10)
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				param1_theta, param2_theta = [ 2.04334532e+01, -1.81052405e+00,  5.32556360e-02, -5.23157558e-04], [ 8.74233279e+00, -7.63869344e-01,  2.22376362e-02, -2.16457260e-04]
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPtheta"] - inbending_check2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 26), np.linspace(-2, 2 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						theta = 2*ind + 23 + 1
+						param = [correction5(param1_theta, theta), correction5(param2_theta, theta)]
+						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction6(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_theta_2.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 19, 20)
-			fig, axs = plt.subplots(2,5, figsize=(20,10))
-			for row in range(2):
-				for col in range(5):
-					ind =col+5*row
-					thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
-					h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-10, 10 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					theta = 23.5 + ind
-					const_FD = 0.54697831 -0.04896981*theta +  0.00111376*theta*theta
-					coeff_FD = -4.06733541*10**2 + 2.43696202*10*theta -3.36144736*10**(-1)*theta*theta
-					coeff2_FD = 2.06378660*10 - 1.42866062*theta + 2.01085440*10**(-2)*theta*theta
-					param = [const_FD, coeff_FD, coeff2_FD]#params_phi[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction4(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
-					plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_inb_phi_2.pdf")
-			plt.clf()
+				x = np.linspace(0, 19, 20)
+				fig, axs = plt.subplots(2,5, figsize=(20,10))
+				for row in range(2):
+					for col in range(5):
+						ind =col+5*row
+						thetaCond = (inbending_check2.Ptheta >= 2*ind+23) & (inbending_check2.Ptheta < 2*(ind+1)+23)
+						h = axs[row, col].hist2d(inbending_check2.loc[thetaCond, "Pp"], inbending_check2.loc[thetaCond, "GenPphi"] - inbending_check2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-10, 10 , 51)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						theta = 23.5 + ind
+						const_FD = 0.54697831 -0.04896981*theta +  0.00111376*theta*theta
+						coeff_FD = -4.06733541*10**2 + 2.43696202*10*theta -3.36144736*10**(-1)*theta*theta
+						coeff2_FD = 2.06378660*10 - 1.42866062*theta + 2.01085440*10**(-2)*theta*theta
+						param = [const_FD, coeff_FD, coeff2_FD]#params_phi[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.75, 101), correction4(param, np.linspace(0.25, 1.75, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+23)+degree + r" $<\theta_{rec.}<$ " + str(2*(ind+1)+23)+degree)
+						plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_inb_phi_2.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = 1.93686914 - 0.116288824*theta + 0.00223685833*theta**2 - 1.40771969 * 10**(-5)*theta**3
-			coeff_CD = -0.738047800 + 0.0443343685*theta - 8.50985972*10**(-4)*theta*theta + 5.36810280 * 10**(-6) * theta**3
-			params_p = np.array([const_CD, coeff_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPp"] - inbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_p[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_inb_mom.pdf")
-			plt.clf()
+			if args.detector == "CD":
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = 1.93686914 - 0.116288824*theta + 0.00223685833*theta**2 - 1.40771969 * 10**(-5)*theta**3
+				coeff_CD = -0.738047800 + 0.0443343685*theta - 8.50985972*10**(-4)*theta*theta + 5.36810280 * 10**(-6) * theta**3
+				params_p = np.array([const_CD, coeff_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPp"] - inbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_p[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_inb_mom.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = -1.09849291*100 + 8.86664014 * theta - 0.26643881 * theta**2 + 3.53814210 * 10**(-3) * theta**3 - 1.75297107 * 10**(-5) * theta**4
-			coeff_CD = 9.52034523*100 -5.74808292 * 10 * theta + 1.15386949 * theta**2 - 7.57970373 * 0.001 * theta**3
-			coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * theta - 2.37730217*0.1 * theta**2 + 1.55153003*0.001*theta**3
-			params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPtheta"] - inbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_theta[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-					axs[row, col].set_yticks(np.linspace(-5, 5, 5))
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_inb_theta.pdf")
-			plt.clf()
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = -1.09849291*100 + 8.86664014 * theta - 0.26643881 * theta**2 + 3.53814210 * 10**(-3) * theta**3 - 1.75297107 * 10**(-5) * theta**4
+				coeff_CD = 9.52034523*100 -5.74808292 * 10 * theta + 1.15386949 * theta**2 - 7.57970373 * 0.001 * theta**3
+				coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * theta - 2.37730217*0.1 * theta**2 + 1.55153003*0.001*theta**3
+				params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPtheta"] - inbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_theta[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_inb_theta.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = 4.94546178 -3.26662886*0.1 * theta +  7.39069603 * 0.001 * theta**2 -6.83599356*10**(-5) * theta**3 + 2.12303103*10**(-7) * theta**4
-			coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * theta + 4.00923146*10**(2) * theta**2 - 5.12792347 * theta**3 + 2.41793167*10**(-2) * theta**4
-			coeff2_CD =  1.20477219*10**(2) -5.86630228 * theta + 7.44007875*10**(-2) * theta**2 -2.42652473*10**(-4) * theta**3
-			params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPphi"] - inbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_theta[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					# axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-					axs[row, col].set_yticks(np.linspace(-5, 5, 5))
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_inb_phi.pdf")
-			plt.clf()
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = 4.94546178 -3.26662886*0.1 * theta +  7.39069603 * 0.001 * theta**2 -6.83599356*10**(-5) * theta**3 + 2.12303103*10**(-7) * theta**4
+				coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * theta + 4.00923146*10**(2) * theta**2 - 5.12792347 * theta**3 + 2.41793167*10**(-2) * theta**4
+				coeff2_CD =  1.20477219*10**(2) -5.86630228 * theta + 7.44007875*10**(-2) * theta**2 -2.42652473*10**(-4) * theta**3
+				params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (inbendingCD.Ptheta >= 2*(ind)+40) & (inbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(inbendingCD.loc[thetaCond, "Pp"], inbendingCD.loc[thetaCond, "GenPphi"] - inbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_theta[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						# axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_inb_phi.pdf")
+				plt.clf()
 
 		elif polarity == "outbending":
+			outbending = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_noCorr/outb/dvcs/4907.pkl")
+			outbending = outbending.loc[:, columns_needed]
 			outb_FD = outbending.loc[outbending.Psector<7, :]
 			outbendingCD = outbending.loc[outbending.Psector>7, :]
-			params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]#best_params#-52.99936209624629, 80.6709735338239, 0.3, 0.06899530845080828]#best_params#[-72.5, 100, 0.3, 0.055]#[-55.5, 80, 0.3, 0.04]
-			outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
-			outb_FD_2 = outb_FD.loc[outb_FD.PDc1theta > corr(params, outb_FD.Pp), :]
-			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
-					h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPp"] - outb_FD_2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_p[ind]
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_mom_2.pdf")
-			plt.clf()
 
-			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
-					h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPtheta"] - outb_FD_2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_theta[ind]
-					param = [correction3(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_theta_2.pdf")
-			plt.clf()
+			if args.detector == "FD1":
+				outb_FD_1 = outb_FD.loc[outb_FD.PDc1theta < corr(params, outb_FD.Pp), :]
+				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
+						h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPp"] - outb_FD_2.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_p[ind]
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_mom_2.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
-					h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPphi"] - outb_FD_2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_phi[ind]
-					param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_phi_2.pdf")
-			plt.clf()
+				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
+						h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPtheta"] - outb_FD_2.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_theta[ind]
+						param = [correction3(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_theta_2.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
-					h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPp"] - outb_FD_1.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_p[ind]
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_mom_1.pdf")
-			plt.clf()
+				x = np.linspace(0, 11, 12)*1.25 + 27.5 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_2.Ptheta >= 1.25*ind+27.5) & (outb_FD_2.Ptheta < 1.25*(ind+1)+27.5)
+						h = axs[row, col].hist2d(outb_FD_2.loc[thetaCond, "Pp"], outb_FD_2.loc[thetaCond, "GenPphi"] - outb_FD_2.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_phi[ind]
+						param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(1.25*ind+27.5)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+27.5)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_phi_2.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
-					param = [correction5(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
-					h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-1, 1, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color = 'k', linewidth=2, linestyle = '--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+degree+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_theta_1.pdf")
-			plt.clf()
+			if args.detector == "FD2":
+				outb_FD_2 = outb_FD.loc[outb_FD.PDc1theta > corr(params, outb_FD.Pp), :]
+				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPp"] - outb_FD_1.loc[thetaCond, "Pp"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-0.05, 0.05, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_p[ind]
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_mom_1.pdf")
+				plt.clf()
 
-			x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
-			fig, axs = plt.subplots(3,4, figsize=(20,10))
-			for row in range(3):
-				for col in range(4):
-					ind =col+3*row
-					thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
-					param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
-					h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonFD_outb_phi_1.pdf")
-			plt.clf()
+				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+						param = [correction5(param1_theta, x[ind]), correction5(param2_theta, x[ind])]
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPtheta"] - outb_FD_1.loc[thetaCond, "Ptheta"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-1, 1, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color = 'k', linewidth=2, linestyle = '--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+degree+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_theta_1.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = 1.92657376 - 0.113836734*theta + 0.00215038526*theta**2 - 1.32525053 * 10**(-5)*theta**3
-			coeff_CD = -0.755650043 + 0.0445538936*theta - 8.38241864*10**(-4)*theta*theta + 5.16887255 * 10**(-6) * theta**3
-			params_p = np.array([const_CD, coeff_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPp"] - outbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_p[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_outb_mom.pdf")
-			plt.clf()
+				x = np.linspace(0, 11, 12)*1.25 + 15 + 1.25/2
+				fig, axs = plt.subplots(3,4, figsize=(20,10))
+				for row in range(3):
+					for col in range(4):
+						ind =col+3*row
+						thetaCond = (outb_FD_1.Ptheta >= 1.25*ind+15) & (outb_FD_1.Ptheta < 1.25*(ind+1)+15)
+						param = [correction3(param1_phi, x[ind]), correction3(param2_phi, x[ind])]
+						h = axs[row, col].hist2d(outb_FD_1.loc[thetaCond, "Pp"], outb_FD_1.loc[thetaCond, "GenPphi"] - outb_FD_1.loc[thetaCond, "Pphi"], bins = [np.linspace(0.25, 1.75, 101), np.linspace(-2, 2, 21)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						axs[row, col].plot(np.linspace(0.3, 1.7, 101), correction6(param, np.linspace(0.3, 1.7, 101)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+						axs[row, col].set_title(str(1.25*ind+15)+degree + r" $<\theta_{rec.}<$ " + str(1.25*(ind+1)+15)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonFD_outb_phi_1.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = -5.79024055*10 + 4.67197531 * theta - 0.140156897 * theta**2 + 1.85853057 * 10**(-3) * theta**3 - 9.19989908 * 10**(-6) * theta**4
-			coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * theta + 5.84757503 * theta**2 - 6.80409195 * 0.01 * theta**3 + 2.89244618 * 0.0001 * theta**4
-			coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * theta - 2.24699931*0.1 * theta**2 + 1.49390960*0.001*theta**3
-			params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPtheta"] - outbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_theta[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-					axs[row, col].set_yticks(np.linspace(-5, 5, 5))
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_outb_theta.pdf")
-			plt.clf()
+			if args.detector == "CD":
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = 1.92657376 - 0.113836734*theta + 0.00215038526*theta**2 - 1.32525053 * 10**(-5)*theta**3
+				coeff_CD = -0.755650043 + 0.0445538936*theta - 8.38241864*10**(-4)*theta*theta + 5.16887255 * 10**(-6) * theta**3
+				params_p = np.array([const_CD, coeff_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPp"] - outbendingCD.loc[thetaCond, "Pp"], bins = [np.linspace(0, 1.7, 101), np.linspace(-0.05, 0.2, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_p[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta p$" + " ["+GeVc+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_outb_mom.pdf")
+				plt.clf()
 
-			theta = np.linspace(0, 14, 15)*2+41
-			const_CD = 7.58761670 - 5.28224578*0.1 * theta +  1.31580117 * 0.01 * theta**2 -1.41738951*10**(-4) * theta**3 + 5.62884363*10**(-7) * theta**4
-			coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * theta + 2.57187193*10**(2) * theta**2 - 3.31379317 * theta**3 + 1.56896621*10**(-2) * theta**4
-			coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * theta + 1.56575252*10**(-1) * theta**2 -7.71489734*10**(-4) * theta**3
-			params_phi = np.array([const_CD, coeff_CD, coeff2_CD]).T
-			fig, axs = plt.subplots(3,5, figsize=(20,16))
-			for row in range(3):
-				for col in range(5):
-					ind =col+5*row
-					if ind >12:
-						continue
-					thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
-					h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPphi"] - outbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
-					cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
-					cbar.ax.set_yticklabels(ticklabels)
-					param = params_phi[ind]
-					axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
-					#axs[row, col].set_xlim(0.3, 1.2)
-					axs[row, col].set_xlim([0, 2])
-					axs[row, col].set_xticks([0, 1, 2])
-					axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
-					axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
-					axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
-					axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
-					axs[row, col].set_yticks(np.linspace(-5, 5, 5))
-			plt.tight_layout()
-			plt.savefig("plots/ch4/protonCD_outb_phi.pdf")
-			plt.clf()
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = -5.79024055*10 + 4.67197531 * theta - 0.140156897 * theta**2 + 1.85853057 * 10**(-3) * theta**3 - 9.19989908 * 10**(-6) * theta**4
+				coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * theta + 5.84757503 * theta**2 - 6.80409195 * 0.01 * theta**3 + 2.89244618 * 0.0001 * theta**4
+				coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * theta - 2.24699931*0.1 * theta**2 + 1.49390960*0.001*theta**3
+				params_theta = np.array([const_CD, coeff_CD, coeff2_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPtheta"] - outbendingCD.loc[thetaCond, "Ptheta"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_theta[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \theta$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_outb_theta.pdf")
+				plt.clf()
 
+				theta = np.linspace(0, 14, 15)*2+41
+				const_CD = 7.58761670 - 5.28224578*0.1 * theta +  1.31580117 * 0.01 * theta**2 -1.41738951*10**(-4) * theta**3 + 5.62884363*10**(-7) * theta**4
+				coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * theta + 2.57187193*10**(2) * theta**2 - 3.31379317 * theta**3 + 1.56896621*10**(-2) * theta**4
+				coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * theta + 1.56575252*10**(-1) * theta**2 -7.71489734*10**(-4) * theta**3
+				params_phi = np.array([const_CD, coeff_CD, coeff2_CD]).T
+				fig, axs = plt.subplots(3,5, figsize=(20,16))
+				for row in range(3):
+					for col in range(5):
+						ind =col+5*row
+						if ind >12:
+							continue
+						thetaCond = (outbendingCD.Ptheta >= 2*(ind)+40) & (outbendingCD.Ptheta < 2*(ind+1)+40)
+						h = axs[row, col].hist2d(outbendingCD.loc[thetaCond, "Pp"], outbendingCD.loc[thetaCond, "GenPphi"] - outbendingCD.loc[thetaCond, "Pphi"], bins = [np.linspace(0, 1.7, 101), np.linspace(-5, 5, 101)], cmap = cmap, cmin =1, norm = LogNorm(), rasterized = True)
+						cbar = plt.colorbar(h[3], ax = axs[row, col], ticks = ticks)
+						cbar.ax.set_yticklabels(ticklabels)
+						param = params_phi[ind]
+						axs[row, col].plot(np.linspace(0.25, 1.7, 51), correction4(param, np.linspace(0.25, 1.7, 51)), color='k', linewidth=5, linestyle='--')
+						#axs[row, col].set_xlim(0.3, 1.2)
+						axs[row, col].set_xlim([0, 2])
+						axs[row, col].set_xticks([0, 1, 2])
+						axs[row, col].set_xticks([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], minor = True)
+						axs[row, col].set_xlabel(r"$p$" + " ["+GeVc+"]")
+						axs[row, col].set_ylabel(r"$\delta \phi$" + " ["+degree+"]")
+						axs[row, col].set_title(str(2*ind+40)+degree + r" $<\theta<$ " + str(2*(ind+1)+40)+degree)
+						axs[row, col].set_yticks(np.linspace(-5, 5, 5))
+				plt.tight_layout()
+				plt.savefig("plots/ch4/protonCD_outb_phi.pdf")
+				plt.clf()
 
 if chapter == 5:
 	'''
