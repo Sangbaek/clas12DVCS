@@ -2438,23 +2438,23 @@ if chapter == 5:
 		fig, axs = plt.subplots(5, 3, figsize = (15,25))
 		for yind in range(0, 5):
 			for xind in range(0, 3):
-		        ind = 3*yind + xind
-		        if varstoplot[ind]:
+				ind = 3*yind + xind
+				if varstoplot[ind]:
 					pass
-		        else:
+				else:
 					continue
-		        simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
-		        simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
-		        simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
-		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-		        if ind == 1:
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				if ind == 1:
 					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
-		        axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
-		        axs[yind, xind].set_title(title[ind])
-		        if (unit[ind]):
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		        else:
+				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf")
@@ -2471,20 +2471,20 @@ if chapter == 5:
 		fig, axs = plt.subplots(5, 3, figsize = (15,25))
 		for yind in range(0, 5):
 			for xind in range(0, 3):
-		        ind = 3*yind + xind
-		        if varstoplot[ind]:
+				ind = 3*yind + xind
+				if varstoplot[ind]:
 					pass
-		        else:
+				else:
 					continue
-		        simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
-		        axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
-		        axs[yind, xind].set_title(title[ind])
-		        # axs[yind, xind].set_xlim([start, end])
-		        if (unit[ind]):
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		        else:
+				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0InbCDFTexcl.pdf")
@@ -2551,7 +2551,6 @@ if chapter == 5:
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0InbFDexcl.pdf")
 		plt.clf()
-
 
 	else:
 		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/dvcs/"
