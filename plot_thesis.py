@@ -31,13 +31,13 @@ import matplotlib
 # initial settings
 pgf_with_latex = {
 		"pgf.texsystem": "pdflatex",
-		"text.usetex": True,            # use LaTeX to write all text
-		"font.family": "sans-serif",         
+		"text.usetex": True,			# use LaTeX to write all text
+		"font.family": "sans-serif",		
 		"font.sans-serif": "Helvetica",
 		"font.size": 25,				# default font size
 		"axes.titlepad": 20,			# x and y label size
 		"axes.labelsize": 24,			# x and y label size
-		"axes.titlesize": 24,           # subfigure title size, i.e. title size when one figure
+		"axes.titlesize": 24,		  # subfigure title size, i.e. title size when one figure
 		"legend.fontsize": 22,			# legend size
 		"xtick.labelsize": 23,			# x axis tick label size
 		"ytick.labelsize": 23,			# y axis tick label 
@@ -2322,6 +2322,460 @@ if chapter == 4:
 
 if chapter == 5:
 	'''
-	data set 4: with fiducial cut. full momentum correction cuts. (nominal)
-	data set 5: without fiducial cut. full momentum correction cuts. (eb)
+	data set 4: without fiducial cut. full momentum correction cuts. (nominal)
 	'''
+	if polarity == "inbending":
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/exp/"
+
+		#epg Exp
+		epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
+		dvcsSimInb = pd.read_pickle(parent_MC + "4893.pkl")
+		bkgSimInb = pd.read_pickle(parent_MC_bkg1g + "4076.pkl")
+		pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
+		pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
+
+		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
+		dvcsSimInbCDFT = dvcsSimInb.loc[dvcsSimInb.config == 3]
+		bkgSimInbCDFT = bkgSimInb.loc[bkgSimInb.config == 3]
+		pi0ExpInbCDFT = pi0ExpInb.loc[(pi0ExpInb.config == 3)]
+		pi0SimInbCDFT = pi0SimInb.loc[(pi0SimInb.config == 3)]
+
+		epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
+		dvcsSimInbCD = dvcsSimInb.loc[dvcsSimInb.config == 2]
+		bkgSimInbCD = bkgSimInb.loc[bkgSimInb.config == 2]
+		pi0ExpInbCD = pi0ExpInb.loc[(pi0ExpInb.config == 2)]
+		pi0SimInbCD = pi0SimInb.loc[(pi0SimInb.config == 2)]
+
+		epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
+		dvcsSimInbFD = dvcsSimInb.loc[dvcsSimInb.config == 1]
+		bkgSimInbFD = bkgSimInb.loc[bkgSimInb.config == 1]
+		pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
+		pi0SimInbFD = pi0SimInb.loc[(pi0SimInb.config == 1)]
+
+		contInbCD = len(pi0ExpInbCD)*len(bkgSimInbCD)/len(pi0SimInbCD)/len(epgExpInbCD)
+		contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
+		contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
+		contInb = len(pi0ExpInb)*len(bkgSimInb)/len(pi0SimInb)/len(epgExpInb)
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpInbCDFT
+		df1 = dvcsSimInbCDFT
+		df2 = bkgSimInbCDFT
+		df4 = pi0ExpInbCDFT
+		df5 = pi0SimInbCDFT
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf")
+		plt.clf()
+
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpInbCD
+		df1 = dvcsSimInbCD
+		df2 = bkgSimInbCD
+		df4 = pi0ExpInbCD
+		df5 = pi0SimInbCD
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsInbCDexcl.pdf")
+		plt.clf()
+
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpInbFD
+		df1 = dvcsSimInbFD
+		df2 = bkgSimInbFD
+		df4 = pi0ExpInbFD
+		df5 = pi0SimInbFD
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+		        ind = 3*yind + xind
+		        if varstoplot[ind]:
+					pass
+		        else:
+					continue
+		        simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+		        simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+		        simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
+		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+		        if ind == 1:
+					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
+		        axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+		        axs[yind, xind].set_title(title[ind])
+		        if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+		        else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpInbCDFT
+		df5 = pi0SimInbCDFT
+
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+		        ind = 3*yind + xind
+		        if varstoplot[ind]:
+					pass
+		        else:
+					continue
+		        simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+		        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+		        axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+		        axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+		        axs[yind, xind].set_title(title[ind])
+		        # axs[yind, xind].set_xlim([start, end])
+		        if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+		        else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0InbCDFTexcl.pdf")
+		plt.clf()
+
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpInbCD
+		df5 = pi0SimInbCD
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0InbCDexcl.pdf")
+		plt.clf()
+
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpInbFD
+		df5 = pi0SimInbFD
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				if ind == 1:
+					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0InbFDexcl.pdf")
+		plt.clf()
+
+
+	else:
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/exp/"
+
+		#epg Exp
+		epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
+		pi0ExpOutb = pd.read_pickle(parent_MC + "4907.pkl")
+		bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
+		pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
+		pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
+
+		epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
+		dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
+		bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config == 3]
+		pi0ExpOutbCDFT = pi0ExpOutb.loc[(pi0ExpOutb.config == 3)]
+		pi0SimOutbCDFT = pi0SimOutb.loc[(pi0SimOutb.config == 3)]
+
+		epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+		dvcsSimOutbCD = dvcsSimOutb.loc[dvcsSimOutb.config == 2]
+		bkgSimOutbCD = bkgSimOutb.loc[bkgSimOutb.config == 2]
+		pi0ExpOutbCD = pi0ExpOutb.loc[(pi0ExpOutb.config == 2)]
+		pi0SimOutbCD = pi0SimOutb.loc[(pi0SimOutb.config == 2)]
+
+		epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+		dvcsSimOutbFD = dvcsSimOutb.loc[dvcsSimOutb.config == 1]
+		bkgSimOutbFD = bkgSimOutb.loc[bkgSimOutb.config == 1]
+		pi0ExpOutbFD = pi0ExpOutb.loc[(pi0ExpOutb.config == 1)]
+		pi0SimOutbFD = pi0SimOutb.loc[(pi0SimOutb.config == 1)]
+
+		contOutbCD = len(pi0ExpOutbCD)*len(bkgSimOutbCD)/len(pi0SimOutbCD)/len(epgExpOutbCD)
+		contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
+		contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
+		contOutb = len(pi0ExpOutb)*len(bkgSimOutb)/len(pi0SimOutb)/len(epgExpOutb)
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpOutbCDFT
+		df1 = dvcsSimOutbCDFT
+		df2 = bkgSimOutbCDFT
+		df4 = pi0ExpOutbCDFT
+		df5 = pi0SimOutbCDFT
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsOutbCDFTexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpOutbCD
+		df1 = dvcsSimOutbCD
+		df2 = bkgSimOutbCD
+		df4 = pi0ExpOutbCD
+		df5 = pi0SimOutbCD
+
+		contOutbCD = len(df2)*len(df4)/len(df3)/len(df5)
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+
+		# contOutbCD = 0.0
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsOutbCDexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle", "MM2_eg", "", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$", r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", "", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2,  "", degree, degree, GeV, GeV2, GeV2, GeVc]
+		df3 = epgExpOutbFD
+		df1 = dvcsSimOutbFD
+		df2 = bkgSimOutbFD
+		df4 = pi0ExpOutbFD
+		df5 = pi0SimOutbFD
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				if ind == 1:
+					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/dvcsOutbFDexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpOutbCDFT
+		df5 = pi0SimOutbCDFT
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0OutbCDFTexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpOutbCD
+		df5 = pi0SimOutbCD
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0OutbCDexcl.pdf")
+		plt.clf()
+
+		varstoplot = ["Pp", "Ptheta", "Pphi","Gp", "Gtheta", "Gphi",  "coneAngle1", "MM2_egg", "Mpi0", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+		title = [r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma 1}$", r"$\theta_{\gamma 1}$", r"$\phi_{\gamma 1}$", r"$\theta_{e'\gamma 1}$", r"$MM^2_{e'\pi^0}$", r"$IM_{\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+		unit = [GeV, degree, degree, GeV, degree, degree, degree, GeV2, GeV, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+		df4 = pi0ExpOutbFD
+		df5 = pi0SimOutbFD
+
+		fig, axs = plt.subplots(5, 3, figsize = (15,25))
+		for yind in range(0, 5):
+			for xind in range(0, 3):
+				ind = 3*yind + xind
+				if varstoplot[ind]:
+					pass
+				else:
+					continue
+				if ind == 1:
+					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].step(bincenters, simDist, where='mid',color='b', linewidth=1)
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype='stepfilled', facecolor='none', edgecolor='k', density=True, linewidth=1)
+				axs[yind, xind].set_title(title[ind])
+				# axs[yind, xind].set_xlim([start, end])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+		plt.tight_layout()
+		plt.savefig("plots/ch5/pi0OutbFDexcl.pdf")
+		plt.clf()
