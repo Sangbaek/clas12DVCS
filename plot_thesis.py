@@ -2325,10 +2325,10 @@ if chapter == 5:
 	data set 4: without fiducial cut. full momentum correction cuts. (nominal)
 	'''
 	if polarity == "inbending":
-		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/dvcs/"
-		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/bkg_1g/"
-		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/bkg_2g/"
-		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/inb/exp/"
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/"
 
 		#epg Exp
 		epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
