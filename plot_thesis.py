@@ -2387,6 +2387,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xlim([10, 30])
 		axs[0, 0].set_xticks([10, 20, 30])
 		axs[0, 1].set_xlim([0.5, 1.5])
@@ -2428,6 +2431,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xlim([10, 30])
 		axs[0, 0].set_xticks([10, 20, 30])
 		axs[0, 1].set_xlim([0, 2])
@@ -2470,6 +2476,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([25, 30, 35, 40, 45])
 		axs[0, 0].set_xlim([25, 40])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -2510,6 +2519,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
@@ -2547,6 +2559,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -2584,6 +2599,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -2663,6 +2681,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xlim([5, 35])
 		axs[0, 0].set_xticks([5, 10, 15, 20, 25, 30, 35])
 		axs[0, 1].set_xlim([0.5, 1.5])
@@ -2708,6 +2729,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xlim([10, 30])
 		axs[0, 0].set_xticks([10, 20, 30])
 		axs[0, 1].set_xlim([0, 2])
@@ -2750,6 +2774,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([25, 30, 35, 40, 45])
 		axs[0, 0].set_xlim([25, 40])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -2790,10 +2817,13 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
-		axs[0, 2].set_xticks([0, 0.4, 0.8 1.2])
+		axs[0, 2].set_xticks([0, 0.4, 0.8, 1.2])
 		axs[0, 3].set_xlim([0, 10])
 		axs[0, 3].set_xticks([0, 5, 10])
 		axs[1, 0].set_xlim([-0.5, 0.5])
@@ -2827,6 +2857,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -2863,6 +2896,9 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+				yticklabels = axs[yind, xind].get_yticklabels()
+				yticklabels[0] = ''
+				axs[yind, xind].set_yticklabels(yticklabels)
 		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 		axs[0, 0].set_xlim([0.1, 0.16])
 		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
