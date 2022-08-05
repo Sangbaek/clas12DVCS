@@ -2368,7 +2368,7 @@ if chapter == 5:
 		df4 = pi0ExpInbCDFT
 		df5 = pi0SimInbCDFT
 		xlb = [10, 0, 0, 0, -.3, -0.01, -0.3, 0]
-		xub = [35, 2, 0.75, 6, .3, -0.01, 0.3, 0.1]
+		xub = [35, 2, 0.75, 6, .3, 0.01, 0.3, 0.1]
 		yub = [0.15, 1.2, 3, 0.4, 3, 250, 4, 25]
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
@@ -2399,7 +2399,7 @@ if chapter == 5:
 		df4 = pi0ExpInbCD
 		df5 = pi0SimInbCD
 		xlb = [10, 0, 0, 0, -.6, -0.015, -0.3, 0]
-		xub = [35, 2, 0.75, 5, .6, -0.015, 0.3, 0.1]
+		xub = [35, 2, 0.75, 5, .6, 0.015, 0.3, 0.1]
 		yub = [0.15, 1.2, 2.5, 0.5, 2, 200, 5, 20]
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
@@ -2431,7 +2431,7 @@ if chapter == 5:
 		df4 = pi0ExpInbFD
 		df5 = pi0SimInbFD
 		xlb = [25, 0, 0, 0, -1, -0.015, -0.2, 0]
-		xub = [45, 2, 1.5, 8, 1, -0.015, 0.2, 0.25]
+		xub = [45, 2, 1.5, 8, 1, 0.015, 0.2, 0.25]
 		yub = [0.15, 1.2, 1.5, 0.4, 1.5, 150, 6, 8]
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
@@ -2462,6 +2462,9 @@ if chapter == 5:
 
 		df4 = pi0ExpInbCDFT
 		df5 = pi0SimInbCDFT
+		xlb = [0.16, 0, 0, 0, -.5, -0.02, -0.5, 0]
+		xub = [0.1, 1.6, 1, 8, .5, 0.02, 0.5, 0.1]
+		yub = [100, 2, 2, 0.5, 3, 200, 4, 25]
 
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
@@ -2476,6 +2479,8 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([xlb[ind], xub[ind]])
+				axs[yind, xind].set_xlim([0, yub[ind]])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
 		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
@@ -2485,6 +2490,9 @@ if chapter == 5:
 
 		df4 = pi0ExpInbCD
 		df5 = pi0SimInbCD
+		xlb = [0.16, 0, 0, 0, -.6, -0.02, -0.3, 0]
+		xub = [0.1, 2, 1.5, 10, .6, 0.02, 0.3, 0.15]
+		yub = [50, 1.5, 1.5, 0.4, 2, 150, 5, 15]
 
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
@@ -2508,6 +2516,9 @@ if chapter == 5:
 
 		df4 = pi0ExpInbFD
 		df5 = pi0SimInbFD
+		xlb = [0.16, 0, 0, 0, -.6, -0.02, -0.3, 0]
+		xub = [0.1, 2, 1.5, 10, .6, 0.02, 0.3, 0.2]
+		yub = [50, 1.5, 1.5, 0.4, 2, 200, 5, 15]
 
 		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 		for yind in range(0, 2):
