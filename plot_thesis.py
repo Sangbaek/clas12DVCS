@@ -2560,7 +2560,7 @@ if chapter == 5:
 
 		#epg Exp
 		epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
-		pi0ExpOutb = pd.read_pickle(parent_MC + "4907.pkl")
+		dvcsSimOutb= pd.read_pickle(parent_MC + "4907.pkl")
 		bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 		pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
 		pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
