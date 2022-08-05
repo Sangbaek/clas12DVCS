@@ -2507,6 +2507,8 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([xlb[ind], xub[ind]])
+				axs[yind, xind].set_ylim([0, yub[ind]])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
 		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
@@ -2533,6 +2535,8 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([xlb[ind], xub[ind]])
+				axs[yind, xind].set_ylim([0, yub[ind]])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
 		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
