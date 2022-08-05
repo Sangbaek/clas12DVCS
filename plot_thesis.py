@@ -2368,10 +2368,10 @@ if chapter == 5:
 		df4 = pi0ExpInbCDFT
 		df5 = pi0SimInbCDFT
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
@@ -2386,7 +2386,7 @@ if chapter == 5:
 		handles, labels = axs[0, 0].get_legend_handles_labels()
 		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf", bbox_extra_artists = [lgd])
+		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df3 = epgExpInbCD
@@ -2394,10 +2394,10 @@ if chapter == 5:
 		df2 = bkgSimInbCD
 		df4 = pi0ExpInbCD
 		df5 = pi0SimInbCD
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
@@ -2421,10 +2421,10 @@ if chapter == 5:
 		df2 = bkgSimInbFD
 		df4 = pi0ExpInbFD
 		df5 = pi0SimInbFD
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
@@ -2438,8 +2438,10 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf")
+		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
@@ -2449,10 +2451,10 @@ if chapter == 5:
 		df4 = pi0ExpInbCDFT
 		df5 = pi0SimInbCDFT
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2462,18 +2464,20 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0InbCDFTexcl.pdf")
+		plt.savefig("plots/ch5/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 
 		df4 = pi0ExpInbCD
 		df5 = pi0SimInbCD
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2483,18 +2487,20 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0InbCDexcl.pdf")
+		plt.savefig("plots/ch5/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 
 		df4 = pi0ExpInbFD
 		df5 = pi0SimInbFD
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				if ind == 1:
 					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
@@ -2506,8 +2512,10 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0InbFDexcl.pdf")
+		plt.savefig("plots/ch5/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 	else:
@@ -2554,10 +2562,10 @@ if chapter == 5:
 		df2 = bkgSimOutbCDFT
 		df4 = pi0ExpOutbCDFT
 		df5 = pi0SimOutbCDFT
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
@@ -2569,8 +2577,10 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsOutbCDFTexcl.pdf")
+		plt.savefig("plots/ch5/dvcsOutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df3 = epgExpOutbCD
@@ -2580,12 +2590,12 @@ if chapter == 5:
 		df5 = pi0SimOutbCD
 
 		contOutbCD = len(df2)*len(df4)/len(df3)/len(df5)
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 
 		# contOutbCD = 0.0
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
@@ -2597,8 +2607,10 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsOutbCDexcl.pdf")
+		plt.savefig("plots/ch5/dvcsOutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df3 = epgExpOutbFD
@@ -2606,10 +2618,10 @@ if chapter == 5:
 		df2 = bkgSimOutbFD
 		df4 = pi0ExpOutbFD
 		df5 = pi0SimOutbFD
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				if ind == 1:
 					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
@@ -2623,8 +2635,10 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsOutbFDexcl.pdf")
+		plt.savefig("plots/ch5/dvcsOutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
@@ -2634,10 +2648,10 @@ if chapter == 5:
 		df4 = pi0ExpOutbCDFT
 		df5 = pi0SimOutbCDFT
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2647,17 +2661,19 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0OutbCDFTexcl.pdf")
+		plt.savefig("plots/ch5/pi0OutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df4 = pi0ExpOutbCD
 		df5 = pi0SimOutbCD
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2667,17 +2683,19 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0OutbCDexcl.pdf")
+		plt.savefig("plots/ch5/pi0OutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df4 = pi0ExpOutbFD
 		df5 = pi0SimOutbFD
 
-		fig, axs = plt.subplots(4, 2, figsize = (16, 8))
-		for yind in range(0, 4):
-			for xind in range(0, 2):
-				ind = 2*yind + xind
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
 				if ind == 1:
 					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
@@ -2689,6 +2707,8 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/pi0OutbFDexcl.pdf")
+		plt.savefig("plots/ch5/pi0OutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
