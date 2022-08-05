@@ -2384,7 +2384,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf", bbox_extra_artists = [lgd])
 		plt.clf()
@@ -2411,7 +2411,7 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind])
 		plt.tight_layout()
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend([handles[idx] for idx in order_pol],[labels[idx] for idx in order_pol], loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
