@@ -2384,7 +2384,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2411,7 +2411,7 @@ if chapter == 5:
 					axs[yind, xind].set_xlabel(title[ind])
 		plt.tight_layout()
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2430,8 +2430,6 @@ if chapter == 5:
 				simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				if ind == 1:
-					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
 				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
@@ -2439,7 +2437,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2465,7 +2463,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2488,7 +2486,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2501,8 +2499,6 @@ if chapter == 5:
 		for yind in range(0, 2):
 			for xind in range(0, 4):
 				ind = 4*yind + xind
-				if ind == 1:
-					axs[yind, xind].axvline(35, color = 'k', linestyle = '--')
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2513,7 +2509,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2578,7 +2574,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsOutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2608,7 +2604,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsOutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2622,8 +2618,6 @@ if chapter == 5:
 		for yind in range(0, 2):
 			for xind in range(0, 4):
 				ind = 4*yind + xind
-				if ind == 1:
-					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
 				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
@@ -2636,7 +2630,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/dvcsOutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2662,7 +2656,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0OutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2684,7 +2678,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0OutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
@@ -2696,8 +2690,6 @@ if chapter == 5:
 		for yind in range(0, 2):
 			for xind in range(0, 4):
 				ind = 4*yind + xind
-				if ind == 1:
-					axs[yind, xind].axvline(40, color = 'k', linestyle = '--')
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
@@ -2708,7 +2700,7 @@ if chapter == 5:
 				else:
 					axs[yind, xind].set_xlabel(title[ind])
 		handles, labels = axs[0, 0].get_legend_handles_labels()
-		lgd = plt.figlegend(handles,labels, loc='upper left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.4))
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
 		plt.savefig("plots/ch5/pi0OutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
