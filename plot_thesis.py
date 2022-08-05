@@ -1422,6 +1422,12 @@ if chapter == 4:
 		exit()
 
 	elif args.figureofmerit == "benchmark":
+		pgf_with_latex["axes.labelsize"] = 40		# default font size
+		pgf_with_latex["axes.titlesize"] = 40		# default font size
+		pgf_with_latex["xtick.labelsize"] =  40			# x axis tick label size
+		pgf_with_latex["ytick.labelsize"] =  40			# y axis tick label 
+		matplotlib.rcParams.update(pgf_with_latex)
+
 		columns_needed = ["Pp", "Ptheta", "Pphi", "GenPp", "GenPtheta", "GenPphi", "Psector", "MM2_ep"]
 
 		print("reading inbending no corr..")
