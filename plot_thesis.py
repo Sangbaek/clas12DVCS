@@ -2553,10 +2553,10 @@ if chapter == 5:
 		plt.clf()
 
 	else:
-		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/dvcs/"
-		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/bkg_1g/"
-		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/bkg_2g/"
-		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_eb/outb/exp/"
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/"
 
 		#epg Exp
 		epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
