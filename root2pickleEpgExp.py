@@ -13,7 +13,7 @@ pd.options.mode.chained_assignment = None
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, width = "mid", nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, width = "mid", nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False, allowduplicates = False):
         '''
             clas init.
             Args
@@ -54,7 +54,7 @@ class root2pickle():
         self.saveDVpi0vars()
         self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
         self.pi02gSubtraction()
-        self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
+        self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
         self.save()
 
     def readFile(self):
@@ -1082,7 +1082,7 @@ class root2pickle():
 
         self.df_epg = df_epg
 
-    def makeDVCS(self, pol = "inbending", nofid = False, allowsamesector = False):
+    def makeDVCS(self, pol = "inbending", nofid = False, allowsamesector = False, allowduplicates = False):
         #make dvcs pairs
         df_dvcs = self.df_epg
 
@@ -1360,10 +1360,13 @@ class root2pickle():
 
         df_dvcs = df_dvcs[df_dvcs.config>0]
 
-        # dealing with duplicates
-        df_dvcs = df_dvcs.sort_values(by=['reconGam', 'closeness2'], ascending = [True, True])
-        df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
-        df_dvcs = df_dvcs.sort_values(by='event')
+        if allowduplicates:
+            pass
+        else:
+            # dealing with duplicates
+            df_dvcs = df_dvcs.sort_values(by=['reconGam', 'closeness2'], ascending = [True, True])
+            df_dvcs = df_dvcs.loc[~df_dvcs.event.duplicated(), :]
+            df_dvcs = df_dvcs.sort_values(by='event')
 
         self.df_dvcs = df_dvcs                        
 
@@ -1396,6 +1399,7 @@ if __name__ == "__main__":
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
+    parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
 
     args = parser.parse_args()
 
@@ -1404,7 +1408,7 @@ if __name__ == "__main__":
     if args.entry_stop:
         args.entry_stop = int(args.entry_stop)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates)
     df = converter.df
 
     df.to_pickle(args.out)
