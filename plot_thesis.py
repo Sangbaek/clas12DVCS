@@ -2474,8 +2474,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2523,8 +2523,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2574,8 +2574,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2622,8 +2622,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2667,8 +2667,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2712,8 +2712,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2799,8 +2799,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2852,8 +2852,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2902,8 +2902,8 @@ if chapter == 5:
 				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
 				simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2950,8 +2950,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -2995,8 +2995,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -3039,8 +3039,8 @@ if chapter == 5:
 				ind = 4*yind + xind
 				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
 				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='b', linewidth=1, label = 'Experimental Data')
-				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "Simulation")
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 				axs[yind, xind].set_title(title[ind])
 				if (unit[ind]):
 					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
