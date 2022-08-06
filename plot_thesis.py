@@ -2511,8 +2511,8 @@ if chapter == 5:
 		plt.clf()
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		dvcsPthetahist, bins = np.histogram(dvcsSample.loc[(dvcsSample.config>1), "Ptheta"], bins = np.linspace(60, 70, 101))
-		expPthetahist, bins = np.histogram(expSample.loc[(expSample.config>1), "Ptheta"], bins = np.linspace(60, 70, 101))
+		dvcsPthetahist, bins = np.histogram(dvcsSample.loc[(dvcsSample.config>1), "Ptheta"], bins = np.linspace(60, 66, 101))
+		expPthetahist, bins = np.histogram(expSample.loc[(expSample.config>1), "Ptheta"], bins = np.linspace(60, 66, 101))
 		bincenters = (bins[:-1] + bins[1:])/2
 		axs.errorbar(bincenters, expPthetahist/np.sum(expPthetahist)/ (dvcsPthetahist/np.sum(dvcsPthetahist)), xerr = 0.03, yerr =expPthetahist/np.sum(expPthetahist)/ (dvcsPthetahist/np.sum(dvcsPthetahist))*np.sqrt(1/dvcsPthetahist + 1/expPthetahist), linestyle = '', color = 'k')
 		axs.axvline(64.23, color = 'k', linestyle = '--')
@@ -2526,8 +2526,8 @@ if chapter == 5:
 		axs.set_xlabel(r"$\theta_{p'}$"+ " ["+degree+"]")
 		axs.set_ylabel(r"$n_{exp.}/n_{sim.}$")
 		axs.set_xlim([60, 70])
-		axs.set_xticks([60, 62, 64.23, 66, 68, 70])
-		axs.set_xticklabels([60, 62, 64.23, 66, 68, 70])
+		axs.set_xticks([60, 62, 64.23, 66])
+		axs.set_xticklabels([60, 62, 64.23, 66])
 		axs.set_title("(b)", loc = 'left')
 		axs.set_yticks([0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5])
 		axs.set_ylim([0.75, 2.5])
