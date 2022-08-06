@@ -12,13 +12,13 @@ from utils.const import *
 from utils.physics import *
 
 df_logistics1 = pd.DataFrame()
-file1 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT/exp/inb/dvcs.root")
+file1 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT_eb/exp/inb/dvcs.root")
 df_logistics2 = pd.DataFrame()
-file2 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT/exp/inb/pi0.root")
+file2 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT_eb/exp/inb/pi0.root")
 df_logistics3 = pd.DataFrame()
-file3 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT/exp/outb/dvcs.root")
+file3 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT_eb/exp/outb/dvcs.root")
 df_logistics4 = pd.DataFrame()
-file4 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT/exp/outb/pi0.root")
+file4 = uproot.open("/volatile/clas12/sangbaek/nov2021/convROOT_eb/exp/outb/pi0.root")
 tree1 = file1["T"]
 tree2 = file2["T"]
 tree3 = file3["T"]
