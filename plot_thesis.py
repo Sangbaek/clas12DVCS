@@ -2525,7 +2525,7 @@ if chapter == 5:
 				break
 		axs.set_xlabel(r"$\theta_{p'}$"+ " ["+degree+"]")
 		axs.set_ylabel(r"$n_{exp.}/n_{sim.}$")
-		axs.set_xlim([60, 70])
+		axs.set_xlim([60, 66])
 		axs.set_xticks([60, 62, 64.23, 66])
 		axs.set_xticklabels([60, 62, 64.23, 66])
 		axs.set_title("(b)", loc = 'left')
