@@ -371,7 +371,7 @@ def gammaFiducialCounting(df_gammaRec):
 	exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
 	df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid_FT"] = 0
 
-	df_gammaRec.loc[:, "GFid"] = df_gammaRec.GFid_beta * df_gammaRec.GFid_Pcal * df_gammaRec.GFid_Pcal * df_gammaRec.GFid_FT 
+	df_gammaRec.loc[:, "GFid"] = df_gammaRec.GFid_beta * df_gammaRec.GFid_Pcal1 * df_gammaRec.GFid_Pcal2 * df_gammaRec.GFid_FT 
 	return df_gammaRec
 
 def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
