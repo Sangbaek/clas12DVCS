@@ -2507,13 +2507,13 @@ if chapter == 5:
 		OutbSim_effect_PGft = sum(OutbSim.loc[OutbSim.Psector < 7, "GFid_FT"])/len(OutbSim.loc[OutbSim.Psector < 7, "GFid_FT"])
 
 		print("&Exp. Inb.&Sim. Inb. &Exp. Outb.&Sim. Outb. \\\\hline")
-		print("$e'$ PCAL1 &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Epcal, InbSim_effect_Epcal, OutbExp_effect_Epcal, OutbSim_effect_Epcal))
-		print("$e'$ PCAL2 &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Edw, InbSim_effect_Edw, OutbExp_effect_Edw, OutbSim_effect_Edw))
-		print("$e'$ DC &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Edc, InbSim_effect_Edc, OutbExp_effect_Edc, OutbSim_effect_Edc))
-		print("$e'$ SF &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Esf, InbSim_effect_Esf, OutbExp_effect_Esf, OutbSim_effect_Esf))
-		print("$e'$ $vz$ &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Evz, InbSim_effect_Evz, OutbExp_effect_Evz, OutbSim_effect_Evz))
-		print("$e'$ $E_{dep.}$ &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Eedep, InbSim_effect_Eedep, OutbExp_effect_Eedep, OutbSim_effect_Eedep))
-		print("$e'$ anti-$\pi^-$ &{}&{}&{}&{} \\\\hline".format(InbExp_effect_Eap, InbSim_effect_Eap, OutbExp_effect_Eap, OutbSim_effect_Eap))
+		print("$e'$ PCAL1 &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Epcal, 100*InbSim_effect_Epcal, 100*OutbExp_effect_Epcal, 100*OutbSim_effect_Epcal))
+		print("$e'$ PCAL2 &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Edw, 100*InbSim_effect_Edw, 100*OutbExp_effect_Edw, 100*OutbSim_effect_Edw))
+		print("$e'$ DC &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Edc, 100*InbSim_effect_Edc, 100*OutbExp_effect_Edc, 100*OutbSim_effect_Edc))
+		print("$e'$ SF &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Esf, 100*InbSim_effect_Esf, 100*OutbExp_effect_Esf, 100*OutbSim_effect_Esf))
+		print("$e'$ $vz$ &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Evz, 100*InbSim_effect_Evz, 100*OutbExp_effect_Evz, 100*OutbSim_effect_Evz))
+		print("$e'$ $E_\{dep.\}$ &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Eedep, 100*InbSim_effect_Eedep, 100*OutbExp_effect_Eedep, 100*OutbSim_effect_Eedep))
+		print("$e'$ anti-$\pi^-$ &{:.1f}%&{:.1f}%&{:.1f}%&{:.1f}% \\\\hline".format(100*InbExp_effect_Eap, 100*InbSim_effect_Eap, 100*OutbExp_effect_Eap, 100*OutbSim_effect_Eap))
 		print("\n")
 
 
