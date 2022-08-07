@@ -2424,10 +2424,10 @@ if chapter == 5:
 		OutbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/exp/dvcs.pkl")
 		OutbSim = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/dvcs/4907.pkl")
 
-		print("duplicated numbers Inb. Exp.: {} out of total {}".format(len(InbExp) - len(InbExp.event.unique())), len(InbExp))
-		print("duplicated numbers Inb. Sim.: {} out of total {}".format(len(InbSim) - len(InbSim.event.unique())), len(InbSim))
-		print("duplicated numbers Outb. Exp.: {} out of total {}".format(len(OutbExp) - len(OutbExp.event.unique())), len(OutbExp))
-		print("duplicated numbers Outb. Sim.: {} out of total {}".format(len(OutbSim) - len(OutbSim.event.unique())), len(OutbSim))
+		print("duplicated numbers Inb. Exp.: {} out of total {}".format(len(InbExp) - len(InbExp.event.unique()), len(InbExp)))
+		print("duplicated numbers Inb. Sim.: {} out of total {}".format(len(InbSim) - len(InbSim.event.unique()), len(InbSim)))
+		print("duplicated numbers Outb. Exp.: {} out of total {}".format(len(OutbExp) - len(OutbExp.event.unique()), len(OutbExp)))
+		print("duplicated numbers Outb. Sim.: {} out of total {}".format(len(OutbSim) - len(OutbSim.event.unique()), len(OutbSim)))
 
 		electronFiducialCounting(InbExp, pol = "inbending", fidlevel = 'mid')
 
