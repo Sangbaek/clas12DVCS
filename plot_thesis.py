@@ -2424,10 +2424,10 @@ if chapter == 5:
 		OutbExp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/exp/dvcs.pkl"
 		OutbSim = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/dvcs/4907.pkl"
 
-		print("duplicated numbers Inb. Exp.: {}"format(len(InbExp) - len(InbExp.event.unique())))
-		print("duplicated numbers Inb. Sim.: {}"format(len(InbSim) - len(InbSim.event.unique())))
-		print("duplicated numbers Outb. Exp.: {}"format(len(OutbExp) - len(OutbExp.event.unique())))
-		print("duplicated numbers Outb. Sim.: {}"format(len(OutbSim) - len(OutbSim.event.unique())))
+		print("duplicated numbers Inb. Exp.: {}".format(len(InbExp) - len(InbExp.event.unique())))
+		print("duplicated numbers Inb. Sim.: {}".format(len(InbSim) - len(InbSim.event.unique())))
+		print("duplicated numbers Outb. Exp.: {}".format(len(OutbExp) - len(OutbExp.event.unique())))
+		print("duplicated numbers Outb. Sim.: {}".format(len(OutbSim) - len(OutbSim.event.unique())))
 
 		electronFiducialCounting(InbExp, pol = "inbending", fidlevel = 'mid')
 
