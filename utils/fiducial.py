@@ -172,6 +172,7 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 	df_electronRec.loc[:, "EFid_vz"] = 1
 	df_electronRec.loc[:, "EFid_edep"] = 1
 	df_electronRec.loc[:, "EFid_dc"] = 1
+	df_electronRec.loc[:, "EFid_ap"] = 1
 
 	#PCAL dead wires
 	exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
@@ -270,7 +271,7 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 	df_electronRec.loc[y_rot>=calc_max, "EFid_dc"] = 0
 
 	# #passElectronAntiPionCut
-	df_electronRec.loc[-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep, "EFid"] = 0
+	df_electronRec.loc[-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep, "EFid_ap"] = 0
 	return df_electronRec
 
 def gammaFiducialCounting(df_gammaRec):
