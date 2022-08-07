@@ -172,7 +172,7 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 	df_electronRec.loc[:, "EFid_dw"] = 1
 	df_electronRec.loc[:, "EFid_sf"] = 1
 	df_electronRec.loc[:, "EFid_vz"] = 1
-	df_electronRec.loc[:, "EFid_pcal"] = 1
+	df_electronRec.loc[:, "EFid_pcal1"] = 1
 	df_electronRec.loc[:, "EFid_vz"] = 1
 	df_electronRec.loc[:, "EFid_edep"] = 1
 	df_electronRec.loc[:, "EFid_dc"] = 1
@@ -242,11 +242,11 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 
 	# passElectronPCALFiducialCut
 	if fidlevel == 'mid':
-		df_electronRec.loc[df_electronRec.EcalV1 <= min_v, "EFid_pcal"] = 0
-		df_electronRec.loc[df_electronRec.EcalW1 <= min_w, "EFid_pcal"] = 0
+		df_electronRec.loc[df_electronRec.EcalV1 <= min_v, "EFid_pcal1"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1 <= min_w, "EFid_pcal1"] = 0
 	elif fidlevel == 'tight':
-		df_electronRec.loc[df_electronRec.EcalV1 <= min_v+10, "EFid_pcal"] = 0
-		df_electronRec.loc[df_electronRec.EcalW1 <= min_w+10, "EFid_pcal"] = 0
+		df_electronRec.loc[df_electronRec.EcalV1 <= min_v+10, "EFid_pcal1"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1 <= min_w+10, "EFid_pcal1"] = 0
 
 	#passElectronPCALEdepCut
 	df_electronRec.loc[df_electronRec.Eedep1 <= min_pcal_dep, "EFid_edep"] = 0
@@ -281,7 +281,8 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 	# #passElectronAntiPionCut
 	df_electronRec.loc[(df_electronRec.Ep>4.5)&(-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep), "EFid_ap"] = 0
 
-	df_electronRec.loc[:, "EFid"] = df_electronRec.EFid_dw*df_electronRec.EFid_sf*df_electronRec.EFid_vz*df_electronRec.EFid_pcal*df_electronRec.EFid_vz*df_electronRec.EFid_edep*df_electronRec.EFid_dc*df_electronRec.EFid_ap
+	df_electronRec.loc[:, "EFid_pcal"] = df_electronRec.loc[:, "EFid_pcal1"] * df_electronRec.loc[:, "EFid_dw"]
+	df_electronRec.loc[:, "EFid"] = df_electronRec.EFid_dw*df_electronRec.EFid_sf*df_electronRec.EFid_vz*df_electronRec.EFid_pcal1*df_electronRec.EFid_vz*df_electronRec.EFid_edep*df_electronRec.EFid_dc*df_electronRec.EFid_ap
 	return df_electronRec
 
 def gammaFiducialCounting(df_gammaRec):
