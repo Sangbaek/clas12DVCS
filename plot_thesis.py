@@ -2416,9 +2416,20 @@ if chapter == 5:
 		# print("$ub_{MPt_{e'p'\pi}}$&{}&{}&{}&{}&{}&\\".format())
 		# print("$ub_{\theta_{\pi^0_{det.}\pi^0_{rec.}}}$&{}&{}&{}&{}&{}&\\".format())
 		# print("$ub_{\phi_{\vec{H}\vec{\Pi}}}$&{}&{}&{}&{}&{}&\\".format())
-
-
 		exit()
+
+	if args.figureofmerit == "PID":
+		InbExp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/inb/exp/dvcs.pkl"
+		InbSim = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/inb/dvcs/4893.pkl"
+		OutbExp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/exp/dvcs.pkl"
+		OutbSim = "/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/dvcs/4907.pkl"
+
+		print("duplicated numbers Inb. Exp.: {}"format(len(InbExp) - len(InbExp.event.unique())))
+		print("duplicated numbers Inb. Sim.: {}"format(len(InbSim) - len(InbSim.event.unique())))
+		print("duplicated numbers Outb. Exp.: {}"format(len(OutbExp) - len(OutbExp.event.unique())))
+		print("duplicated numbers Outb. Sim.: {}"format(len(OutbSim) - len(OutbSim.event.unique())))
+
+		electronFiducialCounting(InbExp, pol = "inbending", fidlevel = 'mid')
 
 	if args.figureofmerit == "proton":
 		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr/inb/dvcs/4893.pkl")
