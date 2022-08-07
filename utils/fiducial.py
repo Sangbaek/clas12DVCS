@@ -276,7 +276,7 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 def gammaFiducialCounting(df_gammaRec):
 	df_gammaRec.loc[:, "GFid_beta"] = 1
 	df_gammaRec.loc[:, "GFid_Pcal1"] = 1
-	df_gammaRec.loc[:, "GFid_Pcal2"] = 1
+	df_gammaRec.loc[:, "GFid_Pcal2"] = 0
 	df_gammaRec.loc[:, "GFid_FT"] = 1
 	#passGammaPCALFiducialCut
 	df_gammaRec.loc[(df_gammaRec.GcalV1 <= g_min_v) & (df_gammaRec.Gsector<7), "GFid_Pcal1"] = 0
