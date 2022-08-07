@@ -2457,6 +2457,9 @@ if chapter == 5:
 		InbExp_effect_Gpcal1 = len(InbExp.loc[(InbExp.Gsector < 7) & (InbExp.GFid_Pcal1>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector < 7, "event"].unique())
 		InbExp_effect_Gpcal2 = len(InbExp.loc[(InbExp.Gsector < 7) & (InbExp.GFid_Pcal2>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector < 7, "event"].unique())
 		InbExp_effect_Gft = len(InbExp.loc[(InbExp.Gsector > 7) & (InbExp.GFid_FT>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector > 7, "event"].unique())
+		InbExp_effect_FDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==1), "event"].unique())/sum(InbExp.config==1)
+		InbExp_effect_CDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==2), "event"].unique())/sum(InbExp.config==2)
+		InbExp_effect_CDFT = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==3), "event"].unique())/sum(InbExp.config==3)
 
 		InbSim_effect_Epcal = len(InbSim.loc[InbSim.EFid_pcal>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
 		InbSim_effect_Edw = len(InbSim.loc[InbSim.EFid_dw>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
@@ -2473,6 +2476,9 @@ if chapter == 5:
 		InbSim_effect_Gpcal1 = len(InbSim.loc[(InbSim.Gsector < 7) & (InbSim.GFid_Pcal1>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector < 7, "event"].unique())
 		InbSim_effect_Gpcal2 = len(InbSim.loc[(InbSim.Gsector < 7) & (InbSim.GFid_Pcal2>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector < 7, "event"].unique())
 		InbSim_effect_Gft = len(InbSim.loc[(InbSim.Gsector > 7) & (InbSim.GFid_FT>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector > 7, "event"].unique())
+		InbSim_effect_FDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==1), "event"].unique())/sum(InbSim.config==1)
+		InbSim_effect_CDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==2), "event"].unique())/sum(InbSim.config==2)
+		InbSim_effect_CDFT = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==3), "event"].unique())/sum(InbSim.config==3)
 
 		OutbExp_effect_Epcal = len(OutbExp.loc[OutbExp.EFid_pcal>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
 		OutbExp_effect_Edw = len(OutbExp.loc[OutbExp.EFid_dw>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
@@ -2489,6 +2495,9 @@ if chapter == 5:
 		OutbExp_effect_Gpcal1 = len(OutbExp.loc[(OutbExp.Gsector < 7) & (OutbExp.GFid_Pcal1>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector < 7, "event"].unique())
 		OutbExp_effect_Gpcal2 = len(OutbExp.loc[(OutbExp.Gsector < 7) & (OutbExp.GFid_Pcal2>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector < 7, "event"].unique())
 		OutbExp_effect_Gft = len(OutbExp.loc[(OutbExp.Gsector > 7) & (OutbExp.GFid_FT>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector > 7, "event"].unique())
+		OutbExp_effect_FDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==1), "event"].unique())/sum(OutbExp.config==1)
+		OutbExp_effect_CDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==2), "event"].unique())/sum(OutbExp.config==2)
+		OutbExp_effect_CDFT = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==3), "event"].unique())/sum(OutbExp.config==3)
 
 		OutbSim_effect_Epcal = len(OutbSim.loc[OutbSim.EFid_pcal>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
 		OutbSim_effect_Edw = len(OutbSim.loc[OutbSim.EFid_dw>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
@@ -2505,6 +2514,9 @@ if chapter == 5:
 		OutbSim_effect_Gpcal1 = len(OutbSim.loc[(OutbSim.Gsector < 7) & (OutbSim.GFid_Pcal1>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector < 7, "event"].unique())
 		OutbSim_effect_Gpcal2 = len(OutbSim.loc[(OutbSim.Gsector < 7) & (OutbSim.GFid_Pcal2>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector < 7, "event"].unique())
 		OutbSim_effect_Gft = len(OutbSim.loc[(OutbSim.Gsector > 7) & (OutbSim.GFid_FT>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector > 7, "event"].unique())
+		OutbSim_effect_FDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==1), "event"].unique())/sum(OutbSim.config==1)
+		OutbSim_effect_CDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==2), "event"].unique())/sum(OutbSim.config==2)
+		OutbSim_effect_CDFT = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==3), "event"].unique())/sum(OutbSim.config==3)
 
 		print("&Exp.&Sim.&Exp.:Sim.&Exp.&Sim.& Exp.:Sim.\\\\")
 		print("&Inb.&Inb. &Inb. &Outb.&Outb. &Outb. \\\\\hline")
@@ -2523,7 +2535,9 @@ if chapter == 5:
 		print("$\gamma$ PCAL1 &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gpcal1, 100*InbSim_effect_Gpcal1, 100*InbExp_effect_Gpcal1/InbSim_effect_Gpcal1, 100*OutbExp_effect_Gpcal1, 100*OutbSim_effect_Gpcal1, 100*OutbExp_effect_Gpcal1/OutbSim_effect_Gpcal2))
 		print("$\gamma$ PCAL2 &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gpcal2, 100*InbSim_effect_Gpcal2, 100*InbExp_effect_Gpcal2/InbSim_effect_Gpcal2, 100*OutbExp_effect_Gpcal2, 100*OutbSim_effect_Gpcal2, 100*OutbExp_effect_Gpcal2/OutbSim_effect_Gpcal2))
 		print("$\gamma$ FT &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Gft, 100*InbSim_effect_Gft, 100*InbExp_effect_Gft/InbSim_effect_Gft, 100*OutbExp_effect_Gft, 100*OutbSim_effect_Gft, 100*OutbExp_effect_Gft/OutbSim_effect_Gft))
-		print("$All PID cuts &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_entire, 100*InbSim_effect_entire, 100*InbExp_effect_entire/InbSim_effect_entire, 100*OutbExp_effect_entire, 100*OutbSim_effect_entire, 100*OutbExp_effect_entire/OutbSim_effect_entire))
+		print("$(FD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_FDFD, 100*InbSim_effect_FDFD, 100*InbExp_effect_FDFD/InbSim_effect_FDFD, 100*OutbExp_effect_FDFD, 100*OutbSim_effect_FDFD, 100*OutbExp_effect_FDFD/OutbSim_effect_FDFD))
+		print("$(CD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_CDFD, 100*InbSim_effect_CDFD, 100*InbExp_effect_CDFD/InbSim_effect_CDFD, 100*OutbExp_effect_CDFD, 100*OutbSim_effect_CDFD, 100*OutbExp_effect_CDFD/OutbSim_effect_CDFD))
+		print("$(CD, FT) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hhline".format(100*InbExp_effect_CDFT, 100*InbSim_effect_CDFT, 100*InbExp_effect_CDFT/InbSim_effect_CDFT, 100*OutbExp_effect_CDFT, 100*OutbSim_effect_CDFT, 100*OutbExp_effect_CDFT/OutbSim_effect_CDFT)+"{|=|=|=|=|=|=|=|}")
 		print("\n")
 		exit()
 

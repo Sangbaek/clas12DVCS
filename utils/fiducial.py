@@ -272,12 +272,15 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 
 	# #passElectronAntiPionCut
 	df_electronRec.loc[(df_electronRec.Ep>4.5)&(-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep), "EFid_ap"] = 0
+
+	df_electronRec.loc[:, "EFid"] = df_electronRec.EFid_dw*df_electronRec.EFid_sf*df_electronRec.EFid_vz*df_electronRec.EFid_pcal*df_electronRec.EFid_vz*df_electronRec.EFid_edep*df_electronRec.EFid_dc*df_electronRec.EFid_ap
 	return df_electronRec
 
 def gammaFiducialCounting(df_gammaRec):
 	df_gammaRec.loc[:, "GFid_beta"] = 1
 	df_gammaRec.loc[:, "GFid_Pcal1"] = 1
 	df_gammaRec.loc[:, "GFid_Pcal2"] = 0
+	df_gammaRec.loc[df_gammaRec.Gsector>7, "GFid_Pcal2"] = 1
 	df_gammaRec.loc[:, "GFid_FT"] = 1
 	#passGammaPCALFiducialCut
 	df_gammaRec.loc[(df_gammaRec.GcalV1 <= g_min_v) & (df_gammaRec.Gsector<7), "GFid_Pcal1"] = 0
@@ -368,6 +371,7 @@ def gammaFiducialCounting(df_gammaRec):
 	exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
 	df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid_FT"] = 0
 
+	df_gammaRec.loc[:, "GFid"] = df_gammaRec.GFid_beta * df_gammaRec.GFid_Pcal * df_gammaRec.GFid_Pcal * df_gammaRec.GFid_FT 
 	return df_gammaRec
 
 def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
@@ -489,4 +493,5 @@ def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
 	df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.vzdiff<vzdiffFD_S5_lb) | (df_protonRec.vzdiff>vzdiffFD_S5_ub)), "PFid_vz"] = 0
 	df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.vzdiff<vzdiffFD_S6_lb) | (df_protonRec.vzdiff>vzdiffFD_S6_ub)), "PFid_vz"] = 0
 
+	df_protonRec.loc[:, "PFid"] = df_protonRec.PFid_dc * df_protonRec.PFid_cvt * df_protonRec.PFid_chi * df_protonRec.PFid_vz 
 	return df_protonRec
