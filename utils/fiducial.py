@@ -245,8 +245,8 @@ def electronFiducialCounting(df_electronRec, pol = "inbending", mc = False, fidl
 		df_electronRec.loc[df_electronRec.EcalV1 <= min_v, "EFid_pcal"] = 0
 		df_electronRec.loc[df_electronRec.EcalW1 <= min_w, "EFid_pcal"] = 0
 	elif fidlevel == 'tight':
-		df_electronRec.loc[df_electronRec.EcalV1 <= min_v+5, "EFid_pcal"] = 0
-		df_electronRec.loc[df_electronRec.EcalW1 <= min_w+5, "EFid_pcal"] = 0
+		df_electronRec.loc[df_electronRec.EcalV1 <= min_v+10, "EFid_pcal"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1 <= min_w+10, "EFid_pcal"] = 0
 
 	#passElectronPCALEdepCut
 	df_electronRec.loc[df_electronRec.Eedep1 <= min_pcal_dep, "EFid_edep"] = 0
