@@ -2552,18 +2552,24 @@ if chapter == 5:
 		OutbSim.loc[:, "EFid"] = 1
 		OutbSim.loc[:, "PFid"] = 1
 		OutbSim.loc[:, "GFid"] = 1
+		for df_gammaRec in [InbExp, InbSim, OutbExp, OutbSim]:
+			ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+			GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+			GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+			df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
+			df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
 
 		electronFiducialCounting(InbExp, pol = "inbending", mc = False, fidlevel = 'tight')
-		protonFiducialCounting(InbExp, pol = "inbending")
+		protonFiducialCounting(InbExp, pol = "inbending", fidlevel = 'tight')
 		gammaFiducialCounting(InbExp)
 		electronFiducialCounting(InbSim, pol = "inbending", mc = True, fidlevel = 'tight')
-		protonFiducialCounting(InbSim, pol = "inbending")
+		protonFiducialCounting(InbSim, pol = "inbending", fidlevel = 'tight')
 		gammaFiducialCounting(InbSim)
 		electronFiducialCounting(OutbExp, pol = "outbending", mc = False, fidlevel = 'tight')
-		protonFiducialCounting(OutbExp, pol = "outbending")
+		protonFiducialCounting(OutbExp, pol = "outbending", fidlevel = 'tight')
 		gammaFiducialCounting(OutbExp)
 		electronFiducialCounting(OutbSim, pol = "outbending", mc = True, fidlevel = 'tight')
-		protonFiducialCounting(OutbSim, pol = "outbending")
+		protonFiducialCounting(OutbSim, pol = "outbending", fidlevel = 'tight')
 		gammaFiducialCounting(OutbSim)
 
 		InbExp_effect_Epcal = len(InbExp.loc[InbExp.EFid_pcal>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
