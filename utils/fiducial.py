@@ -67,8 +67,12 @@ def electronFiducial(df_electronRec, pol = "inbending", mc = False, fidlevel = '
 	df_electronRec.loc[df_electronRec.Evz >= max_vz, "EFid"] = 0
 
 	# passElectronPCALFiducialCut
-	df_electronRec.loc[df_electronRec.EcalV1 <= min_v, "EFid"] = 0
-	df_electronRec.loc[df_electronRec.EcalW1 <= min_w, "EFid"] = 0
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.EcalV1 <= min_v, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1 <= min_w, "EFid"] = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.EcalV1 <= min_v+5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1 <= min_w+5, "EFid"] = 0
 
 	#passElectronPCALEdepCut
 	df_electronRec.loc[df_electronRec.Eedep1 <= min_pcal_dep, "EFid"] = 0
