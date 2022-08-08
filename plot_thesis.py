@@ -2356,9 +2356,9 @@ if chapter == 5:
 		ax.axvline(5420, color = 'g', linestyle = '--')
 		ax.axvline(5504, color = 'k', linestyle = '--')
 		ax.errorbar(runNum, hist/charges_QA, linestyle = '', marker = 'o', yerr = np.sqrt(hist)/charges_QA, markersize = 5, color = 'k')
-		ax.ylim([0, 0.025])
-		ax.ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
-		ax.xlabel("Run Number")
+		ax.set_ylim([0, 0.025])
+		ax.set_ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
+		ax.set_xlabel("Run Number")
 		plt.savefig("plots/ch5/QAplot.pdf")
 		exit()
 
