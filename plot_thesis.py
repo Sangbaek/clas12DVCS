@@ -2360,6 +2360,7 @@ if chapter == 5:
 		ax.ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
 		ax.xlabel("Run Number")
 		plt.savefig("plots/ch5/QAplot.pdf")
+		exit()
 
 	if args.figureofmerit == "tables":
 		#DVCS 3sigma
