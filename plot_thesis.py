@@ -2356,11 +2356,94 @@ if chapter == 5:
 		ax.axvline(5420, color = 'g', linestyle = '--')
 		ax.axvline(5504, color = 'k', linestyle = '--')
 		ax.errorbar(runNum, hist/charges_QA, linestyle = '', marker = 'o', yerr = np.sqrt(hist)/charges_QA, markersize = 5, color = 'k')
-		ax.set_ylim([0, 0.025])
+		ax.set_ylim([0, 0.02])
+		ax.set_xlim([5000, 5700])
 		ax.set_ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
 		ax.set_xlabel("Run Number")
+		plt.tight_layout() 
 		plt.savefig("plots/ch5/QAplot.pdf")
 		exit()
+
+	if args.figureofmerit == "binning":
+
+		InbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/dvcs.pkl")
+		OutbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/dvcs.pkl")
+
+		epgExp = pd.concat([InbExp, OutbExp])
+
+		fig, ax = plt.subplots(1,1, figsize=(8, 5))
+		h = plt.hist2d(epgExp.loc[:, "xB"], epgExp.loc[:, "Q2"], bins = [np.linspace(0.05, 0.75, 201), np.linspace(0.8, 12, 201)], cmin = 1, cmap = cmap, norm=LogNorm())
+		plt.colorbar(h[3])
+
+		l1 = np.linspace(x1, x3, 101)
+		plt.plot(l1, l1*2*M*(10.604-2), color = 'k', linewidth = 7)
+		l2 = np.linspace(x1, x2, 101)
+		plt.plot(l2, 1+l2*0, color = 'k', linewidth = 7)
+		l4 = np.linspace(x3, x4, 101)
+		plt.plot(l4, 2*10.604*M*l4/(1+M*l4/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 7)
+		l4 = np.linspace(x2, x4, 101)
+		plt.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'k', linewidth = 7)
+
+		ax.plot(np.linspace(c0,c0, 101), np.linspace(y1, y2, 101), color='k')
+		ax.plot(np.linspace(c1,c1, 101), np.linspace(y1, np.sqrt(y2*y3), 101), color='k')
+		ax.plot(np.linspace(c2,c2, 101), np.linspace(y1, y3, 101), color='k')
+		ax.plot(np.linspace(c3,c3, 101), np.linspace(y1, np.sqrt(y3*y4), 101), color='k')
+		ax.plot(np.linspace(c4,c4, 101), np.linspace((4 - M*M)*c4/(1 - c4), y4, 101), color='k')
+		ax.plot(np.linspace(c5,c5, 101), np.linspace(np.sqrt(y2*y3), np.sqrt(y4*y5), 101), color='k')
+		ax.plot(np.linspace(d2,d2, 101), np.linspace(y3, 7, 101), color='k')
+		ax.plot(np.linspace(d4,d4, 101), np.linspace(y4, 7, 101), color='k')
+		newxBbins2 = [x1, c0, c1, c2, c3, c4, c5, d2, d4]
+		newQ2bins2 = [y1, 1.2, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), 7]
+
+		for x in newxBbins2:
+		    ax.axvline(x, alpha = 0.1)
+		for y in newQ2bins2:
+		    ax.axhline(y, alpha = 0.1)
+
+		ax.plot(np.linspace((x1+c0)/2, c4, 101), np.linspace(1.2, 1.2, 101), color='k')
+		ax.plot(np.linspace(c0, d0, 101), np.linspace(y2, y2, 101), color='k')
+		ax.plot(np.linspace(c1, d1, 101), np.linspace(np.sqrt(y2*y3), np.sqrt(y2*y3), 101), color='k')
+		ax.plot(np.linspace(c2, d2, 101), np.linspace(y3, y3, 101), color='k')
+		ax.plot(np.linspace(c3, d3, 101), np.linspace(np.sqrt(y3*y4), np.sqrt(y3*y4), 101), color='k')
+		ax.plot(np.linspace(c4, d4, 101), np.linspace(y4, y4, 101), color='k')
+		ax.plot(np.linspace(c5, d5, 101), np.linspace(np.sqrt(y4*y5), np.sqrt(y4*y5), 101), color='k')
+		ax.plot(np.linspace(c6, d6, 101), np.linspace(y5, y5, 101), color='k')
+
+
+		ax.set_xlabel(r"$x_B$" ,fontsize = 30)
+		ax.set_ylabel(r"$Q^2$" +" ["+GeVc2+"]", fontsize = 30)
+		# ax.set_xscale('log')
+		# ax.set_yscale('log')
+
+		ax.set_xlim([0.0, 0.8])
+		ax.set_ylim([0.8, 12])
+
+		ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8])
+		ax.set_xticklabels([0.0, 0.2, 0.4, 0.6, 0.8])
+		ax.set_yticks([1, 2, 3, 4, 5, 6, 7, 12])
+		ax.set_yticklabels([1, 2, 3, 4, 5, 6, 7, 12])
+		# yminorticks = [0.8, 0.9, 2, 4, 6, 7, 8, 9, 11]
+		# yminorticklabels = ['' for i in yminorticks]
+		# ax.set_yticks([0.8, 0.9, 2, 4, 6, 7, 8, 9, 11], minor = True)
+		# ax.set_yticklabels(yminorticklabels, minor = True)
+
+
+		# ax.set_xticks([0.05, 0.1, 0.3, 0.5, 0.8])
+		# ax.set_xticklabels([0.05, 0.1, 0.3, 0.5, 0.8])
+		# ax.set_yticks([1, 3, 5, 10, 12])
+		# ax.set_yticklabels([1, 3, 5, 10, 12])
+		# yminorticks = [0.8, 0.9, 2, 4, 6, 7, 8, 9, 11]
+		# yminorticklabels = ['' for i in yminorticks]
+		# ax.set_yticks([0.8, 0.9, 2, 4, 6, 7, 8, 9, 11], minor = True)
+		# ax.set_yticklabels(yminorticklabels, minor = True)
+
+		ax.xaxis.set_tick_params(width=3, size =10)
+		ax.xaxis.set_tick_params(width=1, size = 5, which = 'minor')
+		ax.yaxis.set_tick_params(width=3, size = 10)
+		ax.yaxis.set_tick_params(width=1, size = 5, which = 'minor')
+		plt.tight_layout()
+		plt.savefig("plots/ch5/Q2xB_binning_revisited.pdf")
+
 
 	if args.figureofmerit == "tables":
 		#DVCS 3sigma
