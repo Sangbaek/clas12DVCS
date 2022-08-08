@@ -2331,6 +2331,36 @@ if chapter == 5:
 	'''
 	data set 4: without fiducial cut. full momentum correction cuts. (nominal)
 	'''
+	if args.figureofmerit == "QA":
+
+		InbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/dvcs.pkl")
+		OutbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/dvcs.pkl")
+
+		epgExp = pd.concat([InbExp, OutbExp])
+		runNum = np.sort(epgExp.RunNum.unique())
+		charges = []
+		charges_QA = []
+		for run in runNum:
+		#     charges.append(epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].max() - epgExpQA.loc[epgExpQA.RunNum==run, "beamQ"].min())
+		    charges_QA.append(epgExp.loc[epgExp.RunNum==run, "beamQ_QA"].max())
+		charges = np.array(charges)
+		charges_QA = np.array(charges_QA)		
+
+		hist, bins = np.histogram(epgExp.RunNum, bins = createBinEdges(np.sort(runNum)))
+
+		fig, ax = plt.subplots(1, 1, figsize = (8,5))
+		ax.axvline(5032, color = 'k', linestyle = '--')
+		ax.axvline(5334, color = 'k', linestyle = '--')
+		#45 nA
+		ax.axvline(5368, color = 'k', linestyle = '--')#55nA
+		ax.axvline(5420, color = 'g', linestyle = '--')
+		ax.axvline(5504, color = 'k', linestyle = '--')
+		ax.errorbar(runNum, hist/charges_QA, linestyle = '', marker = 'o', yerr = np.sqrt(hist)/charges_QA, markersize = 5, color = 'k')
+		ax.ylim([0, 0.025])
+		ax.ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
+		ax.xlabel("Run Number")
+		plt.savefig("plots/ch5/QAplot.pdf")
+
 	if args.figureofmerit == "tables":
 		#DVCS 3sigma
 		print("&Inb.&Inb.&Inb.&Outb.&Outb.&Outb. \\\\")
