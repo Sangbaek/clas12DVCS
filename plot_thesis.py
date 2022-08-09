@@ -2372,13 +2372,13 @@ if chapter == 5:
 		plt.colorbar(h[3])
 
 		l1 = np.linspace(x1, x3, 101)
-		ax.plot(l1, l1*2*M*(10.604-2), color = 'b', linewidth = 5)
+		ax.plot(l1, l1*2*M*(10.604-2), color = 'g', linewidth = 5)
 		l2 = np.linspace(x1, x2, 101)
-		ax.plot(l2, 1+l2*0, color = 'g', linewidth = 5)
+		ax.plot(l2, 1+l2*0, color = 'b', linewidth = 5)
 		l4 = np.linspace(x3, x4, 101)
 		ax.plot(l4, 2*10.604*M*l4/(1+M*l4/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 5)
 		l4 = np.linspace(x2, x4, 101)
-		ax.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'k', linewidth = 5)
+		ax.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'r', linewidth = 5)
 
 		ax.plot(np.linspace(c0,c0, 101), np.linspace(y1, y2, 101), color='k')
 		ax.plot(np.linspace(c1,c1, 101), np.linspace(y1, np.sqrt(y2*y3), 101), color='k')
