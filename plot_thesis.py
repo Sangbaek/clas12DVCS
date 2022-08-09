@@ -2348,7 +2348,7 @@ if chapter == 5:
 
 		hist, bins = np.histogram(epgExp.RunNum, bins = createBinEdges(np.sort(runNum)))
 
-		fig, ax = plt.subplots(1, 1, figsize = (8,5))
+		fig, ax = plt.subplots(1, 1, figsize = (15,5))
 		ax.axvline(5032, color = 'k', linestyle = '--')
 		ax.axvline(5334, color = 'k', linestyle = '--')
 		#45 nA
@@ -2366,23 +2366,15 @@ if chapter == 5:
 		ax.set_xlabel("Run Number")
 		plt.tight_layout() 
 		plt.savefig("plots/ch5/QAplot.pdf")
-		exit()
-
-	if args.figureofmerit == "binning":
-
-		InbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/dvcs.pkl")
-		OutbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/dvcs.pkl")
-
-		epgExp = pd.concat([InbExp, OutbExp])
 
 		fig, ax = plt.subplots(1,1, figsize=(8, 5))
 		h = plt.hist2d(epgExp.loc[:, "xB"], epgExp.loc[:, "Q2"], bins = [np.linspace(0.05, 0.75, 201), np.linspace(0.8, 12, 201)], cmin = 1, cmap = cmap, norm=LogNorm())
 		plt.colorbar(h[3])
 
 		l1 = np.linspace(x1, x3, 101)
-		ax.plot(l1, l1*2*M*(10.604-2), color = 'k', linewidth = 5)
+		ax.plot(l1, l1*2*M*(10.604-2), color = 'b', linewidth = 5)
 		l2 = np.linspace(x1, x2, 101)
-		ax.plot(l2, 1+l2*0, color = 'k', linewidth = 5)
+		ax.plot(l2, 1+l2*0, color = 'g', linewidth = 5)
 		l4 = np.linspace(x3, x4, 101)
 		ax.plot(l4, 2*10.604*M*l4/(1+M*l4/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 5)
 		l4 = np.linspace(x2, x4, 101)
