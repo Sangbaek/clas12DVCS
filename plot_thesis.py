@@ -2357,7 +2357,11 @@ if chapter == 5:
 		ax.axvline(5504, color = 'k', linestyle = '--')
 		ax.errorbar(runNum, hist/charges_QA, linestyle = '', marker = 'o', yerr = np.sqrt(hist)/charges_QA, markersize = 5, color = 'k')
 		ax.set_ylim([0, 0.02])
+		ax.set_yticks([0, 0.01, 0.02])
+		ax.set_yticklabels(['', 0.01, 0.02])
 		ax.set_xlim([5000, 5700])
+		ax.set_xticks([5000, 5100, 5200, 5300, 5400, 5500, 5600, 5700])
+		ax.set_xticklabels([5000, 5100, 5200, 5300, 5400, 5500, 5600, 5700])
 		ax.set_ylabel(r"$N_{e'p'\gamma}/Q$" +" [1/nC]")
 		ax.set_xlabel("Run Number")
 		plt.tight_layout() 
@@ -2376,13 +2380,13 @@ if chapter == 5:
 		plt.colorbar(h[3])
 
 		l1 = np.linspace(x1, x3, 101)
-		plt.plot(l1, l1*2*M*(10.604-2), color = 'k', linewidth = 7)
+		ax.plot(l1, l1*2*M*(10.604-2), color = 'k', linewidth = 5)
 		l2 = np.linspace(x1, x2, 101)
-		plt.plot(l2, 1+l2*0, color = 'k', linewidth = 7)
+		ax.plot(l2, 1+l2*0, color = 'k', linewidth = 5)
 		l4 = np.linspace(x3, x4, 101)
-		plt.plot(l4, 2*10.604*M*l4/(1+M*l4/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 7)
+		ax.plot(l4, 2*10.604*M*l4/(1+M*l4/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 5)
 		l4 = np.linspace(x2, x4, 101)
-		plt.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'k', linewidth = 7)
+		ax.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'k', linewidth = 5)
 
 		ax.plot(np.linspace(c0,c0, 101), np.linspace(y1, y2, 101), color='k')
 		ax.plot(np.linspace(c1,c1, 101), np.linspace(y1, np.sqrt(y2*y3), 101), color='k')
@@ -2416,12 +2420,12 @@ if chapter == 5:
 		# ax.set_yscale('log')
 
 		ax.set_xlim([0.0, 0.8])
-		ax.set_ylim([0.8, 12])
+		ax.set_ylim([0.8, 7])
 
 		ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8])
 		ax.set_xticklabels([0.0, 0.2, 0.4, 0.6, 0.8])
-		ax.set_yticks([1, 2, 3, 4, 5, 6, 7, 12])
-		ax.set_yticklabels([1, 2, 3, 4, 5, 6, 7, 12])
+		ax.set_yticks([1, 2, 3, 4, 5, 6, 7])
+		ax.set_yticklabels([1, 2, 3, 4, 5, 6, 7])
 		# yminorticks = [0.8, 0.9, 2, 4, 6, 7, 8, 9, 11]
 		# yminorticklabels = ['' for i in yminorticks]
 		# ax.set_yticks([0.8, 0.9, 2, 4, 6, 7, 8, 9, 11], minor = True)
