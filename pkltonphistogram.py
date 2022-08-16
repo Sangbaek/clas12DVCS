@@ -30,19 +30,19 @@ if __name__ == "__main__":
 	else:
 		kstart = len(collection_xBbins) - 1
 
-	if jobnum in [*runs_inb_vgg50nA, *runs_inb_vgg55nA, *runs_inb_vgg45nA, *runs_inb_vgg0nA]:
+	if jobnum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 		pol = "inb"
 		mode = "dvcs"
 
-	if jobnum in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg0nA, *runs_outb_vgg40nAT]:
+	if jobnum in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg40nAT]:
 		pol = "outb"
 		mode = "dvcs"
 
-	if jobnum in [*runs_inb_bh50nA, *runs_inb_bh45nA]:
+	if jobnum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 		pol = "inb"
 		mode = "bh"
 
-	if jobnum in runs_outb_bh50nA:
+	if jobnum in [*runs_outb_bh50nA, *runs_outb_bh40nA, *runs_outb_bh40nAT]:
 		pol = "outb"
 		mode = "bh"
 
