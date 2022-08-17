@@ -2955,7 +2955,7 @@ if args.saveplot2:
 
 if args.saveplot:
 
-	Normalization = .745
+	Normalization = .75
 
 	for k in range(kstart, kend):
 
@@ -4080,7 +4080,7 @@ if args.accplot:
 	axs.set_yticklabels([0, 0.02, 0.04, 0.06, 0.08])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_ylabel("Effective Acceptances", fontsize = 30)
-	axs.set_title("(b)  Effective Acceptances", fontsize = 30)
+	axs.set_title("(c)  Effective Acceptances", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
