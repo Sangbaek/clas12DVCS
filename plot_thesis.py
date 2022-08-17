@@ -2527,7 +2527,7 @@ if chapter == 5:
 			# [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0]
 			# [1.000, 1.200, 1.456, 1.912, 2.510, 3.295, 4.326, 5.761, 7.000]
 			# [0.062, 0.090, 0.118, 0.155, 0.204, 0.268, 0.357, 0.446, 0.581]
-			return len(df.loc[df.config==config & (df.t1 > 0.11) & (df.t1<1) & (df.xB>x1) & (df.xB<d2) & (df.Q2>1) & (df.Q2<7), :])
+			return len(df.loc[(df.config==config) & (df.t1 > 0.11) & (df.t1<1) & (df.xB>x1) & (df.xB<d2) & (df.Q2>1) & (df.Q2<7), :])
 		print("reading bh-dvcs")
 		for run in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 			dfs = []
