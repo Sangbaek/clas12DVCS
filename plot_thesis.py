@@ -2647,7 +2647,24 @@ if chapter == 5:
 		print("\\end{tabular}")
 		print("\\label{tab:recstat}")
 		print("\\end{table}")
-
+		# results
+		# \begin{tabular}{cccccc}\hline\hline
+		# & Configuration & BH   & BH-DVCS & DV$\pi^0$P & DV$\pi^0$P Misidentified\ \hline
+		# \multirow{6}{*}{Inb.}&Sim. (FD, FD)& 94665 & 307591 & 207080 & 95903    \\
+		# &Sim. (CD, FD)  & 442125 & 607018 & 139242  & 27050  \\
+		# &Sim. (CD, FT)  & 1750724 & 1514367 & 19672  & 3106  \\
+		# &Exp. (FD, FD)  & N/A & 20256 & 21052  & N/A  \\
+		# &Exp. (CD, FD)  & N/A & 45262 & 19042  & N/A  \\
+		# &Exp. (CD, FT)  & N/A & 137719 & 2711  & N/A  \\ \hline
+		# \multirow{6}{*}{Outb.}&Sim. (FD, FD)& 11526 & 93690 & 141707 & 75343  \\
+		# &Sim. (CD, FD)  & 396590 & 734577 & 521005  & 132079  \\
+		# &Sim. (CD, FT)  & 748112 & 651419 & 35226  & 3810  \\
+		# &Exp. (FD, FD)  & N/A & 26906 & 28295  & N/A  \\
+		# &Exp. (CD, FD)  & N/A & 166553 & 104940  & N/A  \\
+		# &Exp. (CD, FT)  & N/A & 187927 & 6147  & N/A  \\ \hline\hline
+		# \end{tabular}
+		# \label{tab:recstat}
+		# \end{table}
 		exit()
 	if args.figureofmerit == "PID":
 		InbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/inb/exp/dvcs.pkl")
