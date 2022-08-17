@@ -2291,7 +2291,7 @@ if args.savenorm:
 
 if args.saveplot2:
 
-	Normalization = .745
+	Normalization = .75
 
 	k = 3
 	i = 3
@@ -4009,12 +4009,13 @@ if args.accplot:
 	Q2bin = 3
 	tbin = 2
 
-	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (8, 6))
 
 
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
 
+	axs.set_title("(a)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([0, 300])
 	# axs.set_yscale('log')
@@ -4036,14 +4037,15 @@ if args.accplot:
 	plt.savefig(basedir+"/plots/rawyields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (8, 6))
 
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH2[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
+	axs.set_title("(b)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
-	# axs.set_ylim([0, 200])
+	axs.set_ylim([0, 6000])
 	# axs.set_yscale('log')
 	axs.set_xticks([0, 90, 180, 270, 360])
 	axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
@@ -4063,12 +4065,13 @@ if args.accplot:
 	plt.savefig(basedir+"/plots/accCorrectedYields{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 
-	fig, axs = plt.subplots(1, 1, figsize = (12, 6))
+	fig, axs = plt.subplots(1, 1, figsize = (8, 6))
 
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Method 1, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
+	axs.set_title("(c)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
 	# axs.set_ylim([0, 200])
 	# axs.set_yscale('log')
