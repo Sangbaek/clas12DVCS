@@ -2613,9 +2613,15 @@ if chapter == 5:
 		pi0Exp_outb_cdfd = statdf(dfs, config = 2)
 		pi0Exp_outb_cdft = statdf(dfs, config = 3)
 
+		bhExp_inb_fdfd = "N/A"
+		bhExp_inb_cdfd = "N/A"
+		bhExp_inb_cdft = "N/A"
 		bkg1gExp_inb_fdfd = "N/A"
 		bkg1gExp_inb_cdfd = "N/A"
 		bkg1gExp_inb_cdft = "N/A"
+		bhExp_outb_fdfd = "N/A"
+		bhExp_outb_cdfd = "N/A"
+		bhExp_outb_cdft = "N/A"
 		bkg1gExp_outb_fdfd = "N/A"
 		bkg1gExp_outb_cdfd = "N/A"
 		bkg1gExp_outb_cdft = "N/A"
