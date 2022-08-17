@@ -184,7 +184,7 @@ def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 0):
+def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 5):
     phi = np.pi - phi
     pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
     				process='ep2epgamma', exptype='fixed target', frame =frame,
@@ -192,7 +192,7 @@ def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 0):
     pt1.prepare()
     if mode == 0:
         try:
-            return th_KM15.PreFacSigma(pt1)*th_KM15.PreFacBH(pt1)*pt1.P1P2*(th_KM15.cBH0unp(pt1)-th_KM15.cBH1unp(pt1)+th_KM15.cBH2unp(pt1))
+            return th_KM15.PreFacSigma(pt1)*pt1.P1P2*th_KM15.TBH2unp(pt1)
         except:
             print(xB, Q2, t, phi)
             return 0
