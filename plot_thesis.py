@@ -2563,32 +2563,32 @@ if chapter == 5:
 			bhSim_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
 		for run in [*runs_inb_bkg45nA, *runs_inb_bkg50nA, *runs_inb_bkg55nA, *runs_inb_bkg0nA]:
 			dfs = []
-			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg1g/{}.pkl".format(run)))
-			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg1g/{}.pkl".format(run))))
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_1g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_1g/{}.pkl".format(run))))
 			dfs = pd.concat(dfs)
 			bkg1gSim_inb_fdfd = statdf(dfs, config = 1)
 			bkg1gSim_inb_cdfd = statdf(dfs, config = 2)
 			bkg1gSim_inb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
 		for run in [*runs_inb_bkg45nA, *runs_inb_bkg50nA, *runs_inb_bkg55nA, *runs_inb_bkg0nA]:
 			dfs = []
-			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg2g/{}.pkl".format(run)))
-			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg2g/{}.pkl".format(run))))
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_2g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_2g/{}.pkl".format(run))))
 			dfs = pd.concat(dfs)
 			bkg2gSim_inb_fdfd = statdf(dfs, config = 1)
 			bkg2gSim_inb_cdfd = statdf(dfs, config = 2)
 			bkg2gSim_inb_cdft = statdf(dfs, config = 3)
 		for run in [*runs_outb_bkg50nA, *runs_outb_bkg40nA, *runs_outb_bkg0nA, *runs_outb_bkg40nAT]:
 			dfs = []
-			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg1g/{}.pkl".format(run)))
-			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg1g/{}.pkl".format(run))))
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_1g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_1g/{}.pkl".format(run))))
 			dfs = pd.concat(dfs)
 			bkg1gSim_outb_fdfd = statdf(dfs, config = 1)
 			bkg1gSim_outb_cdfd = statdf(dfs, config = 2)
 			bkg1gSim_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
 		for run in [*runs_outb_bkg50nA, *runs_outb_bkg40nA, *runs_outb_bkg0nA, *runs_outb_bkg40nAT]:
 			dfs = []
-			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg2g/{}.pkl".format(run)))
-			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg2g/{}.pkl".format(run))))
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_2g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_2g/{}.pkl".format(run))))
 			dfs = pd.concat(dfs)
 			bkg2gSim_outb_fdfd = statdf(dfs, config = 1)
 			bkg2gSim_outb_cdfd = statdf(dfs, config = 2)
@@ -2613,7 +2613,30 @@ if chapter == 5:
 		pi0Exp_outb_cdfd = statdf(dfs, config = 2)
 		pi0Exp_outb_cdft = statdf(dfs, config = 3)
 
-		print(bhdvcsSim_inb_fdfd)
+		bkg1gExp_inb_fdfd = "N/A"
+		bkg1gExp_inb_cdfd = "N/A"
+		bkg1gExp_inb_cdft = "N/A"
+		bkg1gExp_outb_fdfd = "N/A"
+		bkg1gExp_outb_cdfd = "N/A"
+		bkg1gExp_outb_cdft = "N/A"
+
+		print("\\begin{tabular}{cccccc}\\hline\\hline")
+		print("& Configuration & BH   & BH-DVCS & DV$\\pi^0$P & DV$\\pi^0$P Misidentified\\ \\hline")
+		print("\\multirow{6}{*}{Inb.}&Sim. (FD, FD)" + "& {} & {} & {} & {}    \\\\".format(bhSim_inb_fdfd, bhdvcsSim_inb_fdfd, bkg2gSim_inb_fdfd,  bkg1gSim_inb_fdfd))
+		print("&Sim. (CD, FD)  & {} & {} & {}  & {}  \\\\".format(bhSim_inb_cdfd, bhdvcsSim_inb_cdfd, bkg2gSim_inb_cdfd,  bkg1gSim_inb_cdfd))
+		print("&Sim. (CD, FT)  & {} & {} & {}  & {}  \\\\".format(bhSim_inb_cdft, bhdvcsSim_inb_cdft, bkg2gSim_inb_cdft,  bkg1gSim_inb_cdft))
+		print("&Exp. (FD, FD)  & {} & {} & {}  & {}  \\\\".format(bhExp_inb_fdfd, bhdvcsExp_inb_fdfd, bkg2gExp_inb_fdfd,  bkg1gExp_inb_fdfd))
+		print("&Exp. (CD, FD)  & {} & {} & {}  & {}  \\\\".format(bhExp_inb_cdfd, bhdvcsExp_inb_cdfd, bkg2gExp_inb_cdfd,  bkg1gExp_inb_cdfd))
+		print("&Exp. (CD, FT)  & {} & {} & {}  & {}  \\\\ \\hline".format(bhExp_inb_cdft, bhdvcsExp_inb_cdft, bkg2gExp_inb_cdft,  bkg1gExp_inb_cdft))
+		print("\\multirow{6}{*}{Outb.}&Sim. (FD, FD)" + "& {} & {} & {} & {}  \\\\".format(bhSim_outb_fdfd, bhdvcsSim_outb_fdfd, bkg2gSim_outb_fdfd,  bkg1gSim_outb_fdfd))
+		print("&Sim. (CD, FD)  & {} & {} & {}  & {}  \\\\".format(bhSim_outb_cdfd, bhdvcsSim_outb_cdfd, bkg2gSim_outb_cdfd,  bkg1gSim_outb_cdfd))
+		print("&Sim. (CD, FT)  & {} & {} & {}  & {}  \\\\".format(bhSim_outb_cdft, bhdvcsSim_outb_cdft, bkg2gSim_outb_cdft,  bkg1gSim_outb_cdft))
+		print("&Exp. (FD, FD)  & {} & {} & {}  & {}  \\\\".format(bhExp_outb_fdfd, bhdvcsExp_outb_fdfd, bkg2gExp_outb_fdfd,  bkg1gExp_outb_fdfd))
+		print("&Exp. (CD, FD)  & {} & {} & {}  & {}  \\\\".format(bhExp_outb_cdfd, bhdvcsExp_outb_cdfd, bkg2gExp_outb_cdfd,  bkg1gExp_outb_cdfd))
+		print("&Exp. (CD, FT)  & {} & {} & {}  & {}  \\\\ \\hline\\hline".format(bhExp_outb_cdft, bhdvcsExp_outb_cdft, bkg2gExp_outb_cdft,  bkg1gExp_outb_cdft))
+		print("\\end{tabular}")
+		print("\\label{tab:recstat}")
+		print("\\end{table}")
 
 		exit()
 	if args.figureofmerit == "PID":
