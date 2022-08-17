@@ -4017,7 +4017,6 @@ if args.accplot:
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
 	axs.hist(phibins[:-1], phibins, weights = histBHDVCSInbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
 
-	axs.set_title("(a)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([0, 300])
 	# axs.set_yscale('log')
@@ -4032,7 +4031,7 @@ if args.accplot:
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
 	theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f} ".format(tbins[tbin+1])
 	header = xBheader + Q2header + theader
-	axs.set_title(r"$BH^2 + Int. + DVCS^2 $" + " Yields", fontsize = 30)
+	axs.set_title("(a)  " + r"$BH^2 + Int. + DVCS^2 $" + " Yields", fontsize = 30)
 	handles, labels = axs.get_legend_handles_labels()
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 20, bbox_to_anchor = (0.8, 1.1), ncol = 2, title = header)
 
@@ -4045,7 +4044,6 @@ if args.accplot:
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = accCorrectedInb_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
-	axs.set_title("(b)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
 	axs.set_ylim([0, 6000])
 	# axs.set_yscale('log')
@@ -4055,7 +4053,7 @@ if args.accplot:
 	axs.set_yticklabels([0, 1000, 2000, 3000, 4000, 5000, 6000])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_ylabel("Acc. Corrected Counts (bkg. subtracted)", fontsize = 30)
-	axs.set_title("Acc. Corrected Yields", fontsize = 30)
+	axs.set_title("(b)  Acc. Corrected Yields", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
@@ -4073,7 +4071,6 @@ if args.accplot:
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Method 2, Gen: BH")
 	axs.hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSInb, accCorrectedInb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'b', label = "Method 2, Gen: VGG")
 
-	axs.set_title("(c)", fontsize = 30, pad = 20)
 	axs.set_xlim([0, 360])
 	# axs.set_ylim([0, 200])
 	# axs.set_yscale('log')
@@ -4083,7 +4080,7 @@ if args.accplot:
 	axs.set_yticklabels([0, 0.02, 0.04, 0.06, 0.08])
 	axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 	axs.set_ylabel("Effective Acceptances", fontsize = 30)
-	axs.set_title("Effective Acceptances", fontsize = 30)
+	axs.set_title("(b)  Effective Acceptances", fontsize = 30)
 
 	xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 	Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
