@@ -3895,9 +3895,9 @@ if args.contplot:
 		axs.set_xticklabels([90, 180, 270], fontsize = 22)
 		axs.set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
 		if xBbin == 2:
-			axs.set_title("(a)", loc = "left", fontsize = 30)
+			axs.set_title("(a)", loc = "left", fontsize = 30, pad = 20)
 		if xBbin == 4:
-			axs.set_title("(b)", loc = "left", fontsize = 30)
+			axs.set_title("(b)", loc = "left", fontsize = 30, pad = 20)
 
 		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}".format(xBbins[xBbin+1]) + "\n"
 		Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f} ".format(Q2bins[Q2bin+1])+ "\n"
