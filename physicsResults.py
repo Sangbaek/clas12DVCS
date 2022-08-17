@@ -546,7 +546,7 @@ if args.saveyields:
 			histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
 			histBHInb45nA_plus, histBHInbFD45nA_plus, histBHInbCD45nA_plus, histBHInbCDFT45nA_plus, histBHInbCR45nA_plus = 0, 0, 0, 0, 0
 			histBHInb45nA_minus, histBHInbFD45nA_minus, histBHInbCD45nA_minus, histBHInbCDFT45nA_minus, histBHInbCR45nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_inb_bh45nA:
+			for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 				histBHInb45nA = histBHInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbFD45nA = histBHInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHInbCD45nA = histBHInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -567,7 +567,7 @@ if args.saveyields:
 			histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA, histBHGenInbCR45nA = 0, 0, 0, 0, 0
 			histBHGenInb45nA_plus, histBHGenInbFD45nA_plus, histBHGenInbCD45nA_plus, histBHGenInbCDFT45nA_plus, histBHGenInbCR45nA_plus = 0, 0, 0, 0, 0
 			histBHGenInb45nA_minus, histBHGenInbFD45nA_minus, histBHGenInbCD45nA_minus, histBHGenInbCDFT45nA_minus, histBHGenInbCR45nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_inb_bh45nA:
+			for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 				histBHGenInb45nA = histBHGenInb45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histBHGenInbFD45nA = histBHGenInbFD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histBHGenInbCD45nA = histBHGenInbCD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
@@ -589,7 +589,7 @@ if args.saveyields:
 			histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
 			histVGGInb45nA_plus, histVGGInbFD45nA_plus, histVGGInbCD45nA_plus, histVGGInbCDFT45nA_plus, histVGGInbCR45nA_plus = 0, 0, 0, 0, 0
 			histVGGInb45nA_minus, histVGGInbFD45nA_minus, histVGGInbCD45nA_minus, histVGGInbCDFT45nA_minus, histVGGInbCR45nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_inb_vgg45nA:
+			for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 				histVGGInb45nA = histVGGInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbFD45nA = histVGGInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGInbCD45nA = histVGGInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -610,7 +610,7 @@ if args.saveyields:
 			histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
 			histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus, histVGGGenInbCD45nA_plus, histVGGGenInbCDFT45nA_plus, histVGGGenInbCR45nA_plus = 0, 0, 0, 0, 0
 			histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus, histVGGGenInbCD45nA_minus, histVGGGenInbCDFT45nA_minus, histVGGGenInbCR45nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_inb_vgg45nA:
+			for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 				histVGGGenInb45nA = histVGGGenInb45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
@@ -700,7 +700,7 @@ if args.saveyields:
 			histBHOutb50nA, histBHOutbFD50nA, histBHOutbCD50nA, histBHOutbCDFT50nA, histBHOutbCR50nA = 0, 0, 0, 0, 0
 			histBHOutb50nA_plus, histBHOutbFD50nA_plus, histBHOutbCD50nA_plus, histBHOutbCDFT50nA_plus, histBHOutbCR50nA_plus = 0, 0, 0, 0, 0
 			histBHOutb50nA_minus, histBHOutbFD50nA_minus, histBHOutbCD50nA_minus, histBHOutbCDFT50nA_minus, histBHOutbCR50nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_outb_bh50nA:
+			for jobNum in [*runs_outb_bh50nA, *runs_outb_bh40nA, *runs_outb_bh40nAT]:
 				histBHOutb50nA = histBHOutb50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbFD50nA = histBHOutbFD50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histBHOutbCD50nA = histBHOutbCD50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -721,7 +721,7 @@ if args.saveyields:
 			histBHGenOutb50nA, histBHGenOutbFD50nA, histBHGenOutbCD50nA, histBHGenOutbCDFT50nA, histBHGenOutbCR50nA = 0, 0, 0, 0, 0
 			histBHGenOutb50nA_plus, histBHGenOutbFD50nA_plus, histBHGenOutbCD50nA_plus, histBHGenOutbCDFT50nA_plus, histBHGenOutbCR50nA_plus = 0, 0, 0, 0, 0
 			histBHGenOutb50nA_minus, histBHGenOutbFD50nA_minus, histBHGenOutbCD50nA_minus, histBHGenOutbCDFT50nA_minus, histBHGenOutbCR50nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_outb_bh50nA:
+			for jobNum in [*runs_outb_bh50nA, *runs_outb_bh40nA, *runs_outb_bh40nAT]:
 				histBHGenOutb50nA = histBHGenOutb50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histBHGenOutbFD50nA = histBHGenOutbFD50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histBHGenOutbCD50nA = histBHGenOutbCD50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
@@ -743,7 +743,7 @@ if args.saveyields:
 			histVGGOutb50nA, histVGGOutbFD50nA, histVGGOutbCD50nA, histVGGOutbCDFT50nA, histVGGOutbCR50nA = 0, 0, 0, 0, 0
 			histVGGOutb50nA_plus, histVGGOutbFD50nA_plus, histVGGOutbCD50nA_plus, histVGGOutbCDFT50nA_plus, histVGGOutbCR50nA_plus = 0, 0, 0, 0, 0
 			histVGGOutb50nA_minus, histVGGOutbFD50nA_minus, histVGGOutbCD50nA_minus, histVGGOutbCDFT50nA_minus, histVGGOutbCR50nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_outb_vgg50nA:
+			for jobNum in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg40nAT]:
 				histVGGOutb50nA = histVGGOutb50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbFD50nA = histVGGOutbFD50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 				histVGGOutbCD50nA = histVGGOutbCD50nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -764,7 +764,7 @@ if args.saveyields:
 			histVGGGenOutb50nA, histVGGGenOutbFD50nA, histVGGGenOutbCD50nA, histVGGGenOutbCDFT50nA, histVGGGenOutbCR50nA = 0, 0, 0, 0, 0
 			histVGGGenOutb50nA_plus, histVGGGenOutbFD50nA_plus, histVGGGenOutbCD50nA_plus, histVGGGenOutbCDFT50nA_plus, histVGGGenOutbCR50nA_plus = 0, 0, 0, 0, 0
 			histVGGGenOutb50nA_minus, histVGGGenOutbFD50nA_minus, histVGGGenOutbCD50nA_minus, histVGGGenOutbCDFT50nA_minus, histVGGGenOutbCR50nA_minus = 0, 0, 0, 0, 0
-			for jobNum in runs_outb_vgg50nA:
+			for jobNum in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg40nAT]:
 				histVGGGenOutb50nA = histVGGGenOutb50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbFD50nA = histVGGGenOutbFD50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 				histVGGGenOutbCD50nA = histVGGGenOutbCD50nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
@@ -1274,7 +1274,7 @@ if args.savekine:
 		histVGGGenInbrad45nA, histVGGGenInbborn45nA = [], []
 		histVGGGenInbrad45nA_plus, histVGGGenInbborn45nA_plus = [], []
 		histVGGGenInbrad45nA_minus, histVGGGenInbborn45nA_minus = [], []
-		for jobNum in runs_inb_vgg45nA:
+		for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 			histVGGGenInbxB45nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"])
 			histVGGGenInbQ245nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"])
 			histVGGGenInbt145nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"])
@@ -1290,7 +1290,7 @@ if args.savekine:
 		histBHGenInbrad45nA, histBHGenInbborn45nA = [], []
 		histBHGenInbrad45nA_plus, histBHGenInbborn45nA_plus = [], []
 		histBHGenInbrad45nA_minus, histBHGenInbborn45nA_minus = [], []
-		for jobNum in runs_inb_bh45nA:
+		for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 			histBHGenInbxB45nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"])
 			histBHGenInbQ245nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"])
 			histBHGenInbt145nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"])
@@ -1306,7 +1306,7 @@ if args.savekine:
 		histVGGGenOutbrad50nA, histVGGGenOutbborn50nA = [], []
 		histVGGGenOutbrad50nA_plus, histVGGGenOutbborn50nA_plus = [], []
 		histVGGGenOutbrad50nA_minus, histVGGGenOutbborn50nA_minus = [], []
-		for jobNum in runs_outb_vgg50nA:
+		for jobNum in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg40nAT]:
 			histVGGGenOutbxB50nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"])
 			histVGGGenOutbQ250nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"])
 			histVGGGenOutbt150nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"])
@@ -1322,7 +1322,7 @@ if args.savekine:
 		histBHGenOutbrad50nA, histBHGenOutbborn50nA = [], []
 		histBHGenOutbrad50nA_plus, histBHGenOutbborn50nA_plus = [], []
 		histBHGenOutbrad50nA_minus, histBHGenOutbborn50nA_minus = [], []
-		for jobNum in runs_outb_bh50nA:
+		for jobNum in [*runs_outb_bh50nA, *runs_outb_bh40nA, *runs_outb_bh40nAT]:
 			histBHGenOutbxB50nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenxB.npz".format(k, jobNum))["hist"])
 			histBHGenOutbQ250nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}GenQ2.npz".format(k, jobNum))["hist"])
 			histBHGenOutbt150nA.append(np.load(basedir + "/nphistograms/binscheme{}/{}Gent1.npz".format(k, jobNum))["hist"])
@@ -3933,7 +3933,7 @@ if args.accplot:
 
 	# Count Rec BH
 	histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
-	for jobNum in runs_inb_bh45nA:
+	for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 		histBHInb45nA = histBHInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 		histBHInbFD45nA = histBHInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 		histBHInbCD45nA = histBHInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -3942,7 +3942,7 @@ if args.accplot:
 
 	# Count Gen BH
 	histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA, histBHGenInbCR45nA = 0, 0, 0, 0, 0
-	for jobNum in runs_inb_bh45nA:
+	for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
 		histBHGenInb45nA = histBHGenInb45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 		histBHGenInbFD45nA = histBHGenInbFD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 		histBHGenInbCD45nA = histBHGenInbCD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]
@@ -3952,7 +3952,7 @@ if args.accplot:
 	print("reading vggs  - inbending")
 	# Count Rec VGG
 	histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
-	for jobNum in runs_inb_vgg45nA:
+	for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 		histVGGInb45nA = histVGGInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
 		histVGGInbFD45nA = histVGGInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
 		histVGGInbCD45nA = histVGGInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
@@ -3962,7 +3962,7 @@ if args.accplot:
 	histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
 	histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus, histVGGGenInbCD45nA_plus, histVGGGenInbCDFT45nA_plus, histVGGGenInbCR45nA_plus = 0, 0, 0, 0, 0
 	histVGGGenInb45nA_minus, histVGGGenInbFD45nA_minus, histVGGGenInbCD45nA_minus, histVGGGenInbCDFT45nA_minus, histVGGGenInbCR45nA_minus = 0, 0, 0, 0, 0
-	for jobNum in runs_inb_vgg45nA:
+	for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
 		histVGGGenInb45nA = histVGGGenInb45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen.npz".format(k, jobNum))["hist"]
 		histVGGGenInbFD45nA = histVGGGenInbFD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen1.npz".format(k, jobNum))["hist"]
 		histVGGGenInbCD45nA = histVGGGenInbCD45nA + np.load(basedir + "/nphistograms/binscheme{}/{}Gen2.npz".format(k, jobNum))["hist"]

@@ -2457,17 +2457,17 @@ if chapter == 5:
 		print("$ub_{\\theta_{\\gamma_{det.}\\gamma_{rec.}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["reconGam_ub"], cuts_dvcs_CD_Inb_3sigma["reconGam_ub"], cuts_dvcs_CDFT_Inb_3sigma["reconGam_ub"], cuts_dvcs_FD_Outb_3sigma["reconGam_ub"], cuts_dvcs_CD_Outb_3sigma["reconGam_ub"], cuts_dvcs_CDFT_Outb_3sigma["reconGam_ub"]))
 		print("$ub_{\\phi_{\\vec{H}\\vec{\Gamma}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coplanarity_ub"], cuts_dvcs_CD_Inb_3sigma["coplanarity_ub"], cuts_dvcs_CDFT_Inb_3sigma["coplanarity_ub"], cuts_dvcs_FD_Outb_3sigma["coplanarity_ub"], cuts_dvcs_CD_Outb_3sigma["coplanarity_ub"], cuts_dvcs_CDFT_Outb_3sigma["coplanarity_ub"]))
 		print("\multirow{2}{*}{$a_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_lb"][0], cuts_dvcs_CD_Inb_3sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_lb"][0], cuts_dvcs_FD_Outb_3sigma["coneAngle_lb"][0], cuts_dvcs_CD_Outb_3sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_lb"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][0]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][0]))
 		print("\multirow{2}{*}{$a_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_lb"][1], cuts_dvcs_CD_Inb_3sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_lb"][1], cuts_dvcs_FD_Outb_3sigma["coneAngle_lb"][1], cuts_dvcs_CD_Outb_3sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_lb"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][1]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][1]))
 		print("\multirow{2}{*}{$a_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_lb"][2], cuts_dvcs_CD_Inb_3sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_lb"][2], cuts_dvcs_FD_Outb_3sigma["coneAngle_lb"][2], cuts_dvcs_CD_Outb_3sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_lb"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][2]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_lb"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_lb"][2]))
 		print("\multirow{2}{*}{$b_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_ub"][0], cuts_dvcs_CD_Inb_3sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_ub"][0], cuts_dvcs_FD_Outb_3sigma["coneAngle_ub"][0], cuts_dvcs_CD_Outb_3sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_ub"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][0]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][0], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][0]))
 		print("\multirow{2}{*}{$b_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_ub"][1], cuts_dvcs_CD_Inb_3sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_ub"][1], cuts_dvcs_FD_Outb_3sigma["coneAngle_ub"][1], cuts_dvcs_CD_Outb_3sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_ub"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][1]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][1], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][1]))
 		print("\multirow{2}{*}{$b_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_3sigma["coneAngle_ub"][2], cuts_dvcs_CD_Inb_3sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Inb_3sigma["coneAngle_ub"][2], cuts_dvcs_FD_Outb_3sigma["coneAngle_ub"][2], cuts_dvcs_CD_Outb_3sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngle_ub"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][2]))
+		print("&&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_3sigma["coneAngleCR_ub"][2], cuts_dvcs_CDFT_Outb_3sigma["coneAngleCR_ub"][2]))
 		print("\n")
 		print("\n")
 		#DVCS 2sigma
@@ -2484,18 +2484,6 @@ if chapter == 5:
 		print("$ub_{MPt_{e'p'\gamma}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["MPt_ub"], cuts_dvcs_CD_Inb_2sigma["MPt_ub"], cuts_dvcs_CDFT_Inb_2sigma["MPt_ub"], cuts_dvcs_FD_Outb_2sigma["MPt_ub"], cuts_dvcs_CD_Outb_2sigma["MPt_ub"], cuts_dvcs_CDFT_Outb_2sigma["MPt_ub"]))
 		print("$ub_{\\theta_{\\gamma_{det.}\\gamma_{rec.}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["reconGam_ub"], cuts_dvcs_CD_Inb_2sigma["reconGam_ub"], cuts_dvcs_CDFT_Inb_2sigma["reconGam_ub"], cuts_dvcs_FD_Outb_2sigma["reconGam_ub"], cuts_dvcs_CD_Outb_2sigma["reconGam_ub"], cuts_dvcs_CDFT_Outb_2sigma["reconGam_ub"]))
 		print("$ub_{\\phi_{\\vec{H}\\vec{\Gamma}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coplanarity_ub"], cuts_dvcs_CD_Inb_2sigma["coplanarity_ub"], cuts_dvcs_CDFT_Inb_2sigma["coplanarity_ub"], cuts_dvcs_FD_Outb_2sigma["coplanarity_ub"], cuts_dvcs_CD_Outb_2sigma["coplanarity_ub"], cuts_dvcs_CDFT_Outb_2sigma["coplanarity_ub"]))
-		print("\multirow{2}{*}{$a_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_lb"][0], cuts_dvcs_CD_Inb_2sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_lb"][0], cuts_dvcs_FD_Outb_2sigma["coneAngle_lb"][0], cuts_dvcs_CD_Outb_2sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_lb"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_lb"][0], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_lb"][0]))
-		print("\multirow{2}{*}{$a_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_lb"][1], cuts_dvcs_CD_Inb_2sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_lb"][1], cuts_dvcs_FD_Outb_2sigma["coneAngle_lb"][1], cuts_dvcs_CD_Outb_2sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_lb"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_lb"][1], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_lb"][1]))
-		print("\multirow{2}{*}{$a_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_lb"][2], cuts_dvcs_CD_Inb_2sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_lb"][2], cuts_dvcs_FD_Outb_2sigma["coneAngle_lb"][2], cuts_dvcs_CD_Outb_2sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_lb"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_lb"][2], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_lb"][2]))
-		print("\multirow{2}{*}{$b_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_ub"][0], cuts_dvcs_CD_Inb_2sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_ub"][0], cuts_dvcs_FD_Outb_2sigma["coneAngle_ub"][0], cuts_dvcs_CD_Outb_2sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_ub"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_ub"][0], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_ub"][0]))
-		print("\multirow{2}{*}{$b_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_ub"][1], cuts_dvcs_CD_Inb_2sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_ub"][1], cuts_dvcs_FD_Outb_2sigma["coneAngle_ub"][1], cuts_dvcs_CD_Outb_2sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_ub"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_ub"][1], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_ub"][1]))
-		print("\multirow{2}{*}{$b_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_2sigma["coneAngle_ub"][2], cuts_dvcs_CD_Inb_2sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Inb_2sigma["coneAngle_ub"][2], cuts_dvcs_FD_Outb_2sigma["coneAngle_ub"][2], cuts_dvcs_CD_Outb_2sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Outb_2sigma["coneAngle_ub"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_2sigma["coneAngleCR_ub"][2], cuts_dvcs_CDFT_Outb_2sigma["coneAngleCR_ub"][2]))
 		print("\n")
 		print("\n")
 
@@ -2513,18 +2501,6 @@ if chapter == 5:
 		print("$ub_{MPt_{e'p'\gamma}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["MPt_ub"], cuts_dvcs_CD_Inb_4sigma["MPt_ub"], cuts_dvcs_CDFT_Inb_4sigma["MPt_ub"], cuts_dvcs_FD_Outb_4sigma["MPt_ub"], cuts_dvcs_CD_Outb_4sigma["MPt_ub"], cuts_dvcs_CDFT_Outb_4sigma["MPt_ub"]))
 		print("$ub_{\\theta_{\\gamma_{det.}\\gamma_{rec.}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["reconGam_ub"], cuts_dvcs_CD_Inb_4sigma["reconGam_ub"], cuts_dvcs_CDFT_Inb_4sigma["reconGam_ub"], cuts_dvcs_FD_Outb_4sigma["reconGam_ub"], cuts_dvcs_CD_Outb_4sigma["reconGam_ub"], cuts_dvcs_CDFT_Outb_4sigma["reconGam_ub"]))
 		print("$ub_{\\phi_{\\vec{H}\\vec{\Gamma}}}"+"$&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coplanarity_ub"], cuts_dvcs_CD_Inb_4sigma["coplanarity_ub"], cuts_dvcs_CDFT_Inb_4sigma["coplanarity_ub"], cuts_dvcs_FD_Outb_4sigma["coplanarity_ub"], cuts_dvcs_CD_Outb_4sigma["coplanarity_ub"], cuts_dvcs_CDFT_Outb_4sigma["coplanarity_ub"]))
-		print("\multirow{2}{*}{$a_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_lb"][0], cuts_dvcs_CD_Inb_4sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_lb"][0], cuts_dvcs_FD_Outb_4sigma["coneAngle_lb"][0], cuts_dvcs_CD_Outb_4sigma["coneAngle_lb"][0], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_lb"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_lb"][0], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_lb"][0]))
-		print("\multirow{2}{*}{$a_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_lb"][1], cuts_dvcs_CD_Inb_4sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_lb"][1], cuts_dvcs_FD_Outb_4sigma["coneAngle_lb"][1], cuts_dvcs_CD_Outb_4sigma["coneAngle_lb"][1], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_lb"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_lb"][1], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_lb"][1]))
-		print("\multirow{2}{*}{$a_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_lb"][2], cuts_dvcs_CD_Inb_4sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_lb"][2], cuts_dvcs_FD_Outb_4sigma["coneAngle_lb"][2], cuts_dvcs_CD_Outb_4sigma["coneAngle_lb"][2], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_lb"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_lb"][2], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_lb"][2]))
-		print("\multirow{2}{*}{$b_2$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_ub"][0], cuts_dvcs_CD_Inb_4sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_ub"][0], cuts_dvcs_FD_Outb_4sigma["coneAngle_ub"][0], cuts_dvcs_CD_Outb_4sigma["coneAngle_ub"][0], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_ub"][0]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_ub"][0], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_ub"][0]))
-		print("\multirow{2}{*}{$b_1$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_ub"][1], cuts_dvcs_CD_Inb_4sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_ub"][1], cuts_dvcs_FD_Outb_4sigma["coneAngle_ub"][1], cuts_dvcs_CD_Outb_4sigma["coneAngle_ub"][1], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_ub"][1]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_ub"][1], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_ub"][1]))
-		print("\multirow{2}{*}{$b_0$}"+"&{}&{}&{}&{}&{}&{}\\\\".format(cuts_dvcs_FD_Inb_4sigma["coneAngle_ub"][2], cuts_dvcs_CD_Inb_4sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Inb_4sigma["coneAngle_ub"][2], cuts_dvcs_FD_Outb_4sigma["coneAngle_ub"][2], cuts_dvcs_CD_Outb_4sigma["coneAngle_ub"][2], cuts_dvcs_CDFT_Outb_4sigma["coneAngle_ub"][2]))
-		print("&&{}&&&{}".format(cuts_dvcs_CDFT_Inb_4sigma["coneAngleCR_ub"][2], cuts_dvcs_CDFT_Outb_4sigma["coneAngleCR_ub"][2]))
 		print("\n")
 		print("\n")
 
@@ -2546,10 +2522,98 @@ if chapter == 5:
 		# print("$ub_{\phi_{\vec{H}\vec{\Pi}}}$&{}&{}&{}&{}&{}\\".format())
 		exit()
 	if args.figureofmerit == "statistics":
-		InbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/inb/exp/dvcs.pkl")
-		InbSim = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/inb/dvcs/4893.pkl")
-		OutbExp = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/exp/dvcs.pkl")
-		OutbSim = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_nofid_Corr_duplicates/outb/dvcs/4907.pkl")
+		#BH-DVCS
+		def statdf(df, config = 1):
+			# [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0]
+			# [1.000, 1.200, 1.456, 1.912, 2.510, 3.295, 4.326, 5.761, 7.000]
+			# [0.062, 0.090, 0.118, 0.155, 0.204, 0.268, 0.357, 0.446, 0.581]
+			return len(df.loc[df.config==config & (df.t1 > 0.11) & (df.t1<1) & (df.xB>x1) & (df.xB<d2) & (df.Q2>1) & (df.Q2<7), :])
+		print("reading bh-dvcs")
+		for run in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bhdvcsSim_inb_fdfd = statdf(dfs, config = 1)
+			bhdvcsSim_inb_cdfd = statdf(dfs, config = 2)
+			bhdvcsSim_inb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bhSim_inb_fdfd = statdf(dfs, config = 1)
+			bhSim_inb_cdfd = statdf(dfs, config = 2)
+			bhSim_inb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_outb_vgg50nA, *runs_outb_vgg40nA, *runs_outb_vgg40nAT]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bhdvcsSim_outb_fdfd = statdf(dfs, config = 1)
+			bhdvcsSim_outb_cdfd = statdf(dfs, config = 2)
+			bhdvcsSim_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_outb_bh50nA, *runs_outb_bh40nA, *runs_outb_bh40nAT]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bhSim_outb_fdfd = statdf(dfs, config = 1)
+			bhSim_outb_cdfd = statdf(dfs, config = 2)
+			bhSim_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_inb_bkg45nA, *runs_inb_bkg50nA, *runs_inb_bkg55nA, *runs_inb_bkg0nA]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg1g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg1g/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bkg1gSim_inb_fdfd = statdf(dfs, config = 1)
+			bkg1gSim_inb_cdfd = statdf(dfs, config = 2)
+			bkg1gSim_inb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_inb_bkg45nA, *runs_inb_bkg50nA, *runs_inb_bkg55nA, *runs_inb_bkg0nA]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg2g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg2g/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bkg2gSim_inb_fdfd = statdf(dfs, config = 1)
+			bkg2gSim_inb_cdfd = statdf(dfs, config = 2)
+			bkg2gSim_inb_cdft = statdf(dfs, config = 3)
+		for run in [*runs_outb_bkg50nA, *runs_outb_bkg40nA, *runs_outb_bkg0nA, *runs_outb_bkg40nAT]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg1g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg1g/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bkg1gSim_outb_fdfd = statdf(dfs, config = 1)
+			bkg1gSim_outb_cdfd = statdf(dfs, config = 2)
+			bkg1gSim_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+		for run in [*runs_outb_bkg50nA, *runs_outb_bkg40nA, *runs_outb_bkg0nA, *runs_outb_bkg40nAT]:
+			dfs = []
+			dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg2g/{}.pkl".format(run)))
+			print(run, len(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg2g/{}.pkl".format(run))))
+			dfs = pd.concat(dfs)
+			bkg2gSim_outb_fdfd = statdf(dfs, config = 1)
+			bkg2gSim_outb_cdfd = statdf(dfs, config = 2)
+			bkg2gSim_outb_cdft = statdf(dfs, config = 3)
+		dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/dvcs.pkl".format(run)))
+		bhdvcsExp_inb_fdfd = statdf(dfs, config = 1)
+		bhdvcsExp_inb_cdfd = statdf(dfs, config = 2)
+		bhdvcsExp_inb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+
+		dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/dvcs.pkl".format(run)))
+		bhdvcsExp_outb_fdfd = statdf(dfs, config = 1)
+		bhdvcsExp_outb_cdfd = statdf(dfs, config = 2)
+		bhdvcsExp_outb_cdft = statdf(dfs, config = 3) + statdf(dfs, config = 4)
+
+		dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/pi0.pkl".format(run)))
+		pi0Exp_inb_fdfd = statdf(dfs, config = 1)
+		pi0Exp_inb_cdfd = statdf(dfs, config = 2)
+		pi0Exp_inb_cdft = statdf(dfs, config = 3)
+
+		dfs.append(pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/pi0.pkl".format(run)))
+		pi0Exp_outb_fdfd = statdf(dfs, config = 1)
+		pi0Exp_outb_cdfd = statdf(dfs, config = 2)
+		pi0Exp_outb_cdft = statdf(dfs, config = 3)
+
+		print(bhdvcsSim_inb_fdfd)
 
 		exit()
 	if args.figureofmerit == "PID":
