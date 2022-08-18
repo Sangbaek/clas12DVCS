@@ -2198,12 +2198,12 @@ if args.savenorm:
 				fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
-				axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 
 				chi2fit = np.sum(( P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin] - FourierSeries(phi1avg_BH[xBbin, Q2bin, tbin, phibin],*(nominal)))**2/(P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin])**2)
 				dof = len(phibin)-len(popt)
 				print(xBbin, Q2bin, tbin, 1-chi2.cdf(chi2fit, dof), Normalization[xBbin, Q2bin, tbin])
 				FittingProb[xBbin, Q2bin, tbin] = 1-chi2.cdf(chi2fit, dof)
+				axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results\n' + r"$p=$"+"{:.3f}".format(FittingProb[xBbin, Q2bin, tbin]), color = 'k', linestyle = '--')
 
 				Nplot = 40
 				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
@@ -2219,7 +2219,6 @@ if args.savenorm:
 				# axs.plot(np.linspace(0, 360, 40), FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
 				handles, labels = axs.get_legend_handles_labels()
 				lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
-				axs.set_title("(a)", fontsize = 30, pad = 20)
 				axs.set_xlim([0, 360])
 				axs.set_xticks([0, 90, 180, 270, 360])
 				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
@@ -2231,7 +2230,7 @@ if args.savenorm:
 					axs.set_yticks([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 					axs.set_yticklabels([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 
-				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				xBheader = "(a)\n{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
 				theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>=$"+"{:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$~\mathrm{GeV}^2$"
 				header = xBheader + Q2header + theader
@@ -2246,7 +2245,7 @@ if args.savenorm:
 				P1b = P1(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				axs.errorbar(phi1avg_BH[xBbin, Q2bin, tbin, phibin], P1b*P2b/(Normalization[xBbin, Q2bin, tbin])*xsec_BH[xBbin, Q2bin, tbin, phibin], xerr = [phi1avg_BH[xBbin, Q2bin, tbin, phibin]-phibins[:-1][phibin], phibins[1:][phibin]-phi1avg_BH[xBbin, Q2bin, tbin, phibin]], yerr = P1b*P2b*(uncStat_BH*xsec_BH)[xBbin, Q2bin, tbin, phibin], linestyle ='', color = 'k', label = 'Experimental data')
-				axs.plot(np.linspace(0, 360, 40), (1/Normalization[xBbin, Q2bin, tbin])*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results', color = 'k', linestyle = '--')
+				axs.plot(np.linspace(0, 360, 40), (1/Normalization[xBbin, Q2bin, tbin])*FourierSeries(np.linspace(0, 360, 40),*(nominal)), label = 'Fitting results\n' + r"$p=$"+"{:.3f}".format(FittingProb[xBbin, Q2bin, tbin]), color = 'k', linestyle = '--')
 
 				Nplot = 40
 				xBs = np.ones(Nplot)*xBavg_BH[xBbin, Q2bin, tbin, phibin][0]
@@ -2260,7 +2259,6 @@ if args.savenorm:
 				axs.plot(phi1s, P1b*P2b*printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode = 5), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
 				handles, labels = axs.get_legend_handles_labels()
 				lgd = plt.figlegend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left', fontsize= 25, bbox_to_anchor = (1.0, 0.8))
-				axs.set_title("(b)", fontsize = 30, pad = 20)
 				axs.set_xlim([0, 360])
 				axs.set_xticks([0, 90, 180, 270, 360])
 				axs.set_xticklabels([0, 90, 180, 270, 360], fontsize = 30)
@@ -2272,7 +2270,7 @@ if args.savenorm:
 					axs.set_yticks([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 					axs.set_yticklabels([-0.045, -0.04, -0.035, -0.03, -0.025, -0.02, -0.015, -0.01])
 
-				xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+				xBheader = "(b)\n{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 				Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$~(\mathrm{GeV/c})^2$"+ "\n"
 				theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>=$"+"{:.3f}".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$~\mathrm{GeV}^2$"
 				header = xBheader + Q2header + theader
@@ -2656,7 +2654,6 @@ if args.saveplot2:
 	plt.clf()
 
 	integratedKM = np.zeros(xsecTh_BH.shape[:-1])
-	integratedKM = 	np.load(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k))["hist"]
 	integratedExp = np.zeros(xsecTh_BH.shape[:-1])
 	integratedExp_min = np.zeros(xsecTh_BH.shape[:-1])
 	integratedExp_max = np.zeros(xsecTh_BH.shape[:-1])
@@ -2671,14 +2668,14 @@ if args.saveplot2:
 				if (xBbin == 2) & (Q2bin == 4):
 					continue
 
-				# # fig, axs = plt.subplots(1, 1, figsize = (10, 6))
-				# Nsample = 1000
-				# xBs = np.ones(Nsample)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
-				# Q2s = np.ones(Nsample)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
-				# t1s = np.ones(Nsample)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
-				# phi1s = np.linspace(90, 270, Nsample)
-				# integratedKM[xBbin, Q2bin, tbin] = np.sum(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4)) * np.pi/Nsample
-				# # axs.plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+				# fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+				Nsample = 1000
+				xBs = np.ones(Nsample)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
+				Q2s = np.ones(Nsample)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
+				t1s = np.ones(Nsample)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
+				phi1s = np.linspace(90, 270, Nsample)
+				integratedKM[xBbin, Q2bin, tbin] = np.sum(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4)) * np.pi/Nsample
+				# axs.plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
 
 				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
 				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
@@ -2691,7 +2688,7 @@ if args.saveplot2:
 				# integratedExp = (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin].mean() * np.pi
 
 				print(xBbin, Q2bin, tbin, integratedExp[xBbin, Q2bin, tbin], integratedKM[xBbin, Q2bin, tbin])
-	# np.savez(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k), hist = integratedKM)
+	np.savez(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k), hist = integratedKM)
 	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp.npz".format(k), hist = integratedExp)
 	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_min.npz".format(k), hist = integratedExp_min)
 	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_max.npz".format(k), hist = integratedExp_max)
