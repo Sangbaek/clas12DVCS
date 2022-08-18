@@ -2289,6 +2289,187 @@ if args.savenorm:
 	#mean: 0.77
 	#std: 6.8%
 
+if args.saveint:
+
+	Normalization = .75
+
+	k = 3
+	i = 3
+	xBbins  = collection_xBbins[k]
+	Q2bins  = collection_Q2bins[k]
+	tbins   = collection_tbins [k]
+	phibins = collection_phibins[k]
+
+	phi1avg_VGG = np.load(basedir + "/nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
+	xBavg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
+	Q2avg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
+	t1avg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
+
+	phi1avg_BH  = np.load(basedir + "/nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
+	xBavg_BH    = np.load(basedir + "/nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
+	Q2avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
+	t1avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
+
+	xsecTh_KM          = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
+	xsecTh_BH          = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
+	xsecTh_VGG         = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
+	xsecTh_KM_plus     = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_KM_plus.npz".format(k))["hist"]
+	xsecTh_BH_plus     = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_BH_plus.npz".format(k))["hist"]
+	xsecTh_VGG_plus    = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_VGG_plus.npz".format(k))["hist"]
+	xsecTh_KM_minus     = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_KM_minus.npz".format(k))["hist"]
+	xsecTh_BH_minus     = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_BH_minus.npz".format(k))["hist"]
+	xsecTh_VGG_minus    = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_VGG_minus.npz".format(k))["hist"]
+	binVolume          = np.load(basedir + "/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+	SystUnc            = np.load(basedir + "/nphistograms/binscheme{}/SystUnc.npz".format(k))["hist"]
+	SystUnc_pol            = np.load(basedir + "/nphistograms/binscheme{}/SystUnc_pol.npz".format(k))["hist"]
+
+	ActiveAll       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
+	ActiveAny       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
+	ActiveInb       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
+	ActiveOutb      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
+
+	ActiveAll_int       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveAny_int       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveInb_int       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb_int.npz".format(optionaltag, k, i))["hist"]
+	ActiveOutb_int      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG  = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH   = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH  = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG     = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG  = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH   = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH  = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG     = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH_plus.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInb_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecInb_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsecOutb_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	xsec_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	xsec_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsec_BH_minus.npz".format(optionaltag, k, i))["hist"]
+
+	xsecInbFDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbFDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDFTonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCDFTonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCRonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecInbCRonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecInbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	xsecOutbFDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbFDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDFTonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCDFTonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCRonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	xsecOutbCRonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}xsecOutbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH_plus.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInb_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatInb_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutb_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutb_BH_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	uncStat_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStat_BH_minus.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatInbFDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbFDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDFTonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCDFTonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCRonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatInbCRonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatInbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+
+	uncStatOutbFDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbFDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbFDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDFTonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCDFTonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCDFTonly_BH.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCRonly_VGG = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_VGG.npz".format(optionaltag, k, i))["hist"]
+	uncStatOutbCRonly_BH = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}uncStatOutbCRonly_BH.npz".format(optionaltag, k, i))["hist"]
+	def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4) or (tbin==0 and xBbin==1)
+		# else:
+		return ~ActiveAny_int[xBbin, Q2bin, tbin, :].any()
+
+	def badBinCondxBQ2(xBbin, Q2bin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and Q2bin == 0) or (xBbin==0 and Q2bin==4)
+		# else:
+		return ~ActiveAny_int[xBbin, Q2bin, :, :].any()
+
+	def badBinCondxBt(xBbin, tbin, k = 0):
+		# if k ==0:
+		# 	return (xBbin==1 and tbin == 0)
+		# else:
+		return ~ActiveAny_int[xBbin, :, tbin, :].any()
+
+	integratedKM = np.zeros(xsecTh_BH.shape[:-1])
+	integratedExp = np.zeros(xsecTh_BH.shape[:-1])
+	integratedExp_min = np.zeros(xsecTh_BH.shape[:-1])
+	integratedExp_max = np.zeros(xsecTh_BH.shape[:-1])
+	uncStat_integratedExp = np.zeros(xsecTh_BH.shape[:-1])
+
+	order_unpoldiff = [1,0]
+	for tbin in range(1,5):
+		for xBbin in range(2, 4):
+			for Q2bin in range(5):
+				if (xBbin == 3) & (Q2bin == 0):
+					continue
+				if (xBbin == 2) & (Q2bin == 4):
+					continue
+
+				# fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+				Nsample = 1000
+				xBs = np.ones(Nsample)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
+				Q2s = np.ones(Nsample)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
+				t1s = np.ones(Nsample)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
+				phi1s = np.linspace(90, 270, Nsample)
+				integratedKM[xBbin, Q2bin, tbin] = np.sum(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4)) * np.pi/Nsample
+				# axs.plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
+
+				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
+				phibin = phibin[np.isin(phibin, [6,7,8,9,10,11,12,13,14,15,16,17])]
+				yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin]
+				integratedExp[xBbin, Q2bin, tbin] = (np.sum((1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
+				integratedExp_min[xBbin, Q2bin, tbin]  = (np.sum((1/Normalization*(xsec_BH-SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
+				integratedExp_max[xBbin, Q2bin, tbin]  = (np.sum((1/Normalization*(xsec_BH+SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
+				uncStat_integratedExp[xBbin, Q2bin, tbin]  = (np.sqrt(np.sum((yerr*2*np.pi/(len(phibins)-1))**2))) *(12/len(phibin))
+				# integratedExp = (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin].mean() * np.pi
+
+				print(xBbin, Q2bin, tbin, integratedExp[xBbin, Q2bin, tbin], integratedKM[xBbin, Q2bin, tbin])
+	np.savez(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k), hist = integratedKM)
+	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp.npz".format(k), hist = integratedExp)
+	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_min.npz".format(k), hist = integratedExp_min)
+	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_max.npz".format(k), hist = integratedExp_max)
+	np.savez(basedir + "/nphistograms/binscheme{}/uncStat_integratedExp.npz".format(k), hist = uncStat_integratedExp)
+
+
 if args.saveplot2:
 
 	Normalization = .75
@@ -2652,47 +2833,6 @@ if args.saveplot2:
 	# fig.subplots_adjust(wspace = 0.7, hspace = 0.7)
 	plt.savefig(basedir+"/plots/unpoldiff_{}{}{}.pdf".format(xBbin, Q2bin, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
-
-	integratedKM = np.zeros(xsecTh_BH.shape[:-1])
-	integratedExp = np.zeros(xsecTh_BH.shape[:-1])
-	integratedExp_min = np.zeros(xsecTh_BH.shape[:-1])
-	integratedExp_max = np.zeros(xsecTh_BH.shape[:-1])
-	uncStat_integratedExp = np.zeros(xsecTh_BH.shape[:-1])
-
-	order_unpoldiff = [1,0]
-	for tbin in range(1,5):
-		for xBbin in range(2, 4):
-			for Q2bin in range(5):
-				if (xBbin == 3) & (Q2bin == 0):
-					continue
-				if (xBbin == 2) & (Q2bin == 4):
-					continue
-
-				# fig, axs = plt.subplots(1, 1, figsize = (10, 6))
-				Nsample = 1000
-				xBs = np.ones(Nsample)*xBavg_BH[xBbin, Q2bin, tbin, :][0]
-				Q2s = np.ones(Nsample)*Q2avg_BH[xBbin, Q2bin, tbin, :][0]
-				t1s = np.ones(Nsample)*t1avg_BH[xBbin, Q2bin, tbin, :][0]
-				phi1s = np.linspace(90, 270, Nsample)
-				integratedKM[xBbin, Q2bin, tbin] = np.sum(printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4)) * np.pi/Nsample
-				# axs.plot(phi1s, printKMarray(xBs, Q2s, t1s, np.radians(phi1s), mode  =4), color = 'cyan', linewidth = 3, label = 'Theory (KM15)')
-
-				phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-				phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
-				phibin = phibin[np.isin(phibin, [6,7,8,9,10,11,12,13,14,15,16,17])]
-				yerr = 1/Normalization*(xsec_BH*uncStat_BH)[xBbin, Q2bin, tbin, phibin]
-				integratedExp[xBbin, Q2bin, tbin] = (np.sum((1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
-				integratedExp_min[xBbin, Q2bin, tbin]  = (np.sum((1/Normalization*(xsec_BH-SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
-				integratedExp_max[xBbin, Q2bin, tbin]  = (np.sum((1/Normalization*(xsec_BH+SystUnc*xsec_BH) - xsecTh_BH)[xBbin, Q2bin, tbin, phibin]*2*np.pi/(len(phibins)-1)))*(12/len(phibin))
-				uncStat_integratedExp[xBbin, Q2bin, tbin]  = (np.sqrt(np.sum((yerr*2*np.pi/(len(phibins)-1))**2))) *(12/len(phibin))
-				# integratedExp = (1/Normalization*xsec_BH - xsecTh_BH)[xBbin, Q2bin, tbin, phibin].mean() * np.pi
-
-				print(xBbin, Q2bin, tbin, integratedExp[xBbin, Q2bin, tbin], integratedKM[xBbin, Q2bin, tbin])
-	np.savez(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k), hist = integratedKM)
-	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp.npz".format(k), hist = integratedExp)
-	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_min.npz".format(k), hist = integratedExp_min)
-	np.savez(basedir + "/nphistograms/binscheme{}/integratedExp_max.npz".format(k), hist = integratedExp_max)
-	np.savez(basedir + "/nphistograms/binscheme{}/uncStat_integratedExp.npz".format(k), hist = uncStat_integratedExp)
 
 	integratedKM = 	np.load(basedir + "/nphistograms/binscheme{}/integratedKM.npz".format(k))["hist"]
 	integratedExp = np.load(basedir + "/nphistograms/binscheme{}/integratedExp.npz".format(k))["hist"]
