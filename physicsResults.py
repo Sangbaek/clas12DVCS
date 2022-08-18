@@ -2738,7 +2738,7 @@ if args.saveplot2:
 	for tbin in range(num_plott):
 		active = 0
 		ttitle = "{:.3f}".format(tbins[tbin])+r"$<|t|<$"+"{:.3f}".format(tbins[tbin+1])
-		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (65, 90))
 		for xBbin in range(2,4):
 			for Q2bin in range(num_plotQ2):
 				#skip inactive bins
