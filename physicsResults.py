@@ -62,6 +62,7 @@ parser.add_argument("-ss", "--savesyst", help = "save systematic uncertainties",
 parser.add_argument("-ss2", "--savesyst2", help = "save systematic uncertainties2", action = "store_true")
 parser.add_argument("-ss3", "--savesyst3", help = "save systematic uncertainties3", action = "store_true")
 parser.add_argument("-sn", "--savenorm", help = "save normalization", action = "store_true")
+parser.add_argument("-si", "--saveint", help = "save integral", action = "store_true")
 parser.add_argument("-rp", "--radplot", help = "save rad plots", action = "store_true")
 
 args = parser.parse_args()
