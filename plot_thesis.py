@@ -2916,7 +2916,7 @@ if chapter == 5:
 		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
 		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
-		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.6), framealpha = 0.5)
+		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
 		axs.set_title("(a)", loc = 'left')
 		axs.set_xlim([30, 85])
