@@ -2,7 +2,7 @@
 """
 Script to reproduce some of plots used in Sangbaek's thesis.
 The original plots were produced in the jupyter notebook.
-Some of them has problems in that
+Some of them had problems in that
 (1) they are not clearly visible,
 (2) they do not have color bar scale for the 2d histogram.
 """
