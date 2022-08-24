@@ -174,7 +174,8 @@ axs[1, 2].set_yticks([1,2,3])
 axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 df1 = epgExpInbCD
@@ -225,7 +226,8 @@ axs[1, 2].set_yticks([1,2,3,4])
 axs[1, 3].set_yticks([5, 10, 15, 20])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 df1 = epgExpInbFD
@@ -273,7 +275,8 @@ axs[1, 2].set_yticks([2, 4, 6])
 axs[1, 3].set_yticks([2, 4, 6, 8])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
@@ -324,7 +327,8 @@ axs[1, 2].set_yticks([2, 4])
 axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 
@@ -372,7 +376,8 @@ axs[1, 2].set_yticks([2.5, 5])
 axs[1, 3].set_yticks([5, 10, 15])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 
@@ -420,6 +425,7 @@ axs[1, 2].set_yticks([2.5, 5])
 axs[1, 3].set_yticks([2,4,6,8,10,12])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
