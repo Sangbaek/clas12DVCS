@@ -46,6 +46,9 @@ class root2pickle():
             save: save output
         '''
         self.fname = fname
+        self.ebeam = ebeam # beam energy
+        self.pbeam = np.sqrt(ebeam * ebeam - me * me) # beam electron momentum
+        self.beam = [0, 0, self.pbeam] # beam vector
  
         self.determineWidth(width = width)
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
