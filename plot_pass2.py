@@ -107,12 +107,28 @@ pi0ExpInbCD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 2)]
 epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
 pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
 
+parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/"
+
+#epg Exp
+epgExpInb3 = pd.read_pickle(parent_exp + "dvcs.pkl")
+pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0.pkl")
+
+epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
+pi0ExpInbCDFT3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 3)]
+
+epgExpInbCD3 = epgExpInb3.loc[epgExpInb3.config == 2]
+pi0ExpInbCD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 2)]
+
+epgExpInbFD3 = epgExpInb3.loc[epgExpInb3.config == 1]
+pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
+
 
 varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
 title = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
 unit = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
+df3 = epgExpInbCDFT3
 xlb = [10, 0.3, 0, 0, -.3, -0.01, -0.3, 0]
 xub = [35, 1.5, 0.75, 6, .3, 0.01, 0.3, 0.1]
 yub = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
@@ -125,8 +141,9 @@ for yind in range(0, 2):
 		# simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -157,12 +174,12 @@ axs[1, 2].set_yticks([1,2,3])
 axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 df1 = epgExpInbCD
 df2 = epgExpInbCD2
+df3 = epgExpInbCD3
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
@@ -172,8 +189,9 @@ for yind in range(0, 2):
 		# simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -207,12 +225,12 @@ axs[1, 2].set_yticks([1,2,3,4])
 axs[1, 3].set_yticks([5, 10, 15, 20])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 df1 = epgExpInbFD
 df2 = epgExpInbFD2
+df3 = epgExpInbFD3
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
@@ -222,8 +240,9 @@ for yind in range(0, 2):
 		# simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -254,26 +273,27 @@ axs[1, 2].set_yticks([2, 4, 6])
 axs[1, 3].set_yticks([2, 4, 6, 8])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
 title = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
 unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 
-df3 = pi0ExpInbCDFT
-df4 = pi0ExpInbCDFT2
+df4 = pi0ExpInbCDFT
+df5 = pi0ExpInbCDFT2
+df6 = pi0ExpInbCDFT3
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df3.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df3[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2")
+		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -304,23 +324,24 @@ axs[1, 2].set_yticks([2, 4])
 axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 
-df3 = pi0ExpInbCD
-df4 = pi0ExpInbCD2
+df4 = pi0ExpInbCD
+df5 = pi0ExpInbCD2
+df6 = pi0ExpInbCD3
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df3.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df3[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2")
+		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -351,23 +372,24 @@ axs[1, 2].set_yticks([2.5, 5])
 axs[1, 3].set_yticks([5, 10, 15])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 
-df3 = pi0ExpInbFD
-df4 = pi0ExpInbFD2
+df4 = pi0ExpInbFD
+df5 = pi0ExpInbFD2
+df6 = pi0ExpInbFD3
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df3.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df3[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "pass1")
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "pass2")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2")
+		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -398,7 +420,6 @@ axs[1, 2].set_yticks([2.5, 5])
 axs[1, 3].set_yticks([2,4,6,8,10,12])
 handles, labels = axs[0, 0].get_legend_handles_labels()
 lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.tight_layout()plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
