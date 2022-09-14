@@ -67,27 +67,6 @@ else:
 	print("The polarity must be within inb and outb.")
 	exit()
 
-point = r'$.$'
-zero = r'$0$'
-one = r"$1$"
-two = r"$2$"
-three = r"$3$"
-four = r"$4$"
-five = r"$5$"
-six = r"$6$"
-seven = r"$7$"
-eight = r"$8$"
-nine = r"$9$"
-times = r"$\times$"
-ten = r"$10$"
-hundred = r"$10^2$"
-thousand = r"$10^3$"
-tenthousands = r"$10^4$"
-hundredthousands = r'$10^5$'
-tenth = r"$10^{-1}$"
-hundredth = r"$10^{-2}$"
-thousandth = r"$10^{-3}$"
-
 #chapter 2
 if chapter == 2:
 	'''
@@ -1452,35 +1431,35 @@ if chapter == 4:
 
 		fig, axs = plt.subplots(1,4, figsize = (20, 8))
 		for row in range(4):
-			axs[row].set_xlabel(r"$MM^2_{ep}$"+" ["+GeV2+"]")
+			axs[row].set_xlabel(r"$MM^2_{e'p'}$"+" ["+GeV2+"]")
 			axs[row].set_xlim([-0.4, 0.4])
 			axs[row].set_xticks([-0.4, 0, 0.4])
 		bins = np.linspace(-0.4, 0.4, 101)
 
 		inb_FD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[0])
 		inb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[0])
-		axs[0].set_title("Inb. FD  " + r"$MM^2_{ep}$")
+		axs[0].set_title("Inb. FD  " + r"$MM^2_{e'p'}$")
 		axs[0].set_ylim([0, 60000])
 		axs[0].set_yticks([0, 20000, 40000, 60000])
 		axs[0].set_yticklabels(['',two+times+tenthousands, four+times+tenthousands, six+times+tenthousands])
 
 		outb_FD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[1])
 		outb_FD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[1])
-		axs[1].set_title("Outb. FD  " + r"$MM^2_{ep}$")
+		axs[1].set_title("Outb. FD  " + r"$MM^2_{e'p'}$")
 		axs[1].set_ylim([0, 20000])
 		axs[1].set_yticks([0, 5000, 10000, 15000, 20000])
 		axs[1].set_yticklabels(['',five+times+thousand, tenthousands, one+point+five+times+tenthousands, two +times+tenthousands])
 
 		inb_CD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[2])
 		inb_CD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[2])
-		axs[2].set_title("Inb. CD  " + r"$MM^2_{ep}$")
+		axs[2].set_title("Inb. CD  " + r"$MM^2_{e'p'}$")
 		axs[2].set_ylim([0, 400000])
 		axs[2].set_yticks([0, 100000, 200000, 300000, 400000])
 		axs[2].set_yticklabels(['',hundredthousands, two+times+hundredthousands, three+times+hundredthousands, four+times+hundredthousands])
 
 		outb_CD.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'r', ax = axs[3])
 		outb_CD_corr.MM2_ep.hist(bins = bins, histtype = 'step', edgecolor = 'b', ax = axs[3])
-		axs[3].set_title("Outb. CD  " + r"$MM^2_{ep}$")
+		axs[3].set_title("Outb. CD  " + r"$MM^2_{e'p'}$")
 		axs[3].set_ylim([0, 300000])
 		axs[3].set_yticks([0, 100000, 200000, 300000])
 		axs[3].set_yticklabels(['',hundredthousands, two+times+hundredthousands, three+times+hundredthousands])
@@ -3129,9 +3108,9 @@ if chapter == 5:
 		contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
 		contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
 
-		varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
-		title = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
-		unit = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+		varstoplot = dvcsvars
+		title = dvcstitles
+		unit = dvcsunits
 		df3 = epgExpInbCDFT
 		df1 = dvcsSimInbCDFT
 		df2 = bkgSimInbCDFT
@@ -3283,9 +3262,9 @@ if chapter == 5:
 		plt.savefig("plots/ch5/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
-		varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
-		title = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
-		unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+		varstoplot = pi0vars
+		title = pi0titles
+		unit = pi0units
 
 		df4 = pi0ExpInbCDFT
 		df5 = pi0SimInbCDFT
@@ -3456,9 +3435,9 @@ if chapter == 5:
 		contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
 		contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
 
-		varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
-		title = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
-		unit = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+		varstoplot = dvcsvars
+		title = dvcstitles
+		unit = dvcsunits
 
 		df3 = epgExpOutbCDFT
 		df1 = dvcsSimOutbCDFT
@@ -3611,9 +3590,9 @@ if chapter == 5:
 		plt.savefig("plots/ch5/dvcsOutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
-		varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
-		title = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
-		unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+		varstoplot = pi0vars
+		title = pi0titles
+		unit = pi0units
 
 		df4 = pi0ExpOutbCDFT
 		df5 = pi0SimOutbCDFT

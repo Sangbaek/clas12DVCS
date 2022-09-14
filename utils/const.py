@@ -8,13 +8,9 @@ from copy import copy
 
 M = 0.938272081 # target mass
 me = 0.5109989461 * 0.001 # electron mass
-ebeam = 10.604 # beam energy
-pbeam = np.sqrt(ebeam * ebeam - me * me) # beam electron momentum
-beam = [0, 0, pbeam] # beam vector
 target = [0, 0, 0] # target vector
 alpha = 1/137.036
 hc2  = 0.38938
-Ed = ebeam
 
 #reaction: dvcs, pi0
 #polarity: inb, outb
@@ -254,6 +250,34 @@ polrate = 0.86
 badBins = ['004', '005', '006', '015', '016', '026', '045', '046', '104', '105', '106', '115', '116', '126', '146', '205', '206', '216', '240', '245', '246', '306', '320', '330', '406', '410', '420', '500', '505', '506', '510', '600', '601']
 goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020', '021', '022', '023', '024', '025', '030', '031', '032', '033', '034', '035', '036', '040', '041', '042', '043', '044', '100', '101', '102', '103', '110', '111', '112', '113', '114', '120', '121', '122', '123', '124', '125', '130', '131', '132', '133', '134', '135', '136', '140', '141', '142', '143', '144', '145', '200', '201', '202', '203', '204', '210', '211', '212', '213', '214', '215', '220', '221', '222', '223', '224', '225', '226', '230', '231', '232', '233', '234', '235', '236', '241', '242', '243', '244', '300', '301', '302', '303', '304', '305', '310', '311', '312', '313', '314', '315', '316', '321', '322', '323', '324', '325', '326', '331', '332', '333', '334', '335', '336', '400', '401', '402', '403', '404', '405', '411', '412', '413', '414', '415', '416', '421', '422', '423', '424', '425', '426', '501', '502', '503', '504', '511', '512', '513', '514', '515', '516', '602', '603', '604', '605', '606']
 
+point = r'$.$'
+zero = r'$0$'
+one = r"$1$"
+two = r"$2$"
+three = r"$3$"
+four = r"$4$"
+five = r"$5$"
+six = r"$6$"
+seven = r"$7$"
+eight = r"$8$"
+nine = r"$9$"
+times = r"$\times$"
+ten = r"$10$"
+hundred = r"$10^2$"
+thousand = r"$10^3$"
+tenthousands = r"$10^4$"
+hundredthousands = r'$10^5$'
+tenth = r"$10^{-1}$"
+hundredth = r"$10^{-2}$"
+thousandth = r"$10^{-3}$"
+
+dvcsvars = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
+dvcstitles = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\phi_{H\Gamma}$" , r"$ME_{e'p'\gamma}$", r"$MM^{2}_{e'p'\gamma}$", r"$MM^{2}_{e'p'}$", r"$MPt_{e'p'\gamma}$"]
+dvcsunits = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+
+pi0vars = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
+pi0titles = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\phi_{H\Pi}$" , r"$ME_{e'p'\pi^0}$", r"$MM^{2}_{e'p'\pi^0}$", r"$MM^{2}_{e'p'}$", r"$MPt_{e'p'\pi^0}$"]
+pi0units = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 
 inactivebins = np.array([   0.,   22.,   23.,   24.,   25.,   46.,   47.,   48.,   71.,
         122.,  141.,  145.,  146.,  147.,  152.,  156.,  157.,  163.,
@@ -297,9 +321,14 @@ activeQ2xBtbins = np.linspace(0, 174, 175, dtype=int)[~np.isin(np.linspace(0, 17
 
 newxBbins = [x1, c0, c1, c2, c3, c4, d2]
 newQ2bins = [y1, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5)]
-newxBbins2 = [x1, c0, c1, c2, c3, c4, c5, d2, d4]
-newQ2bins2 = [y1, 1.2, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4), y4, np.sqrt(y4*y5), 7]
+newxBbins2 = [x1, c0, c1, c2, c3, c4,                             c5, d2, d4]
+newQ2bins2 = [y1, 1.2, y2, np.sqrt(y2*y3), y3, np.sqrt(y3*y4)    , y4, np.sqrt(y4*y5), 7]
 newtbins = [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0, 1.25, 1.5, 1.79]
+
+
+# Q2 [1.000, 1.200, 1.456, 1.912, 2.510, 3.295, 4.326, 5.761, 7.000]
+# xB [0.062, 0.090, 0.118, 0.155, 0.204, 0.268, 0.357, 0.446, 0.581]
+# t  [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0]
 
 collection_cont_xBbins  = [np.linspace(x1, d4, 2),    np.linspace(0.05, 0.85, 6),                         newxBbins, newxBbins2]
 collection_cont_Q2bins  = [np.linspace(1, 7, 2),      np.array([1, 1.5, 2, 2.5, 3.5, 4.5, 6, 7.5, 10.3]), newQ2bins, newQ2bins2]
