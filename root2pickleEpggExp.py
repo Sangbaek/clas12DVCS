@@ -514,7 +514,9 @@ class root2pickle():
             df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
 
             cut_CD = df_protonRec.Psector > 7
-            if fidlevel == 'mid':
+            if nocorr:
+                pass
+            elif fidlevel == 'mid':
                 cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta)
             elif fidlevel == 'tight':
                 cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta-5)
