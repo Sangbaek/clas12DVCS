@@ -13,7 +13,7 @@ pd.options.mode.chained_assignment = None
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False, allowduplicates = False):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "dvcs", raw = False, detRes = False, width = "mid", smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
         '''
             clas init.
             Args
@@ -47,6 +47,9 @@ class root2pickle():
         '''
         
         self.fname = fname
+        self.ebeam = ebeam # beam energy
+        self.pbeam = np.sqrt(ebeam * ebeam - me * me) # beam electron momentum
+        self.beam = [0, 0, self.pbeam] # beam vector
 
         self.determineWidth(width = width)
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
@@ -789,31 +792,31 @@ class root2pickle():
         df_epgg.loc[:, 'Gphi2'] = getPhi(gam2)
 
         pi0 = vecAdd(gam, gam2)
-        VGS = [-df_epgg['Epx'], -df_epgg['Epy'], pbeam - df_epgg['Epz']]
+        VGS = [-df_epgg['Epx'], -df_epgg['Epy'], self.pbeam - df_epgg['Epz']]
         v3l = cross(beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
         v3pi0 = cross(VGS, pi0)
 
         VmissPi0 = [-df_epgg["Epx"] - df_epgg["Ppx"], -df_epgg["Epy"] -
-                    df_epgg["Ppy"], pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
+                    df_epgg["Ppy"], self.pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
         VmissP = [-df_epgg["Epx"] - df_epgg["Gpx"] - df_epgg["Gpx2"], -df_epgg["Epy"] -
-                    df_epgg["Gpy"] - df_epgg["Gpy2"], pbeam - df_epgg["Epz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
+                    df_epgg["Gpy"] - df_epgg["Gpy2"], self.pbeam - df_epgg["Epz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
         Vmiss = [-df_epgg["Epx"] - df_epgg["Ppx"] - df_epgg["Gpx"] - df_epgg["Gpx2"],
                     -df_epgg["Epy"] - df_epgg["Ppy"] - df_epgg["Gpy"] - df_epgg["Gpy2"],
-                    pbeam - df_epgg["Epz"] - df_epgg["Ppz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
+                    self.pbeam - df_epgg["Epz"] - df_epgg["Ppz"] - df_epgg["Gpz"] - df_epgg["Gpz2"]]
         costheta = cosTheta(VGS, gam)
 
         df_epgg.loc[:, 'Mpx'], df_epgg.loc[:, 'Mpy'], df_epgg.loc[:, 'Mpz'] = Vmiss
 
         # binning kinematics
-        df_epgg.loc[:,'Q2'] = -((ebeam - df_epgg['Ee'])**2 - mag2(VGS))
-        df_epgg.loc[:,'nu'] = (ebeam - df_epgg['Ee'])
+        df_epgg.loc[:,'Q2'] = -((self.ebeam - df_epgg['Ee'])**2 - mag2(VGS))
+        df_epgg.loc[:,'nu'] = (self.ebeam - df_epgg['Ee'])
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
         df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
         df_epgg.loc[:,'t2'] = (M * df_epgg['Q2'] + 2 * M * df_epgg['nu'] * (df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta))\
         / (M + df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta)
-        df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
+        df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
         df_epgg.loc[:,'MPt'] = np.sqrt((df_epgg["Epx"] + df_epgg["Ppx"] + df_epgg["Gpx"] + df_epgg["Gpx2"])**2 +
                                  (df_epgg["Epy"] + df_epgg["Ppy"] + df_epgg["Gpy"] + df_epgg["Gpy2"])**2)
         # trento angles
@@ -825,13 +828,13 @@ class root2pickle():
                                   0, 360.0 - df_epgg['phi2'], df_epgg['phi2'])
 
         # exclusivity variables
-        df_epgg.loc[:,'MM2_ep'] = (-M - ebeam + df_epgg["Ee"] +
+        df_epgg.loc[:,'MM2_ep'] = (-M - self.ebeam + df_epgg["Ee"] +
                              df_epgg["Pe"])**2 - mag2(VmissPi0)
-        df_epgg.loc[:,'MM2_egg'] = (-M - ebeam + df_epgg["Ee"] +
+        df_epgg.loc[:,'MM2_egg'] = (-M - self.ebeam + df_epgg["Ee"] +
                              df_epgg["Ge"] + df_epgg["Ge2"])**2 - mag2(VmissP)
-        df_epgg.loc[:,'MM2_epgg'] = (-M - ebeam + df_epgg["Ee"] + df_epgg["Pe"] +
+        df_epgg.loc[:,'MM2_epgg'] = (-M - self.ebeam + df_epgg["Ee"] + df_epgg["Pe"] +
                              df_epgg["Ge"] + df_epgg["Ge2"])**2 - mag2(Vmiss)
-        df_epgg.loc[:,'ME_epgg'] = (M + ebeam - df_epgg["Ee"] - df_epgg["Pe"] - df_epgg["Ge"] - df_epgg["Ge2"])
+        df_epgg.loc[:,'ME_epgg'] = (M + self.ebeam - df_epgg["Ee"] - df_epgg["Pe"] - df_epgg["Ge"] - df_epgg["Ge2"])
         df_epgg.loc[:,'Mpi0'] = pi0InvMass(gam, gam2)
         df_epgg.loc[:,'reconPi'] = angle(VmissPi0, pi0)
         df_epgg.loc[:,"Pie"] = df_epgg['Ge'] + df_epgg['Ge2']
@@ -1075,29 +1078,29 @@ class root2pickle():
 
         Ppt = mag([df_epg['Ppx'], df_epg['Ppy'], 0])
 
-        VGS = [-df_epg['Epx'], -df_epg['Epy'], pbeam - df_epg['Epz']]
+        VGS = [-df_epg['Epx'], -df_epg['Epy'], self.pbeam - df_epg['Epz']]
         v3l = cross(beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
         VmissG = [-df_epg["Epx"] - df_epg["Ppx"], -df_epg["Epy"] - df_epg["Ppy"],
-                  pbeam - df_epg["Epz"] - df_epg["Ppz"]]
+                  self.pbeam - df_epg["Epz"] - df_epg["Ppz"]]
         VmissP = [-(df_epg["Epx"] + df_epg["Gpx"]), -(df_epg["Epy"] + df_epg["Gpy"]),
-                  -(-pbeam + df_epg["Epz"] + df_epg["Gpz"])]
+                  -(-self.pbeam + df_epg["Epz"] + df_epg["Gpz"])]
         Vmiss = [-(df_epg["Epx"] + df_epg["Ppx"] + df_epg["Gpx"]), -(df_epg["Epy"] + df_epg["Ppy"] + df_epg["Gpy"]),
-                 -(-pbeam + df_epg["Epz"] + df_epg["Ppz"] + df_epg["Gpz"])]
+                 -(-self.pbeam + df_epg["Epz"] + df_epg["Ppz"] + df_epg["Gpz"])]
         costheta = cosTheta(VGS, gam)
 
         df_epg.loc[:, 'Mpx'], df_epg.loc[:, 'Mpy'], df_epg.loc[:, 'Mpz'] = Vmiss
 
         # binning kinematics
-        df_epg.loc[:,'Q2'] = -((ebeam - df_epg['Ee'])**2 - mag2(VGS))
-        df_epg.loc[:,'nu'] = (ebeam - df_epg['Ee'])
-        df_epg.loc[:,'y'] = df_epg['nu']/ebeam
+        df_epg.loc[:,'Q2'] = -((self.ebeam - df_epg['Ee'])**2 - mag2(VGS))
+        df_epg.loc[:,'nu'] = (self.ebeam - df_epg['Ee'])
+        df_epg.loc[:,'y'] = df_epg['nu']/self.ebeam
         df_epg.loc[:,'xB'] = df_epg['Q2'] / 2.0 / M / df_epg['nu']
         df_epg.loc[:,'t1'] = 2 * M * (df_epg['Pe'] - M)
         df_epg.loc[:,'t2'] = (M * df_epg['Q2'] + 2 * M * df_epg['nu'] * (df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta))\
         / (M + df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta)
-        df_epg.loc[:,'W'] = np.sqrt(np.maximum(0, (ebeam + M - df_epg['Ee'])**2 - mag2(VGS)))
+        df_epg.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_epg['Ee'])**2 - mag2(VGS)))
 
         # trento angles
         df_epg.loc[:,'phi1'] = angle(v3l, v3h)
@@ -1108,11 +1111,11 @@ class root2pickle():
                                   0, 360.0 - df_epg['phi2'], df_epg['phi2'])
 
         # exclusivity variables
-        df_epg.loc[:,'MM2_epg'] = (-M - ebeam + df_epg["Ee"] +
+        df_epg.loc[:,'MM2_epg'] = (-M - self.ebeam + df_epg["Ee"] +
                              df_epg["Pe"] + df_epg["Ge"])**2 - mag2(Vmiss)
-        df_epg.loc[:,'ME_epg'] = (M + ebeam - df_epg["Ee"] - df_epg["Pe"] - df_epg["Ge"])
-        df_epg.loc[:,'MM2_ep'] = (-M - ebeam + df_epg["Ee"] + df_epg["Pe"])**2 - mag2(VmissG)
-        df_epg.loc[:,'MM2_eg'] = (-M - ebeam + df_epg["Ee"] + df_epg["Ge"])**2 - mag2(VmissP)
+        df_epg.loc[:,'ME_epg'] = (M + self.ebeam - df_epg["Ee"] - df_epg["Pe"] - df_epg["Ge"])
+        df_epg.loc[:,'MM2_ep'] = (-M - self.ebeam + df_epg["Ee"] + df_epg["Pe"])**2 - mag2(VmissG)
+        df_epg.loc[:,'MM2_eg'] = (-M - self.ebeam + df_epg["Ee"] + df_epg["Ge"])**2 - mag2(VmissP)
         df_epg.loc[:,'MPt'] = np.sqrt((df_epg["Epx"] + df_epg["Ppx"] + df_epg["Gpx"])**2 +
                                 (df_epg["Epy"] + df_epg["Ppy"] + df_epg["Gpy"])**2)
         df_epg.loc[:,'coneAngle'] = angle(ele, gam)
@@ -1128,7 +1131,7 @@ class root2pickle():
         df_epg.loc[:,'ymax2'] = 1 - (M**2)*(df_epg.xB**2)/df_epg.Q2
         df_epg.loc[:,'tmin1'] = df_epg.Q2*(2*(1-df_epg.xB)*(1-np.sqrt(1+eps**2))+eps**2)/(4*df_epg.xB*(1-df_epg.xB) + eps**2)
         df_epg.loc[:,'tmin2'] = M*M*(df_epg.xB**2)/(1-df_epg.xB+df_epg.xB*M*M/df_epg.Q2)
-        df_epg.loc[:,'tcol'] = df_epg.Q2*(df_epg.Q2-2*df_epg.xB*M*ebeam)/df_epg.xB/(df_epg.Q2-2*M*ebeam)
+        df_epg.loc[:,'tcol'] = df_epg.Q2*(df_epg.Q2-2*df_epg.xB*M*self.ebeam)/df_epg.xB/(df_epg.Q2-2*M*self.ebeam)
 
         df_epg.loc[:, 'vzdiff'] = df_epg.Evz - df_epg.Pvz
 
@@ -1608,6 +1611,7 @@ if __name__ == "__main__":
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
+    parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
 
     args = parser.parse_args()
 
@@ -1617,7 +1621,8 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
     smearingFactor = float(args.smearing)
 
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates)
+    be = float(args.beam)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
     df = converter.df
 
     df.to_pickle(args.out)
