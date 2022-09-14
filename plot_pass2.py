@@ -124,7 +124,7 @@ pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
 
 
 varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
-title = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{epg}$", "MM"+r"${}^{2}_{epg}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{epg}$"]
+title = [r"$\theta_{e'\gamma}$", "MM"+r"${}^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{e'p'\gamma}$", "MM"+r"${}^{2}_{e'p'\gamma}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\gamma}$"]
 unit = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
@@ -281,24 +281,70 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCDFT.Pp, epgExpInbCDFT.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+h = axs.hist2d(epgExpInbCDFT2.Pp, epgExpInbCDFT2.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/CDFT_Pp_Ptheta.pdf")
+axs.set_xlabel(r"$p_{p'}$" + " [" + GeVc + "]")
+axs.set_ylabel(r"$\theta_{p'}$" + " [" + degree + "]")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass2_CDFT_Pp_Ptheta.pdf")
 plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCD.Pp, epgExpInbCD.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+h = axs.hist2d(epgExpInbCD2.Pp, epgExpInbCD2.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/CDFD_Pp_Ptheta.pdf")
+axs.set_xlabel(r"$p_{p'}$" + " [" + GeVc + "]")
+axs.set_ylabel(r"$\theta_{p'}$" + " [" + degree + "]")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass2_CDFD_Pp_Ptheta.pdf")
+
+fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Pp, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+cbar = plt.colorbar(h[3], ax = axs)
+axs.set_xlim([0, 1.5])
+axs.set_ylim([-.3, .3])
+axs.set_xlabel(r"$p_{p'}$" + " [" + GeVc + "]")
+axs.set_ylabel("MM"+r"${}^{2}_{e'p'}$" +" [" + GeV2 + "]")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass2_CDprotons_Pp_MM2ep.pdf")
+plt.clf()
+
+fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Pp, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+cbar = plt.colorbar(h[3], ax = axs)
+axs.set_xlim([0, 1.5])
+axs.set_ylim([-.3, .3])
+axs.set_xlabel(r"$p_{p'}$" + " [" + GeVc + "]")
+axs.set_ylabel("MM"+r"${}^{2}_{e'p'}$" +" [" + GeV2 + "]")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass1_CDprotons_Pp_MM2ep.pdf")
+plt.clf()
+
+h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Ptheta, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+cbar = plt.colorbar(h[3], ax = axs)
+axs.set_xlim([0, 1.5])
+axs.set_ylim([-.3, .3])
+axs.set_xlabel(r"$\theta_{p'}$" + " [" + degree + "]")
+axs.set_ylabel("MM"+r"${}^{2}_{e'p'}$" +" [" + GeV2 + "]")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass2_CDprotons_Ptheta_MM2ep.pdf")
+plt.clf()
+
+fig, axs = plt.subplots(1, 1, figsize = (10, 6))
+
+h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Ptheta, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
+cbar = plt.colorbar(h[3], ax = axs)
+axs.set_xlim([0, 1.5])
+axs.set_ylim([-.3, .3])
+axs.set_xlabel(r"$\theta_{p'}$" + " [" + degree + "]")
+
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass1_CDprotons_Ptheta_MM2ep.pdf")
+plt.clf()
 
 
 varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
-title = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi_{ep\pi^0}$" , "ME"+r"${}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep\pi^0}$", "MM"+r"${}^{2}_{ep}$", "MPt"+r"${}_{ep\pi^0}$"]
+title = [r"$IM_{\pi^0}$", "MM"+r"${}^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi_{e'p'\pi^0}$" , "ME"+r"${}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\pi^0}$"]
 unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 
 df4 = pi0ExpInbCDFT
