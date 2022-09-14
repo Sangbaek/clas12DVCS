@@ -281,15 +281,15 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-axs.hist2d(epgExpInbCDFT.Pp, epgExpInbCDFT.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap)
+axs.hist2d(epgExpInbCDFT.Pp, epgExpInbCDFT.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/CDFT_Pp_Ptheta.pdf")
 
-axs.hist2d(epgExpInbCD.Pp, epgExpInbCD.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap)
+axs.hist2d(epgExpInbCD.Pp, epgExpInbCD.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(), rasterized = True)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/CDFT_Pp_Ptheta.pdf")
+plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/CDFD_Pp_Ptheta.pdf")
 
 
 varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
