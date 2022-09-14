@@ -281,7 +281,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCDFT.Pp, epgExpInbCDFT.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1), rasterized = True)
+h = axs.hist2d(epgExpInbCDFT.Pp, epgExpInbCDFT.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
@@ -290,7 +290,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCD.Pp, epgExpInbCD.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1), rasterized = True)
+h = axs.hist2d(epgExpInbCD.Pp, epgExpInbCD.Ptheta, bins = [np.linspace(0, 1.5, 101), np.linspace(40, 80)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 100), rasterized = True)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([40, 80])
