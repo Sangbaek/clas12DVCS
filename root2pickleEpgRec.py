@@ -793,7 +793,7 @@ class root2pickle():
 
         pi0 = vecAdd(gam, gam2)
         VGS = [-df_epgg['Epx'], -df_epgg['Epy'], self.pbeam - df_epgg['Epz']]
-        v3l = cross(beam, ele)
+        v3l = cross(self.beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
         v3pi0 = cross(VGS, pi0)
@@ -1079,7 +1079,7 @@ class root2pickle():
         Ppt = mag([df_epg['Ppx'], df_epg['Ppy'], 0])
 
         VGS = [-df_epg['Epx'], -df_epg['Epy'], self.pbeam - df_epg['Epz']]
-        v3l = cross(beam, ele)
+        v3l = cross(self.beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
         VmissG = [-df_epg["Epx"] - df_epg["Ppx"], -df_epg["Epy"] - df_epg["Ppy"],

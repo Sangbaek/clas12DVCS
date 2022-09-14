@@ -762,7 +762,7 @@ class root2pickle():
 
         pi0 = vecAdd(gam, gam2)
         VGS = [-df_epgg['Epx'], -df_epgg['Epy'], self.pbeam - df_epgg['Epz']]
-        v3l = cross(beam, ele)
+        v3l = cross(self.beam, ele)
         v3h = cross(pro, VGS)
         v3g = cross(VGS, gam)
         v3pi0 = cross(VGS, pi0)
