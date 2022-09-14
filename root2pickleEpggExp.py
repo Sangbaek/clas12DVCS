@@ -515,7 +515,7 @@ class root2pickle():
 
             cut_CD = df_protonRec.Psector > 7
             if nocorr:
-                pass
+                cut_right = cut_CD
             elif fidlevel == 'mid':
                 cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta)
             elif fidlevel == 'tight':
