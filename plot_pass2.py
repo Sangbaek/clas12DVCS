@@ -279,8 +279,8 @@ plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
-print("pass1", len(dvcsInbFD), len(dvcsInbCD), len(dvcsInbCDFT))
-print("pass2", len(dvcsInbFD2), len(dvcsInbCD2), len(dvcsInbCDFT2))
+print("pass1", len(epgExpInbFD), len(epgExpInbCD), len(epgExpInbCDFT))
+print("pass2", len(epgExpInbFD2), len(epgExpInbCD2), len(epgExpInbCDFT2))
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
