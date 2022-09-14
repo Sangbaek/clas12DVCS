@@ -107,7 +107,7 @@ pi0ExpInbCD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 2)]
 epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
 pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
 
-parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/exp/"
+parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noCorr/inb/exp/"
 
 #epg Exp
 epgExpInb3 = pd.read_pickle(parent_exp + "dvcs.pkl")
