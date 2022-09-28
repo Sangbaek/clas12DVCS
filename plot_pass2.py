@@ -357,7 +357,7 @@ plt.clf()
 
 
 varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
-title = [r"$IM_{\pi^0}$", "MM"+r"${}^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi_{e'p'\pi^0}$" , "ME"+r"${}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\pi^0}$"]
+title = [r"$IM_{\pi^0}$", "MM"+r"${}^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi_{H\Pi}$" , "ME"+r"${}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\pi^0}$"]
 unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 
 df4 = pi0ExpInbCDFT
