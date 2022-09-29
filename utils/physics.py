@@ -361,7 +361,7 @@ def getCFFarrays(xB, Q2, t, phi):
         H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM = (th_KM15.ReH(pt1), th_KM15.ImH(pt1), th_KM15.ReE(pt1), th_KM15.ImE(pt1), th_KM15.ReHt(pt1), th_KM15.ImHt(pt1), th_KM15.ReEt(pt1), th_KM15.ImEt(pt1))
     return H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM
 
-def getBHDVCS(xB, Q2, t, phi, mode = 1):
+def getBHDVCS(xB, Q2, t, phi, Ed = 10.604, mode = 1):
     coeff = 10**9*hc2*alpha**3
     del2  = -t
     Phi_gb = np.pi-np.radians(phi)
