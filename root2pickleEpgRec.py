@@ -1567,21 +1567,21 @@ class root2pickle():
 
         if gen == "dvcsrad":
 
-            df_epg.loc[:, 'GenxBbin'] = np.zeros(len(df_epg.GenxB), dtype = 'int') - 1
-            df_epg.loc[:, 'GenQ2bin'] = np.zeros(len(df_epg.GenQ2), dtype = 'int') - 1
-            df_epg.loc[:, 'Gentbin'] = np.zeros(len(df_epg.Gent1), dtype = 'int') - 1
-            df_epg.loc[:, 'Genphibin'] = np.zeros(len(df_epg.Genphi1), dtype = 'int') - 1
+            df.loc[:, 'GenxBbin'] = np.zeros(len(df.GenxB), dtype = 'int') - 1
+            df.loc[:, 'GenQ2bin'] = np.zeros(len(df.GenQ2), dtype = 'int') - 1
+            df.loc[:, 'Gentbin'] = np.zeros(len(df.Gent1), dtype = 'int') - 1
+            df.loc[:, 'Genphibin'] = np.zeros(len(df.Genphi1), dtype = 'int') - 1
             for xB in newxBbins2:
-                df_epg.GenxBbin = df_epg.GenxBbin + (df_epg.GenxB>xB).astype("int").to_numpy(dtype = 'int')
+                df.GenxBbin = df.GenxBbin + (df.GenxB>xB).astype("int").to_numpy(dtype = 'int')
 
             for Q2 in newQ2bins2:
-                df_epg.GenQ2bin = df_epg.GenQ2bin + (df_epg.GenQ2>Q2).astype("int").to_numpy(dtype = 'int')
+                df.GenQ2bin = df.GenQ2bin + (df.GenQ2>Q2).astype("int").to_numpy(dtype = 'int')
 
             for t1 in newtbins:
-                df_epg.Gentbin = df_epg.Gentbin + (df_epg.Gent1>t1).astype("int").to_numpy(dtype = 'int')
+                df.Gentbin = df.Gentbin + (df.Gent1>t1).astype("int").to_numpy(dtype = 'int')
 
             for phi1 in phibins:
-                df_epg.Genphibin = df_epg.Genphibin + (df_epg.Genphi1>phi1).astype("int").to_numpy(dtype = 'int')
+                df.Genphibin = df.Genphibin + (df.Genphi1>phi1).astype("int").to_numpy(dtype = 'int')
 
             # # encode unassigned bin as -1
             # df.loc[:, "GenQ2bin"] = -1
