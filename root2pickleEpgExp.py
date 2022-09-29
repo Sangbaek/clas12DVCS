@@ -1041,21 +1041,21 @@ class root2pickle():
 
         df_epg.loc[:, 'vzdiff'] = df_epg.Evz - df_epg.Pvz
 
-        df_epg.loc[:, 'xBbin'] = np.zeros(len(df_epg.xB)) - 1
-        df_epg.loc[:, 'Q2bin'] = np.zeros(len(df_epg.Q2)) - 1
-        df_epg.loc[:, 'tbin'] = np.zeros(len(df_epg.t1)) - 1
-        df_epg.loc[:, 'phibin'] = np.zeros(len(df_epg.phi1)) - 1
+        df_epg.loc[:, 'xBbin'] = np.zeros(len(df_epg.xB), dtype = 'int') - 1
+        df_epg.loc[:, 'Q2bin'] = np.zeros(len(df_epg.Q2), dtype = 'int') - 1
+        df_epg.loc[:, 'tbin'] = np.zeros(len(df_epg.t1), dtype = 'int') - 1
+        df_epg.loc[:, 'phibin'] = np.zeros(len(df_epg.phi1), dtype = 'int') - 1
         for xB in newxBbins2:
-            df_epg.xBbin = df_epg.xBbin + (df_epg.xB>xB).astype("int").to_numpy()
+            df_epg.xBbin = df_epg.xBbin + (df_epg.xB>xB).astype("int").to_numpy(dtype = 'int')
 
         for Q2 in newQ2bins2:
-            df_epg.Q2bin = df_epg.Q2bin + (df_epg.Q2>Q2).astype("int").to_numpy()
+            df_epg.Q2bin = df_epg.Q2bin + (df_epg.Q2>Q2).astype("int").to_numpy(dtype = 'int')
 
         for t1 in newtbins:
-            df_epg.tbin = df_epg.tbin + (df_epg.t1>t1).astype("int").to_numpy()
+            df_epg.tbin = df_epg.tbin + (df_epg.t1>t1).astype("int").to_numpy(dtype = 'int')
 
         for phi1 in phibins:
-            df_epg.phibin = df_epg.phibin + (df_epg.phi1>phi1).astype("int").to_numpy()
+            df_epg.phibin = df_epg.phibin + (df_epg.phi1>phi1).astype("int").to_numpy(dtype = 'int')
 
         # # encode unassigned bin as -1
         # df_epg.loc[:, "Q2bin"] = -1
