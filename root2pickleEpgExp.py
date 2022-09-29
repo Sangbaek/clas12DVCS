@@ -302,6 +302,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         df_protonRec.loc[:, "PpOrig"] = df_protonRec.Pp
+        df_protonRec.loc[:, "PeOrig"] = df_protonRec.Pe
         df_protonRec.loc[:, "PthetaOrig"] = df_protonRec.Ptheta
         df_protonRec.loc[:, "PphiOrig"] = df_protonRec.Pphi
 
@@ -716,6 +717,7 @@ class root2pickle():
         df_epgg.loc[:,'nu'] = (self.ebeam - df_epgg['Ee'])
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
         df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
+        df_epgg.loc[:,'t1Orig'] = 2 * M * (df_epgg['PeOrig'] - M)
         df_epgg.loc[:,'t2'] = (M * df_epgg['Q2'] + 2 * M * df_epgg['nu'] * (df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta))\
         / (M + df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta)
         df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
@@ -1001,6 +1003,7 @@ class root2pickle():
         df_epg.loc[:,'y'] = df_epg['nu']/self.ebeam
         df_epg.loc[:,'xB'] = df_epg['Q2'] / 2.0 / M / df_epg['nu']
         df_epg.loc[:,'t1'] = 2 * M * (df_epg['Pe'] - M)
+        df_epg.loc[:,'t1Orig'] = 2 * M * (df_epg['PeOrig'] - M)
         df_epg.loc[:,'t2'] = (M * df_epg['Q2'] + 2 * M * df_epg['nu'] * (df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta))\
         / (M + df_epg['nu'] - np.sqrt(df_epg['nu'] * df_epg['nu'] + df_epg['Q2']) * costheta)
         df_epg.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_epg['Ee'])**2 - mag2(VGS)))
