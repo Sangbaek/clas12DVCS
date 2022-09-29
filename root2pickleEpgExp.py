@@ -1051,7 +1051,7 @@ class root2pickle():
         for t1 in newtbins:
             df_epg.tbin = df_epg.tbin + (df_epg.t1>t1).astype("int").to_numpy()
 
-        for phi1 in newphibins:
+        for phi1 in phibins:
             df_epg.phibin = df_epg.phibin + (df_epg.phi1>phi1).astype("int").to_numpy()
 
         # # encode unassigned bin as -1
