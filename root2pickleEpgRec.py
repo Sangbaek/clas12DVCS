@@ -1569,8 +1569,8 @@ class root2pickle():
 
             df.loc[:, 'GenxBbin'] = np.zeros(len(df.GenxB), dtype = 'int') - 1
             df.loc[:, 'GenQ2bin'] = np.zeros(len(df.GenQ2), dtype = 'int') - 1
-            df.loc[:, 'Gentbin'] = np.zeros(len(df.Gent1), dtype = 'int') - 1
-            df.loc[:, 'Genphibin'] = np.zeros(len(df.Genphi1), dtype = 'int') - 1
+            df.loc[:, 'Gentbin'] = np.zeros(len(df.Gent), dtype = 'int') - 1
+            df.loc[:, 'Genphibin'] = np.zeros(len(df.Genphi), dtype = 'int') - 1
             for xB in newxBbins2:
                 df.GenxBbin = df.GenxBbin + (df.GenxB>xB).astype("int").to_numpy(dtype = 'int')
 
@@ -1578,10 +1578,10 @@ class root2pickle():
                 df.GenQ2bin = df.GenQ2bin + (df.GenQ2>Q2).astype("int").to_numpy(dtype = 'int')
 
             for t1 in newtbins:
-                df.Gentbin = df.Gentbin + (df.Gent1>t1).astype("int").to_numpy(dtype = 'int')
+                df.Gentbin = df.Gentbin + (df.Gent>t1).astype("int").to_numpy(dtype = 'int')
 
             for phi1 in phibins:
-                df.Genphibin = df.Genphibin + (df.Genphi1>phi1).astype("int").to_numpy(dtype = 'int')
+                df.Genphibin = df.Genphibin + (df.Genphi>phi1).astype("int").to_numpy(dtype = 'int')
 
             # # encode unassigned bin as -1
             # df.loc[:, "GenQ2bin"] = -1
