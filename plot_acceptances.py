@@ -570,9 +570,7 @@ for tbin in range(6):
 			Q2f = Q2bins[Q2bin+1]
 			ti = tbins[tbin]
 			tf = tbins[tbin+1]
-			phii = np.radians(phibins[phiind])
-			phif = np.radians(phibins[phiind+1])
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(binVolume, (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(binVolume, (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*np.radians(15))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
@@ -628,6 +626,12 @@ for tbin in range(2,5):
 				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
 				continue
+			xBi = xBbins[xBbin]
+			xBf = xBbins[xBbin+1]
+			Q2i = Q2bins[Q2bin]
+			Q2f = Q2bins[Q2bin+1]
+			ti = tbins[tbin]
+			tf = tbins[tbin+1]
 			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = divideHist(binVolume, (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
@@ -683,14 +687,6 @@ for tbin in range(6):
 				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 				continue
-			xBi = xBbins[xBbin]
-			xBf = xBbins[xBbin+1]
-			Q2i = Q2bins[Q2bin]
-			Q2f = Q2bins[Q2bin+1]
-			ti = tbins[tbin]
-			tf = tbins[tbin+1]
-			phii = np.radians(phibins[phiind])
-			phif = np.radians(phibins[phiind+1])
 			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rconly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
 			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rconly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
 
@@ -804,14 +800,6 @@ for tbin in range(6):
 				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 				continue
-			xBi = xBbins[xBbin]
-			xBf = xBbins[xBbin+1]
-			Q2i = Q2bins[Q2bin]
-			Q2f = Q2bins[Q2bin+1]
-			ti = tbins[tbin]
-			tf = tbins[tbin+1]
-			phii = np.radians(phibins[phiind])
-			phif = np.radians(phibins[phiind+1])
 			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
 			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
 
