@@ -300,7 +300,6 @@ for tbin in range(6):
 				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 				continue
 			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
-			phibin = phibin[SystUnc[xBbin, Q2bin, tbin, phibin]<0.8]
 			if len(phibin):
 				pass
 			else:
