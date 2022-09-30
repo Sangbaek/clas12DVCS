@@ -423,7 +423,7 @@ for tbin in range(2,5):
 				active = 1
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
 	plt.savefig(basedir + "/plots/rawyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of raw yields landscape2'''
@@ -538,7 +538,7 @@ for tbin in range(2,5):
 				active = 1
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
 	plt.savefig(basedir + "/plots/effectiveacceptances2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape2'''
@@ -661,7 +661,7 @@ for tbin in range(2,5):
 				active = 1
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
 	plt.savefig(basedir + "/plots/binvolumeratio2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bin volume ratio landscape2'''
@@ -774,7 +774,7 @@ for tbin in range(2,5):
 				active = 1
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
 	plt.savefig(basedir + "/plots/rconly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Frad landscape2'''
@@ -887,7 +887,7 @@ for tbin in range(2,5):
 				active = 1
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
-	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
 	plt.savefig(basedir + "/plots/finonly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Fbin landscape2'''
