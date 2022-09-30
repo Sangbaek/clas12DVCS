@@ -366,7 +366,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/rawyields_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rawyields_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of raw yields landscape'''
 
@@ -424,7 +424,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/rawyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rawyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of raw yields landscape2'''
 
@@ -481,7 +481,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/bkgyields_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/bkgyields_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bkg yields landscape'''
 
@@ -539,7 +539,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/bkgyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/bkgyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bkg yields landscape2'''
 
@@ -597,7 +597,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/effectiveacceptances_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/effectiveacceptances_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape'''
 
@@ -655,7 +655,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/effectiveacceptances2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/effectiveacceptances2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape2'''
 
@@ -712,7 +712,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/rawyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rawyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of raw yields landscape'''
 
@@ -770,7 +770,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/rawyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rawyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of raw yields landscape2'''
 
@@ -827,7 +827,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/bkgyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/bkgyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bkg yields landscape'''
 
@@ -885,7 +885,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/bkgyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/bkgyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bkg yields landscape2'''
 
@@ -943,7 +943,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/effectiveacceptances_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/effectiveacceptances_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape'''
 
@@ -1001,7 +1001,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/effectiveacceptances2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/effectiveacceptances2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape2'''
 
@@ -1063,7 +1063,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/binvolumeratio_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/binvolumeratio_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bin volume ratio landscape'''
 
@@ -1125,7 +1125,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/binvolumeratio2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/binvolumeratio2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of bin volume ratio landscape2'''
 
@@ -1181,7 +1181,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/rconly_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rconly_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Frad landscape'''
 
@@ -1238,7 +1238,7 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/rconly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/rconly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Frad landscape2'''
 
@@ -1294,7 +1294,7 @@ for tbin in range(6):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
-	plt.savefig(basedir + "/plots/finonly_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/finonly_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Fbin landscape'''
 
@@ -1351,6 +1351,6 @@ for tbin in range(2,5):
 	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
 	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
 	fig.subplots_adjust(wspace = 0.7, hspace = 1)
-	plt.savefig(basedir + "/plots/finonly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.savefig(basedir + "/plots/DVCS_appendix/finonly2_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of Fbin landscape2'''
