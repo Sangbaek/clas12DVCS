@@ -265,6 +265,9 @@ Q2avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/Q2avg_BH.npz".format(
 t1avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
 
 binVolume = np.load(basedir + "/nphistograms/binscheme{}/binVolume.npz".format(k))["hist"]
+xsecTh_KM          = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_KM.npz".format(k))["hist"]
+xsecTh_BH          = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
+xsecTh_VGG         = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
 integratedRad_VGG = np.load(basedir + "/nphistograms/binscheme{}/integratedRad_VGG.npz".format(k))["hist"]
 integratedBorn_VGG = np.load(basedir + "/nphistograms/binscheme{}/integratedBorn_VGG.npz".format(k))["hist"]
