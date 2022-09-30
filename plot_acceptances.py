@@ -76,6 +76,10 @@ histBHDVCSInbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epg
 histBHDVCSInbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(i)])
 histBHDVCSInbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(i)])
 histBHDVCSInbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(i)])
+histBHDVCSInbFD_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 1), "cont{}".format(0)])
+histBHDVCSInbCD_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 2), "cont{}".format(0)])
+histBHDVCSInbCDFT_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 3), "cont{}".format(0)])
+histBHDVCSInbCR_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == -1) & (epgExp.config == 4), "cont{}".format(0)])
 
 
 histExpInb = histExpInbFD + histExpInbCD + histExpInbCDFT + histExpInbCR
@@ -89,6 +93,10 @@ histBHDVCSOutbFD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epg
 histBHDVCSOutbCD, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(i)])
 histBHDVCSOutbCDFT, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(i)])
 histBHDVCSOutbCR, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4), "cont{}".format(i)])
+histBHDVCSOutbFD_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 1), "cont{}".format(0)])
+histBHDVCSOutbCD_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 2), "cont{}".format(0)])
+histBHDVCSOutbCDFT_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 3), "cont{}".format(0)])
+histBHDVCSOutbCR_entire, bins = np.histogramdd(epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4) , ["xB", "Q2", "t1", "phi1"]].to_numpy(), bins = [xBbins, Q2bins, tbins, phibins], weights = 1 - epgExp.loc[(epgExp.polarity == 1) & (epgExp.config == 4), "cont{}".format(0)])
 
 histExpOutb = histExpOutbFD + histExpOutbCD + histExpOutbCDFT
 histBHDVCSOutb = histBHDVCSOutbFD + histBHDVCSOutbCD + histBHDVCSOutbCDFT
@@ -466,7 +474,7 @@ for tbin in range(6):
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
-			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
 
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
@@ -697,7 +705,7 @@ for tbin in range(6):
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
-			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
 
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
@@ -812,7 +820,7 @@ for tbin in range(6):
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
-			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
 
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
