@@ -359,7 +359,7 @@ for tbin in range(6):
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
-			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
 
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
