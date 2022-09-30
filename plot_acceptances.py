@@ -86,11 +86,11 @@ print("reading bhs - inbending ")
 # Count Rec BH
 histBHInb45nA, histBHInbFD45nA, histBHInbCD45nA, histBHInbCDFT45nA, histBHInbCR45nA = 0, 0, 0, 0, 0
 for jobNum in [*runs_inb_bh45nA, *runs_inb_bh50nA, *runs_inb_bh55nA]:
-	histBHInb45nA = histBHInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
-	histBHInbFD45nA = histBHInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
-	histBHInbCD45nA = histBHInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
-	histBHInbCDFT45nA = histBHInbCDFT45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
-	histBHInbCR45nA = histBHInbCR45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+	histBHInb45nA = histBHInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format('', k, jobNum))["hist"]
+	histBHInbFD45nA = histBHInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format('', k, jobNum))["hist"]
+	histBHInbCD45nA = histBHInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format('', k, jobNum))["hist"]
+	histBHInbCDFT45nA = histBHInbCDFT45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec3.npz".format('', k, jobNum))["hist"]
+	histBHInbCR45nA = histBHInbCR45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec4.npz".format('', k, jobNum))["hist"]
 
 # Count Gen BH
 histBHGenInb45nA, histBHGenInbFD45nA, histBHGenInbCD45nA, histBHGenInbCDFT45nA, histBHGenInbCR45nA = 0, 0, 0, 0, 0
@@ -105,11 +105,11 @@ print("reading vggs  - inbending")
 # Count Rec VGG
 histVGGInb45nA, histVGGInbFD45nA, histVGGInbCD45nA, histVGGInbCDFT45nA, histVGGInbCR45nA = 0, 0, 0, 0, 0
 for jobNum in [*runs_inb_vgg45nA, *runs_inb_vgg50nA, *runs_inb_vgg55nA]:
-	histVGGInb45nA = histVGGInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format(optionaltag, k, jobNum))["hist"]
-	histVGGInbFD45nA = histVGGInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format(optionaltag, k, jobNum))["hist"]
-	histVGGInbCD45nA = histVGGInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format(optionaltag, k, jobNum))["hist"]
-	histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec3.npz".format(optionaltag, k, jobNum))["hist"]
-	histVGGInbCR45nA = histVGGInbCR45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec4.npz".format(optionaltag, k, jobNum))["hist"]
+	histVGGInb45nA = histVGGInb45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec.npz".format('', k, jobNum))["hist"]
+	histVGGInbFD45nA = histVGGInbFD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec1.npz".format('', k, jobNum))["hist"]
+	histVGGInbCD45nA = histVGGInbCD45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec2.npz".format('', k, jobNum))["hist"]
+	histVGGInbCDFT45nA = histVGGInbCDFT45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec3.npz".format('', k, jobNum))["hist"]
+	histVGGInbCR45nA = histVGGInbCR45nA + np.load(basedir + "/nphistograms{}/binscheme{}/{}Rec4.npz".format('', k, jobNum))["hist"]
 #Count Gen VGG
 histVGGGenInb45nA, histVGGGenInbFD45nA, histVGGGenInbCD45nA, histVGGGenInbCDFT45nA, histVGGGenInbCR45nA = 0, 0, 0, 0, 0
 histVGGGenInb45nA_plus, histVGGGenInbFD45nA_plus, histVGGGenInbCD45nA_plus, histVGGGenInbCDFT45nA_plus, histVGGGenInbCR45nA_plus = 0, 0, 0, 0, 0
@@ -153,10 +153,10 @@ accCorrectedInb_BH2[:, :, 0, :] = divideHist((histBHDVCSInbCD+histBHDVCSInbCDFT+
 accCorrectedInb_BH = divideHist(accCorrectedInb_BH*histBHGenInb45nA, histBHGenInbFD45nA + histBHGenInbCD45nA + histBHGenInbCDFT45nA + histBHGenInbCR45nA)
 accCorrectedInb_BH[:, :, 0, :] = divideHist(accCorrectedInb_BH[:, :, 0, :]*histBHGenInb45nA[:, :, 0, :], histBHGenInbCD45nA[:, :, 0, :] + histBHGenInbCDFT45nA[:, :, 0, :] + histBHGenInbCR45nA[:, :, 0, :])
 
-ActiveAll       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format(optionaltag, k, i))["hist"]
-ActiveAny       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format(optionaltag, k, i))["hist"]
-ActiveInb       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format(optionaltag, k, i))["hist"]
-ActiveOutb      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format(optionaltag, k, i))["hist"]
+ActiveAll       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAll.npz".format('', k, i))["hist"]
+ActiveAny       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveAny.npz".format('', k, i))["hist"]
+ActiveInb       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb.npz".format('', k, i))["hist"]
+ActiveOutb      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb.npz".format('', k, i))["hist"]
 
 
 def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
