@@ -2196,7 +2196,7 @@ if args.savenorm:
 				P2b = P2(xBavg_BH[xBbin, Q2bin, tbin, phibin], Q2avg_BH[xBbin, Q2bin, tbin, phibin], t1avg_BH[xBbin, Q2bin, tbin, phibin], phi1avg_BH[xBbin, Q2bin, tbin, phibin])
 				popt, pcov = curve_fit(FourierSeries, phi1avg_BH[xBbin, Q2bin, tbin, phibin], -P1b*P2b*xsec_BH[xBbin, Q2bin, tbin, phibin], p0 =[0, 0, 0], sigma = -P1b*P2b*uncStat_BH[xBbin, Q2bin, tbin, phibin], absolute_sigma = True)
 				nominal = popt
-				Normalization[xBbin, Q2bin, tbin] = FourierSeries(0, *nominal)/reduced_zero
+				Normalization[xBbin, Q2bin, tbin] = -FourierSeries(0, *nominal)/reduced_zero
 
 				fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
@@ -2229,7 +2229,7 @@ if args.savenorm:
 				axs.set_ylabel(r"$|\mathcal{P}_1(\phi)\mathcal{P}_2|\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 				if (xBbin, Q2bin, tbin) == (4,4,2):
-					axs.set_ylim([0.01, -0.045])
+					axs.set_ylim([0.01, 0.045])
 					axs.set_yticks([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045])
 					axs.set_yticklabels([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045])
 
@@ -2269,7 +2269,7 @@ if args.savenorm:
 				axs.set_ylabel(r"$|\mathcal{P}_1(\phi)\mathcal{P}_2|\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
 
 				if (xBbin, Q2bin, tbin) == (4,4,2):
-					axs.set_ylim([0.01, -0.045])
+					axs.set_ylim([0.01, 0.045])
 					axs.set_yticks([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045])
 					axs.set_yticklabels([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045])
 
