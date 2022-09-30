@@ -428,6 +428,122 @@ for tbin in range(2,5):
 	plt.clf()
 # '''end of raw yields landscape2'''
 
+# '''start of bkg yields landscape'''
+for tbin in range(6):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (32.5, 45))
+	for xBbin in range(num_plotxB):
+		for Q2bin in range(num_plotQ2):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpInbFD - histBHDVCSInbFD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpInbCD - histBHDVCSInbCD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpInbCDFT + histExpInbCR - histBHDVCSInbCDFT - histBHDVCSInbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	plt.savefig(basedir + "/plots/bkgyields_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of bkg yields landscape'''
+
+
+# '''start of bkg yields landscape2'''
+for tbin in range(2,5):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(6, 3, figsize = (20, 30))
+	for xBbin in range(5, 8):
+		for Q2bin in range(1, 7):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpInbFD - histBHDVCSInbFD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpInbCD - histBHDVCSInbCD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpInbCDFT + histExpInbCR - histBHDVCSInbCDFT - histBHDVCSInbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin, xBbin-5].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
+	plt.savefig(basedir + "/plots/bkgyields2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of bkg yields landscape2'''
+
+
 # '''start of effective acceptances landscape'''
 for tbin in range(6):
 	active = 0
@@ -542,6 +658,353 @@ for tbin in range(2,5):
 	plt.savefig(basedir + "/plots/effectiveacceptances2_inb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 	plt.clf()
 # '''end of effective acceptances landscape2'''
+
+# '''start of raw yields landscape'''
+for tbin in range(6):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (32.5, 45))
+	for xBbin in range(num_plotxB):
+		for Q2bin in range(num_plotQ2):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = histBHDVCSOutbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = histBHDVCSOutbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histBHDVCSOutbCDFT+histBHDVCSOutbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	plt.savefig(basedir + "/plots/rawyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of raw yields landscape'''
+
+
+# '''start of raw yields landscape2'''
+for tbin in range(2,5):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(6, 3, figsize = (20, 30))
+	for xBbin in range(5, 8):
+		for Q2bin in range(1, 7):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = histBHDVCSOutbFD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = histBHDVCSOutbCD[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histBHDVCSOutbCDFT+histBHDVCSOutbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin, xBbin-5].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
+	plt.savefig(basedir + "/plots/rawyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of raw yields landscape2'''
+
+# '''start of bkg yields landscape'''
+for tbin in range(6):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (32.5, 45))
+	for xBbin in range(num_plotxB):
+		for Q2bin in range(num_plotQ2):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpOutbFD - histBHDVCSOutbFD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpOutbCD - histBHDVCSOutbCD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin-1 , xBbin].hist(phibins[:-1], phibins, weights = (histExpOutbCDFT + histExpOutbCR - histBHDVCSOutbCDFT - histBHDVCSOutbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	plt.savefig(basedir + "/plots/bkgyields_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of bkg yields landscape'''
+
+
+# '''start of bkg yields landscape2'''
+for tbin in range(2,5):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(6, 3, figsize = (20, 30))
+	for xBbin in range(5, 8):
+		for Q2bin in range(1, 7):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpOutbFD - histBHDVCSOutbFD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "(FD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpOutbCD - histBHDVCSOutbCD)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "(CD, FD)")
+			axs[num_plotQ2-Q2bin , xBbin-5].hist(phibins[:-1], phibins, weights = (histExpOutbCDFT + histExpOutbCR - histBHDVCSOutbCDFT - histBHDVCSOutbCR)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "(CD, FT)")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin, xBbin-5].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
+	plt.savefig(basedir + "/plots/bkgyields2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of bkg yields landscape2'''
+
+
+# '''start of effective acceptances landscape'''
+for tbin in range(6):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (32.5, 45))
+	for xBbin in range(num_plotxB):
+		for Q2bin in range(num_plotQ2):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin-1 , xBbin].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Acc. Entirely, BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "Acc. Separately, BH-DVCS")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel("Counts (bkg. subtracted)", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin-1, xBbin].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+	plt.savefig(basedir + "/plots/effectiveacceptances_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of effective acceptances landscape'''
+
+
+# '''start of effective acceptances landscape2'''
+for tbin in range(2,5):
+	active = 0
+	ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
+	fig, axs = plt.subplots(6, 3, figsize = (20, 30))
+	for xBbin in range(5, 8):
+		for Q2bin in range(1, 7):
+			#skip inactive bins
+			if badBinCondxBQ2t(xBbin, Q2bin, tbin, k):
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			phibin = np.argwhere(ActiveAny[xBbin, Q2bin, tbin, :]).flatten()
+			if len(phibin):
+				pass
+			else:
+				axs[num_plotQ2-Q2bin , xBbin-5].yaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
+				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
+				continue
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_BH)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_BH2)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = "Acc. Entirely, BH")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = divideHist(histBHDVCSOutb, accCorrectedOutb_VGG)[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'g', label = "Acc. Separately, BH-DVCS")
+
+			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
+			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
+			theader = "{}. ".format(tbin) + r"$<|t|>=$"+"{:.3f} GeV".format(t1avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$"
+			header = xBheader +Q2header + theader
+			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticks([0, 50, 100, 150, 200, 250, 300])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yticklabels([0, 50, 100, 150, 200, 250, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " ["+degree+"]", fontsize = 30)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel("Effective Acceptances", fontsize = 30)
+
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylabel(r"$\frac{d\sigma}{dx_B dQ^2 d|t|d\phi}$" + " [nb/GeV"+r"$^4$"+"]")
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 24)
+			# axs[num_plotQ2-Q2bin, xBbin-5].set_xlabel(r"$\phi$" + " [" + degree + "]", fontsize = 24)
+			if (active == 0) and ActiveAll[xBbin, Q2bin, tbin, :].any():
+				handles, labels = axs[num_plotQ2-Q2bin, xBbin-5].get_legend_handles_labels()
+				active = 1
+	# lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
+	lgd = plt.figlegend(handles, labels, loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.6, 0.2))
+	fig.subplots_adjust(wspace = 0.7, hspace = 1)
+	plt.savefig(basedir + "/plots/effectiveacceptances2_outb_tbin{}.pdf".format(tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
+	plt.clf()
+# '''end of effective acceptances landscape2'''
+
 
 # '''start of bin volume ratio landscape'''
 for tbin in range(6):
