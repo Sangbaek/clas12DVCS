@@ -254,6 +254,16 @@ ActiveAny_int       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}
 ActiveInb_int       = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveInb_int.npz".format('', k, i))["hist"]
 ActiveOutb_int      = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}ActiveOutb_int.npz".format('', k, i))["hist"]
 
+phi1avg_VGG = np.load(basedir + "/nphistograms/binscheme{}/phi1avg_VGG.npz".format(k))["hist"]
+xBavg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/xBavg_VGG.npz".format(k))["hist"]
+Q2avg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/Q2avg_VGG.npz".format(k))["hist"]
+t1avg_VGG   = np.load(basedir + "/nphistograms/binscheme{}/t1avg_VGG.npz".format(k))["hist"]
+
+phi1avg_BH  = np.load(basedir + "/nphistograms/binscheme{}/phi1avg_BH.npz".format(k))["hist"]
+xBavg_BH    = np.load(basedir + "/nphistograms/binscheme{}/xBavg_BH.npz".format(k))["hist"]
+Q2avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/Q2avg_BH.npz".format(k))["hist"]
+t1avg_BH    = np.load(basedir + "/nphistograms/binscheme{}/t1avg_BH.npz".format(k))["hist"]
+
 
 def badBinCondxBQ2t(xBbin, Q2bin, tbin, k = 0):
 	# if k ==0:
