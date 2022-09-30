@@ -696,7 +696,7 @@ for tbin in range(6):
 			header = xBheader +Q2header + theader
 			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
-			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0.8, 1.2])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
@@ -753,7 +753,7 @@ for tbin in range(2,5):
 			header = xBheader +Q2header + theader
 			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
-			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0.8, 1.2])
 			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
@@ -809,7 +809,7 @@ for tbin in range(6):
 			header = xBheader +Q2header + theader
 			axs[num_plotQ2-Q2bin-1, xBbin].set_title(header, loc = 'left', fontsize = 20)
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xlim([0, 360])
-			# axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0, 300])
+			axs[num_plotQ2-Q2bin-1, xBbin].set_ylim([0.8, 1.2])
 			# axs[num_plotQ2-Q2bin-1, xBbin].set_yscale('log')
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticks([0, 90, 180, 270, 360])
 			axs[num_plotQ2-Q2bin-1, xBbin].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
@@ -866,7 +866,7 @@ for tbin in range(2,5):
 			header = xBheader +Q2header + theader
 			axs[num_plotQ2-Q2bin, xBbin-5].set_title(header, loc = 'left', fontsize = 20)
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xlim([0, 360])
-			# axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0, 300])
+			axs[num_plotQ2-Q2bin, xBbin-5].set_ylim([0.8, 1.2])
 			# axs[num_plotQ2-Q2bin, xBbin-5].set_yscale('log')
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xticks([0, 90, 180, 270, 360])
 			axs[num_plotQ2-Q2bin, xBbin-5].set_xticklabels([0, 90, 180, 270, 360], fontsize = 25)
