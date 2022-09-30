@@ -570,7 +570,7 @@ for tbin in range(6):
 			Q2f = Q2bins[Q2bin+1]
 			ti = tbins[tbin]
 			tf = tbins[tbin+1]
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = divideHist(binVolume, (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*np.radians(15))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = binVolume/((xBf-xBi)*(Q2f-Q2i)*(tf-ti)*np.radians(15))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
@@ -632,7 +632,7 @@ for tbin in range(2,5):
 			Q2f = Q2bins[Q2bin+1]
 			ti = tbins[tbin]
 			tf = tbins[tbin+1]
-			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = divideHist(binVolume, (xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = binVolume/((xBf-xBi)*(Q2f-Q2i)*(tf-ti)*(phif-phii))[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = "Acc. Separately, BH")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
