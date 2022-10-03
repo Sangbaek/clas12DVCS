@@ -42,7 +42,7 @@ matplotlib.rcParams.update(pgf_with_latex)
 # parser.add_argument("-ch","--chapter", help="chapter", default = "2")
 # args = parser.parse_args()
 
-# Electron reconstruction
+# Read the data files
 parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/dvcs/"
 parent_MC_BH = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bh/"
 parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/inb/bkg_1g/"
@@ -109,7 +109,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 
-plt.savefig("plots/normalization/CDFT_particle_kine.pdf")
+plt.savefig("plots/normalization/CDFT_Inb_particle_kine.pdf")
 plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
@@ -134,5 +134,103 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 
-plt.savefig("plots/normalization/CD_particle_kine.pdf")
+plt.savefig("plots/normalization/CD_Inb_particle_kine.pdf")
+plt.clf()
+
+
+# Read the data files
+parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
+parent_MC_BH = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bh/"
+parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_1g/"
+parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/bkg_2g/"
+parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/exp/"
+
+epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
+bhSimOutb = pd.concat([pd.read_pickle(parent_MC + "4902.pkl")
+    , pd.read_pickle(parent_MC + "4903.pkl"), pd.read_pickle(parent_MC + "4905.pkl")])
+dvcsSimOutb = pd.concat([pd.read_pickle(parent_MC + "4907.pkl")
+    , pd.read_pickle(parent_MC + "4909.pkl"), pd.read_pickle(parent_MC + "4912.pkl")])
+bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4076.pkl")
+pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
+pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
+
+epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config >= 3]
+bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config >= 3]
+dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config >= 3]
+bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config >= 3]
+pi0ExpOutbCDFT = pi0ExpOutb.loc[(pi0ExpOutb.config >= 3)]
+pi0SimOutbCDFT = pi0SimOutb.loc[(pi0SimOutb.config >= 3)]
+
+epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+bhSimOutbCD = bhSimOutb.loc[bhSimOutb.config == 2]
+dvcsSimOutbCD = dvcsSimOutb.loc[dvcsSimOutb.config == 2]
+bkgSimOutbCD = bkgSimOutb.loc[bkgSimOutb.config == 2]
+pi0ExpOutbCD = pi0ExpOutb.loc[(pi0ExpOutb.config == 2)]
+pi0SimOutbCD = pi0SimOutb.loc[(pi0SimOutb.config == 2)]
+
+epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+bhSimOutbFD = bhSimOutb.loc[bhSimOutb.config == 1]
+dvcsSimOutbFD = dvcsSimOutb.loc[dvcsSimOutb.config == 1]
+bkgSimOutbFD = bkgSimOutb.loc[bkgSimOutb.config == 1]
+pi0ExpOutbFD = pi0ExpOutb.loc[(pi0ExpOutb.config == 1)]
+pi0SimOutbFD = pi0SimOutb.loc[(pi0SimOutb.config == 1)]
+
+contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
+contOutbCD = (len(pi0ExpOutbCD.loc[(pi0ExpOutbCD.phi1<30)|(pi0ExpOutbCD.phi1>330)]) *
+            len(bkgSimOutbCD.loc[(bkgSimOutbCD.phi1<30)|(bkgSimOutbCD.phi1>330)]) /
+            len(pi0SimOutbCD.loc[(pi0SimOutbCD.phi1<30)|(pi0SimOutbCD.phi1>330)]) /
+            len(epgExpOutbCD.loc[(epgExpOutbCD.phi1<30)|(epgExpOutbCD.phi1>330)]))
+contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
+
+varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
+title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}", r"$\phi_{\gamma}$"]
+binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100]
+unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
+
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimOutbCDFT.loc[:, varstoplot[ind]], bins, density = True)
+        simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
+        simDist_bh, _ = np.histogram(bhSimOutbCDFT.loc[:, varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contOutbCDFT)*simDist_bh + contOutbCDFT*simDist_dvpi0
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpOutbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+
+plt.savefig("plots/normalization/CDFT_Outb_particle_kine.pdf")
+plt.clf()
+
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD.loc[(dvcsSimOutbCD.phi1<30)|(dvcsSimOutbCD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimOutbCD.loc[(bkgSimOutbCD.phi1<30)|(bkgSimOutbCD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
+
+        simDist_bh, _ = np.histogram(bhSimOutbCD.loc[(bhSimOutbCD.phi1<30)|(bhSimOutbCD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contOutbCD)*simDist_bh + contOutbCD*simDist_dvpi0
+
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpOutbCD.loc[(epgExpOutbCD.phi1<30)|(epgExpOutbCD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+
+plt.savefig("plots/normalization/CD_Outb_particle_kine.pdf")
 plt.clf()
