@@ -85,7 +85,7 @@ contInbCD = (len(pi0ExpInbCD.loc[(pi0ExpInbCD.phi1<30)|(pi0ExpInbCD.phi1>330)]) 
 contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
 
 varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
-title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}", r"$\phi_{\gamma}$"]
+title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
 binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100]
 unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
 
@@ -181,11 +181,6 @@ contOutbCD = (len(pi0ExpOutbCD.loc[(pi0ExpOutbCD.phi1<30)|(pi0ExpOutbCD.phi1>330
             len(pi0SimOutbCD.loc[(pi0SimOutbCD.phi1<30)|(pi0SimOutbCD.phi1>330)]) /
             len(epgExpOutbCD.loc[(epgExpOutbCD.phi1<30)|(epgExpOutbCD.phi1>330)]))
 contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
-
-varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
-title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}", r"$\phi_{\gamma}$"]
-binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100]
-unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 for yind in range(0, 4):
