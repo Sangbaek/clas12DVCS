@@ -92,7 +92,7 @@ unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degre
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 for yind in range(0, 4):
     for xind in range(0, 3):
-        ind = 4*yind + xind
+        ind = 3*yind + xind
         simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCDFT.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
@@ -112,10 +112,10 @@ for yind in range(0, 4):
 plt.savefig("plots/normalization/CDFT_particle_kine.pdf")
 plt.clf()
 
-fig, axs = plt.subplots(3, 1, figsize = (12, 6))
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 for yind in range(0, 4):
     for xind in range(0, 3):
-        ind = 4*yind + xind
+        ind = 3*yind + xind
         simDist_dvcs, bins = np.histogram(dvcsSimInbCD.loc[(dvcsSimInbCD.phi1<30)|(dvcsSimInbCD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>30), varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
