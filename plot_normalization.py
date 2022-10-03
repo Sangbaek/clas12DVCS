@@ -365,7 +365,7 @@ title = dvcstitles
 unit = dvcsunits
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -390,7 +390,7 @@ plt.savefig("plots/normalization/CR_Inb_excl.pdf", bbox_extra_artists=[lgd], bbo
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -415,7 +415,7 @@ plt.savefig("plots/normalization/CDFT_Inb_excl.pdf", bbox_extra_artists=[lgd], b
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -442,7 +442,7 @@ plt.savefig("plots/normalization/CD_Inb_excl.pdf", bbox_extra_artists=[lgd], bbo
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -469,7 +469,7 @@ plt.savefig("plots/normalization/FD_Inb_excl.pdf", bbox_extra_artists=[lgd], bbo
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -494,7 +494,7 @@ plt.savefig("plots/normalization/CR_Outb_excl.pdf", bbox_extra_artists=[lgd], bb
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -519,7 +519,7 @@ plt.savefig("plots/normalization/CDFT_Outb_excl.pdf", bbox_extra_artists=[lgd], 
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -546,7 +546,7 @@ plt.savefig("plots/normalization/CD_Outb_excl.pdf", bbox_extra_artists=[lgd], bb
 plt.clf()
 
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-fig.subplots_adjust(wspace = .3, hspace = .3)
+fig.subplots_adjust(wspace = .3, hspace = .6)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
