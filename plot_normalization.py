@@ -56,6 +56,10 @@ bkgSimInb = pd.read_pickle(parent_MC_bkg1g + "4076.pkl")
 pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
 pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
 
+epgExpInbCR = epgExpInb.loc[epgExpInb.config == 4]
+bhSimInbCR = bhSimInb.loc[bhSimInb.config == 4]
+dvcsSimInbCR = dvcsSimInb.loc[dvcsSimInb.config == 4]
+
 epgExpInbCDFT = epgExpInb.loc[epgExpInb.config >= 3]
 bhSimInbCDFT = bhSimInb.loc[bhSimInb.config >= 3]
 dvcsSimInbCDFT = dvcsSimInb.loc[dvcsSimInb.config >= 3]
@@ -77,6 +81,7 @@ bkgSimInbFD = bkgSimInb.loc[bkgSimInb.config == 1]
 pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
 pi0SimInbFD = pi0SimInb.loc[(pi0SimInb.config == 1)]
 
+contInbCR = 0
 contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
 contInbCD = (len(pi0ExpInbCD.loc[(pi0ExpInbCD.phi1<30)|(pi0ExpInbCD.phi1>330)]) *
             len(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>330)]) /
@@ -91,6 +96,31 @@ varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", 
 title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
 binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100]
 unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
+
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbCR)*simDist_dvcs + contInbCR*simDist_dvpi0
+        simDist_bh, _ = np.histogram(bhSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbCR)*simDist_bh + contInbCR*simDist_dvpi0
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CR_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
@@ -187,6 +217,10 @@ bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
 pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 
+epgExpOutbCR = epgExpOutb.loc[epgExpOutb.config == 4]
+bhSimOutbCR = bhSimOutb.loc[bhSimOutb.config == 4]
+dvcsSimOutbCR = dvcsSimOutb.loc[dvcsSimOutb.config == 4]
+
 epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
 bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config == 3]
 dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
@@ -208,6 +242,7 @@ bkgSimOutbFD = bkgSimOutb.loc[bkgSimOutb.config == 1]
 pi0ExpOutbFD = pi0ExpOutb.loc[(pi0ExpOutb.config == 1)]
 pi0SimOutbFD = pi0SimOutb.loc[(pi0SimOutb.config == 1)]
 
+contOutbCR = 0
 contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
 contOutbCD = (len(pi0ExpOutbCD.loc[(pi0ExpOutbCD.phi1<30)|(pi0ExpOutbCD.phi1>330)]) *
             len(bkgSimOutbCD.loc[(bkgSimOutbCD.phi1<30)|(bkgSimOutbCD.phi1>330)]) /
@@ -217,6 +252,31 @@ contOutbFD = (len(pi0ExpOutbFD.loc[(pi0ExpOutbFD.phi1<30)|(pi0ExpOutbFD.phi1>330
             len(bkgSimOutbFD.loc[(bkgSimOutbFD.phi1<30)|(bkgSimOutbFD.phi1>330)]) /
             len(pi0SimOutbFD.loc[(pi0SimOutbFD.phi1<30)|(pi0SimOutbFD.phi1>330)]) /
             len(epgExpOutbFD.loc[(epgExpOutbFD.phi1<30)|(epgExpOutbFD.phi1>330)]))
+
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist = (1-contOutbCR)*simDist_dvcs + contOutbCR*simDist_dvpi0
+        simDist_bh, _ = np.histogram(bhSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contOutbCR)*simDist_bh + contOutbCR*simDist_dvpi0
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpOutbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CR_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
