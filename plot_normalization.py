@@ -180,7 +180,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (.75, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CR_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -211,7 +211,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Inb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CDFT_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -242,7 +242,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CD_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -273,7 +273,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/FD_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -304,7 +304,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Outb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CR_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -335,7 +335,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Outb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CDFT_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -366,7 +366,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/CD_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
@@ -397,7 +397,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (0.7, 0.5))
 plt.savefig("plots/normalization/FD_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
