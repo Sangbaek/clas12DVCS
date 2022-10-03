@@ -158,11 +158,12 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
-            ind += 1
+
         simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCR)*simDist_dvcs + contInbCR*simDist_dvpi0
@@ -188,11 +189,12 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
-            ind += 1
+
         simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCDFT.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
@@ -218,11 +220,12 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
-            ind += 1
+
         simDist_dvcs, bins = np.histogram(dvcsSimInbCD.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCD.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
@@ -247,13 +250,15 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
+ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        ind = 4*yind + xind
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
+
         simDist_dvcs, bins = np.histogram(dvcsSimInbFD.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbFD.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
@@ -278,13 +283,16 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
+ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind = 4*yind + xind
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
+
         simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCR)*simDist_dvcs + contOutbCR*simDist_dvpi0
@@ -307,13 +315,15 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
+ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        ind = 4*yind + xind
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
+
         simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCDFT.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
@@ -336,13 +346,15 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
+ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        ind = 4*yind + xind
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
+
         simDist_dvcs, bins = np.histogram(dvcsSimOutbCD.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCD.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
@@ -367,13 +379,15 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
+ind = 0
 for yind in range(0, 4):
     for xind in range(0, 4):
-        ind = 4*yind + xind
-        if (xind==3) and (yind>1):
+        ind += 1
+        if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
             axs[yind, xind].xaxis.set_visible(False)
             axs[yind, xind].axis('off')
+
         simDist_dvcs, bins = np.histogram(dvcsSimOutbFD.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbFD.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
