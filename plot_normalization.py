@@ -151,9 +151,9 @@ bhSimOutb = pd.concat([pd.read_pickle(parent_MC_BH + "4902.pkl")
     , pd.read_pickle(parent_MC_BH + "4903.pkl"), pd.read_pickle(parent_MC_BH + "4905.pkl")])
 dvcsSimOutb = pd.concat([pd.read_pickle(parent_MC + "4907.pkl")
     , pd.read_pickle(parent_MC + "4909.pkl"), pd.read_pickle(parent_MC + "4912.pkl")])
-bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4076.pkl")
+bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
-pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
+pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 
 epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config >= 3]
 bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config >= 3]
