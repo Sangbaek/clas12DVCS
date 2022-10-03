@@ -187,12 +187,12 @@ bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
 pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 
-epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config >= 3]
-bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config >= 3]
-dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config >= 3]
-bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config >= 3]
-pi0ExpOutbCDFT = pi0ExpOutb.loc[(pi0ExpOutb.config >= 3)]
-pi0SimOutbCDFT = pi0SimOutb.loc[(pi0SimOutb.config >= 3)]
+epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
+bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config == 3]
+dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
+bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config == 3]
+pi0ExpOutbCDFT = pi0ExpOutb.loc[(pi0ExpOutb.config == 3)]
+pi0SimOutbCDFT = pi0SimOutb.loc[(pi0SimOutb.config == 3)]
 
 epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
 bhSimOutbCD = bhSimOutb.loc[bhSimOutb.config == 2]
