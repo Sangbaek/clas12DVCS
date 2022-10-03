@@ -369,7 +369,111 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
-        simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], 100, density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbCR)*simDist_dvcs + contInbCR*simDist_dvpi0
+        simDist_bh, _ = np.histogram(bhSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbCR)*simDist_bh + contInbCR*simDist_dvpi0
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CR_Inb_excl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
+
+fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 2):
+    for xind in range(0, 4):
+        ind = 4*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimInbCDFT.loc[:, varstoplot[ind]], 100, density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbCDFT.loc[:, varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
+        simDist_bh, _ = np.histogram(bhSimInbCDFT.loc[:, varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbCDFT)*simDist_bh + contInbCDFT*simDist_dvpi0
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CDFT_Inb_excl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
+
+fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 2):
+    for xind in range(0, 4):
+        ind = 4*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimInbCD.loc[(dvcsSimInbCD.phi1<30)|(dvcsSimInbCD.phi1>30), varstoplot[ind]], 100, density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
+
+        simDist_bh, _ = np.histogram(bhSimInbCD.loc[(bhSimInbCD.phi1<30)|(bhSimInbCD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbCD)*simDist_bh + contInbCD*simDist_dvpi0
+
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CD_Inb_excl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
+
+fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 2):
+    for xind in range(0, 4):
+        ind = 4*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimInbFD.loc[(dvcsSimInbFD.phi1<30)|(dvcsSimInbFD.phi1>30), varstoplot[ind]], 100, density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbFD.loc[(bkgSimInbFD.phi1<30)|(bkgSimInbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
+
+        simDist_bh, _ = np.histogram(bhSimInbFD.loc[(bhSimInbFD.phi1<30)|(bhSimInbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbFD)*simDist_bh + contInbFD*simDist_dvpi0
+
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbFD.loc[(epgExpInbFD.phi1<30)|(epgExpInbFD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/FD_Inb_excl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
+
+fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig.subplots_adjust(wspace = .3, hspace = .3)
+for yind in range(0, 2):
+    for xind in range(0, 4):
+        ind = 4*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], 100, density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCR)*simDist_dvcs + contOutbCR*simDist_dvpi0
         simDist_bh, _ = np.histogram(bhSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
@@ -394,7 +498,7 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
-        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCDFT.loc[:, varstoplot[ind]], 100, density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCDFT.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
         simDist_bh, _ = np.histogram(bhSimOutbCDFT.loc[:, varstoplot[ind]], bins, density = True)
@@ -419,7 +523,7 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
-        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD.loc[(dvcsSimOutbCD.phi1<30)|(dvcsSimOutbCD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCD.loc[(dvcsSimOutbCD.phi1<30)|(dvcsSimOutbCD.phi1>30), varstoplot[ind]], 100, density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCD.loc[(bkgSimOutbCD.phi1<30)|(bkgSimOutbCD.phi1>30), varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
 
@@ -446,7 +550,7 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 for yind in range(0, 2):
     for xind in range(0, 4):
         ind = 4*yind + xind
-        simDist_dvcs, bins = np.histogram(dvcsSimOutbFD.loc[(dvcsSimOutbFD.phi1<30)|(dvcsSimOutbFD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbFD.loc[(dvcsSimOutbFD.phi1<30)|(dvcsSimOutbFD.phi1>30), varstoplot[ind]], 100, density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbFD.loc[(bkgSimOutbFD.phi1<30)|(bkgSimOutbFD.phi1>30), varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
 
