@@ -59,6 +59,7 @@ pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
 epgExpInbCR = epgExpInb.loc[epgExpInb.config == 4]
 bhSimInbCR = bhSimInb.loc[bhSimInb.config == 4]
 dvcsSimInbCR = dvcsSimInb.loc[dvcsSimInb.config == 4]
+bkgSimInbCR = bkgSimInb.loc[bkgSimInb.config == 4]
 
 epgExpInbCDFT = epgExpInb.loc[epgExpInb.config >= 3]
 bhSimInbCDFT = bhSimInb.loc[bhSimInb.config >= 3]
@@ -220,6 +221,7 @@ pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 epgExpOutbCR = epgExpOutb.loc[epgExpOutb.config == 4]
 bhSimOutbCR = bhSimOutb.loc[bhSimOutb.config == 4]
 dvcsSimOutbCR = dvcsSimOutb.loc[dvcsSimOutb.config == 4]
+bkgSimOutbCR = bkgSimOutb.loc[bkgSimOutb.config == 4]
 
 epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
 bhSimOutbCDFT = bhSimOutb.loc[bhSimOutb.config == 3]
