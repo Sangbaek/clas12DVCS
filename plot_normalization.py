@@ -113,6 +113,7 @@ plt.savefig("plots/normalization/CDFT_Inb_particle_kine.pdf")
 plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
 for yind in range(0, 4):
     for xind in range(0, 3):
         ind = 3*yind + xind
@@ -183,6 +184,7 @@ contOutbCD = (len(pi0ExpOutbCD.loc[(pi0ExpOutbCD.phi1<30)|(pi0ExpOutbCD.phi1>330
 contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
 for yind in range(0, 4):
     for xind in range(0, 3):
         ind = 3*yind + xind
