@@ -155,7 +155,7 @@ unit = ["", GeVc2, GeV2, degree, GeVc, degree, degree, GeVc, degree, degree, GeV
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -186,7 +186,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -217,7 +217,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -250,7 +250,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -283,7 +283,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind = 4*yind + xind
@@ -315,7 +315,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -346,7 +346,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
@@ -379,7 +379,7 @@ plt.clf()
 
 fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
-ind = 0
+ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
         ind += 1
