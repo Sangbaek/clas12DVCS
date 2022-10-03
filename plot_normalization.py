@@ -148,16 +148,20 @@ contOutbCD = len(pi0ExpOutbCD)*len(bkgSimOutbCD)/len(pi0SimOutbCD)/len(epgExpOut
 contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
 
 #particle kinematics
-varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
-title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
-binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100]
-unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
+varstoplot = ["xB", "Q2", "t1", "phi1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
+title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$\phi_{H\Gamma}$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
+binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+unit = ["", GeVc2, GeV2, degree, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
 
-fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig, axs = plt.subplots(4, 4, figsize = (18, 30))
 fig.subplots_adjust(wspace = .3, hspace = .3)
 for yind in range(0, 4):
-    for xind in range(0, 3):
-        ind = 3*yind + xind
+    for xind in range(0, 4):
+        ind = 4*yind + xind
+        if (xind==3) and (yind>1):
+            axs[yind, xind].yaxis.set_visible(False)
+            axs[yind, xind].xaxis.set_visible(False)
+            axs[yind, xind].axis('off')
         simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCR)*simDist_dvcs + contInbCR*simDist_dvpi0
@@ -174,7 +178,7 @@ for yind in range(0, 4):
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CR, Inb.', title_fontsize = 30, bbox_to_anchor = (.75, 0.5))
 plt.savefig("plots/normalization/CR_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
