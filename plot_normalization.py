@@ -93,6 +93,7 @@ binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0
 unit = ["", GeVc2, GeV2, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
 for yind in range(0, 4):
     for xind in range(0, 3):
         ind = 3*yind + xind
@@ -243,6 +244,7 @@ plt.savefig("plots/normalization/CDFT_Outb_particle_kine.pdf", bbox_extra_artist
 plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
 for yind in range(0, 4):
     for xind in range(0, 3):
         ind = 3*yind + xind
