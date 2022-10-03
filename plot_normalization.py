@@ -150,6 +150,7 @@ contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOut
 #particle kinematics
 varstoplot = ["xB", "Q2", "t1", "phi1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
 title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$\phi_{H\Gamma}$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
+binstoplot_CR = [np.linspace(0.05, 0.7, 101), np.linspace(1, 2.5, 101), np.linspace(0.6, 1.4, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 unit = ["", GeVc2, GeV2, degree, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
 
@@ -164,7 +165,7 @@ for yind in range(0, 4):
             axs[yind, xind].axis('off')
             continue
         ind += 1
-        simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimInbCR.loc[:, varstoplot[ind]], binstoplot_CR[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contInbCR)*simDist_dvcs + contInbCR*simDist_dvpi0
         simDist_bh, _ = np.histogram(bhSimInbCR.loc[:, varstoplot[ind]], bins, density = True)
@@ -288,7 +289,7 @@ for yind in range(0, 4):
             axs[yind, xind].axis('off')
             continue
         ind += 1
-        simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbCR.loc[:, varstoplot[ind]], binstoplot_CR[ind], density = True)
         simDist_dvpi0, _ = np.histogram(bkgSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
         simDist = (1-contOutbCR)*simDist_dvcs + contOutbCR*simDist_dvpi0
         simDist_bh, _ = np.histogram(bhSimOutbCR.loc[:, varstoplot[ind]], bins, density = True)
