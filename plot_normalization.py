@@ -78,10 +78,10 @@ pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
 pi0SimInbFD = pi0SimInb.loc[(pi0SimInb.config == 1)]
 
 contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
-contInbCD = len(pi0ExpInbCD.loc[(pi0ExpInbCD.phi1<30)|(pi0ExpInbCD.phi1>330)])
-			*len(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>330)])
-			/len(pi0SimInbCD.loc[(pi0SimInbCD.phi1<30)|(pi0SimInbCD.phi1>330)])
-			/len(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>330)])
+contInbCD = (len(pi0ExpInbCD.loc[(pi0ExpInbCD.phi1<30)|(pi0ExpInbCD.phi1>330)]) *
+			len(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>330)]) /
+			len(pi0SimInbCD.loc[(pi0SimInbCD.phi1<30)|(pi0SimInbCD.phi1>330)]) /
+			len(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>330)]))
 contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
 
 varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
@@ -126,7 +126,7 @@ for yind in range(0, 4):
 		simDist2 = (1-contInbCD)*simDist_bh + contInbCD*simDist_dvpi0
 
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>30),,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+		axs[yind, xind].hist(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
 		axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
 		axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
 		axs[yind, xind].set_title(title[ind])
