@@ -172,7 +172,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -203,7 +203,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -236,7 +236,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -269,7 +269,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbFD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -301,7 +301,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -332,7 +332,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -365,7 +365,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -398,7 +398,7 @@ for yind in range(0, 4):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbFD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -428,7 +428,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -453,7 +453,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -480,7 +480,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbCD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -507,7 +507,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpInbFD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -532,7 +532,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCR.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -557,7 +557,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCDFT.loc[:, varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -584,7 +584,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbCD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -611,7 +611,7 @@ for yind in range(0, 2):
         bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
         axs[yind, xind].hist(epgExpOutbFD.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
         axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
-        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist2, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
         axs[yind, xind].set_title(title[ind])
         if (unit[ind]):
             axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
