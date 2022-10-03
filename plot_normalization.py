@@ -286,7 +286,6 @@ fig.subplots_adjust(wspace = .3, hspace = .3)
 ind = -1
 for yind in range(0, 4):
     for xind in range(0, 4):
-        ind = 4*yind + xind
         ind += 1
         if (xind==3) and (yind>0):
             axs[yind, xind].yaxis.set_visible(False)
