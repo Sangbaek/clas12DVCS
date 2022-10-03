@@ -82,7 +82,10 @@ contInbCD = (len(pi0ExpInbCD.loc[(pi0ExpInbCD.phi1<30)|(pi0ExpInbCD.phi1>330)]) 
             len(bkgSimInbCD.loc[(bkgSimInbCD.phi1<30)|(bkgSimInbCD.phi1>330)]) /
             len(pi0SimInbCD.loc[(pi0SimInbCD.phi1<30)|(pi0SimInbCD.phi1>330)]) /
             len(epgExpInbCD.loc[(epgExpInbCD.phi1<30)|(epgExpInbCD.phi1>330)]))
-contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
+contInbFD = (len(pi0ExpInbFD.loc[(pi0ExpInbFD.phi1<30)|(pi0ExpInbFD.phi1>330)]) *
+            len(bkgSimInbFD.loc[(bkgSimInbFD.phi1<30)|(bkgSimInbFD.phi1>330)]) /
+            len(pi0SimInbFD.loc[(pi0SimInbFD.phi1<30)|(pi0SimInbFD.phi1>330)]) /
+            len(epgExpInbFD.loc[(epgExpInbFD.phi1<30)|(epgExpInbFD.phi1>330)]))
 
 varstoplot = ["xB", "Q2", "t1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
 title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
@@ -108,8 +111,9 @@ for yind in range(0, 4):
         else:
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
-
-plt.savefig("plots/normalization/CDFT_Inb_particle_kine.pdf")
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CDFT_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
@@ -134,10 +138,37 @@ for yind in range(0, 4):
         else:
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
-
-plt.savefig("plots/normalization/CD_Inb_particle_kine.pdf")
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CD_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimInbFD.loc[(dvcsSimInbFD.phi1<30)|(dvcsSimInbFD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimInbFD.loc[(bkgSimInbFD.phi1<30)|(bkgSimInbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
+
+        simDist_bh, _ = np.histogram(bhSimInbFD.loc[(bhSimInbFD.phi1<30)|(bhSimInbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contInbFD)*simDist_bh + contInbFD*simDist_dvpi0
+
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpInbFD.loc[(epgExpInbFD.phi1<30)|(epgExpInbFD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Inb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/FD_Inb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
 
 # Read the data files
 parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full/outb/dvcs/"
@@ -181,7 +212,10 @@ contOutbCD = (len(pi0ExpOutbCD.loc[(pi0ExpOutbCD.phi1<30)|(pi0ExpOutbCD.phi1>330
             len(bkgSimOutbCD.loc[(bkgSimOutbCD.phi1<30)|(bkgSimOutbCD.phi1>330)]) /
             len(pi0SimOutbCD.loc[(pi0SimOutbCD.phi1<30)|(pi0SimOutbCD.phi1>330)]) /
             len(epgExpOutbCD.loc[(epgExpOutbCD.phi1<30)|(epgExpOutbCD.phi1>330)]))
-contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
+contOutbFD = (len(pi0ExpOutbFD.loc[(pi0ExpOutbFD.phi1<30)|(pi0ExpOutbFD.phi1>330)]) *
+            len(bkgSimOutbFD.loc[(bkgSimOutbFD.phi1<30)|(bkgSimOutbFD.phi1>330)]) /
+            len(pi0SimOutbFD.loc[(pi0SimOutbFD.phi1<30)|(pi0SimOutbFD.phi1>330)]) /
+            len(epgExpOutbFD.loc[(epgExpOutbFD.phi1<30)|(epgExpOutbFD.phi1>330)]))
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
 fig.subplots_adjust(wspace = 0.7, hspace = 1)
@@ -203,8 +237,9 @@ for yind in range(0, 4):
         else:
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
-
-plt.savefig("plots/normalization/CDFT_Outb_particle_kine.pdf")
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFT, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CDFT_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
 
 fig, axs = plt.subplots(4, 3, figsize = (18, 30))
@@ -228,6 +263,34 @@ for yind in range(0, 4):
         else:
             axs[yind, xind].set_xlabel(title[ind])
         axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'CDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/CD_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+plt.clf()
 
-plt.savefig("plots/normalization/CD_Outb_particle_kine.pdf")
+fig, axs = plt.subplots(4, 3, figsize = (18, 30))
+fig.subplots_adjust(wspace = 0.7, hspace = 1)
+for yind in range(0, 4):
+    for xind in range(0, 3):
+        ind = 3*yind + xind
+        simDist_dvcs, bins = np.histogram(dvcsSimOutbFD.loc[(dvcsSimOutbFD.phi1<30)|(dvcsSimOutbFD.phi1>30), varstoplot[ind]], binstoplot[ind], density = True)
+        simDist_dvpi0, _ = np.histogram(bkgSimOutbFD.loc[(bkgSimOutbFD.phi1<30)|(bkgSimOutbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
+
+        simDist_bh, _ = np.histogram(bhSimOutbFD.loc[(bhSimOutbFD.phi1<30)|(bhSimOutbFD.phi1>30), varstoplot[ind]], bins, density = True)
+        simDist2 = (1-contOutbFD)*simDist_bh + contOutbFD*simDist_dvpi0
+
+        bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+        axs[yind, xind].hist(epgExpOutbFD.loc[(epgExpOutbFD.phi1<30)|(epgExpOutbFD.phi1>30),varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation based on VGG')
+        axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='g', linewidth=1, label = 'Simulation based on pure BH')
+        axs[yind, xind].set_title(title[ind])
+        if (unit[ind]):
+            axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+        else:
+            axs[yind, xind].set_xlabel(title[ind])
+        axs[yind, xind].set_xlim([bins[0], bins[-1]])
+handles, labels = axs[0, 0].get_legend_handles_labels()
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title = 'FDFD, Outb.', title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+plt.savefig("plots/normalization/FD_Outb_particle_kine.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
