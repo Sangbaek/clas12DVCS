@@ -2081,8 +2081,8 @@ if args.savesyst3:
 	UncAccModel2 = np.abs(divideHist(accCorrected_VGG2- accCorrected_BH, accCorrected_BH, threshold=-np.inf))
 	UncAccModel3 = np.abs(divideHist(accCorrected_BH2 - accCorrected_BH, accCorrected_BH, threshold=-np.inf))
 	# UncAcc = np.max([UncAccModel1, UncAccModel2, UncAccModel3], axis = 0)
-	print(UncAcc[(UncAcc < 0.5)&(UncAcc>0)].mean())
-	UncAcc[UncAcc == 0] = UncAcc[(UncAcc < 0.5)&(UncAcc>0)].mean()
+	print(UncAccModel1[(UncAccModel1 < 0.5)&(UncAccModel1>0)].mean())
+	UncAccModel1[UncAccModel1 == 0] = UncAccModel1[(UncAccModel1 < 0.5)&(UncAccModel1>0)].mean()
 
 	#RC only
 	UncRadonly = np.abs(divideHist(rconly_VGG - rconly_BH, rconly_BH, threshold=-np.inf))
