@@ -1952,6 +1952,17 @@ if args.savesyst3:
 	xsecTh_BH          = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_BH.npz".format(k))["hist"]
 	xsecTh_VGG         = np.load(basedir + "/nphistograms/binscheme{}/xsecTh_VGG.npz".format(k))["hist"]
 
+	accCorrected_VGG	 = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH	 = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_VGG2	 = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG2.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH2	 = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH2.npz".format(optionaltag, k, i))["hist"]
+
+	accCorrected_VGG_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG_plus.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH_plus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH_plus.npz".format(optionaltag, k, i))["hist"]
+
+	accCorrected_VGG_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_VGG_minus.npz".format(optionaltag, k, i))["hist"]
+	accCorrected_BH_minus = np.load(basedir + "/nphistograms{}/binscheme{}/bkgscheme{}accCorrected_BH_minus.npz".format(optionaltag, k, i))["hist"]
+
 	integratedRad_VGG = np.load(basedir + "/nphistograms/binscheme{}/integratedRad_VGG.npz".format(k))["hist"]
 	integratedBorn_VGG = np.load(basedir + "/nphistograms/binscheme{}/integratedBorn_VGG.npz".format(k))["hist"]
 	rcfactors_VGG = np.load(basedir + "/nphistograms/binscheme{}/rcfactors_VGG.npz".format(k))["hist"]
@@ -2049,14 +2060,6 @@ if args.savesyst3:
 	print(UncSmear[(UncSmear < 0.5)&(UncSmear>0)].mean())
 	UncSmear[(xsec_BH_sm11 == 0) & (xsec_BH_sm09==0)] = UncSmear[(UncSmear < 0.5)&(UncSmear>0)].mean()
 
-	#Acc
-	UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=-np.inf))
-	UncModel2 = np.abs(divideHist(xsec_VGG2- xsec_BH, xsec_BH, threshold=-np.inf))
-	UncModel3 = np.abs(divideHist(xsec_BH2 - xsec_BH, xsec_BH, threshold=-np.inf))
-	# UncAcc = np.max([UncModel, UncModel2, UncModel3], axis = 0)
-	print(UncModel[(UncModel < 0.5)&(UncModel>0)].mean())
-	UncModel[UncModel == 0] = UncModel[(UncModel < 0.5)&(UncModel>0)].mean()
-
 	#Bkg
 	UncBkg = np.abs(divideHist(xsec_BH_bkg - xsec_BH, xsec_BH, threshold=-np.inf))
 	print(UncBkg[(UncBkg < 0.5)&(UncBkg>0)].mean())
@@ -2065,12 +2068,28 @@ if args.savesyst3:
 	#Normalization
 	UncNorm = 0.1#(getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 5)/getBHDVCS(xBavg_BH[xBbin, Q2bin, tbin, 0], Q2avg_BH[xBbin, Q2bin, tbin, 0], t1avg_BH[xBbin, Q2bin, tbin, 0], 0, mode = 1)-1)/2
 
-	#RC
+	#Model (all things combined)
+	UncModel = np.abs(divideHist(xsec_VGG - xsec_BH, xsec_BH, threshold=-np.inf))
+	UncModel2 = np.abs(divideHist(xsec_VGG2- xsec_BH, xsec_BH, threshold=-np.inf))
+	UncModel3 = np.abs(divideHist(xsec_BH2 - xsec_BH, xsec_BH, threshold=-np.inf))
+	# UncAcc = np.max([UncModel, UncModel2, UncModel3], axis = 0)
+	print(UncModel[(UncModel < 0.5)&(UncModel>0)].mean())
+	UncModel[UncModel == 0] = UncModel[(UncModel < 0.5)&(UncModel>0)].mean()
+
+	#Acc only
+	UncAccModel1 = np.abs(divideHist(accCorrected_VGG - accCorrected_BH, accCorrected_BH, threshold=-np.inf))
+	UncAccModel2 = np.abs(divideHist(accCorrected_VGG2- accCorrected_BH, accCorrected_BH, threshold=-np.inf))
+	UncAccModel3 = np.abs(divideHist(accCorrected_BH2 - accCorrected_BH, accCorrected_BH, threshold=-np.inf))
+	# UncAcc = np.max([UncAccModel1, UncAccModel2, UncAccModel3], axis = 0)
+	print(UncAcc[(UncAcc < 0.5)&(UncAcc>0)].mean())
+	UncAcc[UncAcc == 0] = UncAcc[(UncAcc < 0.5)&(UncAcc>0)].mean()
+
+	#RC only
 	UncRadonly = np.abs(divideHist(rconly_VGG - rconly_BH, rconly_BH, threshold=-np.inf))
 	print(UncRadonly[(UncRadonly < 0.5)&(UncRadonly>0)].mean())
 	UncRadonly[UncRadonly == 0] = UncRadonly[(UncRadonly < 0.5)&(UncRadonly>0)].mean()
 
-	#Fin
+	#Fin only
 	UncFinonly = np.abs(divideHist(finonly_VGG - finonly_BH, finonly_BH, threshold=-np.inf))
 	print(UncFinonly[(UncFinonly < 0.5)&(UncFinonly>0)].mean())
 	UncFinonly[UncFinonly == 0] = UncFinonly[(UncFinonly < 0.5)&(UncFinonly>0)].mean()
