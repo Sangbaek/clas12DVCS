@@ -657,17 +657,17 @@ print("VGG Simulation          \&  6   \& Inb. \& {:.2e} \& {:.2e} \& {:.2e}\& {
     , sum(dvcsSimInbCD.Esector==6)/len(dvcsSimInbCD), sum(dvcsSimInbFD.Esector==6)/len(dvcsSimInbFD)) + "\\\\")
 
 print("Contamination Ratio        \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(contOutbCR, contOutbCDFT, contOutbCD, contOutbFD) + "\\\\")
-print("Experimental Data          \&  1   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==1)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==1)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  1   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==1)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==1)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==1)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==1)/len(epgExpOutbFD)) + "\\\\")
-print("Experimental Data          \&  2   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==2)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==2)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  2   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==2)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==2)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==2)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==2)/len(epgExpOutbFD)) + "\\\\")
-print("Experimental Data          \&  3   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==3)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==3)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  3   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==3)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==3)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==3)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==3)/len(epgExpOutbFD)) + "\\\\")
-print("Experimental Data          \&  4   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==4)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==4)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  4   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==4)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==4)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==4)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==4)/len(epgExpOutbFD)) + "\\\\")
-print("Experimental Data          \&  5   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==5)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==5)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  5   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==5)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==5)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==5)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==5)/len(epgExpOutbFD)) + "\\\\")
-print("Experimental Data          \&  6   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==6)/len(epgExpOutCR), sum(epgExpOutbCDFT.Esector==6)/len(epgExpOutbCDFT)
+print("Experimental Data          \&  6   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(epgExpOutbCR.Esector==6)/len(epgExpOutbCR), sum(epgExpOutbCDFT.Esector==6)/len(epgExpOutbCDFT)
     , sum(epgExpOutbCD.Esector==6)/len(epgExpOutbCD), sum(epgExpOutbFD.Esector==6)/len(epgExpOutbFD)) + "\\\\")
 
 print("BH Simulation          \&  1   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(bhSimOutbCR.Esector==1)/len(bhSimOutbCR), sum(bhSimOutbCDFT.Esector==1)/len(bhSimOutbCDFT)
@@ -695,3 +695,13 @@ print("VGG Simulation         \&  5   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {
     , sum(dvcsSimOutbCD.Esector==5)/len(dvcsSimOutbCD), sum(dvcsSimOutbFD.Esector==5)/len(dvcsSimOutbFD)) + "\\\\")
 print("VGG Simulation         \&  6   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {:.2e}".format(sum(dvcsSimOutbCR.Esector==6)/len(dvcsSimOutbCR), sum(dvcsSimOutbCDFT.Esector==6)/len(dvcsSimOutbCDFT)
     , sum(dvcsSimOutbCD.Esector==6)/len(dvcsSimOutbCD), sum(dvcsSimOutbFD.Esector==6)/len(dvcsSimOutbFD)) + "\\\\")
+
+
+# Q2 [1.000, 1.200, 1.456, 1.912, 2.510, 3.295, 4.326, 5.761, 7.000]
+# xB [0.062, 0.090, 0.118, 0.155, 0.204, 0.268, 0.357, 0.446, 0.581]
+# t  [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0]
+
+#Find the bin that is shared by (CD, FT) and (CD, FD): (3, 3, 0), (3, 3, 1), (4, 4, 1), (4, 4, 2)
+# 0.204 < xB < 0.268
+# 2.510 < Q2 < 3.295
+# 0.25  < |t| < 0.4
