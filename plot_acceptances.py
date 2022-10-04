@@ -1271,8 +1271,8 @@ for tbin in range(6):
 				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 				continue
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{bin}$"+" from BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = finonly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{bin}$"+" from VGG")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
@@ -1328,8 +1328,8 @@ for tbin in range(2,5):
 				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
 				continue
-			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = finonly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
-			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = finonly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = finonly_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{bin}$"+" from BH")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = finonly_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{bin}$"+" from VGG")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
@@ -1384,8 +1384,8 @@ for tbin in range(6):
 				axs[num_plotQ2-Q2bin-1 , xBbin].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin-1 , xBbin].axis('off')
 				continue
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rcfactors_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
-			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rcfactors_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rcfactors_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}\times F_{bin}$"+" from BH")
+			axs[num_plotQ2-Q2bin-1, xBbin].hist(phibins[:-1], phibins, weights = rcfactors_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}\times F_{bin}$"+" from VGG")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
@@ -1441,8 +1441,8 @@ for tbin in range(2,5):
 				axs[num_plotQ2-Q2bin , xBbin-5].xaxis.set_visible(False)
 				axs[num_plotQ2-Q2bin , xBbin-5].axis('off')
 				continue
-			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = rcfactors_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}$"+" from BH")
-			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = rcfactors_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}$"+" from VGG")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = rcfactors_BH[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'k', label = r"$F_{rad}\times F_{bin}$"+" from BH")
+			axs[num_plotQ2-Q2bin, xBbin-5].hist(phibins[:-1], phibins, weights = rcfactors_VGG[xBbin, Q2bin, tbin,:], histtype = 'step', color = 'r', label = r"$F_{rad}\times F_{bin}$"+" from VGG")
 
 			xBheader = "{}. ".format(xBbin)+ r"$<x_B>=$"+"{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, tbin, 0])
 			Q2header = "{}. ".format(Q2bin) + r"$<Q^2>=$"+"{:.3f} (GeV/c)".format(Q2avg_BH[xBbin, Q2bin, tbin, 0])+r"$^2$" +"\n"
