@@ -2048,7 +2048,7 @@ if args.savesyst3:
 	UncExcl[(xsec_BH_4sigma == 0) & (xsec_BH_2sigma==0)] = UncExcl[(UncExcl < 0.5)&(UncExcl>0)].mean()
 
 	#Tight Fid
-	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = 0 ))
+	UncFid = np.abs(divideHist(xsec_BH - xsec_BH_tightfid, xsec_BH, threshold = -np.inf ))
 	UncFid[xsec_BH_tightfid == 0] = 0
 	print(UncFid[(UncFid < 0.5)&(UncFid>0)].mean())
 	UncFid[UncFid == 0] = UncFid[(UncFid < 0.5)&(UncFid>0)].mean()
