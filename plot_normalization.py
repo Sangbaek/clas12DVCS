@@ -856,17 +856,20 @@ bhSimOutbCD.loc[:, "PpxOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(b
 bhSimOutbCD.loc[:, "PpyOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(bhSimOutbCD.loc[:, "PthetaOrig"]))*np.sin(np.radians(bhSimOutbCD.loc[:, "PphiOrig"]))
 bhSimOutbCD.loc[:, "PpzOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.cos(np.radians(bhSimOutbCD.loc[:, "PthetaOrig"]))
 
+ebeam = 10.604
+pbeam = np.sqrt(ebeam * ebeam - me * me)
+
 VmissG = [-bhSimOutbCD["Epx"] - bhSimOutbCD["PpxOrig"], -bhSimOutbCD["Epy"] - bhSimOutbCD["PpyOrig"],
-          self.pbeam - bhSimOutbCD["Epz"] - bhSimOutbCD["PpzOrig"]]
-bhSimOutbCD.loc[:,'MM2_epOrig'] = (-M - self.ebeam + bhSimOutbCD["Ee"] + bhSimOutbCD["PeOrig"])**2 - mag2(VmissG)
+          pbeam - bhSimOutbCD["Epz"] - bhSimOutbCD["PpzOrig"]]
+bhSimOutbCD.loc[:,'MM2_epOrig'] = (-M - ebeam + bhSimOutbCD["Ee"] + bhSimOutbCD["PeOrig"])**2 - mag2(VmissG)
 
 epgExpOutbCD.loc[:, "PpxOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))*np.cos(np.radians(epgExpOutbCD.loc[:, "PphiOrig"]))
 epgExpOutbCD.loc[:, "PpyOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))*np.sin(np.radians(epgExpOutbCD.loc[:, "PphiOrig"]))
 epgExpOutbCD.loc[:, "PpzOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.cos(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))
 
 VmissG = [-epgExpOutbCD["Epx"] - epgExpOutbCD["PpxOrig"], -epgExpOutbCD["Epy"] - epgExpOutbCD["PpyOrig"],
-          self.pbeam - epgExpOutbCD["Epz"] - epgExpOutbCD["PpzOrig"]]
-epgExpOutbCD.loc[:,'MM2_epOrig'] = (-M - self.ebeam + epgExpOutbCD["Ee"] + epgExpOutbCD["PeOrig"])**2 - mag2(VmissG)
+          pbeam - epgExpOutbCD["Epz"] - epgExpOutbCD["PpzOrig"]]
+epgExpOutbCD.loc[:,'MM2_epOrig'] = (-M - ebeam + epgExpOutbCD["Ee"] + epgExpOutbCD["PeOrig"])**2 - mag2(VmissG)
 
 
 fig, ax = plt.subplots(1,1, figsize=(8, 5))
