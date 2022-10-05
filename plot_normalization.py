@@ -701,7 +701,378 @@ print("VGG Simulation         \&  6   \& Outb. \& {:.2e} \& {:.2e} \& {:.2e}\& {
 # xB [0.062, 0.090, 0.118, 0.155, 0.204, 0.268, 0.357, 0.446, 0.581]
 # t  [0.11, 0.15, 0.25, 0.4, 0.6, 0.8, 1.0]
 
-#Find the bin that is shared by (CD, FT) and (CD, FD): (3, 3, 0), (3, 3, 1), (4, 4, 1), (4, 4, 2)
+# Find the bin that is shared by (CD, FT) and (CD, FD): (3, 3, 0), (3, 3, 1), (4, 4, 1), (4, 4, 2)
+
+# (3, 3, 0)
+# 0.155 < xB < 0.204
+# 1.912 < Q2 < 2.510
+# 0.11  < |t| < 0.15
+
+# (3, 3, 1)
+# 0.155 < xB < 0.204
+# 1.912 < Q2 < 2.510
+# 0.15  < |t| < 0.25
+
+# (4, 4, 1)
+# 0.204 < xB < 0.268
+# 2.510 < Q2 < 3.295
+# 0.15  < |t| < 0.25
+
+# (4, 4, 2)
 # 0.204 < xB < 0.268
 # 2.510 < Q2 < 3.295
 # 0.25  < |t| < 0.4
+
+# def pickOneBinOneSector(df, xBbin, Q2bin, tbin, sector = 0):
+#     xBcond = (df.xB>=newxBbins2[xBbin]) & (df.xB<newxBbins2[xBbin+1])
+#     Q2cond = (df.Q2>=newQ2bins2[Q2bin]) & (df.Q2<newQ2bins2[Q2bin+1])
+#     tcond  = (df.t1>=newtbins[tbin])    & (df.t1<newtbins[tbin+1])
+#     print(sum(xBcond), sum(Q2cond), sum(tcond))
+#     cond   = xBcond & Q2cond & tcond
+#     if sector > 0:
+#         sectorcond = df.Esector == sector
+#         cond   = cond & sectorcond
+#     return df.loc[cond, :]
+
+# plt.hist(pickOneBinOneSector(dvcsSimOutbCR, 3, 3, 5).Etheta, bins = 100)
+
+# dist, bins = np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==1, "Etheta"], bins = 100)
+# plt.hist(bins[:-1], bins, weights = dist/np.diff(bins)/len(dvcsSimOutbCDFT), histtype = 'step')
+# dist, _    = np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==2, "Etheta"], bins = bins)
+# plt.hist(bins[:-1], bins, weights = dist/np.diff(bins)/len(dvcsSimOutbCDFT), histtype = 'step')
+# plt.hist2d(bhSimOutbCDFT.t1, bhSimOutbCDFT.Pphi, bins = 100, norm = LogNorm())
+# plt.hist2d(epgExpOutbCDFT.t1, epgExpOutbCDFT.Pphi, bins = 100, norm = LogNorm())
+# plt.show()
+
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.Etheta>10, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .Etheta>10, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$\theta_{e'}>10$" +" "+ degree, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_highEtheta_Ephi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.Etheta<10, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .Etheta<10, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$\theta_{e'}<10$" +" "+ degree, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_lowEtheta_Ephi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.Etheta>10, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .Etheta>10, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$\theta_{e'}>10$" +" "+ degree, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_highEtheta_Pphi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.Etheta<10, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .Etheta<10, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$\theta_{e'}<10$" +" "+ degree, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_lowEtheta_Pphi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.t1>0.6, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .t1>0.6, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$p_{p'}>0.6$" +" "+ GeVc, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_hight_Ephi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.t1<0.6, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .t1<0.6, "Ephi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$p_{p'}<0.6$" +" "+ GeVc, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_lowt_Ephi.pdf")
+plt.clf()
+
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.t1>0.6, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .t1>0.6, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$p_{p'}>0.6$" +" "+ GeVc, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_hight_Pphi.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[epgExpOutbCD.t1<0.6, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[bhSimOutbCD .t1<0.6, "Pphi"].hist(ax = ax, bins = np.linspace(-180, 180, 91), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([-180, 180])
+ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$\phi_{p'}$"+ " ["+ degree + "]")
+plt.legend(loc='lower left', title = r"$p_{p'}<0.6$" +" "+ GeVc, bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_lowt_Pphi.pdf")
+plt.clf()
+
+print("Experimental Data &  Inb.  & {:.2e} & {:.2e} & {:.2e}\\\\".format(len(epgExpInbCDFT.loc[epgExpInbCDFT.t1<0.6, :]), len(epgExpInbCD.loc[epgExpInbCD.t1<0.6, :]), len(epgExpInbFD.loc[epgExpInbFD.t1<0.6, :])))
+print("BH Simulation &  Inb.  & {:.2e} & {:.2e} & {:.2e}\\\\".format(len(bhSimInbCDFT.loc[bhSimInbCDFT.t1<0.6, :]), len(bhSimInbCD.loc[bhSimInbCD.t1<0.6, :]), len(bhSimInbFD.loc[bhSimInbFD.t1<0.6, :])))
+print("Experimental Data &  Outb. & {:.2e} & {:.2e} & {:.2e}\\\\".format(len(epgExpOutbCDFT.loc[epgExpOutbCDFT.t1<0.6, :]), len(epgExpOutbCD.loc[epgExpOutbCD.t1<0.6, :]), len(epgExpOutbFD.loc[epgExpOutbFD.t1<0.6, :])))
+print("BH Simulation &  Outb. & {:.2e} & {:.2e} & {:.2e}\\\\".format(len(bhSimOutbCDFT.loc[bhSimOutbCDFT.t1<0.6, :]), len(bhSimOutbCD.loc[bhSimOutbCD.t1<0.6, :]), len(bhSimOutbFD.loc[bhSimOutbFD.t1<0.6, :])))
+
+print("Experimental Data &  Inb.  & {:.2e} & {:.2e}\\\\".format(len(epgExpInbCD)/len(epgExpInbCDFT), len(epgExpInbFD)/len(epgExpInbCDFT)))
+print("BH Simulation &  Inb.  & {:.2e} & {:.2e}\\\\".format(len(bhSimInbCD)/len(bhSimInbCDFT), len(bhSimInbFD)/len(bhSimInbCDFT)))
+print("Experimental Data &  Outb. & {:.2e} & {:.2e}\\\\".format(len(epgExpOutbCD)/len(epgExpOutbCDFT), len(epgExpOutbFD)/len(epgExpOutbCDFT)))
+print("BH Simulation &  Outb. & {:.2e} & {:.2e}\\\\".format(len(bhSimOutbCD)/len(bhSimOutbCDFT), len(bhSimOutbFD)/len(bhSimOutbCDFT)))
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+ax.hist2d(epgExpOutbCD.t1, epgExpOutbCD.t1 - epgExpOutbCD.t1Orig, bins = [np.linspace(0, 1, 100), 100], cmap = cmap, cmin = 1)
+ax.set_xlabel(r"$|t|_{after}$"+ " ["+ GeV2 + "] (after correction)")
+ax.set_ylabel(r"$|t|_{after}-|t|_{before}$"+ " ["+ GeV2 + "]")
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_t1diff.pdf")
+plt.clf()
+
+bhSimOutbCD.loc[:, "PpxOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(bhSimOutbCD.loc[:, "PthetaOrig"]))*np.cos(np.radians(bhSimOutbCD.loc[:, "PphiOrig"]))
+bhSimOutbCD.loc[:, "PpyOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(bhSimOutbCD.loc[:, "PthetaOrig"]))*np.sin(np.radians(bhSimOutbCD.loc[:, "PphiOrig"]))
+bhSimOutbCD.loc[:, "PpzOrig"] = bhSimOutbCD.loc[:, "PpOrig"]*np.cos(np.radians(bhSimOutbCD.loc[:, "PthetaOrig"]))
+
+VmissG = [-bhSimOutbCD["Epx"] - bhSimOutbCD["PpxOrig"], -bhSimOutbCD["Epy"] - bhSimOutbCD["PpyOrig"],
+          self.pbeam - bhSimOutbCD["Epz"] - bhSimOutbCD["PpzOrig"]]
+bhSimOutbCD.loc[:,'MM2_epOrig'] = (-M - self.ebeam + bhSimOutbCD["Ee"] + bhSimOutbCD["PeOrig"])**2 - mag2(VmissG)
+
+epgExpOutbCD.loc[:, "PpxOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))*np.cos(np.radians(epgExpOutbCD.loc[:, "PphiOrig"]))
+epgExpOutbCD.loc[:, "PpyOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.sin(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))*np.sin(np.radians(epgExpOutbCD.loc[:, "PphiOrig"]))
+epgExpOutbCD.loc[:, "PpzOrig"] = epgExpOutbCD.loc[:, "PpOrig"]*np.cos(np.radians(epgExpOutbCD.loc[:, "PthetaOrig"]))
+
+VmissG = [-epgExpOutbCD["Epx"] - epgExpOutbCD["PpxOrig"], -epgExpOutbCD["Epy"] - epgExpOutbCD["PpyOrig"],
+          self.pbeam - epgExpOutbCD["Epz"] - epgExpOutbCD["PpzOrig"]]
+epgExpOutbCD.loc[:,'MM2_epOrig'] = (-M - self.ebeam + epgExpOutbCD["Ee"] + epgExpOutbCD["PeOrig"])**2 - mag2(VmissG)
+
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[:, "t1Orig"].hist(ax = ax, bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[:, "t1Orig"].hist(ax = ax, bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([0, 1])
+# ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$|t|$"+ " ["+ GeV2 + "]")
+plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_t1Orig.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[:, "t1Orig"].hist(ax = ax, bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[:, "t1Orig"].hist(ax = ax, bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([0, 1])
+# ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$|t|$"+ " ["+ GeV2 + "]")
+plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_t1Orig.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[:, "MM2ep"].hist(ax = ax, bins = np.linspace(-0.3, 0.3, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[:, "MM2ep"].hist(ax = ax, bins = np.linspace(-0.3, 0.3, 51), density = True, histtype = 'step', color = 'g', label = 'Simulaton based on pure BH')
+ax.set_xlim([-0.3, 0.3])
+# ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$MM^2_{e'p'}$"+ " ["+ GeV2 + "]")
+plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_MM2ep.pdf")
+plt.clf()
+
+fig, ax = plt.subplots(1,1, figsize=(8, 5))
+epgExpOutbCD.loc[:, "MM2ep"].hist(ax = ax, bins = np.linspace(-0.3, 0.3, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+bhSimOutbCD .loc[:, "MM2ep"].hist(ax = ax, bins = np.linspace(-0.3, 0.3, 51), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+ax.set_xlim([-0.3, 0.3])
+# ax.set_ylim([0, 0.01])
+ax.set_xlabel(r"$MM^2_{e'p'}$"+ " ["+ GeV2 + "]")
+plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
+plt.tight_layout()
+plt.savefig("plots/normalization/CDFD_Outb_MM2ep.pdf")
+plt.clf()
+
+
+
+# bhSimOutbCDFT .loc[:, "t1Orig"].hist(bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+# epgExpOutbCDFT.loc[:, "t1Orig"].hist(bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+# plt.show()
+
+# bhSimOutbCDFT .loc[:, "t1Orig"].hist(bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'b', label = 'Experimental Data')
+# epgExpOutbCDFT.loc[:, "t1Orig"].hist(bins = np.linspace(0, 1, 51), density = True, histtype = 'step', color = 'g', label = 'Simulation based on pure BH')
+# plt.show()
+
+
+# bhSimOutbCD.loc[(bhSimOutbCD.Pphi<-50) & (bhSimOutbCD.Pphi>-100), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# epgExpOutbCD.loc[(epgExpOutbCD.Pphi<-50) & (epgExpOutbCD.Pphi>-100), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# plt.show()
+
+# bhSimOutbCD.loc[(bhSimOutbCD.Pphi<-100) & (bhSimOutbCD.Pphi>-180), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# epgExpOutbCD.loc[(epgExpOutbCD.Pphi<-100) & (epgExpOutbCD.Pphi>-180), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# plt.show()
+
+# bhSimOutbCD.loc[(bhSimOutbCD.Pphi>-50), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# epgExpOutbCD.loc[(epgExpOutbCD.Pphi>-50), "t1"].hist(bins = np.linspace(0, 1.5, 100), density = True, histtype = 'step')
+# plt.show()
+
+# var = "Pphi"
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==1, var], density = True, bins = np.linspace(-180, 180, 180))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==2, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==2, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==2, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==2, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==2, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==2, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==2, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==2, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==3, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==3, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==3, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==3, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==3, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==3, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==3, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==3, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==4, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==4, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==4, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==4, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==4, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==4, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==4, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==4, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==5, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==5, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==5, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==5, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==5, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==5, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==5, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==5, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==6, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==6, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==6, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==6, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==6, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==6, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==6, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==6, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# distSim, bins    = np.histogram(bhSimOutbCR.loc[bhSimOutbCR.Esector==1, var], density = True, bins = np.linspace(0, 45, 46))
+# distExp, _    = np.histogram(epgExpOutbCR.loc[epgExpOutbCR.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step', color = 'k')
+
+# distSim, bins    = np.histogram(bhSimOutbCDFT.loc[bhSimOutbCDFT.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCDFT.loc[epgExpOutbCDFT.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbCD.loc[bhSimOutbCD.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbCD.loc[epgExpOutbCD.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+
+# distSim, bins    = np.histogram(bhSimOutbFD.loc[bhSimOutbFD.Esector==1, var], density = True, bins = bins)
+# distExp, _    = np.histogram(epgExpOutbFD.loc[epgExpOutbFD.Esector==1, var], density = True, bins = bins)
+# plt.hist(bins[:-1], bins, weights = divideHist(distExp, distSim), histtype = 'step')
+# plt.yscale('log')
+# plt.show()
+
+# dist, _    = np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==4, "Etheta"], bins = bins)
+# plt.hist(bins[:-1], bins, weights = dist/np.diff(bins)/len(dvcsSimOutbCDFT), histtype = 'step')
+# dist, _    = np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==5, "Etheta"], bins = bins)
+# plt.hist(bins[:-1], bins, weights = dist/np.diff(bins)/len(dvcsSimOutbCDFT), histtype = 'step')
+# dist, _    = np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==6, "Etheta"], bins = bins)
+# plt.hist(bins[:-1], bins, weights = dist/np.diff(bins)/len(dvcsSimOutbCDFT), histtype = 'step')
+
+
+# np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==2, "Etheta"], bins = 100, histtype = 'step')
+# np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==3, "Etheta"], bins = 100, histtype = 'step')
+# np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==4, "Etheta"], bins = 100, histtype = 'step')
+# np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==5, "Etheta"], bins = 100, histtype = 'step')
+# np.histogram(dvcsSimOutbCDFT.loc[dvcsSimOutbCDFT.Esector==6, "Etheta"], bins = 100, histtype = 'step')
