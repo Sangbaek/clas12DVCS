@@ -13,7 +13,9 @@ pd.options.mode.chained_assignment = None
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, width = "mid", nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
+     detRes = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False,
+     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
         '''
             clas init.
             Args
@@ -52,7 +54,9 @@ class root2pickle():
         self.beam = [0, 0, self.pbeam] # beam vector
 
         self.determineWidth(width = width)
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
+            detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss,
+            fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
@@ -103,7 +107,9 @@ class root2pickle():
             self.cuts_dvcs_CD_Outb = cuts_dvcs_CD_Outb_4sigma
             self.cuts_dvcs_FD_Outb = cuts_dvcs_FD_Outb_4sigma
 
-    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", detRes = False, logistics = False, nofid = False, nocorr = False, fidlevel = 'mid'):
+    def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", 
+        detRes = False, logistics = False, nofid = False, 
+        nocorr = False, noeloss = False, fidlevel = 'mid'):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -371,11 +377,11 @@ class root2pickle():
             df_protonRecCD.loc[:, "PCvt12theta"] = getTheta([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
             df_protonRecCD.loc[:, "PCvt12phi"] = getPhi([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
 
-        #inbending proton energy loss correction
         if nocorr:
             print("no correction applied")
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
         else:
+            #inbending proton energy loss correction
             if pol == "inbending":
                 const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
                 coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
@@ -462,30 +468,44 @@ class root2pickle():
                 coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRecCD.Ptheta + 1.56575252*10**(-1) * df_protonRecCD.Ptheta**2 -7.71489734*10**(-4) * df_protonRecCD.Ptheta**3
                 CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
-            print("energy loss correction applied for " + pol)
+            df_protonRecFD_1.loc[:, "PpEloss"] = CorrectedPp_FD_1
+            df_protonRecFD_1.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_1
+            df_protonRecFD_1.loc[:, "PphiEloss"] = CorrectedPphi_FD_1
+            df_protonRecFD_1.loc[:, "Pband"] = "lower"
+
+            df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
+            df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
+            df_protonRecFD_2.loc[:, "Pband"] = "upper"
+
             df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
             df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
             df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
 
-            #proton correction
-            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD + 0.01
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD - 0.002129*CorrectedPtheta_CD**2 + 0.198*CorrectedPtheta_CD - 4.762 -0.2/(1+np.exp((CorrectedPp_CD-0.55)/(-0.05)))
-            df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
+            if noeloss:
+                print("no energy loss correction applied.")
+                pass
+            else:
+                print("energy loss correction applied for " + pol)
+                df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
+                df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
+                df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
-            df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-            df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-            df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
-            df_protonRecFD_1.loc[:, "Pband"] = "lower"
+                df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+                df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-            df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-            df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-            df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
-            df_protonRecFD_2.loc[:, "Pband"] = "upper"
+                df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
-            df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
 
             #correcting reconstruction bias after proton energy loss correction
+            df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
             print("applying the proton kinematic corrections for " + pol)
+
+            df_protonRecCD.loc[:, "Pp"] = df_protonRecCD.Pp + 0.01
+            df_protonRecCD.loc[:, "Ptheta"] = df_protonRecCD.Ptheta - 0.002129*df_protonRecCD.Ptheta**2 + 0.198*df_protonRecCD.Ptheta - 4.762 -0.2/(1+np.exp((df_protonRecCD.Pp-0.55)/(-0.05)))
+            df_protonRecCD.loc[:, "Pphi"] = df_protonRecCD.Pphi
             if pol == "inbending":
                 corr = np.poly1d([1.671, -4.918, 5.151, -2.434])(df_protonRecFD.Pp)       
                 corr = np.where(corr<0, corr, 0)
@@ -1422,6 +1442,7 @@ if __name__ == "__main__":
     parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
+    parser.add_argument("-ne","--noeloss", help="no energy loss correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
@@ -1435,7 +1456,10 @@ if __name__ == "__main__":
         args.entry_stop = int(args.entry_stop)
 
     be = float(args.beam)
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
+    converter = root2pickle(args.fname, entry_start = args.entry_start,
+     entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, 
+     logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,
+     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
     df = converter.df
 
     df.to_pickle(args.out)

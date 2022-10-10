@@ -13,7 +13,10 @@ pd.options.mode.chained_assignment = None
 
 class root2pickle():
     '''class to read root to make epg pairs'''
-    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", gen = "norad", raw = False, detRes = False, width = "mid", dvcs = False, smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid', allowsamesector = False, ebeam = 10.604):
+    def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", 
+        gen = "norad", raw = False, detRes = False, width = "mid", dvcs = False, 
+        smearing = 1, nofid = False, nocorr = False, noeloss = False,
+        fidlevel = 'mid', allowsamesector = False, ebeam = 10.604):
         '''
             clas init.
             Args
@@ -51,7 +54,9 @@ class root2pickle():
         self.beam = [0, 0, self.pbeam] # beam vector
 
         self.determineWidth(width = width)
-        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, gen = gen, detRes = detRes, smearing = smearing, nofid = nofid, nocorr = nocorr, fidlevel = fidlevel)
+        self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, 
+            pol = pol, gen = gen, detRes = detRes, smearing = smearing, 
+            nofid = nofid, nocorr = nocorr, noeloss = noeloss, fidlevel = fidlevel)
         self.saveDVpi0vars()
         if not raw:
             self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
@@ -103,7 +108,9 @@ class root2pickle():
             # self.cuts_dvpi0p_CD_Outb = cuts_dvpi0p_CD_Outb_4sigma
             # self.cuts_dvpi0p_FD_Outb = cuts_dvpi0p_FD_Outb_4sigma
 
-    def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", pol = "inbending", detRes = False, smearing = 1, nofid = False, nocorr = False, fidlevel = 'mid'):
+    def readEPGG(self, entry_start = None, entry_stop = None, gen = "pi0norad", 
+        pol = "inbending", detRes = False, smearing = 1, 
+        nofid = False, nocorr = False, noeloss = False, fidlevel = 'mid'):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -485,11 +492,11 @@ class root2pickle():
             df_protonRecCD.loc[:, "PCvt12theta"] = getTheta([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
             df_protonRecCD.loc[:, "PCvt12phi"] = getPhi([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
 
-        #inbending proton energy loss correction
         if nocorr:
             print("no correction applied")
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
         else:
+            #inbending proton energy loss correction
             if pol == "inbending":
                 const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
                 coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
@@ -576,26 +583,40 @@ class root2pickle():
                 coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRecCD.Ptheta + 1.56575252*10**(-1) * df_protonRecCD.Ptheta**2 -7.71489734*10**(-4) * df_protonRecCD.Ptheta**3
                 CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
-            print("energy loss correction applied for " + pol)
-
-            df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
-            df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
-            df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
-
-            df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-            df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-            df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+            df_protonRecFD_1.loc[:, "PpEloss"] = CorrectedPp_FD_1
+            df_protonRecFD_1.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_1
+            df_protonRecFD_1.loc[:, "PphiEloss"] = CorrectedPphi_FD_1
             df_protonRecFD_1.loc[:, "Pband"] = "lower"
 
-            df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-            df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-            df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+            df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
+            df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
             df_protonRecFD_2.loc[:, "Pband"] = "upper"
 
+            df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
+            df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
+            df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
+
+            if noeloss:
+                print("no energy loss correction applied.")
+                pass
+            else:
+                print("energy loss correction applied for " + pol)
+                df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
+                df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
+                df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
+
+                df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+                df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+
+                df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+                df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+
+            #smearing proton after the energy loss correction
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
             df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
 
-            #smearing proton after the energy loss correction
             print("smearing factor {} from nominal".format(smearing))
             #CD proton
             def cubic(args, x): #equivalent to poly1d
@@ -1334,6 +1355,7 @@ if __name__ == "__main__":
     parser.add_argument("-sm","--smearing", help="save dvcs overlap", default = "1")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
+    parser.add_argument("-ne","--noeloss", help="no energy loss correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
@@ -1347,7 +1369,11 @@ if __name__ == "__main__":
     smearingFactor = float(args.smearing)
 
     be = float(args.beam)
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, dvcs = args.dvcs, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, ebeam = be)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, 
+        entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, 
+        raw = args.raw, detRes = args.detRes, width = args.width, dvcs = args.dvcs, 
+        smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,
+        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, ebeam = be)
     df = converter.df
 
     df.to_pickle(args.out)
