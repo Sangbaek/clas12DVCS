@@ -1662,6 +1662,7 @@ if __name__ == "__main__":
     parser.add_argument("-sm","--smearing", help="smearing factor", default = "1")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
+    parser.add_argument("-ne","--noeloss", help="no energy loss correction", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
@@ -1676,7 +1677,10 @@ if __name__ == "__main__":
     smearingFactor = float(args.smearing)
 
     be = float(args.beam)
-    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
+    converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, 
+        pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, 
+        width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,
+        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
     df = converter.df
 
     df.to_pickle(args.out)

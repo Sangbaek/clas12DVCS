@@ -243,7 +243,7 @@ anti_pion_threshold = 0.2
 min_Gbeta = 0.9
 max_Gbeta = 1.1
 
-max_Ptheta = 64.23
+max_Ptheta = 75
 
 polrate = 0.86
 
