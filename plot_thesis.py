@@ -3784,6 +3784,12 @@ if chapter == 6:
 		pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
 		pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
 
+		epgExpInb =	epgExpInb.loc[epgExpInb.Ptheta<60, :]
+		dvcsSimInb = dvcsSimInb.loc[dvcsSimInb.Ptheta<60, :]
+		bkgSimInb =	bkgSimInb.loc[bkgSimInb.Ptheta<60, :]
+		pi0ExpInb =	pi0ExpInb.loc[pi0ExpInb.Ptheta<60, :]
+		pi0SimInb =	pi0SimInb.loc[pi0SimInb.Ptheta<60, :]
+
 		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
 		dvcsSimInbCDFT = dvcsSimInb.loc[dvcsSimInb.config == 3]
 		bkgSimInbCDFT = bkgSimInb.loc[bkgSimInb.config == 3]
@@ -4110,6 +4116,12 @@ if chapter == 6:
 		bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
 		pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
 		pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
+
+		epgExpOutb =	epgExpOutb.loc[epgExpOutb.Ptheta<60, :]
+		dvcsSimOutb = dvcsSimOutb.loc[dvcsSimOutb.Ptheta<60, :]
+		bkgSimOutb =	bkgSimOutb.loc[bkgSimOutb.Ptheta<60, :]
+		pi0ExpOutb =	pi0ExpOutb.loc[pi0ExpOutb.Ptheta<60, :]
+		pi0SimOutb =	pi0SimOutb.loc[pi0SimOutb.Ptheta<60, :]
 
 		epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
 		dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
