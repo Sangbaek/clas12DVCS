@@ -3858,7 +3858,7 @@ if chapter == 6:
 		handles, labels = axs[0, 0].get_legend_handles_labels()
 		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
 		plt.tight_layout()
-		plt.savefig("plots/ch5/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.savefig("plots_noEloss/ch6/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
 		df3 = epgExpInbCD
