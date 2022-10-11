@@ -2303,7 +2303,7 @@ if args.savenorm:
 				plt.clf()
 
 
-	# print(np.array([xBavg_BH[:,:,:,0][Normalization!=1],Q2avg_BH[:,:,:,0][Normalization!=1], t1avg_BH[:,:,:,0][Normalization!=1], Normalization[Normalization!=1]]).T)
+	print(np.array([xBavg_BH[:,:,:,0][Normalization!=1],Q2avg_BH[:,:,:,0][Normalization!=1], t1avg_BH[:,:,:,0][Normalization!=1], Normalization[Normalization!=1]]).T)
 	# np.savez(basedir + "/nphistograms/binscheme{}/Normalization.npz".format(k), hist = Normalization)
 
 	# result
@@ -2494,7 +2494,7 @@ if args.saveint:
 
 if args.saveplot2:
 
-	Normalization = .75
+	Normalization = .775
 
 	k = 3
 	i = 3
