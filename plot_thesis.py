@@ -4425,3 +4425,657 @@ if chapter == 6:
 		plt.savefig("plots_noEloss/ch6/pi0OutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 
+	if polarity == "inbending":
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/exp/"
+
+		#epg Exp
+		epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
+		dvcsSimInb = pd.read_pickle(parent_MC + "4893.pkl")
+		bkgSimInb = pd.read_pickle(parent_MC_bkg1g + "4076.pkl")
+		pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
+		pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
+
+		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
+		dvcsSimInbCDFT = dvcsSimInb.loc[dvcsSimInb.config == 3]
+		bkgSimInbCDFT = bkgSimInb.loc[bkgSimInb.config == 3]
+		pi0ExpInbCDFT = pi0ExpInb.loc[(pi0ExpInb.config == 3)]
+		pi0SimInbCDFT = pi0SimInb.loc[(pi0SimInb.config == 3)]
+
+		epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
+		dvcsSimInbCD = dvcsSimInb.loc[dvcsSimInb.config == 2]
+		bkgSimInbCD = bkgSimInb.loc[bkgSimInb.config == 2]
+		pi0ExpInbCD = pi0ExpInb.loc[(pi0ExpInb.config == 2)]
+		pi0SimInbCD = pi0SimInb.loc[(pi0SimInb.config == 2)]
+
+		epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
+		dvcsSimInbFD = dvcsSimInb.loc[dvcsSimInb.config == 1]
+		bkgSimInbFD = bkgSimInb.loc[bkgSimInb.config == 1]
+		pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
+		pi0SimInbFD = pi0SimInb.loc[(pi0SimInb.config == 1)]
+
+		contInbCD = len(pi0ExpInbCD)*len(bkgSimInbCD)/len(pi0SimInbCD)/len(epgExpInbCD)
+		contInbFD = len(pi0ExpInbFD)*len(bkgSimInbFD)/len(pi0SimInbFD)/len(epgExpInbFD)
+		contInbCDFT = len(pi0ExpInbCDFT)*len(bkgSimInbCDFT)/len(pi0SimInbCDFT)/len(epgExpInbCDFT)
+
+		varstoplot = dvcsvars
+		title = dvcstitles
+		unit = dvcsunits
+		df3 = epgExpInbCDFT
+		df1 = dvcsSimInbCDFT
+		df2 = bkgSimInbCDFT
+		df4 = pi0ExpInbCDFT
+		df5 = pi0SimInbCDFT
+		xlb = [10, 0.3, 0, 0, -.3, -0.01, -0.3, 0]
+		xub = [35, 1.5, 0.75, 6, .3, 0.01, 0.3, 0.1]
+		yub = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xlim([10, 30])
+		axs[0, 0].set_xticks([10, 20, 30])
+		axs[0, 1].set_xlim([0.5, 1.5])
+		axs[0, 1].set_xticks([0.5, 1, 1.5])
+		axs[0, 2].set_xticks([0, 0.2, 0.4, 0.6])
+		axs[0, 3].set_xticks([0, 2, 4, 6])
+		axs[1, 0].set_xlim([-0.3, 0.3])
+		axs[1, 0].set_xticks([-0.3, 0, 0.3])
+		axs[1, 1].set_xlim([-0.01, 0.01])
+		axs[1, 1].set_xticks([-0.01, 0, 0.01])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.08])
+		axs[1, 3].set_xticks([0, 0.04, 0.08])
+		axs[0, 0].set_yticks([0.02, 0.04, 0.06, 0.08, 0.1, 0.12])
+		axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
+		axs[0, 2].set_yticks([1, 2, 3])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([1, 2, 3])
+		axs[1, 1].set_yticks([50, 100, 150, 200, 250])
+		axs[1, 2].set_yticks([1,2,3])
+		axs[1, 3].set_yticks([5, 10, 15, 20, 25])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df3 = epgExpInbCD
+		df1 = dvcsSimInbCD
+		df2 = bkgSimInbCD
+		df4 = pi0ExpInbCD
+		df5 = pi0SimInbCD
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xlim([10, 30])
+		axs[0, 0].set_xticks([10, 20, 30])
+		axs[0, 1].set_xlim([0, 2])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xlim([0, 0.6])
+		axs[0, 2].set_xticks([0, 0.2, 0.4, 0.6])
+		axs[0, 3].set_xticks([0, 2.5, 5])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.015, 0.015])
+		axs[1, 1].set_xticks([-0.015, 0, 0.015])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.08])
+		axs[1, 3].set_xticks([0, 0.04, 0.08])
+
+		axs[0, 0].set_yticks([0.05, 0.1, 0.15])
+		axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
+		axs[0, 2].set_yticks([1, 2, 3])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([0.5, 1, 1.5])
+		axs[1, 1].set_yticks([50, 100, 150, 200])
+		axs[1, 2].set_yticks([1,2,3,4])
+		axs[1, 3].set_yticks([5, 10, 15, 20])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df3 = epgExpInbFD
+		df1 = dvcsSimInbFD
+		df2 = bkgSimInbFD
+		df4 = pi0ExpInbFD
+		df5 = pi0SimInbFD
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([25, 30, 35, 40, 45])
+		axs[0, 0].set_xlim([25, 45])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+		axs[0, 3].set_xticks([0, 2, 4, 6, 8])
+		axs[1, 0].set_xlim([-0.8, 0.8])
+		axs[1, 0].set_xticks([-0.8, -0.4, 0, 0.4, 0.8])
+		axs[1, 1].set_xlim([-0.015, 0.015])
+		axs[1, 1].set_xticks([-0.015, 0, 0.015])
+		axs[1, 2].set_xlim([-0.2, 0.2])
+		axs[1, 2].set_xticks([-0.2, 0, 0.2])
+		axs[1, 3].set_xlim([0, 0.3])
+		axs[1, 3].set_xticks([0, 0.1, 0.2, 0.3])
+		axs[0, 0].set_yticks([0.02, 0.04, 0.06, 0.08, 0.1, 0.12])
+		axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
+		axs[0, 2].set_yticks([0.5, 1, 1.5])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([0.5, 1, 1.5])
+		axs[1, 1].set_yticks([50, 100, 150])
+		axs[1, 2].set_yticks([2, 4, 6])
+		axs[1, 3].set_yticks([2, 4, 6, 8])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		varstoplot = pi0vars
+		title = pi0titles
+		unit = pi0units
+
+		df4 = pi0ExpInbCDFT
+		df5 = pi0SimInbCDFT
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
+		axs[0, 2].set_xticks([0, 0.25, 0.5 ,0.75, 1])
+		axs[0, 3].set_xticks([0, 2, 4, 6, 8])
+		axs[1, 0].set_xlim([-0.4, 0.4])
+		axs[1, 0].set_xticks([-0.4, -0.2, 0, 0.2, 0.4])
+		axs[1, 1].set_xlim([-0.02, 0.02])
+		axs[1, 1].set_xticks([-0.02, 0, 0.02])
+		axs[1, 2].set_xlim([-0.5, 0.5])
+		axs[1, 2].set_xticks([-0.5, 0, 0.5])
+		axs[1, 3].set_xlim([0, 0.15])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15])
+		axs[0, 0].set_yticks([50, 100])
+		axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
+		axs[0, 2].set_yticks([.5, 1, 1.5, 2, 2.5])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([1, 2, 3])
+		axs[1, 1].set_yticks([50, 100, 150, 200])
+		axs[1, 2].set_yticks([2, 4])
+		axs[1, 3].set_yticks([5, 10, 15, 20, 25])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+
+		df4 = pi0ExpInbCD
+		df5 = pi0SimInbCD
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+		axs[0, 3].set_xticks([0, 5, 10])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.02, 0.02])
+		axs[1, 1].set_xticks([-0.02, 0, 0.02])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.2])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+		axs[0, 0].set_yticks([20, 40])
+		axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
+		axs[0, 2].set_yticks([0.5, 1, 1.5])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([0.4, 0.8, 1.2, 1.6])
+		axs[1, 1].set_yticks([50, 100, 150])
+		axs[1, 2].set_yticks([2.5, 5])
+		axs[1, 3].set_yticks([5, 10, 15])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+
+		df4 = pi0ExpInbFD
+		df5 = pi0SimInbFD
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+		axs[0, 3].set_xticks([0, 5, 10])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.02, 0.02])
+		axs[1, 1].set_xticks([-0.02, 0, 0.02])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.2])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+		axs[0, 0].set_yticks([25, 50])
+		axs[0, 1].set_yticks([0.5, 1, 1.5])
+		axs[0, 2].set_yticks([0.5, 1, 1.5])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([0.5, 1, 1.5, 2])
+		axs[1, 1].set_yticks([50, 100, 150, 200])
+		axs[1, 2].set_yticks([2.5, 5])
+		axs[1, 3].set_yticks([2,4,6,8,10,12])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+	else:
+		parent_MC = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/dvcs/"
+		parent_MC_bkg1g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/bkg_1g/"
+		parent_MC_bkg2g = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/bkg_2g/"
+		parent_exp = "/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/exp/"
+
+		#epg Exp
+		epgExpOutb = pd.read_pickle(parent_exp + "dvcs.pkl")
+		dvcsSimOutb= pd.read_pickle(parent_MC + "4907.pkl")
+		bkgSimOutb = pd.read_pickle(parent_MC_bkg1g + "4243.pkl")
+		pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
+		pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
+
+		epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
+		dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
+		bkgSimOutbCDFT = bkgSimOutb.loc[bkgSimOutb.config == 3]
+		pi0ExpOutbCDFT = pi0ExpOutb.loc[(pi0ExpOutb.config == 3)]
+		pi0SimOutbCDFT = pi0SimOutb.loc[(pi0SimOutb.config == 3)]
+
+		epgExpOutbCD = epgExpOutb.loc[epgExpOutb.config == 2]
+		dvcsSimOutbCD = dvcsSimOutb.loc[dvcsSimOutb.config == 2]
+		bkgSimOutbCD = bkgSimOutb.loc[bkgSimOutb.config == 2]
+		pi0ExpOutbCD = pi0ExpOutb.loc[(pi0ExpOutb.config == 2)]
+		pi0SimOutbCD = pi0SimOutb.loc[(pi0SimOutb.config == 2)]
+
+		epgExpOutbFD = epgExpOutb.loc[epgExpOutb.config == 1]
+		dvcsSimOutbFD = dvcsSimOutb.loc[dvcsSimOutb.config == 1]
+		bkgSimOutbFD = bkgSimOutb.loc[bkgSimOutb.config == 1]
+		pi0ExpOutbFD = pi0ExpOutb.loc[(pi0ExpOutb.config == 1)]
+		pi0SimOutbFD = pi0SimOutb.loc[(pi0SimOutb.config == 1)]
+
+		contOutbCD = len(pi0ExpOutbCD)*len(bkgSimOutbCD)/len(pi0SimOutbCD)/len(epgExpOutbCD)
+		contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOutbFD)
+		contOutbCDFT = len(pi0ExpOutbCDFT)*len(bkgSimOutbCDFT)/len(pi0SimOutbCDFT)/len(epgExpOutbCDFT)
+
+		varstoplot = dvcsvars
+		title = dvcstitles
+		unit = dvcsunits
+
+		df3 = epgExpOutbCDFT
+		df1 = dvcsSimOutbCDFT
+		df2 = bkgSimOutbCDFT
+		df4 = pi0ExpOutbCDFT
+		df5 = pi0SimOutbCDFT
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbCDFT)*simDist_dvcs + contOutbCDFT*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xlim([5, 35])
+		axs[0, 0].set_xticks([5, 10, 15, 20, 25, 30, 35])
+		axs[0, 1].set_xlim([0.5, 1.5])
+		axs[0, 1].set_xticks([0.5, 1, 1.5])
+		axs[0, 2].set_xticks([0, 0.2, 0.4, 0.6])
+		axs[0, 3].set_xticks([0, 2.5, 5])
+		axs[1, 0].set_xlim([-0.3, 0.3])
+		axs[1, 0].set_xticks([-0.3, 0, 0.3])
+		axs[1, 1].set_xlim([-0.01, 0.01])
+		axs[1, 1].set_xticks([-0.01, 0, 0.01])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.08])
+		axs[1, 3].set_xticks([0, 0.04, 0.08])
+		axs[0, 0].set_yticks([0.05, 0.1])
+		axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
+		axs[0, 2].set_yticks([1, 2])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([1, 2, 3])
+		axs[1, 1].set_yticks([50, 100, 150, 200, 250])
+		axs[1, 2].set_yticks([1,2,3,4])
+		axs[1, 3].set_yticks([5, 10, 15, 20, 25])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsOutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df3 = epgExpOutbCD
+		df1 = dvcsSimOutbCD
+		df2 = bkgSimOutbCD
+		df4 = pi0ExpOutbCD
+		df5 = pi0SimOutbCD
+
+		contOutbCD = len(df2)*len(df4)/len(df3)/len(df5)
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+
+		# contOutbCD = 0.0
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbCD)*simDist_dvcs + contOutbCD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xlim([10, 30])
+		axs[0, 0].set_xticks([10, 20, 30])
+		axs[0, 1].set_xlim([0, 2])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xlim([0, 0.8])
+		axs[0, 2].set_xticks([0, 0.2, 0.4, 0.6, 0.8])
+		axs[0, 3].set_xticks([0, 2.5, 5])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.015, 0.015])
+		axs[1, 1].set_xticks([-0.015, 0, 0.015])
+		axs[1, 2].set_xlim([-0.25, 0.25])
+		axs[1, 2].set_xticks([-0.25, 0, 0.25])
+		axs[1, 3].set_xlim([0, 0.15])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15])
+		axs[0, 0].set_yticks([0.05, 0.1])
+		axs[0, 1].set_yticks([0.25, 0.5, 0.75, 1])
+		axs[0, 2].set_yticks([1, 2])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([0.5, 1, 1.5])
+		axs[1, 1].set_yticks([50, 100, 150, 200])
+		axs[1, 2].set_yticks([1,2,3,4,5])
+		axs[1, 3].set_yticks([5, 10, 15])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsOutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df3 = epgExpOutbFD
+		df1 = dvcsSimOutbFD
+		df2 = bkgSimOutbFD
+		df4 = pi0ExpOutbFD
+		df5 = pi0SimOutbFD
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+				simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+				simDist = (1-contOutbFD)*simDist_dvcs + contOutbFD*simDist_dvpi0
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([25, 30, 35, 40, 45])
+		axs[0, 0].set_xlim([25, 40])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+		axs[0, 3].set_xticks([0, 2, 4, 6, 8])
+		axs[1, 0].set_xlim([-0.8, 0.8])
+		axs[1, 0].set_xticks([-0.8, -0.4, 0, 0.4, 0.8])
+		axs[1, 1].set_xlim([-0.015, 0.015])
+		axs[1, 1].set_xticks([-0.015, 0, 0.015])
+		axs[1, 2].set_xlim([-0.2, 0.2])
+		axs[1, 2].set_xticks([-0.2, 0, 0.2])
+		axs[1, 3].set_xlim([0, 0.3])
+		axs[1, 3].set_xticks([0, 0.1, 0.2, 0.3])
+		axs[0, 0].set_yticks([0.05, 0.1, 0.15])
+		axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
+		axs[0, 2].set_yticks([0.5, 1])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([0.5, 1, 1.5])
+		axs[1, 1].set_yticks([20, 40, 60, 80, 100, 120])
+		axs[1, 2].set_yticks([2, 4, 6])
+		axs[1, 3].set_yticks([2, 4, 6, 8])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/dvcsOutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		varstoplot = pi0vars
+		title = pi0titles
+		unit = pi0units
+
+		df4 = pi0ExpOutbCDFT
+		df5 = pi0SimOutbCDFT
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
+		axs[0, 2].set_xticks([0, 0.4, 0.8, 1.2])
+		axs[0, 3].set_xlim([0, 10])
+		axs[0, 3].set_xticks([0, 5, 10])
+		axs[1, 0].set_xlim([-0.5, 0.5])
+		axs[1, 0].set_xticks([-0.5, -0.25, 0, 0.25, 0.5])
+		axs[1, 1].set_xlim([-0.03, 0.03])
+		axs[1, 1].set_xticks([-0.03, 0, 0.03])
+		axs[1, 2].set_xlim([-0.5, 0.5])
+		axs[1, 2].set_xticks([-0.5, 0, 0.5])
+		axs[1, 3].set_xlim([0, 0.15])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15])
+		axs[0, 0].set_yticks([50, 100])
+		axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
+		axs[0, 2].set_yticks([1, 2, 3])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([1, 2, 3])
+		axs[1, 1].set_yticks([50, 100, 150, 200])
+		axs[1, 2].set_yticks([2, 4])
+		axs[1, 3].set_yticks([5, 10, 15, 20])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0OutbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df4 = pi0ExpOutbCD
+		df5 = pi0SimOutbCD
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+		axs[0, 3].set_xticks([0, 5, 10])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.02, 0.02])
+		axs[1, 1].set_xticks([-0.02, 0, 0.02])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.2])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+		axs[0, 0].set_yticks([25, 50])
+		axs[0, 1].set_yticks([0.5, 1, 1.5])
+		axs[0, 2].set_yticks([0.5, 1])
+		axs[0, 3].set_yticks([0.2, 0.4])
+		axs[1, 0].set_yticks([0.5, 1, 1.5, 2])
+		axs[1, 1].set_yticks([50, 100, 150])
+		axs[1, 2].set_yticks([2.5, 5])
+		axs[1, 3].set_yticks([5, 10, 15])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0OutbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
+		df4 = pi0ExpOutbFD
+		df5 = pi0SimOutbFD
+
+		fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+		for yind in range(0, 2):
+			for xind in range(0, 4):
+				ind = 4*yind + xind
+				simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
+				bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+				axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "Experimental Data")
+				axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+				axs[yind, xind].set_title(title[ind])
+				if (unit[ind]):
+					axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+				else:
+					axs[yind, xind].set_xlabel(title[ind])
+				axs[yind, xind].set_xlim([bins[0], bins[-1]])
+		axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+		axs[0, 0].set_xlim([0.1, 0.16])
+		axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 2].set_xticks([0, 0.5, 1, 1.5, 2])
+		axs[0, 3].set_xticks([0, 4, 8])
+		axs[1, 0].set_xlim([-0.6, 0.6])
+		axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+		axs[1, 1].set_xlim([-0.02, 0.02])
+		axs[1, 1].set_xticks([-0.02, 0, 0.02])
+		axs[1, 2].set_xlim([-0.3, 0.3])
+		axs[1, 2].set_xticks([-0.3, 0, 0.3])
+		axs[1, 3].set_xlim([0, 0.2])
+		axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+		axs[0, 0].set_yticks([25, 50])
+		axs[0, 1].set_yticks([0.5, 1, 1.5])
+		axs[0, 2].set_yticks([0.5, 1, 1.5])
+		axs[0, 3].set_yticks([0.25, 0.5])
+		axs[1, 0].set_yticks([0.5, 1, 1.5, 2])
+		axs[1, 1].set_yticks([50, 100, 150])
+		axs[1, 2].set_yticks([2.5, 5])
+		axs[1, 3].set_yticks([5,10])
+		handles, labels = axs[0, 0].get_legend_handles_labels()
+		lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+		plt.tight_layout()
+		plt.savefig("plots_noPcorr/ch6/pi0OutbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+		plt.clf()
+
