@@ -638,6 +638,9 @@ class root2pickle():
                 df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
 
             #smearing proton after the energy loss correction
+            df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
+            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
+
             print("smearing factor {} from nominal".format(smearing))
             #CD proton
             def cubic(args, x): #equivalent to poly1d
