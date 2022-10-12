@@ -149,7 +149,7 @@ contOutbFD = len(pi0ExpOutbFD)*len(bkgSimOutbFD)/len(pi0SimOutbFD)/len(epgExpOut
 
 #particle kinematics
 varstoplot = ["xB", "Q2", "t1", "phi1", "Ep", "Etheta", "Ephi", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi"]
-title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$\phi_{H\Gamma}$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
+title = [r"$x_B$", r"$Q^2$", r"$|t|$", r"$\phi$", r"$p_{e'}$", r"$\theta_{e'}$", r"$\phi_{e'}$", r"$p_{p'}$", r"$\theta_{p'}$", r"$\phi_{p'}$", r"$p_{\gamma}$", r"$\theta_{\gamma}$", r"$\phi_{\gamma}$"]
 binstoplot_CR = [np.linspace(0.05, 0.7, 101), np.linspace(1, 2.5, 101), np.linspace(0.6, 1.4, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 binstoplot = [np.linspace(0.05, 0.7, 101), np.linspace(1, 7, 101), np.linspace(0, 1, 101), 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 unit = ["", GeVc2, GeV2, degree, GeVc, degree, degree, GeVc, degree, degree, GeVc, degree, degree]
