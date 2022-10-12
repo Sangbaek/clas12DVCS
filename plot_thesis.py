@@ -3807,7 +3807,7 @@ if chapter == 6:
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
-		axs.set_title("(a)", loc = 'left')
+		axs.set_title("(b)", loc = 'left')
 		axs.set_xlim([30, 85])
 		axs.set_xticks([30, 40, 50, 60, 64.23, 70, 80])
 		axs.set_xticklabels([30, 40, 50, 60, "", 70, 80])
@@ -3851,7 +3851,7 @@ if chapter == 6:
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
-		axs.set_title("(a)", loc = 'left')
+		axs.set_title("(b)", loc = 'left')
 		axs.set_xlim([30, 85])
 		axs.set_xticks([30, 40, 50, 60, 64.23, 70, 80])
 		axs.set_xticklabels([30, 40, 50, 60, "", 70, 80])
@@ -3876,11 +3876,11 @@ if chapter == 6:
 		pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
 		pi0SimInb = pd.read_pickle(parent_MC_bkg2g + "4076.pkl")
 
-		epgExpInb =	epgExpInb.loc[epgExpInb.Ptheta<60, :]
-		dvcsSimInb = dvcsSimInb.loc[dvcsSimInb.Ptheta<60, :]
-		bkgSimInb =	bkgSimInb.loc[bkgSimInb.Ptheta<60, :]
-		pi0ExpInb =	pi0ExpInb.loc[pi0ExpInb.Ptheta<60, :]
-		pi0SimInb =	pi0SimInb.loc[pi0SimInb.Ptheta<60, :]
+		# epgExpInb =	epgExpInb.loc[epgExpInb.Ptheta<60, :]
+		# dvcsSimInb = dvcsSimInb.loc[dvcsSimInb.Ptheta<60, :]
+		# bkgSimInb =	bkgSimInb.loc[bkgSimInb.Ptheta<60, :]
+		# pi0ExpInb =	pi0ExpInb.loc[pi0ExpInb.Ptheta<60, :]
+		# pi0SimInb =	pi0SimInb.loc[pi0SimInb.Ptheta<60, :]
 
 		epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
 		dvcsSimInbCDFT = dvcsSimInb.loc[dvcsSimInb.config == 3]
@@ -4209,11 +4209,11 @@ if chapter == 6:
 		pi0ExpOutb = pd.read_pickle(parent_exp + "pi0.pkl")
 		pi0SimOutb = pd.read_pickle(parent_MC_bkg2g + "4243.pkl")
 
-		epgExpOutb =	epgExpOutb.loc[epgExpOutb.Ptheta<60, :]
-		dvcsSimOutb = dvcsSimOutb.loc[dvcsSimOutb.Ptheta<60, :]
-		bkgSimOutb =	bkgSimOutb.loc[bkgSimOutb.Ptheta<60, :]
-		pi0ExpOutb =	pi0ExpOutb.loc[pi0ExpOutb.Ptheta<60, :]
-		pi0SimOutb =	pi0SimOutb.loc[pi0SimOutb.Ptheta<60, :]
+		# epgExpOutb =	epgExpOutb.loc[epgExpOutb.Ptheta<60, :]
+		# dvcsSimOutb = dvcsSimOutb.loc[dvcsSimOutb.Ptheta<60, :]
+		# bkgSimOutb =	bkgSimOutb.loc[bkgSimOutb.Ptheta<60, :]
+		# pi0ExpOutb =	pi0ExpOutb.loc[pi0ExpOutb.Ptheta<60, :]
+		# pi0SimOutb =	pi0SimOutb.loc[pi0SimOutb.Ptheta<60, :]
 
 		epgExpOutbCDFT = epgExpOutb.loc[epgExpOutb.config == 3]
 		dvcsSimOutbCDFT = dvcsSimOutb.loc[dvcsSimOutb.config == 3]
