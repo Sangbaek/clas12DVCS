@@ -3776,9 +3776,12 @@ if chapter == 6:
 		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/bh/4892.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/exp/dvcs.pkl")
 
+		dvcsSample = dvcsSample.loc[(dvcsSample.phi1<30)  | (dvcsSample.phi1>330)]
+		epgSample  = epgSample.loc [(epgSample.phi1<30)   | (epgSample.phi1>330)]
+
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
@@ -3795,9 +3798,12 @@ if chapter == 6:
 		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/bh/4902.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/exp/dvcs.pkl")
 
+		dvcsSample = dvcsSample.loc[(dvcsSample.phi1<30)  | (dvcsSample.phi1>330)]
+		epgSample  = epgSample.loc [(epgSample.phi1<30)   | (epgSample.phi1>330)]
+
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
@@ -3814,9 +3820,12 @@ if chapter == 6:
 		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noEloss/inb/bh/4892.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noEloss/inb/exp/dvcs.pkl")
 
+		dvcsSample = dvcsSample.loc[(dvcsSample.phi1<30)  | (dvcsSample.phi1>330)]
+		epgSample  = epgSample.loc [(epgSample.phi1<30)   | (epgSample.phi1>330)]
+
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
@@ -3833,9 +3842,12 @@ if chapter == 6:
 		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noEloss/outb/bh/4902.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noEloss/outb/exp/dvcs.pkl")
 
+		dvcsSample = dvcsSample.loc[(dvcsSample.phi1<30)  | (dvcsSample.phi1>330)]
+		epgSample  = epgSample.loc [(epgSample.phi1<30)   | (epgSample.phi1>330)]
+
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config==4), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(40, 75, 201), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		# plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
