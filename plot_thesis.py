@@ -3773,12 +3773,12 @@ if chapter == 6:
 	'''
 	# no p corr at all.
 	if args.figureofmerit == "proton":
-		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/dvcs/4893.pkl")
+		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/bh/4892.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/inb/exp/dvcs.pkl")
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config==3), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config==3), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
@@ -3792,12 +3792,12 @@ if chapter == 6:
 		plt.savefig("plots_noPcorr/ch6/precut_pfid_cd.pdf")
 		plt.clf()
 
-		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/dvcs/4907.pkl")
+		dvcsSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/bh/4902.pkl")
 		expSample = pd.read_pickle("/volatile/clas12/sangbaek/nov2021/convPkl_full_noPcorr/outb/exp/dvcs.pkl")
 
 		fig, axs = plt.subplots(1, 1, figsize = (8, 5))
-		expSample.loc[(expSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
-		dvcsSample.loc[(dvcsSample.config>1), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
+		expSample.loc[(expSample.config==3), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'k', label = 'Experimental Data')
+		dvcsSample.loc[(dvcsSample.config==3), "Ptheta"].hist(bins = np.linspace(30, 80, 101), histtype = 'step', density = True, ax = axs, color = 'r', label = 'Simulation')
 		plt.axvline(64.23, color = 'k', linestyle = '--', linewidth = 2)
 		plt.legend(loc='lower left', bbox_to_anchor = (0.6, 0.65), framealpha = 0.5)
 		plt.xlabel(r"$\theta_{p'}$" + " ["+degree+"]")
