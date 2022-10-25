@@ -34,7 +34,7 @@ class lund2pickle():
 		txts = iter(txtlst)
 		skip = 0
 		for ind, line in enumerate(txtlst[:-1]):
-			num_particles = line[11]
+			num_particles = line.split()[0]
 			if skip > 0:
 				skip = skip - 1
 				continue
@@ -75,7 +75,35 @@ class lund2pickle():
 
 			partArray.append([float(Epx), float(Epy), float(Epz), float(Ppx), float(Ppy), float(Ppz), float(Gpx), float(Gpy), float(Gpz), float(Gpx2), float(Gpy2), float(Gpz2)])
 
-		self.df = pd.DataFrame(partArray, columns = ["Epx", "Epy", "Epz", "Ppx", "Ppy", "Ppz", "Gpx", "Gpy", "Gpz", "Gpx2", "Gpy2", "Gpz2"])
+		df_epgg = pd.DataFrame(partArray, columns = ["Epx", "Epy", "Epz", "Ppx", "Ppy", "Ppz", "Gpx", "Gpy", "Gpz", "Gpx2", "Gpy2", "Gpz2"])
+
+        ele = [df_epgg['Epx'], df_epgg['Epy'], df_epgg['Epz']]
+        df_epgg.loc[:, 'Ep'] = mag(ele)
+        df_epgg.loc[:, 'Ee'] = getEnergy(ele, me)
+        df_epgg.loc[:, 'Etheta'] = getTheta(ele)
+        df_epgg.loc[:, 'Ephi'] = getPhi(ele)
+
+        pro = [df_epgg['Ppx'], df_epgg['Ppy'], df_epgg['Ppz']]
+        df_epgg.loc[:, 'Pp'] = mag(pro)
+        df_epgg.loc[:, 'Pe'] = getEnergy(pro, M)
+        df_epgg.loc[:, 'Ptheta'] = getTheta(pro)
+        df_epgg.loc[:, 'Pphi'] = getPhi(pro)
+
+        gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
+        df_epgg.loc[:, 'Gp'] = mag(gam)
+        df_epgg.loc[:, 'Ge'] = getEnergy(gam, 0)
+        df_epgg.loc[:, 'Gtheta'] = getTheta(gam)
+        df_epgg.loc[:, 'Gphi'] = getPhi(gam)
+
+		VGS = [-df_epgg['Epx'], -df_epgg['Epy'], 10.604 - df_epgg['Epz']]
+        
+        df_epgg.loc[:,'Q2'] = -((10.604 - df_epgg['Ee'])**2 - mag2(VGS))
+        df_epgg.loc[:,'nu'] = (10.604 - df_epgg['Ee'])
+        df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
+        df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
+
+        self.df = df_epgg
+
 		self.closeFile()
 
 if __name__ == "__main__":
