@@ -34,7 +34,7 @@ class lund2pickle():
 		txts = iter(txtlst)
 		skip = 0
 		for ind, line in enumerate(txtlst[:-1]):
-			num_particles = line[11]
+			num_particles = line.split()[0]
 			if skip > 0:
 				skip = skip - 1
 				continue
