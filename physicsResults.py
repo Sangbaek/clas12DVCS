@@ -2761,7 +2761,7 @@ if args.saveplot2:
 	for tbin in range(6):
 		active = 0
 		ttitle = "{:.3f} GeV".format(tbins[tbin])+r"$^2<|t|<$"+"{:.3f} GeV".format(tbins[tbin+1])+r"$^2$"
-		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (7.5*(num_plotxB), 6*(num_plotQ2)))
+		fig, axs = plt.subplots(num_plotQ2, num_plotxB, figsize = (10*(num_plotxB), 6*(num_plotQ2)))
 		for xBbin in range(num_plotxB):
 			for Q2bin in range(num_plotQ2):
 				#skip inactive bins
@@ -2806,7 +2806,7 @@ if args.saveplot2:
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
-		fig.subplots_adjust(wspace = 0.7, hspace = 0.5)
+		fig.subplots_adjust(wspace = 0.7, hspace = 1)
 		plt.savefig(basedir + "/plots{}/binscheme{}/unpolsyst_presentation_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 	'''end of unpol landscape'''
