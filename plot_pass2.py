@@ -123,9 +123,9 @@ pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
 # pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
 
 
-varstoplot = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg", "MM2_ep", "MPt"]
-title = [r"$\theta_{e'\gamma}$", "MM"+r"${}^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\Delta\phi_{\vec{L}\vec{\Gamma}}$" , "ME"+r"${}_{e'p'\gamma}$", "MM"+r"${}^{2}_{e'p'\gamma}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\gamma}$"]
-unit = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+varstoplot = dvcsvars
+title = dvcstitles
+unit = dvcsunits
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
 # df3 = epgExpInbCDFT3
@@ -356,9 +356,9 @@ plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass1_CDproto
 plt.clf()
 
 
-varstoplot = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
-title = [r"$IM_{\pi^0}$", "MM"+r"${}^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\Delta\phi_{H\Pi}$" , "ME"+r"${}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'\pi^0}$", "MM"+r"${}^{2}_{e'p'}$", "MPt"+r"${}_{e'p'\pi^0}$"]
-unit = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
+varstoplot = pi0vars
+title = pi0titles
+unit = pi0units
 
 df4 = pi0ExpInbCDFT
 df5 = pi0ExpInbCDFT2
