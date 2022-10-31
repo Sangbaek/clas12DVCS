@@ -31,7 +31,7 @@ import matplotlib
 # initial settings
 pgf_with_latex = {
 		"pgf.texsystem": "pdflatex",
-		"text.usetex": True,			# use LaTeX to write all text
+		"text.usetex": False,			# use LaTeX to write all text
 		"font.family": "sans-serif",		
 		"font.sans-serif": "Helvetica",
 		"font.size": 25,				# default font size
@@ -136,14 +136,14 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
-		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
+		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = False)
 		# simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
-		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -173,7 +173,7 @@ axs[1, 3].set_xticks([0, 0.04, 0.08])
 # axs[1, 2].set_yticks([1,2,3])
 # axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": CD, "+r"$\gamma$"+": FT")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
@@ -185,14 +185,14 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
-		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
+		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = False)
 		# simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
-		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -225,7 +225,7 @@ axs[1, 3].set_xticks([0, 0.04, 0.08])
 # axs[1, 2].set_yticks([1,2,3,4])
 # axs[1, 3].set_yticks([5, 10, 15, 20])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": CD, "+r"$\gamma$"+": FD")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
@@ -237,14 +237,14 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
-		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = True)
+		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
+		# simDist_dvpi0, _ = np.histogram(df2.loc[:, varstoplot[ind]], bins, density = False)
 		# simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
-		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = True)
+		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -274,7 +274,7 @@ axs[1, 3].set_xticks([0, 0.1, 0.2, 0.3])
 # axs[1, 2].set_yticks([2, 4, 6])
 # axs[1, 3].set_yticks([2, 4, 6, 8])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": FD, "+r"$\gamma$"+": FD")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
@@ -284,7 +284,7 @@ print("pass2", len(epgExpInbFD2), len(epgExpInbCD2), len(epgExpInbCDFT2))
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCDFT2.Ptheta, epgExpInbCDFT2.Pp, bins = [np.linspace(40, 80, 101), np.linspace(0, 1.5, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInbCDFT2.Ptheta, epgExpInbCDFT2.Pp, bins = [np.linspace(40, 80, 101), np.linspace(0, 1.5, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_ylim([0, 1.5])
 axs.set_xlim([40, 80])
@@ -296,7 +296,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInbCD2.Ptheta, epgExpInbCD2.Pp, bins = [np.linspace(40, 80, 101), np.linspace(0, 1.5, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInbCD2.Ptheta, epgExpInbCD2.Pp, bins = [np.linspace(40, 80, 101), np.linspace(0, 1.5, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_ylim([0, 1.5])
 axs.set_xlim([40, 80])
@@ -308,7 +308,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Pp, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Pp, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([-.3, .3])
@@ -320,7 +320,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Pp, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Pp, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(0, 1.5, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([0, 1.5])
 axs.set_ylim([-.3, .3])
@@ -332,7 +332,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Ptheta, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInb2.loc[epgExpInb2.Psector>7].Ptheta, epgExpInb2.loc[epgExpInb2.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([40, 80])
 axs.set_ylim([-.3, .3])
@@ -344,7 +344,7 @@ plt.clf()
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
-h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Ptheta, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = True)
+h = axs.hist2d(epgExpInb.loc[epgExpInb.Psector>7].Ptheta, epgExpInb.loc[epgExpInb.Psector>7].MM2_ep, bins = [np.linspace(40, 80, 101), np.linspace(-.3, .3, 101)], cmap = cmap, cmin = 1, norm = LogNorm(vmin = 1, vmax = 50), rasterized = False)
 cbar = plt.colorbar(h[3], ax = axs)
 axs.set_xlim([40, 80])
 axs.set_ylim([-.3, .3])
@@ -368,12 +368,12 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
+		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -417,12 +417,12 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
+		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -466,12 +466,12 @@ fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = True)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = True)
+		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=True, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=True, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
-		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=True, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
+		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "spring2019 pass1, 10.2 GeV")
+		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "spring2019 pass2, 10.2 GeV")
+		# axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "fall2018 pass1, 10.6 GeV")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
