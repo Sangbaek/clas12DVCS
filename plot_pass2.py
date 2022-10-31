@@ -31,7 +31,7 @@ import matplotlib
 # initial settings
 pgf_with_latex = {
 		"pgf.texsystem": "pdflatex",
-		"text.usetex": False,			# use LaTeX to write all text
+		"text.usetex": True,			# use LaTeX to write all text
 		"font.family": "sans-serif",		
 		"font.sans-serif": "Helvetica",
 		"font.size": 25,				# default font size
@@ -173,7 +173,7 @@ axs[1, 3].set_xticks([0, 0.04, 0.08])
 # axs[1, 2].set_yticks([1,2,3])
 # axs[1, 3].set_yticks([5, 10, 15, 20, 25])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n")# + r"$p'$"+": CD, "+r"$\gamma$"+": FT")
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": CD, "+r"$\gamma$"+": FT")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
@@ -225,7 +225,7 @@ axs[1, 3].set_xticks([0, 0.04, 0.08])
 # axs[1, 2].set_yticks([1,2,3,4])
 # axs[1, 3].set_yticks([5, 10, 15, 20])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n")# + r"$p'$"+": CD, "+r"$\gamma$"+": FD")
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": CD, "+r"$\gamma$"+": FD")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
@@ -274,7 +274,7 @@ axs[1, 3].set_xticks([0, 0.1, 0.2, 0.3])
 # axs[1, 2].set_yticks([2, 4, 6])
 # axs[1, 3].set_yticks([2, 4, 6, 8])
 handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n")# + r"$p'$"+": FD, "+r"$\gamma$"+": FD")
+lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5), title = "RG-A Spring 2019\n" + r"$p'$"+": FD, "+r"$\gamma$"+": FD")
 plt.tight_layout()
 plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/dvcsInbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
 plt.clf()
