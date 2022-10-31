@@ -2806,7 +2806,7 @@ if args.saveplot2:
 					handles, labels = axs[num_plotQ2-Q2bin-1, xBbin].get_legend_handles_labels()
 					active = 1
 		lgd = plt.figlegend([handles[idx] for idx in order_unpol],[labels[idx] for idx in order_unpol], loc='upper left', fontsize= 30, title_fontsize = 30, title = ttitle, bbox_to_anchor = (0.2, 0.8))
-		fig.subplots_adjust(wspace = 0.7, hspace = 1)
+		fig.subplots_adjust(wspace = 0.5, hspace = 0.7)
 		plt.savefig(basedir + "/plots{}/binscheme{}/unpolsyst_presentation_bkgscheme{}tbin{}.pdf".format(optionaltag, k, i, tbin), bbox_extra_artists=[lgd], bbox_inches = 'tight')
 		plt.clf()
 	'''end of unpol landscape'''
