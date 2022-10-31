@@ -3001,8 +3001,8 @@ if args.saveplot2:
 		axs.set_xlabel(r"$Q^2$" + " ["+GeVc2+"]", fontsize = 24)
 		axs.set_ylabel(r"$X$" + " [nb/GeV"+r"$^4$"+"]", fontsize = 24)
 
-		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2range, [1, 2, 3, 4], 0].mean())
-		theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>=$"+"{:.3f}".format(t1avg_BH[xBbin, Q2range, [1, 2, 3, 4], 0].mean())+r"$~\mathrm{GeV}^2$"
+		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2range, tbin, 0].mean())
+		theader = "{:.3f} ".format(tbins[tbin])+ r"$<~~|t|/(1~\mathrm{GeV}^2)~~~<$"+ " {:.3f}, ".format(tbins[tbin+1]) + r"$~<|t|>=$"+"{:.3f}".format(t1avg_BH[xBbin, Q2range, tbin, 0].mean())+r"$~\mathrm{GeV}^2$"
 		header = xBheader + theader
 		axs.set_title(header, loc = 'left')
 		lgd = plt.figlegend([handles[1], handles[0]], [labels[1], labels[0]], loc='upper left', bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
@@ -3026,7 +3026,7 @@ if args.saveplot2:
 			# axs.plot(Q2avg_BH[xBbin, Q2range, tbin, 0], integratedKM[xBbin, Q2range, tbin], marker = 'o', color = colors[tbin-1], linestyle = '--', linewidth = 3, label = 'Theory (KM15)')
 			axs.plot(t1avg_BH[xBbin, Q2range, trange, 0], integratedKM[xBbin, Q2bin, trange], marker = 'o', color = 'cyan', linestyle = '--', linewidth = 3, label = 'Theory (KM15)')
 			Q2label = r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, trange, 0].mean())+r"$~(\mathrm{GeV/c})^2$"
-			axs.errorbar(t1avg_BH[xBbin, Q2bin, trange, 0], integratedExp[xBbin, Q2bin, trange], yerr = uncStat_integratedExp[xBbin, Q2bin, trange], color = 'k', linestyle = '-', marker = 'o', label = Q2label, linewidth = 3)
+			axs.errorbar(t1avg_BH[xBbin, Q2bin, trange, 0], integratedExp[xBbin, Q2bin, trange], yerr = uncStat_integratedExp[xBbin, Q2bin, trange], color = 'k', linestyle = '', marker = 'o', label = "Experimental Data")
 			axs.fill_between(t1avg_BH[xBbin, Q2bin, trange, 0], integratedExp_min[xBbin, Q2bin, trange], integratedExp_max[xBbin, Q2bin, trange], color = 'orange', alpha = 0.4)
 
 		handles, labels = axs.get_legend_handles_labels()
@@ -3035,8 +3035,8 @@ if args.saveplot2:
 		axs.set_xlabel(r"$|t|$" + " ["+GeV2+"]", fontsize = 24)
 		axs.set_ylabel(r"$X$" + " [nb/GeV"+r"$^4$"+"]", fontsize = 24)
 
-		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2range, [1, 2, 3, 4], 0].mean())
-		Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2range, tbin, 0].mean())+r"$~(\mathrm{GeV/c})^2$"+ "\n"
+		xBheader = "{:.3f} ".format(xBbins[xBbin])+r"$<~~~~~~~~~~x_B~~~~~~~~~<$"+ " {:.3f}, ".format(xBbins[xBbin+1]) +r"$~<x_B>=$"+ "{:.3f}\n".format(xBavg_BH[xBbin, Q2bin, trange, 0].mean())
+		Q2header = "{:.3f} ".format(Q2bins[Q2bin])+ r"$<Q^2/(1~(\mathrm{GeV/c})^2<$"+ " {:.3f}, ".format(Q2bins[Q2bin+1])+ r"$~<Q^2>=$"+"{:.3f}".format(Q2avg_BH[xBbin, Q2bin, trange, 0].mean())+r"$~(\mathrm{GeV/c})^2$"+ "\n"
 		header = xBheader + Q2header
 		axs.set_title(header, loc = 'left')
 		lgd = plt.figlegend([handles[1], handles[0]], [labels[1], labels[0]], loc='upper left', bbox_to_anchor = (1.0, 0.8), fontsize = 24, title_fontsize = 24)
