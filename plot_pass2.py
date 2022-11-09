@@ -281,6 +281,7 @@ plt.clf()
 
 print("pass1", len(epgExpInbFD), len(epgExpInbCD), len(epgExpInbCDFT))
 print("pass2", len(epgExpInbFD2), len(epgExpInbCD2), len(epgExpInbCDFT2))
+print("pass2-2", len(epgExpInbFD3), len(epgExpInbCD3), len(epgExpInbCDFT3))
 
 fig, axs = plt.subplots(1, 1, figsize = (10, 6))
 
