@@ -77,50 +77,50 @@ tenth = r"$10^{-1}$"
 hundredth = r"$10^{-2}$"
 thousandth = r"$10^{-3}$"
 
-parent_exp = "/volatile/clas12/sangbaek/pass1_test_1108/convPkl_full/inb/exp/"
+parent_exp = "/volatile/clas12/sangbaek/pass1_test_1108/convPkl/"
 
 #epg Exp
-epgExpInb = pd.read_pickle(parent_exp + "dvcs_0.pkl")
-pi0ExpInb = pd.read_pickle(parent_exp + "pi0_0.pkl")
+epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
+# pi0ExpInb = pd.read_pickle(parent_exp + "pi0.pkl")
 
 epgExpInbCDFT = epgExpInb.loc[epgExpInb.config == 3]
-pi0ExpInbCDFT = pi0ExpInb.loc[(pi0ExpInb.config == 3)]
+# pi0ExpInbCDFT = pi0ExpInb.loc[(pi0ExpInb.config == 3)]
 
 epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
-pi0ExpInbCD = pi0ExpInb.loc[(pi0ExpInb.config == 2)]
+# pi0ExpInbCD = pi0ExpInb.loc[(pi0ExpInb.config == 2)]
 
 epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
-pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
+# pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
 
-parent_exp = "/volatile/clas12/sangbaek/pass2_test_1108/convPkl_full/inb/exp/"
+parent_exp = "/volatile/clas12/sangbaek/pass2_test_1108/convPkl/"
 
 #epg Exp
-epgExpInb2 = pd.read_pickle(parent_exp + "dvcs_0.pkl")
-pi0ExpInb2 = pd.read_pickle(parent_exp + "pi0_0.pkl")
+epgExpInb2 = pd.read_pickle(parent_exp + "dvcs.pkl")
+# pi0ExpInb2 = pd.read_pickle(parent_exp + "pi0.pkl")
 
 epgExpInbCDFT2 = epgExpInb2.loc[epgExpInb2.config == 3]
-pi0ExpInbCDFT2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 3)]
+# pi0ExpInbCDFT2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 3)]
 
 epgExpInbCD2 = epgExpInb2.loc[epgExpInb2.config == 2]
-pi0ExpInbCD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 2)]
-
+# pi0ExpInbCD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 2)]
+# 
 epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
-pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
+# pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
 
-parent_exp = "/volatile/clas12/sangbaek/pass2_test2_1108/convPkl_full/inb/exp/"
+# parent_exp = "/volatile/clas12/sangbaek/pass2_test2_1108/convPkl_full/inb/exp/"
 
-#epg Exp
-epgExpInb3 = pd.read_pickle(parent_exp + "dvcs_0.pkl")
-pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0_0.pkl")
+# #epg Exp
+# epgExpInb3 = pd.read_pickle(parent_exp + "dvcs_0.pkl")
+# pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0_0.pkl")
 
-epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
-pi0ExpInbCDFT3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 3)]
+# epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
+# pi0ExpInbCDFT3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 3)]
 
-epgExpInbCD3 = epgExpInb3.loc[epgExpInb3.config == 2]
-pi0ExpInbCD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 2)]
+# epgExpInbCD3 = epgExpInb3.loc[epgExpInb3.config == 2]
+# pi0ExpInbCD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 2)]
 
-epgExpInbFD3 = epgExpInb3.loc[epgExpInb3.config == 1]
-pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
+# epgExpInbFD3 = epgExpInb3.loc[epgExpInb3.config == 1]
+# pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
 
 
 varstoplot = dvcsvars
@@ -128,7 +128,7 @@ title = dvcstitles
 unit = dvcsunits
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
-df3 = epgExpInbCDFT3
+# df3 = epgExpInbCDFT3
 xlb = [10, 0.3, 0, 0, -.3, -0.01, -0.3, 0]
 xub = [35, 1.5, 0.75, 6, .3, 0.01, 0.3, 0.1]
 yub = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
@@ -143,7 +143,7 @@ for yind in range(0, 2):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
 		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -180,7 +180,7 @@ plt.clf()
 
 df1 = epgExpInbCD
 df2 = epgExpInbCD2
-df3 = epgExpInbCD3
+# df3 = epgExpInbCD3
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
@@ -192,7 +192,7 @@ for yind in range(0, 2):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
 		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -232,7 +232,7 @@ plt.clf()
 
 df1 = epgExpInbFD
 df2 = epgExpInbFD2
-df3 = epgExpInbFD3
+# df3 = epgExpInbFD3
 fig, axs = plt.subplots(2, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
@@ -244,7 +244,7 @@ for yind in range(0, 2):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
 		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[yind, xind].set_title(title[ind])
 		if (unit[ind]):
@@ -357,153 +357,153 @@ plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pass1_CDproto
 plt.clf()
 
 
-varstoplot = pi0vars
-title = pi0titles
-unit = pi0units
+# varstoplot = pi0vars
+# title = pi0titles
+# unit = pi0units
 
-df4 = pi0ExpInbCDFT
-df5 = pi0ExpInbCDFT2
-df6 = pi0ExpInbCDFT3
+# df4 = pi0ExpInbCDFT
+# df5 = pi0ExpInbCDFT2
+# df6 = pi0ExpInbCDFT3
 
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
-	for xind in range(0, 4):
-		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
-		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-		axs[yind, xind].set_title(title[ind])
-		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
-axs[0, 0].set_xticks([0.1, 0.13, 0.16])
-axs[0, 0].set_xlim([0.1, 0.16])
-axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
-axs[0, 2].set_xticks([0, 0.25, 0.5 ,0.75, 1])
-axs[0, 3].set_xticks([0, 2, 4, 6, 8])
-axs[1, 0].set_xlim([-0.4, 0.4])
-axs[1, 0].set_xticks([-0.4, -0.2, 0, 0.2, 0.4])
-axs[1, 1].set_xlim([-0.02, 0.02])
-axs[1, 1].set_xticks([-0.02, 0, 0.02])
-axs[1, 2].set_xlim([-0.5, 0.5])
-axs[1, 2].set_xticks([-0.5, 0, 0.5])
-axs[1, 3].set_xlim([0, 0.15])
-axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15])
-# axs[0, 0].set_yticks([50, 100])
-# axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
-# axs[0, 2].set_yticks([.5, 1, 1.5, 2, 2.5])
-# axs[0, 3].set_yticks([0.25, 0.5])
-# axs[1, 0].set_yticks([1, 2, 3])
-# axs[1, 1].set_yticks([50, 100, 150, 200])
-# axs[1, 2].set_yticks([2, 4])
-# axs[1, 3].set_yticks([5, 10, 15, 20, 25])
-handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
-plt.clf()
-
-
-df4 = pi0ExpInbCD
-df5 = pi0ExpInbCD2
-df6 = pi0ExpInbCD3
-
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
-	for xind in range(0, 4):
-		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
-		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-		axs[yind, xind].set_title(title[ind])
-		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
-axs[0, 0].set_xticks([0.1, 0.13, 0.16])
-axs[0, 0].set_xlim([0.1, 0.16])
-axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
-axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
-axs[0, 3].set_xticks([0, 5, 10])
-axs[1, 0].set_xlim([-0.6, 0.6])
-axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
-axs[1, 1].set_xlim([-0.02, 0.02])
-axs[1, 1].set_xticks([-0.02, 0, 0.02])
-axs[1, 2].set_xlim([-0.3, 0.3])
-axs[1, 2].set_xticks([-0.3, 0, 0.3])
-axs[1, 3].set_xlim([0, 0.2])
-axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
-# axs[0, 0].set_yticks([20, 40])
-# axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
-# axs[0, 2].set_yticks([0.5, 1, 1.5])
-# axs[0, 3].set_yticks([0.2, 0.4])
-# axs[1, 0].set_yticks([0.4, 0.8, 1.2, 1.6])
-# axs[1, 1].set_yticks([50, 100, 150])
-# axs[1, 2].set_yticks([2.5, 5])
-# axs[1, 3].set_yticks([5, 10, 15])
-handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
-plt.clf()
+# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+# for yind in range(0, 2):
+# 	for xind in range(0, 4):
+# 		ind = 4*yind + xind
+# 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+# 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
+# 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
+# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[yind, xind].set_title(title[ind])
+# 		if (unit[ind]):
+# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 		else:
+# 			axs[yind, xind].set_xlabel(title[ind])
+# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+# axs[0, 0].set_xlim([0.1, 0.16])
+# axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
+# axs[0, 2].set_xticks([0, 0.25, 0.5 ,0.75, 1])
+# axs[0, 3].set_xticks([0, 2, 4, 6, 8])
+# axs[1, 0].set_xlim([-0.4, 0.4])
+# axs[1, 0].set_xticks([-0.4, -0.2, 0, 0.2, 0.4])
+# axs[1, 1].set_xlim([-0.02, 0.02])
+# axs[1, 1].set_xticks([-0.02, 0, 0.02])
+# axs[1, 2].set_xlim([-0.5, 0.5])
+# axs[1, 2].set_xticks([-0.5, 0, 0.5])
+# axs[1, 3].set_xlim([0, 0.15])
+# axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15])
+# # axs[0, 0].set_yticks([50, 100])
+# # axs[0, 1].set_yticks([0.5, 1, 1.5, 2])
+# # axs[0, 2].set_yticks([.5, 1, 1.5, 2, 2.5])
+# # axs[0, 3].set_yticks([0.25, 0.5])
+# # axs[1, 0].set_yticks([1, 2, 3])
+# # axs[1, 1].set_yticks([50, 100, 150, 200])
+# # axs[1, 2].set_yticks([2, 4])
+# # axs[1, 3].set_yticks([5, 10, 15, 20, 25])
+# handles, labels = axs[0, 0].get_legend_handles_labels()
+# lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+# plt.tight_layout()
+# plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDFTexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+# plt.clf()
 
 
-df4 = pi0ExpInbFD
-df5 = pi0ExpInbFD2
-df6 = pi0ExpInbFD3
+# df4 = pi0ExpInbCD
+# df5 = pi0ExpInbCD2
+# df6 = pi0ExpInbCD3
 
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
-	for xind in range(0, 4):
-		ind = 4*yind + xind
-		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
-		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
-		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
-		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-		axs[yind, xind].set_title(title[ind])
-		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
-		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
-axs[0, 0].set_xticks([0.1, 0.13, 0.16])
-axs[0, 0].set_xlim([0.1, 0.16])
-axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
-axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
-axs[0, 3].set_xticks([0, 5, 10])
-axs[1, 0].set_xlim([-0.6, 0.6])
-axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
-axs[1, 1].set_xlim([-0.02, 0.02])
-axs[1, 1].set_xticks([-0.02, 0, 0.02])
-axs[1, 2].set_xlim([-0.3, 0.3])
-axs[1, 2].set_xticks([-0.3, 0, 0.3])
-axs[1, 3].set_xlim([0, 0.2])
-axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
-# axs[0, 0].set_yticks([25, 50])
-# axs[0, 1].set_yticks([0.5, 1, 1.5])
-# axs[0, 2].set_yticks([0.5, 1, 1.5])
-# axs[0, 3].set_yticks([0.2, 0.4])
-# axs[1, 0].set_yticks([0.5, 1, 1.5, 2])
-# axs[1, 1].set_yticks([50, 100, 150, 200])
-# axs[1, 2].set_yticks([2.5, 5])
-# axs[1, 3].set_yticks([2,4,6,8,10,12])
-handles, labels = axs[0, 0].get_legend_handles_labels()
-lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
-plt.tight_layout()
-plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
-plt.clf()
+# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+# for yind in range(0, 2):
+# 	for xind in range(0, 4):
+# 		ind = 4*yind + xind
+# 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+# 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
+# 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
+# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[yind, xind].set_title(title[ind])
+# 		if (unit[ind]):
+# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 		else:
+# 			axs[yind, xind].set_xlabel(title[ind])
+# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+# axs[0, 0].set_xlim([0.1, 0.16])
+# axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+# axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+# axs[0, 3].set_xticks([0, 5, 10])
+# axs[1, 0].set_xlim([-0.6, 0.6])
+# axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+# axs[1, 1].set_xlim([-0.02, 0.02])
+# axs[1, 1].set_xticks([-0.02, 0, 0.02])
+# axs[1, 2].set_xlim([-0.3, 0.3])
+# axs[1, 2].set_xticks([-0.3, 0, 0.3])
+# axs[1, 3].set_xlim([0, 0.2])
+# axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+# # axs[0, 0].set_yticks([20, 40])
+# # axs[0, 1].set_yticks([0.2, 0.4, 0.6, 0.8, 1, 1.2])
+# # axs[0, 2].set_yticks([0.5, 1, 1.5])
+# # axs[0, 3].set_yticks([0.2, 0.4])
+# # axs[1, 0].set_yticks([0.4, 0.8, 1.2, 1.6])
+# # axs[1, 1].set_yticks([50, 100, 150])
+# # axs[1, 2].set_yticks([2.5, 5])
+# # axs[1, 3].set_yticks([5, 10, 15])
+# handles, labels = axs[0, 0].get_legend_handles_labels()
+# lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+# plt.tight_layout()
+# plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbCDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+# plt.clf()
+
+
+# df4 = pi0ExpInbFD
+# df5 = pi0ExpInbFD2
+# df6 = pi0ExpInbFD3
+
+# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+# for yind in range(0, 2):
+# 	for xind in range(0, 4):
+# 		ind = 4*yind + xind
+# 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
+# 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
+# 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
+# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_05")
+# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[yind, xind].set_title(title[ind])
+# 		if (unit[ind]):
+# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 		else:
+# 			axs[yind, xind].set_xlabel(title[ind])
+# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# axs[0, 0].set_xticks([0.1, 0.13, 0.16])
+# axs[0, 0].set_xlim([0.1, 0.16])
+# axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
+# axs[0, 2].set_xticks([0, 0.5, 1, 1.5])
+# axs[0, 3].set_xticks([0, 5, 10])
+# axs[1, 0].set_xlim([-0.6, 0.6])
+# axs[1, 0].set_xticks([-0.6, -0.3, 0, 0.3, 0.6])
+# axs[1, 1].set_xlim([-0.02, 0.02])
+# axs[1, 1].set_xticks([-0.02, 0, 0.02])
+# axs[1, 2].set_xlim([-0.3, 0.3])
+# axs[1, 2].set_xticks([-0.3, 0, 0.3])
+# axs[1, 3].set_xlim([0, 0.2])
+# axs[1, 3].set_xticks([0, 0.05, 0.1, 0.15, 0.2])
+# # axs[0, 0].set_yticks([25, 50])
+# # axs[0, 1].set_yticks([0.5, 1, 1.5])
+# # axs[0, 2].set_yticks([0.5, 1, 1.5])
+# # axs[0, 3].set_yticks([0.2, 0.4])
+# # axs[1, 0].set_yticks([0.5, 1, 1.5, 2])
+# # axs[1, 1].set_yticks([50, 100, 150, 200])
+# # axs[1, 2].set_yticks([2.5, 5])
+# # axs[1, 3].set_yticks([2,4,6,8,10,12])
+# handles, labels = axs[0, 0].get_legend_handles_labels()
+# lgd = plt.figlegend(handles,labels, loc='center left', fontsize= 30, title_fontsize = 30, bbox_to_anchor = (1.0, 0.5))
+# plt.tight_layout()
+# plt.savefig("/volatile/clas12/sangbaek/pass2_test/plots/spring2019/pi0InbFDexcl.pdf", bbox_extra_artists=[lgd], bbox_inches = 'tight')
+# plt.clf()
 
