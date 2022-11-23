@@ -123,17 +123,17 @@ epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
 # pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
 
 
-varstoplot = dvcsvars
-title = dvcstitles
-unit = dvcsunits
+varstoplot = dvcsvars2
+title = dvcstitles2
+unit = dvcsunits2
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
 # df3 = epgExpInbCDFT3
 xlb = [10, 0.3, 0, 0, -.3, -0.01, -0.3, 0]
 xub = [35, 1.5, 0.75, 6, .3, 0.01, 0.3, 0.1]
 yub = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
+fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+for yind in range(0, 1):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
@@ -141,15 +141,15 @@ for yind in range(0, 2):
 		# simDist = (1-contInbCDFT)*simDist_dvcs + contInbCDFT*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		axs[yind, xind].set_title(title[ind])
+		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		axs[xind].set_title(title[ind])
 		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+			axs[xind].set_xlabel(title[ind])
+		axs[xind].set_xlim([bins[0], bins[-1]])
 axs[0, 0].set_xlim([10, 30])
 axs[0, 0].set_xticks([10, 20, 30])
 axs[0, 1].set_xlim([0.5, 1.5])
@@ -181,8 +181,8 @@ plt.clf()
 df1 = epgExpInbCD
 df2 = epgExpInbCD2
 # df3 = epgExpInbCD3
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
+fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+for yind in range(0, 1):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
@@ -190,16 +190,16 @@ for yind in range(0, 2):
 		# simDist = (1-contInbCD)*simDist_dvcs + contInbCD*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-		axs[yind, xind].set_title(title[ind])
+		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+		axs[xind].set_title(title[ind])
 		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+			axs[xind].set_xlabel(title[ind])
+		axs[xind].set_xlim([bins[0], bins[-1]])
 axs[0, 0].set_xlim([10, 30])
 axs[0, 0].set_xticks([10, 20, 30])
 axs[0, 1].set_xlim([0, 2])
@@ -233,8 +233,8 @@ plt.clf()
 df1 = epgExpInbFD
 df2 = epgExpInbFD2
 # df3 = epgExpInbFD3
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-for yind in range(0, 2):
+fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+for yind in range(0, 1):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
@@ -242,16 +242,16 @@ for yind in range(0, 2):
 		# simDist = (1-contInbFD)*simDist_dvcs + contInbFD*simDist_dvpi0
 		_, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-		axs[yind, xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-		axs[yind, xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-		axs[yind, xind].set_title(title[ind])
+		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+		axs[xind].set_title(title[ind])
 		if (unit[ind]):
-			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 		else:
-			axs[yind, xind].set_xlabel(title[ind])
-		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+			axs[xind].set_xlabel(title[ind])
+		axs[xind].set_xlim([bins[0], bins[-1]])
 axs[0, 0].set_xticks([25, 30, 35, 40, 45])
 axs[0, 0].set_xlim([25, 45])
 axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -365,23 +365,23 @@ plt.clf()
 # df5 = pi0ExpInbCDFT2
 # df6 = pi0ExpInbCDFT3
 
-# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-# for yind in range(0, 2):
+# fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+# for yind in range(0, 1):
 # 	for xind in range(0, 4):
 # 		ind = 4*yind + xind
 # 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
 # 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 # 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-# 		axs[yind, xind].set_title(title[ind])
+# 		axs[xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		axs[xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[xind].set_title(title[ind])
 # 		if (unit[ind]):
-# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 # 		else:
-# 			axs[yind, xind].set_xlabel(title[ind])
-# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# 			axs[xind].set_xlabel(title[ind])
+# 		axs[xind].set_xlim([bins[0], bins[-1]])
 # axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 # axs[0, 0].set_xlim([0.1, 0.16])
 # axs[0, 1].set_xticks([0, 0.4, 0.8, 1.2, 1.6])
@@ -414,23 +414,23 @@ plt.clf()
 # df5 = pi0ExpInbCD2
 # df6 = pi0ExpInbCD3
 
-# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-# for yind in range(0, 2):
+# fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+# for yind in range(0, 1):
 # 	for xind in range(0, 4):
 # 		ind = 4*yind + xind
 # 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
 # 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 # 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-# 		axs[yind, xind].set_title(title[ind])
+# 		axs[xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		axs[xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[xind].set_title(title[ind])
 # 		if (unit[ind]):
-# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 # 		else:
-# 			axs[yind, xind].set_xlabel(title[ind])
-# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# 			axs[xind].set_xlabel(title[ind])
+# 		axs[xind].set_xlim([bins[0], bins[-1]])
 # axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 # axs[0, 0].set_xlim([0.1, 0.16])
 # axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])
@@ -463,23 +463,23 @@ plt.clf()
 # df5 = pi0ExpInbFD2
 # df6 = pi0ExpInbFD3
 
-# fig, axs = plt.subplots(2, 4, figsize = (16, 8))
-# for yind in range(0, 2):
+# fig, axs = plt.subplots(1, 4, figsize = (16, 8))
+# for yind in range(0, 1):
 # 	for xind in range(0, 4):
 # 		ind = 4*yind + xind
 # 		# simDist, bins = np.histogram(df5[varstoplot[ind]], 100, density = False)
 # 		_, bins = np.histogram(df4.loc[:, varstoplot[ind]], 100, density = False)
 # 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
-# 		axs[yind, xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
-# 		axs[yind, xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		axs[yind, xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
-# 		# axs[yind, xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
-# 		axs[yind, xind].set_title(title[ind])
+# 		axs[xind].hist(df4[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1")
+# 		axs[xind].hist(df5[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		axs[xind].hist(df6[varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12")
+# 		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
+# 		axs[xind].set_title(title[ind])
 # 		if (unit[ind]):
-# 			axs[yind, xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
+# 			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
 # 		else:
-# 			axs[yind, xind].set_xlabel(title[ind])
-# 		axs[yind, xind].set_xlim([bins[0], bins[-1]])
+# 			axs[xind].set_xlabel(title[ind])
+# 		axs[xind].set_xlim([bins[0], bins[-1]])
 # axs[0, 0].set_xticks([0.1, 0.13, 0.16])
 # axs[0, 0].set_xlim([0.1, 0.16])
 # axs[0, 1].set_xticks([0, 0.5, 1, 1.5, 2])

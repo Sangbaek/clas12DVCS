@@ -281,6 +281,10 @@ dvcsvars = ["coneAngle", "MM2_eg", "reconGam", "coplanarity", "ME_epg", "MM2_epg
 dvcstitles = [r"$\theta_{e'\gamma}$", r"$MM^2_{e'\gamma}$", r"$\theta_{\gamma_{det.}\gamma_{rec.}}$", r"$\phi_{H\Gamma}$" , r"$ME_{e'p'\gamma}$", r"$MM^{2}_{e'p'\gamma}$", r"$MM^{2}_{e'p'}$", r"$MPt_{e'p'\gamma}$"]
 dvcsunits = [degree, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
 
+dvcsvars2 = ["MM2_eg", "ME_epg", "MM2_epg", "MM2_ep"]
+dvcstitles2 = [r"$MM^2_{e'\gamma}$", r"$ME_{e'p'\gamma}$", r"$MM^{2}_{e'p'\gamma}$", r"$MM^{2}_{e'p'}$"]
+dvcsunits2 = [GeV2, GeV, GeV2, GeV2]
+
 pi0vars = ["Mpi0", "MM2_egg", "reconPi", "coplanarity", "ME_epgg", "MM2_epgg", "MM2_ep", "MPt"]
 pi0titles = [r"$IM_{\pi^0}$", r"$MM^2_{e'\pi^0}$", r"$\theta_{\pi^0_{det.}\pi^0_{rec.}}$", r"$\phi_{H\Pi}$" , r"$ME_{e'p'\pi^0}$", r"$MM^{2}_{e'p'\pi^0}$", r"$MM^{2}_{e'p'}$", r"$MPt_{e'p'\pi^0}$"]
 pi0units = [GeV, GeV2, degree, degree, GeV, GeV2, GeV2, GeVc]
