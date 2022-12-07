@@ -181,7 +181,7 @@ plt.clf()
 df1 = epgExpInbCD
 df2 = epgExpInbCD2
 df3 = epgExpInbCD3
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig, axs = plt.subplots(1, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
@@ -233,7 +233,7 @@ plt.clf()
 df1 = epgExpInbFD
 df2 = epgExpInbFD2
 df3 = epgExpInbFD3
-fig, axs = plt.subplots(2, 4, figsize = (16, 8))
+fig, axs = plt.subplots(1, 4, figsize = (16, 8))
 for yind in range(0, 2):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
