@@ -110,7 +110,7 @@ epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
 parent_exp = "/volatile/clas12/sangbaek/pass2_test2_1108/convPkl/"
 
 #epg Exp
-epgExpInb3 = pd.read_pickle(parent_exp + "dvcs_0.pkl")
+epgExpInb3 = pd.read_pickle(parent_exp + "dvcs.pkl")
 # pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0_0.pkl")
 
 epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
