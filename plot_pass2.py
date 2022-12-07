@@ -182,7 +182,7 @@ df1 = epgExpInbCD
 df2 = epgExpInbCD2
 df3 = epgExpInbCD3
 fig, axs = plt.subplots(1, 4, figsize = (16, 8))
-for yind in range(0, 2):
+for yind in range(0, 1):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
@@ -234,7 +234,7 @@ df1 = epgExpInbFD
 df2 = epgExpInbFD2
 df3 = epgExpInbFD3
 fig, axs = plt.subplots(1, 4, figsize = (16, 8))
-for yind in range(0, 2):
+for yind in range(0, 1):
 	for xind in range(0, 4):
 		ind = 4*yind + xind
 		# simDist_dvcs, bins = np.histogram(df1.loc[:, varstoplot[ind]], 100, density = False)
