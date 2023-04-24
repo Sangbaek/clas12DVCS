@@ -77,7 +77,7 @@ tenth = r"$10^{-1}$"
 hundredth = r"$10^{-2}$"
 thousandth = r"$10^{-3}$"
 
-parent_exp = "/volatile/clas12/sangbaek/pass1_test_1108/convPkl/"
+parent_exp = "/volatile/clas12/sangbaek/pass2_testing/pass1/filtered/"
 
 #epg Exp
 epgExpInb = pd.read_pickle(parent_exp + "dvcs.pkl")
@@ -92,7 +92,7 @@ epgExpInbCD = epgExpInb.loc[epgExpInb.config == 2]
 epgExpInbFD = epgExpInb.loc[epgExpInb.config == 1]
 # pi0ExpInbFD = pi0ExpInb.loc[(pi0ExpInb.config == 1)]
 
-parent_exp = "/volatile/clas12/sangbaek/pass2_test_1108/convPkl/"
+parent_exp = "/volatile/clas12/sangbaek/pass2_testing/v1_30/filtered/"
 
 #epg Exp
 epgExpInb2 = pd.read_pickle(parent_exp + "dvcs.pkl")
@@ -107,20 +107,20 @@ epgExpInbCD2 = epgExpInb2.loc[epgExpInb2.config == 2]
 epgExpInbFD2 = epgExpInb2.loc[epgExpInb2.config == 1]
 # pi0ExpInbFD2 = pi0ExpInb2.loc[(pi0ExpInb2.config == 1)]
 
-parent_exp = "/volatile/clas12/sangbaek/pass2_test2_1108/convPkl/"
+# parent_exp = "/volatile/clas12/sangbaek/pass2_test2_1108/convPkl/"
 
-#epg Exp
-epgExpInb3 = pd.read_pickle(parent_exp + "dvcs.pkl")
-# pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0_0.pkl")
+# #epg Exp
+# epgExpInb3 = pd.read_pickle(parent_exp + "dvcs.pkl")
+# # pi0ExpInb3 = pd.read_pickle(parent_exp + "pi0_0.pkl")
 
-epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
-# pi0ExpInbCDFT3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 3)]
+# epgExpInbCDFT3 = epgExpInb3.loc[epgExpInb3.config == 3]
+# # pi0ExpInbCDFT3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 3)]
 
-epgExpInbCD3 = epgExpInb3.loc[epgExpInb3.config == 2]
-# pi0ExpInbCD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 2)]
+# epgExpInbCD3 = epgExpInb3.loc[epgExpInb3.config == 2]
+# # pi0ExpInbCD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 2)]
 
-epgExpInbFD3 = epgExpInb3.loc[epgExpInb3.config == 1]
-# pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
+# epgExpInbFD3 = epgExpInb3.loc[epgExpInb3.config == 1]
+# # pi0ExpInbFD3 = pi0ExpInb3.loc[(pi0ExpInb3.config == 1)]
 
 
 varstoplot = dvcsvars2
@@ -128,7 +128,7 @@ title = dvcstitles2
 unit = dvcsunits2
 df1 = epgExpInbCDFT
 df2 = epgExpInbCDFT2
-df3 = epgExpInbCDFT3
+# df3 = epgExpInbCDFT3
 xlb = [10, 0.3, 0, 0, -.3, -0.01, -0.3, 0]
 xub = [35, 1.5, 0.75, 6, .3, 0.01, 0.3, 0.1]
 yub = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
@@ -143,7 +143,7 @@ for yind in range(0, 1):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1, {}".format(len(df1)))
 		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12, {}".format(len(df2)))
-		axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
 		axs[xind].set_title(title[ind])
 		if (unit[ind]):
 			axs[xind].set_xlabel(title[ind]+" [" + unit[ind] +"]")
@@ -180,7 +180,7 @@ plt.clf()
 
 df1 = epgExpInbCD
 df2 = epgExpInbCD2
-df3 = epgExpInbCD3
+# df3 = epgExpInbCD3
 fig, axs = plt.subplots(1, 4, figsize = (16, 8))
 for yind in range(0, 1):
 	for xind in range(0, 4):
@@ -192,7 +192,7 @@ for yind in range(0, 1):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1, {}".format(len(df1)))
 		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12, {}".format(len(df2)))
-		axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
 		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[xind].set_title(title[ind])
 		if (unit[ind]):
@@ -232,7 +232,7 @@ plt.clf()
 
 df1 = epgExpInbFD
 df2 = epgExpInbFD2
-df3 = epgExpInbFD3
+# df3 = epgExpInbFD3
 fig, axs = plt.subplots(1, 4, figsize = (16, 8))
 for yind in range(0, 1):
 	for xind in range(0, 4):
@@ -244,7 +244,7 @@ for yind in range(0, 1):
 		bincenters = np.array([0.5 * (bins[i] + bins[i + 1]) for i in range(len(bins) - 1)])
 		axs[xind].hist(df1.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='b', density=False, linewidth=1, label = "pass-1, {}".format(len(df1)))
 		axs[xind].hist(df2.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='r', density=False, linewidth=1, label = "pass-2, v1\_12, {}".format(len(df2)))
-		axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
+		# axs[xind].hist(df3.loc[:,varstoplot[ind]], bins = bins, histtype = 'step', edgecolor='g', density=False, linewidth=1, label = "pass-2, v1\_12\_2, {}".format(len(df3)))
 		# axs[xind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=1, label = 'Simulation')
 		axs[xind].set_title(title[ind])
 		if (unit[ind]):
