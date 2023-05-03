@@ -41,10 +41,10 @@ class root2pickle():
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
         df_pi0Gen = pd.DataFrame()
-        eleKeysGen = ["GenEp", "GenEtheta", "GenEphi", "GenQ2", "GenxB", "Gent", "Genphi"]
-        proKeysGen = ["GenPp", "GenPtheta", "GenPphi"]
-        gamKeysGen = ["GenGp", "GenGtheta", "GenGphi"]
-        pi0KeysGen = ["GenPip", "GenPitheta", "GenPiphi"]
+        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
+        proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
+        gamKeysGen = ["GenGpx", "GenGpy", "GenGpz"]
+        pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -90,20 +90,10 @@ class root2pickle():
             gam2 = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==1]
             gam2 = gam2.reset_index(drop=True)
 
-            gam1.loc[:,"GenGp2"] = gam2.loc[:,"GenGp"]
-            gam1.loc[:,"GenGtheta2"] = gam2.loc[:,"GenGtheta"]
-            gam1.loc[:,"GenGphi2"] = gam2.loc[:,"GenGphi"]
+            gam1.loc[:,"GenGpx2"] = gam2.loc[:,"GenGpx"]
+            gam1.loc[:,"GenGpy2"] = gam2.loc[:,"GenGpy"]
+            gam1.loc[:,"GenGpz2"] = gam2.loc[:,"GenGpz"]
             df_gammaGen = gam1
-
-            #sort GenG indices so that GenGp > GenGp2. This is because Gp > Gp2 at reconstruction level.
-            df_gammaGencopy = copy(df_gammaGen)
-            df_gammaGencopy.loc[:, "GenGp"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGp"], df_gammaGen.loc[:, "GenGp2"])
-            df_gammaGencopy.loc[:, "GenGtheta"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGtheta"], df_gammaGen.loc[:, "GenGtheta2"])
-            df_gammaGencopy.loc[:, "GenGphi"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGphi"], df_gammaGen.loc[:, "GenGphi2"])
-            df_gammaGencopy.loc[:, "GenGp2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGp2"], df_gammaGen.loc[:, "GenGp"])
-            df_gammaGencopy.loc[:, "GenGtheta2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGtheta2"], df_gammaGen.loc[:, "GenGtheta"])
-            df_gammaGencopy.loc[:, "GenGphi2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGphi2"], df_gammaGen.loc[:, "GenGphi"])
-            df_gammaGen = df_gammaGencopy
 
             df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
         self.df_MC = df_MC    #done with saving z
