@@ -14,10 +14,10 @@ from utils.physics import *
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
-    def __init__(self, fname, entry_stop = None):
+    def __init__(self, fname, entry_stop = None, gen = 'dvcsrad'):
         self.fname = fname
 
-        self.readEPGG(entry_stop)
+        self.readEPGG(entry_stop, gen)
         # self.saveDVCSvars()
         # self.saveHistogram()
         self.saveRaw()
@@ -32,7 +32,7 @@ class root2pickle():
         self.file = None
         self.tree = None
 
-    def readEPGG(self, entry_stop = None):
+    def readEPGG(self, entry_stop = None, gen = dvcsrad):
         #save data into df_epg, df_epgg for parent class epg
         self.readFile()
 
@@ -40,9 +40,11 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
+        df_pi0Gen = pd.DataFrame()
         eleKeysGen = ["GenEp", "GenEtheta", "GenEphi", "GenQ2", "GenxB", "Gent", "Genphi"]
         proKeysGen = ["GenPp", "GenPtheta", "GenPphi"]
         gamKeysGen = ["GenGp", "GenGtheta", "GenGphi"]
+        pi0KeysGen = ["GenPip", "GenPitheta", "GenPiphi"]
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
@@ -50,6 +52,9 @@ class root2pickle():
             df_protonGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
         for key in gamKeysGen:
             df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+        if (gen == 'pi0rad'):
+            for key in pi0KeysGen:
+                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
 
         # #convert data type to standard double
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
@@ -58,37 +63,50 @@ class root2pickle():
 
         #set up a dummy index for merging
         df_electronGen.loc[:,'event'] = df_electronGen.index
-        df_protonGen.loc[:,'event'] = df_protonGen.index
+        df_protonGen.loc[:,'event'] = df_protonGen.index    
         df_gammaGen.loc[:,'event'] = df_gammaGen.index.get_level_values('entry')
 
         #sort columns for readability
-        column_names = ["event"] + list(df_electronGen[:-1])
+        column_names = ["event"] + list(df_electronGen.columns[:-1])
         df_electronGen = df_electronGen.loc[:, column_names]
 
-        # #spherical coordinates
-        # eleGen = [df_electronGen["GenEpx"], df_electronGen["GenEpy"], df_electronGen["GenEpz"]]
-        # df_electronGen.loc[:, 'GenEp'] = mag(eleGen)
-        # df_electronGen.loc[:, 'GenEtheta'] = getTheta(eleGen)
-        # df_electronGen.loc[:, 'GenEphi'] = getPhi(eleGen)
+        df_MC = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
 
-        # proGen = [df_protonGen["GenPpx"], df_protonGen["GenPpy"], df_protonGen["GenPpz"]]
-        # df_protonGen.loc[:, 'GenPp'] = mag(proGen)
-        # df_protonGen.loc[:, 'GenPtheta'] = getTheta(proGen)
-        # df_protonGen.loc[:, 'GenPphi'] = getPhi(proGen)
+        if gen == "pi0rad":
+            df_pi0Gen = pd.DataFrame()
+            for key in pi0KeysGen:
+                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_start = entry_start, entry_stop=entry_stop)
+            df_pi0Gen.loc[:,'event'] = df_pi0Gen.index
+            df_gammaGen = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
 
-        df_z = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
+            df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
+            df_MC = pd.merge(df_MC, df_pi0Gen, how='inner', on='event')
+            self.df_epg = df_MC    #done with saving MC
 
-        # df_gammaGen = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
-        # gamGen = [df_gammaGen["GenGpx"], df_gammaGen["GenGpy"], df_gammaGen["GenGpz"]]
-        # df_gammaGen.loc[:, 'GenGp'] = mag(gamGen)
-        # df_gammaGen.loc[:, 'GenGtheta'] = getTheta(gamGen)
-        # df_gammaGen.loc[:, 'GenGphi'] = getPhi(gamGen)
+        else:
+            #two g's to one gg.
+            gam1 = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==0]
+            gam1 = gam1.reset_index(drop=True)
+            gam2 = df_gammaGen[df_gammaGen.index.get_level_values('subentry')==1]
+            gam2 = gam2.reset_index(drop=True)
 
-        df_z = pd.merge(df_z, df_gammaGen, how='inner', on='event')
+            gam1.loc[:,"GenGp2"] = gam2.loc[:,"GenGp"]
+            gam1.loc[:,"GenGtheta2"] = gam2.loc[:,"GenGtheta"]
+            gam1.loc[:,"GenGphi2"] = gam2.loc[:,"GenGphi"]
+            df_gammaGen = gam1
 
-        # keys = {key:key[3:] for key in df_z.columns}
-        # keys["event"] = "event"
-        self.df_epg = df_z#.rename(columns=keys)
+            #sort GenG indices so that GenGp > GenGp2. This is because Gp > Gp2 at reconstruction level.
+            df_gammaGencopy = copy(df_gammaGen)
+            df_gammaGencopy.loc[:, "GenGp"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGp"], df_gammaGen.loc[:, "GenGp2"])
+            df_gammaGencopy.loc[:, "GenGtheta"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGtheta"], df_gammaGen.loc[:, "GenGtheta2"])
+            df_gammaGencopy.loc[:, "GenGphi"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGphi"], df_gammaGen.loc[:, "GenGphi2"])
+            df_gammaGencopy.loc[:, "GenGp2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGp2"], df_gammaGen.loc[:, "GenGp"])
+            df_gammaGencopy.loc[:, "GenGtheta2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGtheta2"], df_gammaGen.loc[:, "GenGtheta"])
+            df_gammaGencopy.loc[:, "GenGphi2"] = np.where(df_gammaGen["GenGp"]>df_gammaGen["GenGp2"], df_gammaGen.loc[:, "GenGphi2"], df_gammaGen.loc[:, "GenGphi"])
+            df_gammaGen = df_gammaGencopy
+
+            df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
+        self.df_MC = df_MC    #done with saving z
 
     # def saveDVCSvars(self, correction=None):
     #     #set up dvcs variables
@@ -170,10 +188,11 @@ if __name__ == "__main__":
     parser.add_argument("-f","--fname", help="a single root file to convert into pickles", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
-    
+    parser.add_argument("-g","--generator", help="choose dvcs or pi0", default = "dvcsrad")
+
     args = parser.parse_args()
 
-    converter = root2pickle(args.fname, entry_stop = args.entry_stop)
+    converter = root2pickle(args.fname, entry_stop = args.entry_stop, gen = args.generator)
     df = converter.df
 
     df.to_pickle(args.out)
