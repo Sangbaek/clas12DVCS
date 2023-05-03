@@ -40,9 +40,9 @@ class root2pickle():
         df_electronGen = pd.DataFrame()
         df_protonGen = pd.DataFrame()
         df_gammaGen = pd.DataFrame()
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz", "GenEp", "GenEtheta", "GenEphi", "GenQ2", "GenxB", "Gent", "Genphi"]
-        proKeysGen = ["GenPpx", "GenPpy", "GenPpz", "GenPp", "GenPtheta", "GenPphi"]
-        gamKeysGen = ["GenGpx", "GenGpy", "GenGpz", "GenGp", "GenGtheta", "GenGphi"]
+        eleKeysGen = ["GenEp", "GenEtheta", "GenEphi", "GenQ2", "GenxB", "Gent", "Genphi"]
+        proKeysGen = ["GenPp", "GenPtheta", "GenPphi"]
+        gamKeysGen = ["GenGp", "GenGtheta", "GenGphi"]
         # read keys
         for key in eleKeysGen:
             df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
