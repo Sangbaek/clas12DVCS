@@ -81,7 +81,6 @@ class root2pickle():
 
             df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
             df_MC = pd.merge(df_MC, df_pi0Gen, how='inner', on='event')
-            self.df_epg = df_MC    #done with saving MC
 
         else:
             #two g's to one gg.
@@ -96,7 +95,7 @@ class root2pickle():
             df_gammaGen = gam1
 
             df_MC = pd.merge(df_MC, df_gammaGen, how='inner', on='event')
-        self.df_MC = df_MC    #done with saving z
+        self.df_epg = df_MC    #done with saving z
 
     # def saveDVCSvars(self, correction=None):
     #     #set up dvcs variables
