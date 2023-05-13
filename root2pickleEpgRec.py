@@ -9,7 +9,8 @@ from copy import copy
 from utils.const import *
 from utils.physics import *
 from utils.fiducial import *
-pd.options.mode.chained_assignment = None 
+pd.options.mode.chained_assignment = None
+import awkward as ak
 
 class root2pickle():
     '''class to read root to make epg pairs'''
@@ -134,7 +135,9 @@ class root2pickle():
         for key in proKeysGen:
             df_protonGen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
         for key in gamKeysGen:
-            df_gammaGen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df = df.rename(columns = {"values": key})
+            df_gammaGen.loc[:, key] = df
 
         #convert data type to standard double
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float, "GenEvx": float, "GenEvy": float, "GenEvz": float})
@@ -301,7 +304,9 @@ class root2pickle():
         for key in proKeysRec:
             df_protonRec[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
         for key in gamKeysRec:
-            df_gammaRec[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df = df.rename(columns = {"values": key})
+            df_gammaRec.loc[:, key] = df
         self.closeFile()
 
         #convert data type to standard double
