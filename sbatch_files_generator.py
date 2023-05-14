@@ -58,7 +58,7 @@ if args.data == "sim":
 elif args.data == "exp":
   #step 3
   #filter files into a hipo files that have epg
-  if step == 3:
+  if step in [3, 4, 5]:
     #DVCS wagon inb
     this_step_dir = this_step_dirs[step]
     file_locations = {
@@ -73,4 +73,4 @@ elif args.data == "exp":
       for file in files:
         run = file.split(file_location)[-1][-9:-5]
         subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/{}'.format(default_dir, this_step_dir, mode, run)])
-
+        subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/exp/{}/{}'.format(default_dir, this_step_dir, mode, run)])
