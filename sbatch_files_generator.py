@@ -69,6 +69,6 @@ elif args.data == "exp":
     for mode in file_locations:
       files = glob("{}/*".format(file_locations[mode]))
       for file in files:
-        run = file[0].split('.hipo')[-2].split('DVCSWagon_00')[-1]
+        run = file.split('.hipo')[-2].split('DVCSWagon_00')[-1]
         subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/.{}'.format(default_dir, this_step_dir, mode, run)])
 
