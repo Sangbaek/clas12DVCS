@@ -60,6 +60,7 @@ elif args.data == "exp":
   #filter files into a hipo files that have epg
   if step == 3:
     #DVCS wagon inb
+    this_step_dir = this_step_dirs[step]
     file_locations = {
       "epg/inb": "/cache/clas12/rg-a/production/recon/fall2018/torus-1/pass1/v1/dst/train/DVCSWagon/",
       "epg/outb": "/cache/clas12/rg-a/production/recon/fall2018/torus+1/pass1/v1/dst/train/DVCSWagon/",
