@@ -6,7 +6,7 @@ import numpy as np
 
 
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("-s","--step", help="what to do?", default = None)
+parser.add_argument("-s","--step", help="what to do?", default = None, type = int)
 args   = parser.parse_args()
 
 configs = {
