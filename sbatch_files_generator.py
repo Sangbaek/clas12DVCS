@@ -2,6 +2,7 @@ from glob import glob
 import argparse
 import subprocess
 import itertools
+import numpy as np
 
 
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -23,18 +24,21 @@ default_dir    = "/volatile/clas12/sangbaek/jan2023/sbatch_files"
 #merge simulations.
 #filter files into a hipo files that have
 
-this_step_dir  = "collecting_dsts/sim/"
-for config, i in (itertools.product(configs.items(), [1,2,3,4])):
-  mode, runs = config
-  for run in runs:
-    subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, this_step_dir, i), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
-    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
+if args.step == 1:
+  this_step_dir  = "collecting_dsts/sim/"
+  for config, entry in (itertools.product(configs.items(), [1,2,3,4])):
+    mode, runs = config
+    for run in runs:
+      subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, this_step_dir, entry), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, entry)])
+      subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, entry)])
 
 #step 2
 #convert that into root files
-this_step_dir  = "conversion/"
-for config, i in (itertools.product(configs.items(), [1,2,3,4])):
-  mode, runs = config
-  for run in runs:
-    subprocess.run(['cp','{}/{}/{}/.run_{}'.format(default_dir, this_step_dir, mode, i), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, i)])
-    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, i)])
+if args.step == 2:
+  this_step_dir  = "conversion/"
+  entries        = np.linspace(0, 19, 20, dtype = int)
+  for config, entry in (itertools.product(configs.items(), entries)):
+    mode, runs = config
+    for run in runs:
+      subprocess.run(['cp','{}/{}/{}/.run_0'.format(default_dir, this_step_dir, mode, entry), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, entry)])
+      subprocess.run(['sed', '-i', 's/run/{}/g;s/_0/_{}/g'.format(run, entry), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, entry)])
