@@ -71,7 +71,7 @@ elif args.data == "exp":
       file_location = file_locations[mode]
       files = glob("{}/*".format(file_location))
       for file in files:
-        run = file.split(file_location)
+        run = file.split(file_location)[-1][-9:-5]
         print(run)
         break
         # run = file.split('.hipo')[-2].split('DVCSWagon_00')[-1]
