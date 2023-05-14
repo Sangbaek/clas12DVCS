@@ -23,7 +23,7 @@ default_dir    = "/volatile/clas12/sangbaek/jan2023/sbatch_files"
 #merge simulations.
 #filter files into a hipo files that have
 
-this_step_dir  = "collecting_dsts"
+this_step_dir  = "collecting_dsts/sim/"
 for config, i in (itertools.product(configs.items(), [1,2,3,4])):
   mode, runs = config
   for run in runs:
