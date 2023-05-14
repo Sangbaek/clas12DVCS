@@ -29,3 +29,12 @@ for config, i in (itertools.product(configs.items(), [1,2,3,4])):
   for run in runs:
     subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, this_step_dir, i), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
     subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
+
+#step 2
+#convert that into root files
+this_step_dir  = "conversion/"
+for config, i in (itertools.product(configs.items(), [1,2,3,4])):
+  mode, runs = config
+  for run in runs:
+    subprocess.run(['cp','{}/{}/{}/.run_{}'.format(default_dir, this_step_dir, mode, i), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, i)])
+    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}/{}_{}'.format(default_dir, this_step_dir, mode, run, i)])
