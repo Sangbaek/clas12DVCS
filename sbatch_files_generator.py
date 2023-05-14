@@ -23,7 +23,7 @@ default_dir = "/volaite/clas12/sangbaek/jan2023/sbatch_files"
 #filter files into a hipo files that have
 
 mode        = "collecting_dsts"
-for key, val in configs.items():
+for key, run in configs.items():
   for i in [1,2,3,4]:
-    subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, mode, i), '{}/{}/{}_{}'.format(default_dir, mode, val, i)])
-    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, mode, val, i)])
+    subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, mode, i), '{}/{}/{}_{}'.format(default_dir, mode, run, i)])
+    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, mode, run, i)])
