@@ -6,8 +6,8 @@ import numpy as np
 
 
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-args   = parser.parse_args()
 parser.add_argument("-s","--step", help="what to do?", default = None)
+args   = parser.parse_args()
 
 configs = {
   "bh/inb"  : [6043],
