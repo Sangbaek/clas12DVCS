@@ -68,8 +68,12 @@ elif args.data == "exp":
       "epgg/outb": "/cache/clas12/rg-a/production/recon/fall2018/torus+1/pass1/v1/dst/train/DVPi0P/",
     }
     for mode in file_locations:
-      files = glob("{}/*".format(file_locations[mode]))
+      file_location = file_locations[mode]
+      files = glob("{}/*".format(file_location))
       for file in files:
-        run = file.split('.hipo')[-2].split('DVCSWagon_00')[-1]
-        subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/.{}'.format(default_dir, this_step_dir, mode, run)])
+        run = file.split(file_location)
+        print(run)
+        break
+        # run = file.split('.hipo')[-2].split('DVCSWagon_00')[-1]
+        # subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/{}'.format(default_dir, this_step_dir, mode, run)])
 
