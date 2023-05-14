@@ -302,11 +302,9 @@ class root2pickle():
         for key in eleKeysRec:
             df_electronRec[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
         for key in proKeysRec:
-            df_protonRec[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysRec:
-            df = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
-            df = df.rename(columns = {"values": key})
-            df_gammaRec.loc[:, key] = df
+            df_gammaRec.loc[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         self.closeFile()
 
         #convert data type to standard double
