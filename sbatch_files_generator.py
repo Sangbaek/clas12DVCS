@@ -72,8 +72,5 @@ elif args.data == "exp":
       files = glob("{}/*".format(file_location))
       for file in files:
         run = file.split(file_location)[-1][-9:-5]
-        print(run)
-        break
-        # run = file.split('.hipo')[-2].split('DVCSWagon_00')[-1]
-        # subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/{}'.format(default_dir, this_step_dir, mode, run)])
+        subprocess.run(['cp','{}/{}/exp/{}/.run'.format(default_dir, this_step_dir, mode), '{}/{}/exp/{}/{}'.format(default_dir, this_step_dir, mode, run)])
 
