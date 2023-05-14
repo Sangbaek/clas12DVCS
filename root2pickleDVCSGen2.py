@@ -41,7 +41,7 @@ class root2pickle():
         eleKeysGen = ["GenxB", "GenQ2", "Gent", "Genphi", "GenWeight", "BornWeight", "crossRef", "helicity", "radMode", "config"]
         # read keys
         for key in eleKeysGen:
-            df_epg[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_epg[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
 
         df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1"})
         df_epg.loc[:, "event"] = df_epg.index

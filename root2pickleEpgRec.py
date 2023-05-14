@@ -131,9 +131,9 @@ class root2pickle():
 
         # read keys
         for key in eleKeysGen:
-            df_electronGen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df_electronGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysGen:
-            df_protonGen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df_protonGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysGen:
             df = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df = df.rename(columns = {"values": key})
@@ -234,7 +234,7 @@ class root2pickle():
         else:
             df_pi0Gen = pd.DataFrame()
             for key in pi0KeysGen:
-                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+                df_pi0Gen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df_pi0Gen = df_pi0Gen.astype({"GenPipx": float, "GenPipy": float, "GenPipz": float})
             df_pi0Gen.loc[:,'event'] = df_pi0Gen.index
             #two g's to one gg.
@@ -300,7 +300,7 @@ class root2pickle():
 
         # read them
         for key in eleKeysRec:
-            df_electronRec[key] = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysRec:
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysRec:

@@ -10,7 +10,7 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
-
+import awkward as ak
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
@@ -47,14 +47,14 @@ class root2pickle():
         pi0KeysGen = ["GenPipx", "GenPipy", "GenPipz"]
         # read keys
         for key in eleKeysGen:
-            df_electronGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_electronGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysGen:
-            df_protonGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_protonGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysGen:
-            df_gammaGen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+            df_gammaGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         if (gen == 'pi0rad'):
             for key in pi0KeysGen:
-                df_pi0Gen[key] = self.tree[key].array(library="pd", entry_stop=entry_stop)
+                df_pi0Gen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
 
         # #convert data type to standard double
         # df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
