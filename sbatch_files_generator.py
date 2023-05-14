@@ -17,15 +17,15 @@ configs = {
   "pi0/outb": [6069]
 }
 
-default_dir = "/volatile/clas12/sangbaek/jan2023/sbatch_files"
+default_dir    = "/volatile/clas12/sangbaek/jan2023/sbatch_files"
 
 #step 1.
 #merge simulations.
 #filter files into a hipo files that have
 
-mode        = "collecting_dsts"
+this_step_dir  = "collecting_dsts"
 for config, i in (itertools.product(configs.items(), [1,2,3,4])):
   mode, runs = config
   for run in runs:
-    subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, mode, i), '{}/{}/{}_{}'.format(default_dir, mode, runs, i)])
-    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, mode, runs, i)])
+    subprocess.run(['cp','{}/{}/.run_{}'.format(default_dir, this_step_dir, i), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
+    subprocess.run(['sed', '-i', 's/run/{}/g'.format(run), '{}/{}/{}_{}'.format(default_dir, this_step_dir, run, i)])
