@@ -20,7 +20,7 @@ file       = pd.read_pickle(filename)
 for i in range(339):
   filenum    = 5*i
   qadb       = qaTree.loc[qaTree.index == run, filenum]
-  if np.isnan(qadb):
+  if not isinstance(qadb.values[0], dict):
     break    
   chargedb   = chargeTree.loc[qaTree.index == run, filenum]
   evnumMin   = qadb.values[0]['evnumMin']
