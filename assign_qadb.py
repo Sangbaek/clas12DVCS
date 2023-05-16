@@ -28,9 +28,10 @@ for i in range(339):
   defect     = qadb.values[0]['defect']
   chargemin  = chargedb.values[0]['fcChargeMin']
   chargemax  = chargedb.values[0]['fcChargeMax']
-  file.loc[(file.EventNum>=evnumMin) & (file.EventNum<=evnumMax), "filenum"] = filenum
   file.loc[(file.EventNum>=evnumMin) & (file.EventNum<=evnumMax), "defect"]  = defect
   file.loc[(file.EventNum>=evnumMin) & (file.EventNum<=evnumMax), "chargemin"] = chargemin
   file.loc[(file.EventNum>=evnumMin) & (file.EventNum<=evnumMax), "chargemax"] = chargemax
 
+file = file.loc[file.defect == 0, :]
+file = file.drop(columns = ["defect"])
 file.to_pickle(filename)
