@@ -187,7 +187,7 @@ class root2pickle():
             self.df_MC = df_MC    #done with saving MC
 
         if gen == "SIDIS":
-            df_pid = self.tree[key].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
+            df_pid = self.tree["GenPid"].array(library="pd", entry_start=entry_start, entry_stop=entry_stop)
             df_pid.loc[:, "event"] = df_pid.index
             df_MC = pd.merge(df_MC, df_pid, how='inner', on='event')
             self.df_MC = df_MC
