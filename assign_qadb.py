@@ -7,18 +7,23 @@ parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse
 parser.add_argument("-p","--polarity", help="polarity: inb or outb", default = "inb", type = str)
 parser.add_argument("-r","--run", help="run number", default = 5032, type = int)
 parser.add_argument("-pi0", '--pi0', action = 'store_true')
+parser.add_argument("-opt", "--option", default = '', type = str)
 args  = parser.parse_args()
 
 run      = args.run
 polarity = args.polarity
+option   = args.option
+if option:
+  option = '_{}'.format(option)
 
 mode = "epg"
 if args.pi0:
   mode = "epgg"
 
+
 qaTree     = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/qaTree.json".format(polarity)).T
 chargeTree = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/chargeTree.json".format(polarity)).T
-filename   = "/volatile/clas12/sangbaek/jan2023/convPkl/exp/{}/{}/{}.pkl".format(mode, polarity, run)
+filename   = "/volatile/clas12/sangbaek/jan2023/convPkl{}/exp/{}/{}/{}.pkl".format(option, mode, polarity, run)
 file       = pd.read_pickle(filename)
 
 for i in range(339):
