@@ -61,9 +61,9 @@ class root2pickle():
             nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr, fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
-        self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
-        self.pi02gSubtraction()
         if not raw:
+            self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
+            self.pi02gSubtraction()
             self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
         self.save(raw = raw, pol = pol, gen = gen)
 

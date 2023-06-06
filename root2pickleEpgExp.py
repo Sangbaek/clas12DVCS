@@ -16,7 +16,7 @@ pd.options.mode.chained_assignment = None
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
-     detRes = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False, nopcorr = False,
+     detRes = False, raw = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False, nopcorr = False,
      fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
         '''
             clas init.
@@ -61,10 +61,11 @@ class root2pickle():
             fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
-        self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
-        self.pi02gSubtraction()
-        self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
-        self.save()
+        if not raw:
+            self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
+            self.pi02gSubtraction()
+            self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
+        self.save(raw = raw, pol = pol)
 
 
     def readFile(self):
@@ -1430,11 +1431,73 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self):
+    def save(self, raw = False, pol = 'inbending'):
         # df_x = self.df_dvcs
         # df_protonDet = self.df_protonDet
         # df = pd.merge(df_x, df_protonDet, how = 'inner', on ='event')
-        self.df = self.df_dvcs
+        if raw:
+            df_Rec = self.df_epg
+            #common cuts
+            cut_xBupper = df_Rec["xB"] < 1  # xB
+            cut_xBlower = df_Rec["xB"] > 0  # xB
+            cut_Q2 = df_Rec["Q2"] > 1  # Q2
+            cut_W = df_Rec["W"] > 2  # W
+            cut_Ee = df_Rec["Ee"] > 2  # Ee
+            cut_Ge = df_Rec["Ge"] > 2  # Ge
+            cut_Esector = (df_Rec["Esector"]!=df_Rec["Gsector"])
+            cut_Psector = ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"]))
+            cut_Ppmax = df_Rec.Pp < 1.6  # Pp
+            cut_Pthetamin = df_Rec.Ptheta > 0 # Ptheta
+            # cut_Vz = np.abs(df_Rec["Evz"] - df_Rec["Pvz"]) < 2.5 + 2.5 / mag([df_Rec["Ppx"], df_Rec["Ppy"], df_Rec["Ppz"]])
+            cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
+
+            df_Rec = df_Rec[cut_common]
+
+            #CDFT
+            cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
+            cut_Psector_CDFT = df_Rec.Psector>7
+            cut_Ptheta1_CDFT = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CDFT = df_Rec.Ptheta>CD_Ptheta_lb
+            cut_Gsector_CDFT = df_Rec.Gsector>7
+            cut_GFid_CDFT = df_Rec.GFid==1
+            cut_PFid_CDFT = df_Rec.PFid==1
+            #CD
+            cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
+            cut_Psector_CD = df_Rec.Psector>7
+            cut_Ptheta1_CD = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CD = df_Rec.Ptheta>CD_Ptheta_lb
+            cut_Gsector_CD = (df_Rec.Gsector<7)&(df_Rec.Gsector>0)
+            cut_GFid_CD = df_Rec.GFid==1
+            cut_PFid_CD = df_Rec.PFid==1
+            #FD
+            if pol == "inbending":
+                cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_inb_ub
+            elif pol == "outbending":
+                cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_outb_ub
+            cut_Psector_FD = df_Rec.Psector<7
+            cut_Ptheta2_FD = df_Rec.Ptheta>FD_Ptheta_lb
+            cut_Gsector_FD = (df_Rec.Gsector<7)&(df_Rec.Gsector>0)
+            cut_GFid_FD = df_Rec.GFid==1
+            cut_PFid_FD = df_Rec.PFid==1
+
+            cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT & cut_PFid_CDFT)
+            cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Ptheta2_CD & cut_Gsector_CD & cut_GFid_CD & cut_PFid_CD)
+            cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta1_FD & cut_Ptheta2_FD & cut_Gsector_FD & cut_GFid_FD & cut_PFid_FD)
+
+            df_Rec.loc[cut_CDFT, "config"] = 3
+            df_Rec.loc[cut_CD, "config"] = 2
+            df_Rec.loc[cut_FD, "config"] = 1
+
+            df_Rec = df_Rec[df_Rec.config>0]
+
+            df_Rec = df_Rec.sort_values(by=['reconGam', 'closeness2'], ascending = [True, True])
+            df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), ]
+            df_Rec = df_Rec.sort_values(by='event')
+        else:
+            df_Rec = self.df_dvcs
+        self.df = df_Rec
 
 if __name__ == "__main__":
 
@@ -1448,6 +1511,7 @@ if __name__ == "__main__":
     parser.add_argument("-d","--detRes", help="include detector response", action = "store_true")
     parser.add_argument("-l","--logistics", help="include logistics", action = "store_true")
     parser.add_argument("-w","--width", help="width of selection cuts", default = "default")
+    parser.add_argument("-r","--raw", help="save raw only", default = False, action = "store_true")
     parser.add_argument("-nf","--nofid", help="no additional fiducial cuts", action = "store_true")
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
     parser.add_argument("-ne","--noeloss", help="no energy loss correction", action = "store_true")
@@ -1466,7 +1530,7 @@ if __name__ == "__main__":
 
     be = float(args.beam)
     converter = root2pickle(args.fname, entry_start = args.entry_start,
-     entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, 
+     entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
     df = converter.df
