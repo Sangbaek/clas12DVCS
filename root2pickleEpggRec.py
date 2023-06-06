@@ -1194,6 +1194,12 @@ class root2pickle():
 
     def save(self, raw = False, dvcs = False, pol = "inbending"):
         if raw and not dvcs:
+            CD_Ptheta_ub = CD_Ptheta_ub_nominal
+            CD_Ptheta_lb = CD_Ptheta_lb_nominal
+            FD_Ptheta_inb_ub = FD_Ptheta_inb_ub_nominal
+            FD_Ptheta_outb_ub = FD_Ptheta_outb_ub_nominal
+            FD_Ptheta_lb = FD_Ptheta_lb_nominal
+
             print("saving raw with common cuts")
             df_Rec = self.df_epgg
             #common cuts

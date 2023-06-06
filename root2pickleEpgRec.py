@@ -1525,6 +1525,12 @@ class root2pickle():
 
     def save(self, raw = False, pol = "inbending", gen = 'dvcsnorad'):
         if raw:
+            CD_Ptheta_ub = CD_Ptheta_ub_nominal
+            CD_Ptheta_lb = CD_Ptheta_lb_nominal
+            FD_Ptheta_inb_ub = FD_Ptheta_inb_ub_nominal
+            FD_Ptheta_outb_ub = FD_Ptheta_outb_ub_nominal
+            FD_Ptheta_lb = FD_Ptheta_lb_nominal
+
             df_Rec = self.df_epg
             #common cuts
             cut_xBupper = df_Rec["xB"] < 1  # xB
