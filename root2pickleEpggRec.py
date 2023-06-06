@@ -1220,8 +1220,8 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
-            cut_Ptheta1_CDFT = df_dvpi0p.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CDFT = df_dvpi0p.Ptheta>CD_Ptheta_lb
+            cut_Ptheta1_CDFT = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CDFT = df_Rec.Ptheta>CD_Ptheta_lb
             cut_Gsector_CDFT = df_Rec.Gsector>7
             cut_Gsector2_CDFT = df_Rec.Gsector2>7
             cut_GFid_CDFT = df_Rec.GFid==1
@@ -1230,8 +1230,8 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
-            cut_Ptheta1_CD = df_dvpi0p.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CD = df_dvpi0p.Ptheta>CD_Ptheta_lb
+            cut_Ptheta1_CD = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CD = df_Rec.Ptheta>CD_Ptheta_lb
             cut_Gsector_CD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
             cut_Gsector2_CD = (df_Rec.Gsector2<7) & (df_Rec.Gsector2>0)
             cut_GFid_CD = df_Rec.GFid==1
@@ -1240,12 +1240,12 @@ class root2pickle():
             #FD
             if pol == "inbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
-                cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_inb_ub
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_inb_ub
             elif pol == "outbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
-                cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_outb_ub
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_outb_ub
             cut_Psector_FD = df_Rec.Psector<7
-            cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
+            cut_Ptheta2_FD = df_Rec.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
             cut_Gsector2_FD = (df_Rec.Gsector2<7) & (df_Rec.Gsector2>0)
             cut_GFid_FD = df_Rec.GFid==1
@@ -1288,8 +1288,8 @@ class root2pickle():
             #CDFT
             cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CDFT = df_Rec.Psector>7
-            cut_Ptheta1_CDFT = df_dvpi0p.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CDFT = df_dvpi0p.Ptheta>CD_Ptheta_lb
+            cut_Ptheta1_CDFT = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CDFT = df_Rec.Ptheta>CD_Ptheta_lb
             cut_Gsector_CDFT = df_Rec.Gsector>7
             cut_GFid_CDFT = df_Rec.GFid==1
             cut_PFid_CDFT = df_Rec.PFid==1
@@ -1303,8 +1303,8 @@ class root2pickle():
             #CD
             cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
             cut_Psector_CD = df_Rec.Psector>7
-            cut_Ptheta1_CD = df_dvpi0p.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CD = df_dvpi0p.Ptheta>CD_Ptheta_lb
+            cut_Ptheta1_CD = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CD = df_Rec.Ptheta>CD_Ptheta_lb
             cut_Gsector_CD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
             cut_GFid_CD = df_Rec.GFid==1
             cut_PFid_CD = df_Rec.PFid==1
@@ -1317,7 +1317,7 @@ class root2pickle():
 
             #FD
             cut_Psector_FD = df_Rec.Psector<7
-            cut_Ptheta2_FD = df_dvpi0p.Ptheta>FD_Ptheta_lb
+            cut_Ptheta2_FD = df_Rec.Ptheta>FD_Ptheta_lb
             cut_Gsector_FD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
             cut_GFid_FD = df_Rec.GFid==1
             cut_PFid_FD = df_Rec.PFid==1
@@ -1325,12 +1325,12 @@ class root2pickle():
                 cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.6 # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.6  # mmep
-                cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_inb_ub
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_inb_ub
             elif pol == "outbending":
                 cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
                 cut_mmep1_FD = df_Rec["MM2_ep"] < 0.6  # mmep
                 cut_mmep2_FD = df_Rec["MM2_ep"] > -0.6  # mmep                
-                cut_Ptheta1_FD = df_dvpi0p.Ptheta<FD_Ptheta_outb_ub
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_outb_ub
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT & cut_GFid_CDFT & cut_PFid_CDFT & cut_mmep1_CDFT & cut_mmep2_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Ptheta2_CD & cut_Gsector_CD & cut_GFid_CD & cut_PFid_CD & cut_mmep1_CD & cut_mmep2_CD)
