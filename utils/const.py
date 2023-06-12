@@ -449,8 +449,8 @@ Ge2Threshold_loose = 0.3
 
 #the default compatible with F. X. Girod's dvcs wagon
 cuts_dvcs_default_CDFT = {}
-cuts_dvcs_default_CDFT["MM2_ep_ub"] = 0.6
-cuts_dvcs_default_CDFT["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_CDFT["MM2_ep_ub"] = 100
+cuts_dvcs_default_CDFT["MM2_ep_lb"] = -100
 cuts_dvcs_default_CDFT["MM2_eg_ub"] = 2
 cuts_dvcs_default_CDFT["MM2_eg_lb"] = 0.25
 cuts_dvcs_default_CDFT["ME_epg_ub"] = 2
@@ -467,8 +467,8 @@ cuts_dvcs_default_CDFT["MM2_epg_lb"] = -0.1
 
 #the default compatible with F. X. Girod's dvcs wagon
 cuts_dvcs_default_CD = {}
-cuts_dvcs_default_CD["MM2_ep_ub"] = 0.6
-cuts_dvcs_default_CD["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_CD["MM2_ep_ub"] = 100
+cuts_dvcs_default_CD["MM2_ep_lb"] = -100
 cuts_dvcs_default_CD["MM2_eg_ub"] = 2
 cuts_dvcs_default_CD["MM2_eg_lb"] = 0.25
 cuts_dvcs_default_CD["ME_epg_ub"] = 2
@@ -483,8 +483,8 @@ cuts_dvcs_default_CD["MM2_epg_lb"] = -0.1
 
 #the default compatible with F. X. Girod's dvcs wagon
 cuts_dvcs_default_FD = {}
-cuts_dvcs_default_FD["MM2_ep_ub"] = 0.6
-cuts_dvcs_default_FD["MM2_ep_lb"] = -0.6
+cuts_dvcs_default_FD["MM2_ep_ub"] = 100
+cuts_dvcs_default_FD["MM2_ep_lb"] = -100
 cuts_dvcs_default_FD["MM2_eg_ub"] = 2
 cuts_dvcs_default_FD["MM2_eg_lb"] = 0.25
 cuts_dvcs_default_FD["ME_epg_ub"] = 2
@@ -782,6 +782,145 @@ cuts_dvcs_FD_Outb_4sigma["MM2_epg_ub"] = 0.0374
 cuts_dvcs_FD_Outb_4sigma["MM2_epg_lb"] = -0.0444
 
 
+#the default compatible with F. X. Girod's dvpi0p wagon
+cuts_dvpi0p_default_CDFT = {}
+cuts_dvpi0p_default_CDFT["Mpi0_ub"] = 1.0
+cuts_dvpi0p_default_CDFT["Mpi0_lb"] = 0.05
+cuts_dvpi0p_default_CDFT["MM2_ep_ub"] = 100
+cuts_dvpi0p_default_CDFT["MM2_ep_lb"] = -100
+cuts_dvpi0p_default_CDFT["MM2_egg_ub"] = 2.5
+cuts_dvpi0p_default_CDFT["MM2_egg_lb"] = 0
+cuts_dvpi0p_default_CDFT["ME_epgg_ub"] = 2.0
+cuts_dvpi0p_default_CDFT["ME_epgg_lb"] = -1.5
+cuts_dvpi0p_default_CDFT["MPt_ub"] = 1
+cuts_dvpi0p_default_CDFT["reconPi_ub"] = 7.5
+cuts_dvpi0p_default_CDFT["coplanarity_ub"] = 360
+cuts_dvpi0p_default_CDFT["MM2_epgg_ub"] = 0.1
+cuts_dvpi0p_default_CDFT["MM2_epgg_lb"] = -0.1
+
+#the default compatible with F. X. Girod's dvpi0p wagon
+cuts_dvpi0p_default_CD = {}
+cuts_dvpi0p_default_CD["Mpi0_ub"] = 1.0
+cuts_dvpi0p_default_CD["Mpi0_lb"] = 0.05
+cuts_dvpi0p_default_CD["MM2_ep_ub"] = 100
+cuts_dvpi0p_default_CD["MM2_ep_lb"] = -100
+cuts_dvpi0p_default_CD["MM2_egg_ub"] = 2.5
+cuts_dvpi0p_default_CD["MM2_egg_lb"] = 0
+cuts_dvpi0p_default_CD["ME_epgg_ub"] = 2.0
+cuts_dvpi0p_default_CD["ME_epgg_lb"] = -1.5
+cuts_dvpi0p_default_CD["MPt_ub"] = 1
+cuts_dvpi0p_default_CD["reconPi_ub"] = 7.5
+cuts_dvpi0p_default_CD["coplanarity_ub"] = 360
+cuts_dvpi0p_default_CD["MM2_epgg_ub"] = 0.1
+cuts_dvpi0p_default_CD["MM2_epgg_lb"] = -0.1
+
+
+#the default compatible with F. X. Girod's dvpi0p wagon
+cuts_dvpi0p_default_FD = {}
+cuts_dvpi0p_default_FD["Mpi0_ub"] = 1.0
+cuts_dvpi0p_default_FD["Mpi0_lb"] = 0.05
+cuts_dvpi0p_default_FD["MM2_ep_ub"] = 100
+cuts_dvpi0p_default_FD["MM2_ep_lb"] = -100
+cuts_dvpi0p_default_FD["MM2_egg_ub"] = 2.5
+cuts_dvpi0p_default_FD["MM2_egg_lb"] = 0
+cuts_dvpi0p_default_FD["ME_epgg_ub"] = 2.0
+cuts_dvpi0p_default_FD["ME_epgg_lb"] = -1.5
+cuts_dvpi0p_default_FD["MPt_ub"] = 1
+cuts_dvpi0p_default_FD["reconPi_ub"] = 7.5
+cuts_dvpi0p_default_FD["coplanarity_ub"] = 360
+cuts_dvpi0p_default_FD["MM2_epgg_ub"] = 0.1
+cuts_dvpi0p_default_FD["MM2_epgg_lb"] = -0.1
+
+cuts_dvpi0p_CDFT_Inb_3sigma = {}
+cuts_dvpi0p_CDFT_Inb_3sigma["Mpi0_ub"] = 0.149
+cuts_dvpi0p_CDFT_Inb_3sigma["Mpi0_lb"] = 0.126
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_ep_ub"] = 0.610
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_ep_lb"] = -0.384
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_egg_ub"] = 1.641
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_egg_lb"] = 0.0974
+cuts_dvpi0p_CDFT_Inb_3sigma["ME_epgg_ub"] = 0.481
+cuts_dvpi0p_CDFT_Inb_3sigma["ME_epgg_lb"] = -0.474
+cuts_dvpi0p_CDFT_Inb_3sigma["MPt_ub"] = 0.1272
+cuts_dvpi0p_CDFT_Inb_3sigma["reconPi_ub"] = 0.955
+cuts_dvpi0p_CDFT_Inb_3sigma["coplanarity_ub"] = 9.259
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_epgg_ub"] = 0.02564
+cuts_dvpi0p_CDFT_Inb_3sigma["MM2_epgg_lb"] = -0.02944
+
+cuts_dvpi0p_CD_Inb_3sigma = {}
+cuts_dvpi0p_CD_Inb_3sigma["Mpi0_ub"] = 0.162
+cuts_dvpi0p_CD_Inb_3sigma["Mpi0_lb"] = 0.107
+cuts_dvpi0p_CD_Inb_3sigma["MM2_ep_ub"] = 0.354
+cuts_dvpi0p_CD_Inb_3sigma["MM2_ep_lb"] = -0.283
+cuts_dvpi0p_CD_Inb_3sigma["MM2_egg_ub"] = 1.922
+cuts_dvpi0p_CD_Inb_3sigma["MM2_egg_lb"] = 0.007
+cuts_dvpi0p_CD_Inb_3sigma["ME_epgg_ub"] = 0.822
+cuts_dvpi0p_CD_Inb_3sigma["ME_epgg_lb"] = -0.677
+cuts_dvpi0p_CD_Inb_3sigma["MPt_ub"] = 0.176
+cuts_dvpi0p_CD_Inb_3sigma["reconPi_ub"] = 1.476
+cuts_dvpi0p_CD_Inb_3sigma["coplanarity_ub"] = 10.203
+cuts_dvpi0p_CD_Inb_3sigma["MM2_epgg_ub"] = 0.0208
+cuts_dvpi0p_CD_Inb_3sigma["MM2_epgg_lb"] = -0.0250
+
+cuts_dvpi0p_FD_Inb_3sigma = {}
+cuts_dvpi0p_FD_Inb_3sigma["Mpi0_ub"] = 0.178
+cuts_dvpi0p_FD_Inb_3sigma["Mpi0_lb"] = 0.0910
+cuts_dvpi0p_FD_Inb_3sigma["MM2_ep_ub"] = 0.335
+cuts_dvpi0p_FD_Inb_3sigma["MM2_ep_lb"] = -0.271
+cuts_dvpi0p_FD_Inb_3sigma["MM2_egg_ub"] = 1.762
+cuts_dvpi0p_FD_Inb_3sigma["MM2_egg_lb"] = 0.117
+cuts_dvpi0p_FD_Inb_3sigma["ME_epgg_ub"] = 0.816
+cuts_dvpi0p_FD_Inb_3sigma["ME_epgg_lb"] = -0.685
+cuts_dvpi0p_FD_Inb_3sigma["MPt_ub"] = 0.180
+cuts_dvpi0p_FD_Inb_3sigma["reconPi_ub"] = 1.363
+cuts_dvpi0p_FD_Inb_3sigma["coplanarity_ub"] = 9.190
+cuts_dvpi0p_FD_Inb_3sigma["MM2_epgg_ub"] = 0.0189
+cuts_dvpi0p_FD_Inb_3sigma["MM2_epgg_lb"] = -0.0224
+
+cuts_dvpi0p_CDFT_Outb_3sigma = {}
+cuts_dvpi0p_CDFT_Outb_3sigma["Mpi0_ub"] = 0.151
+cuts_dvpi0p_CDFT_Outb_3sigma["Mpi0_lb"] = 0.124
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_ep_ub"] = 0.575
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_ep_lb"] = -0.378
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_egg_ub"] = 1.665
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_egg_lb"] = 0.107
+cuts_dvpi0p_CDFT_Outb_3sigma["ME_epgg_ub"] = 0.514
+cuts_dvpi0p_CDFT_Outb_3sigma["ME_epgg_lb"] = -0.476
+cuts_dvpi0p_CDFT_Outb_3sigma["MPt_ub"] = 0.146
+cuts_dvpi0p_CDFT_Outb_3sigma["reconPi_ub"] = 1.114
+cuts_dvpi0p_CDFT_Outb_3sigma["coplanarity_ub"] = 10.69
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_epgg_ub"] = 0.0324
+cuts_dvpi0p_CDFT_Outb_3sigma["MM2_epgg_lb"] = -0.035
+
+cuts_dvpi0p_CD_Outb_3sigma = {}
+cuts_dvpi0p_CD_Outb_3sigma["Mpi0_ub"] = 0.163
+cuts_dvpi0p_CD_Outb_3sigma["Mpi0_lb"] = 0.106
+cuts_dvpi0p_CD_Outb_3sigma["MM2_ep_ub"] = 0.294
+cuts_dvpi0p_CD_Outb_3sigma["MM2_ep_lb"] = -0.218
+cuts_dvpi0p_CD_Outb_3sigma["MM2_egg_ub"] = 1.876
+cuts_dvpi0p_CD_Outb_3sigma["MM2_egg_lb"] = 0.0142
+cuts_dvpi0p_CD_Outb_3sigma["ME_epgg_ub"] = 0.700
+cuts_dvpi0p_CD_Outb_3sigma["ME_epgg_lb"] = -0.597
+cuts_dvpi0p_CD_Outb_3sigma["MPt_ub"] = 0.194
+cuts_dvpi0p_CD_Outb_3sigma["reconPi_ub"] = 1.761
+cuts_dvpi0p_CD_Outb_3sigma["coplanarity_ub"] = 9.530
+cuts_dvpi0p_CD_Outb_3sigma["MM2_epgg_ub"] = 0.0182
+cuts_dvpi0p_CD_Outb_3sigma["MM2_epgg_lb"] = -0.0219
+
+cuts_dvpi0p_FD_Outb_3sigma = {}
+cuts_dvpi0p_FD_Outb_3sigma["Mpi0_ub"] = 0.164
+cuts_dvpi0p_FD_Outb_3sigma["Mpi0_lb"] = 0.105
+cuts_dvpi0p_FD_Outb_3sigma["MM2_ep_ub"] = 0.323
+cuts_dvpi0p_FD_Outb_3sigma["MM2_ep_lb"] = -0.256
+cuts_dvpi0p_FD_Outb_3sigma["MM2_egg_ub"] = 1.828
+cuts_dvpi0p_FD_Outb_3sigma["MM2_egg_lb"] = 0.0491
+cuts_dvpi0p_FD_Outb_3sigma["ME_epgg_ub"] = 0.754
+cuts_dvpi0p_FD_Outb_3sigma["ME_epgg_lb"] = -0.583
+cuts_dvpi0p_FD_Outb_3sigma["MPt_ub"] = 0.177
+cuts_dvpi0p_FD_Outb_3sigma["reconPi_ub"] = 1.940
+cuts_dvpi0p_FD_Outb_3sigma["coplanarity_ub"] = 7.498
+cuts_dvpi0p_FD_Outb_3sigma["MM2_epgg_ub"] = 0.0195
+cuts_dvpi0p_FD_Outb_3sigma["MM2_epgg_lb"] = -0.0240
+
 xlbs_epg = {}
 xubs_epg = {}
 yubs_epg = {}
@@ -890,19 +1029,20 @@ xticks_epg[key, 1] = [0, 5, 10]
 xticks_epg[key, 4] = [-1, 0, 1, 2]
 xticks_epg[key, 6] = [-1, 0, 1, 2]
 yticks_epg[key, 3] = [0, 0.4, 0.8]
+yticks_epg[key, 4] = [0, 0.8, 1.6]
 yticks_epg[key, 5] = [0, 50, 100, 150, 200, 250]
 yticks_epg[key, 6] = [0, 2.5, 5]
 
 xlbs_epgg[key] = [0.1,    0,   0,   0, -.5, -0.02, -1,   0]
 xubs_epgg[key] = [0.16,   2,   2,   8,   1,  0.02,  2, 0.2]
-yubs_epgg[key] = [50,     1.5, 1.6, 0.5,   2,   160,    4, 15]
+yubs_epgg[key] = [50,     1.5, 1.6, 0.5,   2,   160,    4.5, 15]
 xticks_epgg[key, 0] = [0.1, 0.13, 0.16]
 xticks_epgg[key, 3] = [0, 4, 8]
 xticks_epgg[key, 4] = [-0.5 ,0, 0.5, 1]
 xticks_epgg[key, 6] = [-1, 0, 1, 2]
 yticks_epgg[key, 0] = [0, 25, 50]
 yticks_epgg[key, 2] = [0, 0.8, 1.6]
-yticks_epgg[key, 3] = [0, 0.25, 5]
+yticks_epgg[key, 3] = [0, 0.25, 0.5]
 yticks_epgg[key, 4] = [0, 1, 2]
 yticks_epgg[key, 5] = [0, 80, 160]
 yticks_epgg[key, 6] = [0, 2, 4]
@@ -910,13 +1050,13 @@ yticks_epgg[key, 6] = [0, 2, 4]
 key = ('outb', 3, 'a')
 xlbs_epg[key] = [0,   -1, 0,  0,   -1, -0.02, -1, 0]
 xubs_epg[key] = [30,  10, 5,  10,   2, 0.02,  2  ,  1]
-yubs_epg[key] = [0.15, 2, 3.6, 1, 4, 420, 4  , 30]
+yubs_epg[key] = [0.15, 2, 3.2, 0.8, 4, 420, 4  , 30]
 xticks_epg[key, 0] = [0, 10, 20, 30]
 xticks_epg[key, 1] = [0, 5, 10]
 xticks_epg[key, 4] = [-1, 0, 1, 2]
 xticks_epg[key, 6] = [-1, 0, 1, 2]
-yticks_epg[key, 2] = [0, 1.8, 3.6]
-yticks_epg[key, 3] = [0, 0.5, 1]
+yticks_epg[key, 2] = [0, 1.6, 3.2]
+yticks_epg[key, 3] = [0, 0.4, 0.8]
 yticks_epg[key, 5] = [0, 200, 400]
 yticks_epg[key, 7] = [0, 10, 20, 30]
 
@@ -934,18 +1074,16 @@ yticks_epgg[key, 3] = [0, 0.4, 0.8]
 yticks_epgg[key, 6] = [0, 2, 4]
 yticks_epgg[key, 7] = [0, 5, 10, 15, 20, 25]
 
-
-
 key = ('inb', 1, 'b')
-xlbs_epg[key] = [0,   -1, 0,  0, -1, -0.02, -1, 0]
-xubs_epg[key] = [50,  10, 5, 10, 2, 0.02,  2, 1]
+xlbs_epg[key] = [25,  0, 0,  0, -0.5, -0.02, -1, 0]
+xubs_epg[key] = [50,  2, 5, 10, 1.5, 0.02,  1, 0.6]
 yubs_epg[key] = [0.15, 1.5, 2, 0.4, 2, 200, 4, 10]
 xticks_epg[key, 1] = [0, 5, 10]
 xticks_epg[key, 4] = [-1, 0, 1, 2]
 xticks_epg[key, 6] = [-1, 0, 1, 2]
 
-xlbs_epgg[key] = [0.1,    0,   0,   0, -.5, -0.02, -1,   0]
-xubs_epgg[key] = [0.16,   2,   2,   8,   1,  0.02,  2, 0.2]
+xlbs_epgg[key] = [0.1,    0,   0,   0, -.5, -0.02, -0.5,   0]
+xubs_epgg[key] = [0.16,   1.8, 1.5, 8,   1,  0.02,  0.5, 0.18]
 yubs_epgg[key] = [50,     1.5, 1.5, 0.4,   2,   200,    5, 10]
 xticks_epgg[key, 0] = [0.1, 0.13, 0.16]
 xticks_epgg[key, 3] = [0, 4, 8]
@@ -955,8 +1093,8 @@ yticks_epgg[key, 0] = [0, 25, 50]
 yticks_epgg[key, 6] = [0, 2.5, 5]
 
 key = ('inb', 2, 'b')
-xlbs_epg[key] = [10,   -1, 0,  0,   -1, -0.02, -1, 0]
-xubs_epg[key] = [40,  10, 5,  10,   2, 0.02,  2  ,  1]
+xlbs_epg[key] = [10,  0, 0,  0, -0.5, -0.02, -1, 0]
+xubs_epg[key] = [40,  2, 5, 10, 1.5, 0.02,  1, 0.5]
 yubs_epg[key] = [0.15, 1, 2.5, 0.8, 1.5, 200, 4  , 15]
 xticks_epg[key, 0] = [10, 20, 30, 40]
 xticks_epg[key, 1] = [0, 5, 10]
@@ -964,8 +1102,8 @@ xticks_epg[key, 4] = [-1, 0, 1, 2]
 xticks_epg[key, 6] = [-1, 0, 1, 2]
 yticks_epg[key, 3] = [0, 0.4, 0.8]
 
-xlbs_epgg[key] = [0.1,    0,   0,   0, -.5, -0.02, -1,   0]
-xubs_epgg[key] = [0.16,   2,   2,   8,   1,  0.02,  2, 0.2]
+xlbs_epgg[key] = [0.1,    0,   0,   0, -.5, -0.02, -0.5,   0]
+xubs_epgg[key] = [0.16,   1.8, 1.5, 8,   1,  0.02,  0.5, 0.18]
 yubs_epgg[key] = [50,     1.5, 1.6, 0.6,   1.6,   160,    5, 15]
 xticks_epgg[key, 0] = [0.1, 0.13, 0.16]
 xticks_epgg[key, 3] = [0, 4, 8]
@@ -978,8 +1116,8 @@ yticks_epgg[key, 5] = [0, 80, 160]
 yticks_epgg[key, 6] = [0, 2.5, 5]
 
 key = ('inb', 3, 'b')
-xlbs_epg[key] = [0,   -1, 0,  0,   -1, -0.02, -1, 0]
-xubs_epg[key] = [30,  10, 5,  10,   2, 0.02,  2  ,  1]
+xlbs_epg[key] = [0,  0,  0,  0, -0.5, -0.02, -1, 0]
+xubs_epg[key] = [30,  2, 2,5, 10, 1.5, 0.02,  1, 0.3]
 yubs_epg[key] = [0.15, 2, 4, 0.6, 4, 400, 4  , 30]
 xticks_epg[key, 0] = [0, 10, 20, 30]
 xticks_epg[key, 1] = [0, 5, 10]
