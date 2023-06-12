@@ -448,54 +448,22 @@ Ge2Threshold_mid = 0.4
 Ge2Threshold_loose = 0.3
 
 #the default compatible with F. X. Girod's dvcs wagon
-cuts_dvcs_default_CDFT = {}
-cuts_dvcs_default_CDFT["MM2_ep_ub"] = 100
-cuts_dvcs_default_CDFT["MM2_ep_lb"] = -100
-cuts_dvcs_default_CDFT["MM2_eg_ub"] = 2
-cuts_dvcs_default_CDFT["MM2_eg_lb"] = 0.25
-cuts_dvcs_default_CDFT["ME_epg_ub"] = 2
-cuts_dvcs_default_CDFT["ME_epg_lb"] = -1
-cuts_dvcs_default_CDFT["coplanarity_ub"] = 360
-cuts_dvcs_default_CDFT["coneAngle_ub"] = [0, 0, 360]
-cuts_dvcs_default_CDFT["coneAngle_lb"] = [0, 0, 0]
-cuts_dvcs_default_CDFT["coneAngleCR_ub"] = [0, 0, 360]
-cuts_dvcs_default_CDFT["coneAngleCR_lb"] = [0, 0, 0]
-cuts_dvcs_default_CDFT["MPt_ub"] = 0.75
-cuts_dvcs_default_CDFT["reconGam_ub"] = 7.5
-cuts_dvcs_default_CDFT["MM2_epg_ub"] = 0.1
-cuts_dvcs_default_CDFT["MM2_epg_lb"] = -0.1
-
-#the default compatible with F. X. Girod's dvcs wagon
-cuts_dvcs_default_CD = {}
-cuts_dvcs_default_CD["MM2_ep_ub"] = 100
-cuts_dvcs_default_CD["MM2_ep_lb"] = -100
-cuts_dvcs_default_CD["MM2_eg_ub"] = 2
-cuts_dvcs_default_CD["MM2_eg_lb"] = 0.25
-cuts_dvcs_default_CD["ME_epg_ub"] = 2
-cuts_dvcs_default_CD["ME_epg_lb"] = -1
-cuts_dvcs_default_CD["coplanarity_ub"] = 360
-cuts_dvcs_default_CD["coneAngle_ub"] = [0, 0, 360]
-cuts_dvcs_default_CD["coneAngle_lb"] = [0, 0, 0]
-cuts_dvcs_default_CD["MPt_ub"] = 0.75
-cuts_dvcs_default_CD["reconGam_ub"] = 7.5
-cuts_dvcs_default_CD["MM2_epg_ub"] = 0.1
-cuts_dvcs_default_CD["MM2_epg_lb"] = -0.1
-
-#the default compatible with F. X. Girod's dvcs wagon
-cuts_dvcs_default_FD = {}
-cuts_dvcs_default_FD["MM2_ep_ub"] = 100
-cuts_dvcs_default_FD["MM2_ep_lb"] = -100
-cuts_dvcs_default_FD["MM2_eg_ub"] = 2
-cuts_dvcs_default_FD["MM2_eg_lb"] = 0.25
-cuts_dvcs_default_FD["ME_epg_ub"] = 2
-cuts_dvcs_default_FD["ME_epg_lb"] = -1
-cuts_dvcs_default_FD["coplanarity_ub"] = 360
-cuts_dvcs_default_FD["coneAngle_ub"] = [0, 0, 360]
-cuts_dvcs_default_FD["coneAngle_lb"] = [0, 0, 0]
-cuts_dvcs_default_FD["MPt_ub"] = 0.75
-cuts_dvcs_default_FD["reconGam_ub"] = 7.5
-cuts_dvcs_default_FD["MM2_epg_ub"] = 0.1
-cuts_dvcs_default_FD["MM2_epg_lb"] = -0.1
+cuts_dvcs_default = {}
+cuts_dvcs_default["MM2_ep_ub"] = 100
+cuts_dvcs_default["MM2_ep_lb"] = -100
+cuts_dvcs_default["MM2_eg_ub"] = 2
+cuts_dvcs_default["MM2_eg_lb"] = 0.25
+cuts_dvcs_default["ME_epg_ub"] = 2
+cuts_dvcs_default["ME_epg_lb"] = -1
+cuts_dvcs_default["coplanarity_ub"] = 360
+cuts_dvcs_default["coneAngle_ub"] = [0, 0, 360]
+cuts_dvcs_default["coneAngle_lb"] = [0, 0, 0]
+cuts_dvcs_default["coneAngleCR_ub"] = [0, 0, 360]
+cuts_dvcs_default["coneAngleCR_lb"] = [0, 0, 0]
+cuts_dvcs_default["MPt_ub"] = 0.75
+cuts_dvcs_default["reconGam_ub"] = 7.5
+cuts_dvcs_default["MM2_epg_ub"] = 0.1
+cuts_dvcs_default["MM2_epg_lb"] = -0.1
 
 cuts_dvcs_CDFT_Inb_3sigma = {}
 cuts_dvcs_CDFT_Inb_3sigma["MM2_ep_ub"] = 0.391
@@ -783,53 +751,20 @@ cuts_dvcs_FD_Outb_4sigma["MM2_epg_lb"] = -0.0444
 
 
 #the default compatible with F. X. Girod's dvpi0p wagon
-cuts_dvpi0p_default_CDFT = {}
-cuts_dvpi0p_default_CDFT["Mpi0_ub"] = 1.0
-cuts_dvpi0p_default_CDFT["Mpi0_lb"] = 0.05
-cuts_dvpi0p_default_CDFT["MM2_ep_ub"] = 100
-cuts_dvpi0p_default_CDFT["MM2_ep_lb"] = -100
-cuts_dvpi0p_default_CDFT["MM2_egg_ub"] = 2.5
-cuts_dvpi0p_default_CDFT["MM2_egg_lb"] = 0
-cuts_dvpi0p_default_CDFT["ME_epgg_ub"] = 2.0
-cuts_dvpi0p_default_CDFT["ME_epgg_lb"] = -1.5
-cuts_dvpi0p_default_CDFT["MPt_ub"] = 1
-cuts_dvpi0p_default_CDFT["reconPi_ub"] = 7.5
-cuts_dvpi0p_default_CDFT["coplanarity_ub"] = 360
-cuts_dvpi0p_default_CDFT["MM2_epgg_ub"] = 0.1
-cuts_dvpi0p_default_CDFT["MM2_epgg_lb"] = -0.1
-
-#the default compatible with F. X. Girod's dvpi0p wagon
-cuts_dvpi0p_default_CD = {}
-cuts_dvpi0p_default_CD["Mpi0_ub"] = 1.0
-cuts_dvpi0p_default_CD["Mpi0_lb"] = 0.05
-cuts_dvpi0p_default_CD["MM2_ep_ub"] = 100
-cuts_dvpi0p_default_CD["MM2_ep_lb"] = -100
-cuts_dvpi0p_default_CD["MM2_egg_ub"] = 2.5
-cuts_dvpi0p_default_CD["MM2_egg_lb"] = 0
-cuts_dvpi0p_default_CD["ME_epgg_ub"] = 2.0
-cuts_dvpi0p_default_CD["ME_epgg_lb"] = -1.5
-cuts_dvpi0p_default_CD["MPt_ub"] = 1
-cuts_dvpi0p_default_CD["reconPi_ub"] = 7.5
-cuts_dvpi0p_default_CD["coplanarity_ub"] = 360
-cuts_dvpi0p_default_CD["MM2_epgg_ub"] = 0.1
-cuts_dvpi0p_default_CD["MM2_epgg_lb"] = -0.1
-
-
-#the default compatible with F. X. Girod's dvpi0p wagon
-cuts_dvpi0p_default_FD = {}
-cuts_dvpi0p_default_FD["Mpi0_ub"] = 1.0
-cuts_dvpi0p_default_FD["Mpi0_lb"] = 0.05
-cuts_dvpi0p_default_FD["MM2_ep_ub"] = 100
-cuts_dvpi0p_default_FD["MM2_ep_lb"] = -100
-cuts_dvpi0p_default_FD["MM2_egg_ub"] = 2.5
-cuts_dvpi0p_default_FD["MM2_egg_lb"] = 0
-cuts_dvpi0p_default_FD["ME_epgg_ub"] = 2.0
-cuts_dvpi0p_default_FD["ME_epgg_lb"] = -1.5
-cuts_dvpi0p_default_FD["MPt_ub"] = 1
-cuts_dvpi0p_default_FD["reconPi_ub"] = 7.5
-cuts_dvpi0p_default_FD["coplanarity_ub"] = 360
-cuts_dvpi0p_default_FD["MM2_epgg_ub"] = 0.1
-cuts_dvpi0p_default_FD["MM2_epgg_lb"] = -0.1
+cuts_dvpi0p_default = {}
+cuts_dvpi0p_default["Mpi0_ub"] = 1.0
+cuts_dvpi0p_default["Mpi0_lb"] = 0.05
+cuts_dvpi0p_default["MM2_ep_ub"] = 100
+cuts_dvpi0p_default["MM2_ep_lb"] = -100
+cuts_dvpi0p_default["MM2_egg_ub"] = 2.5
+cuts_dvpi0p_default["MM2_egg_lb"] = 0
+cuts_dvpi0p_default["ME_epgg_ub"] = 2.0
+cuts_dvpi0p_default["ME_epgg_lb"] = -1.5
+cuts_dvpi0p_default["MPt_ub"] = 1
+cuts_dvpi0p_default["reconPi_ub"] = 7.5
+cuts_dvpi0p_default["coplanarity_ub"] = 360
+cuts_dvpi0p_default["MM2_epgg_ub"] = 0.1
+cuts_dvpi0p_default["MM2_epgg_lb"] = -0.1
 
 cuts_dvpi0p_CDFT_Inb_3sigma = {}
 cuts_dvpi0p_CDFT_Inb_3sigma["Mpi0_ub"] = 0.149
