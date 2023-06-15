@@ -90,51 +90,6 @@ if args.question == 16:
     print("Polarity undefined")
     exit()
 
-  # key = ('inb', 2, 'a')
-  # for key in [, ('inb', 2, 'a'), ('inb', 3, 'a')]:
-  #   xlbs_epg[key] = [5,  -10, 0, 0, -1, -0.1, -1, 0]
-  #   xubs_epg[key] = [40,  10, 5, 10, 1, 0.1,  1, 1]
-  #   yubs_epg[key] = [0.15, 2, 3, 0.4, 3, 250, 4, 25]
-    # xticks_epg[key, 0] = [10, 20, 30]
-    # xticks_epg[key, 1] = [0.5, 1, 1.5]
-    # xticks_epg[key, 2] = [0, 0.2, 0.4, 0.6]
-    # xticks_epg[key, 3] = [0, 2, 4, 6]
-    # xticks_epg[key, 4] = [-0.3, 0, 0.3]
-    # xticks_epg[key, 5] = [-0.01, 0, 0.01]
-    # xticks_epg[key, 6] = [-0.3, 0, 0.3]
-    # xticks_epg[key, 7] = [0, 0.04, 0.08]
-    # yticks_epg[key, 0] = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12]
-    # yticks_epg[key, 1] = [0.5, 1, 1.5, 2]
-    # yticks_epg[key, 2] = [1, 2, 3]
-    # yticks_epg[key, 3] = [0.2, 0.4]
-    # yticks_epg[key, 4] = [1, 2, 3]
-    # yticks_epg[key, 5] = [50, 100, 150, 200, 250]
-    # yticks_epg[key, 6] = [1,2,3]
-    # yticks_epg[key, 7] = [5, 10, 15, 20, 25]
-
-
-  # key = ('inb', 1, 'a')
-  # for key in [('inb', 1, 'a'), ('inb', 2, 'a'), ('inb', 3, 'a')]:
-  #   xlbs_epgg[key] = [0.1,    0, 0, 0, -.4, -0.02, -0.5, 0]
-  #   xubs_epgg[key] = [0.16,  1.6, 1, 8,  .4,  0.02, 0.5, 0.15]
-  #   yubs_epgg[key] = [50, 2, 2.5, 0.5, 3, 250, 4, 25]
-
-    # xticks_epgg[key, 1] = [0, 0.4, 0.8, 1.2, 1.6]
-    # xticks_epgg[key, 2] = [0, 0.25, 0.5 ,0.75, 1]
-    # xticks_epgg[key, 3] = [0, 2, 4, 6, 8]
-    # xticks_epgg[key, 4] = [-0.4, -0.2, 0, 0.2, 0.4]
-    # xticks_epgg[key, 5] = [-0.02, 0, 0.02]
-    # xticks_epgg[key, 6] = [-0.5, 0, 0.5]
-    # xticks_epgg[key, 7] = [0, 0.05, 0.1, 0.15]
-    # yticks_epgg[key, 0] = [50, 100]
-    # yticks_epgg[key, 1] = [0.5, 1, 1.5, 2]
-    # yticks_epgg[key, 2] = [.5, 1, 1.5, 2, 2.5]
-    # yticks_epgg[key, 3] = [0.25, 0.5]
-    # yticks_epgg[key, 4] = [1, 2, 3]
-    # yticks_epgg[key, 5] = [50, 100, 150, 200]
-    # yticks_epgg[key, 6] = [2, 4]
-    # yticks_epgg[key, 7] = [5, 10, 15, 20, 25]
-
   # path_exp_epg  = '/volatile/clas12/sangbaek/jan2023/q16_18/dset_{}/exp/epg/{}/'.format(args.plot, polarity)
   # path_exp_epgg = '/volatile/clas12/sangbaek/jan2023/q16_18/dset_{}/exp/epgg/{}/'.format(args.plot, polarity)
   # path_sim_epg  = '/volatile/clas12/sangbaek/jan2023/q16_18/dset_{}/sim/epg/{}/'.format(args.plot, polarity)
@@ -164,11 +119,11 @@ if args.question == 16:
     sim_label = 'Simulation\n (dvcsgen only)'
 
   for config in [1, 2, 3]:
-    df3 = exp_epg.loc[exp_epg.config == config, :]
-    df1 = sim_epg.loc[sim_epg.config == config, :]
-    df2 = sim_bkg_1g.loc[sim_bkg_1g.config == config, :]
-    df4 = exp_epgg.loc[exp_epgg.config == config, :]
-    df5 = sim_bkg_2g.loc[sim_bkg_2g.config == config, :]
+    df3 = exp_epg   .loc[(exp_epg.config == config    ) & (exp_epg   .Ptheta < 64.23 )   , :]
+    df1 = sim_epg   .loc[(sim_epg.config == config    ) & (sim_epg   .Ptheta < 64.23 )   , :]
+    df2 = sim_bkg_1g.loc[(sim_bkg_1g.config == config ) & (sim_bkg_1g.Ptheta < 64.23 )   , :]
+    df4 = exp_epgg  .loc[(exp_epgg.config == config   ) & (exp_epgg  .Ptheta < 64.23 )   , :]
+    df5 = sim_bkg_2g.loc[(sim_bkg_2g.config == config ) & (sim_bkg_2g.Ptheta < 64.23 )   , :]
 
     # DVCS plots
     varstoplot = dvcsvars
