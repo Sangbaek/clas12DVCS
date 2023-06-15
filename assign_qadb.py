@@ -33,6 +33,8 @@ for i in range(339):
     break    
   chargedb   = chargeTree.loc[qaTree.index == run, filenum]
   evnumMin   = qadb.values[0]['evnumMin']
+  if (filenum>0) and (evnumMin == 0):
+    evnumMin = evnumMax+1
   evnumMax   = qadb.values[0]['evnumMax']
   defect     = qadb.values[0]['defect']
   chargemin  = chargedb.values[0]['fcChargeMin']
