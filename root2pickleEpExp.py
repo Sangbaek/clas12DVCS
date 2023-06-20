@@ -168,7 +168,6 @@ class root2pickle():
         df_ep.loc[:,'y'] = df_ep['nu']/self.ebeam
         df_ep.loc[:,'xB'] = df_ep['Q2'] / 2.0 / M / df_ep['nu']
         df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
-        df_ep.loc[:,'t1Orig'] = 2 * M * (df_ep['PeOrig'] - M)
         df_ep.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_ep['Ee'])**2 - mag2(VGS)))
 
         # trento angles
