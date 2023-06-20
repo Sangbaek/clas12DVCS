@@ -58,8 +58,6 @@ class root2pickle():
         self.readEP(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
             fidlevel = fidlevel)
-        self.save(raw = raw, pol = pol)
-
 
     def readFile(self):
         '''read root using uproot'''
@@ -77,44 +75,10 @@ class root2pickle():
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
-        # data frames and their keys to read Z part
-        df_electronGen = pd.DataFrame()
-        df_protonGen = pd.DataFrame()
-
-        eleKeysGen = ["GenEpx", "GenEpy", "GenEpz"]
-        proKeysGen = ["GenPpx", "GenPpy", "GenPpz"]
-
-        # read keys
-        for key in eleKeysGen:
-            df_electronGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
-        for key in proKeysGen:
-            df_protonGen[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
-
-        df_electronGen = df_electronGen.astype({"GenEpx": float, "GenEpy": float, "GenEpz": float})
-        df_protonGen = df_protonGen.astype({"GenPpx": float, "GenPpy": float, "GenPpz": float})
-
-        #set up a dummy index for merging
-        df_electronGen.loc[:,'event'] = df_electronGen.index
-        df_protonGen.loc[:,'event'] = df_protonGen.index
-
-        #spherical coordinates
-        eleGen = [df_electronGen["GenEpx"], df_electronGen["GenEpy"], df_electronGen["GenEpz"]]
-        df_electronGen.loc[:, 'GenEp'] = mag(eleGen)
-        df_electronGen.loc[:, 'GenEtheta'] = getTheta(eleGen)
-        df_electronGen.loc[:, 'GenEphi'] = getPhi(eleGen)
-
-        proGen = [df_protonGen["GenPpx"], df_protonGen["GenPpy"], df_protonGen["GenPpz"]]
-        df_protonGen.loc[:, 'GenPp'] = mag(proGen)
-        df_protonGen.loc[:, 'GenPtheta'] = getTheta(proGen)
-        df_protonGen.loc[:, 'GenPphi'] = getPhi(proGen)
-
-        df_MC = pd.merge(df_electronGen, df_protonGen, how='inner', on='event')
-        self.df_MC = df_MC
-
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
         eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
@@ -521,8 +485,8 @@ class root2pickle():
         # exclusivity variables
         df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(VmissG)
 
-        df_ep = pd.merge(df_ep, self.df_MC, how = 'inner', on='event')
         self.df_ep = df_ep
+
 
 if __name__ == "__main__":
 
@@ -558,6 +522,6 @@ if __name__ == "__main__":
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
-    df = converter.df
+    df = converter.df_ep
 
     df.to_pickle(args.out)
