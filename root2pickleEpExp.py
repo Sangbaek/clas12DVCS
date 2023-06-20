@@ -58,6 +58,7 @@ class root2pickle():
         self.readEP(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
             fidlevel = fidlevel)
+        self.saveEPvars()
 
     def readFile(self):
         '''read root using uproot'''

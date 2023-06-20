@@ -8,7 +8,7 @@ parser.add_argument("-p","--polarity", help="polarity: inb or outb", default = "
 parser.add_argument("-r","--run", help="run number", default = 5032, type = int)
 parser.add_argument("-pi0", '--pi0', action = 'store_true')
 parser.add_argument("-opt", "--option", default = '', type = str)
-parser.add_argument("-f", "--filename", help = "file name", defualt = None)
+parser.add_argument("-f", "--filename", help = "file name", default = None)
 args  = parser.parse_args()
 
 run      = args.run

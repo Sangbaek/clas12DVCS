@@ -58,6 +58,7 @@ class root2pickle():
         self.readEP(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
             fidlevel = fidlevel)
+        self.saveEPvars()
         self.save(raw = raw, pol = pol)
 
 
@@ -558,6 +559,6 @@ if __name__ == "__main__":
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
-    df = converter.df
+    df = converter.df_ep
 
     df.to_pickle(args.out)
