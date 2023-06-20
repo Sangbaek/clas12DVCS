@@ -504,6 +504,8 @@ class root2pickle():
         VGS = [-df_ep['Epx'], -df_ep['Epy'], self.pbeam - df_ep['Epz']]
         v3l = cross(self.beam, ele)
         v3h = cross(pro, VGS)
+        Vmiss = [-df_epg["Epx"] - df_epg["Ppx"], -df_epg["Epy"] - df_epg["Ppy"],
+                  self.pbeam - df_epg["Epz"] - df_epg["Ppz"]]
 
         # binning kinematics
         df_ep.loc[:,'Q2'] = -((self.ebeam - df_ep['Ee'])**2 - mag2(VGS))
@@ -520,7 +522,7 @@ class root2pickle():
                                   df_ep['phi1'], df_ep['phi1'])
 
         # exclusivity variables
-        df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(VmissG)
+        df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(Vmiss)
 
         df_ep = pd.merge(df_ep, self.df_MC, how = 'inner', on='event')
         self.df_ep = df_ep
