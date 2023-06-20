@@ -8,6 +8,7 @@ parser.add_argument("-p","--polarity", help="polarity: inb or outb", default = "
 parser.add_argument("-r","--run", help="run number", default = 5032, type = int)
 parser.add_argument("-pi0", '--pi0', action = 'store_true')
 parser.add_argument("-opt", "--option", default = '', type = str)
+parser.add_argument("-f", "--filename", help = "file name", defualt = None)
 args  = parser.parse_args()
 
 run      = args.run
@@ -24,6 +25,8 @@ if args.pi0:
 qaTree     = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/qaTree.json".format(polarity)).T
 chargeTree = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/chargeTree.json".format(polarity)).T
 filename   = "/volatile/clas12/sangbaek/jan2023/convPkl{}/exp/{}/{}/{}.pkl".format(option, mode, polarity, run)
+if args.file:
+  filename = args.filename
 file       = pd.read_pickle(filename)
 
 for i in range(339):
