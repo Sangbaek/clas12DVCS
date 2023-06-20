@@ -73,7 +73,7 @@ class root2pickle():
     def readEP(self, entry_start = None, entry_stop = None, pol = "inbending", 
         detRes = False, logistics = False, nofid = False, 
         nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid'):
-        '''save data into df_epg, df_epgg for parent class epg'''
+        '''save data into df_ep for parent class epg'''
         self.readFile()
 
         # data frames and their keys to read X part
@@ -468,8 +468,8 @@ class root2pickle():
         VGS = [-df_ep['Epx'], -df_ep['Epy'], self.pbeam - df_ep['Epz']]
         v3l = cross(self.beam, ele)
         v3h = cross(pro, VGS)
-        Vmiss = [-df_epg["Epx"] - df_epg["Ppx"], -df_epg["Epy"] - df_epg["Ppy"],
-                  self.pbeam - df_epg["Epz"] - df_epg["Ppz"]]
+        Vmiss = [-df_ep["Epx"] - df_ep["Ppx"], -df_ep["Epy"] - df_ep["Ppy"],
+                  self.pbeam - df_ep["Epz"] - df_ep["Ppz"]]
 
         # binning kinematics
         df_ep.loc[:,'Q2'] = -((self.ebeam - df_ep['Ee'])**2 - mag2(VGS))
