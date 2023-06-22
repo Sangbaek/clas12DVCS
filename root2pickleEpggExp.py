@@ -1142,7 +1142,7 @@ class root2pickle():
             cut_Q2 = df_x.loc[:, "Q2"] > 1  # Q2
             cut_W = df_x.loc[:, "W"] > 2  # W
             cut_Ee = df_x["Ee"] > 2  # Ee
-            cut_Ge2 = df_x["Ge2"] > 0.6  # Ge cut. Ge>3 for DVCS module.
+            cut_Ge2 = df_x["Ge2"] > self.Ge2Threshold  # Ge cut. Ge>3 for DVCS module.
             cut_Esector = (df_x["Esector"]!=df_x["Gsector"]) & (df_x["Esector"]!=df_x["Gsector2"]) 
             cut_Psector = ~( ((df_x["Pstat"]//10)%10>0) & (df_x["Psector"]==df_x["Gsector"]) ) & ~( ((df_x["Pstat"]//10)%10>0) & (df_x["Psector"]==df_x["Gsector2"]) )
             cut_Ppmax = df_x.Pp < 1.6  # Pp
