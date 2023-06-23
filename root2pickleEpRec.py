@@ -59,7 +59,7 @@ class root2pickle():
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
             fidlevel = fidlevel)
         self.saveEPvars()
-        self.save(raw = raw, pol = pol)
+        # self.save(raw = raw, pol = pol)
 
 
     def readFile(self):
