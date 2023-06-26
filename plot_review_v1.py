@@ -221,6 +221,16 @@ if args.question == 16:
       plt.clf()
 
   elif args.plot == 'e':
+
+    yticklabel_1 = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+    yticklabel_2 = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+    yticklabel_3 = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+    yticklabel_1[-1]  = "{}\n{}".format(yticklabel_1[-1], yticklabel_1[0])
+    yticklabel_1[0]   = ''
+    yticklabel_2[0]   = ''
+    yticklabel_3[0]  = "0\n"
+    yticklabel_3[-1]  = "{}\n{}".format(yticklabel_3[-1], yticklabel_3[0])
+
     for config in [1, 2, 3]:
       key  = (polarity, config, args.plot)
       for varind in range(8):
@@ -233,10 +243,22 @@ if args.question == 16:
         xlb     = xlbs_epg[key][varind]
         xub     = xubs_epg[key][varind]
 
+        xtick        = xticks_epg[key, varind]
+        xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
+        xticklabel_1[-1] = ''
+        xticklabel_2[-1] = ''
+        xticklabel_3[0]  = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
+
         ind = 0 
         filenum = 0
         
         fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
+
+        yub    = np.zeros((5, 5))
+        filled = np.zeros((5, 5))
         for tbin in range(6):
           for xBbin in range(len(newxBbins2)-1):
             for Q2bin in range(len(newQ2bins2)-1):
@@ -264,38 +286,51 @@ if args.question == 16:
               xind = ind//5
               yind = ind%5
               ind  = ind + 1
-              yub  = 1.2*np.max([expDist, simDist])
+              yub[xind, yind] = 1.2*np.max([expDist, simDist])
+              filled[xind, yind] = 1
                                           
               axs[xind, yind].hist(bins[:-1], bins, weights = expDist, histtype = 'step', color='b', linewidth=3, label = exp_label)
               axs[xind, yind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=3, label = sim_label)
 
               annotation = "({}, {}, {})".format(xBbin, Q2bin, tbin)
               axs[xind, yind].annotate(annotation, xy = (0.1, 0.9), xytext = (0.02, 0.9), xycoords = 'axes fraction', fontsize = 30)
-              axs[xind, yind].set_ylim(bottom = 0)
-              axs[xind, yind].set_ylim(top    = yub)
-              
-              if ind >24:
-                for ax in axs.flatten():
-                  ax.get_xaxis().set_visible(False)
-                  ax.get_yaxis().set_visible(False)
-                for ax in axs[-1, :]:
-                  ax.get_xaxis().set_visible(True)
-                  xtick        = xticks_epg[key, varind]
-                  xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
-                  xticklabel_1[-1] = ''
-                  xticklabel_2[-1] = ''
-                  xticklabel_3[0]  = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
-                  ax.set_xlabel(label + " [" + unit + "]", fontsize = 40)
-                  ax.set_xticks(xtick)
-                  ax.set_xticklabels(xticklabel_1)
-                  ax.set_xlim([xlb, xub])
-                axs[-1, 0] .set_xticklabels(xticklabel_2)
-                axs[-1, 0] .set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
-                axs[-1, -1].set_xticklabels(xticklabel_3)
-                  
+
+              axs[xind, yind].set_ylim([0, yub[xind, yind]])
+              axs[xind, yind].set_xlim([xlb, xub])
+
+              axs[xind, yind].get_xaxis().set_visible(False)
+              axs[xind, yind].get_yaxis().set_visible(False)
+
+              if (xind == 5 -1) and (yind==0):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_2)
+
+              elif (xind == 5 -1) and (yind < 5 -1):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_1)
+
+              if (xind == 0) and (yind==0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+                axs[xind, yind].set_yticks(ytick, yticklabel_2)
+
+              elif (xind < 5 -1) and (yind == 0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+                axs[xind, yind].set_yticks(ytick, yticklabel_1)
+
+              if (xind == 5 -1) and (yind==0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+                axs[xind, yind].set_yticks(ytick, yticklabel_3)
+
+              if (xind == 5 -1) and (yind == 5 -1):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_3)
+
                 plt.subplots_adjust(wspace=0, hspace=0)
                 plt.savefig("plots/q16/dset_e/{}/dvcs_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
                 filenum = filenum + 1
@@ -303,31 +338,46 @@ if args.question == 16:
                 ind = 0
                 fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
               
-        for ax in axs.flatten():
-          ax.get_xaxis().set_visible(False)
-          ax.get_yaxis().set_visible(False)
-        for ax in axs[-1, :]:
-          ax.get_xaxis().set_visible(True)
-          xtick        = xticks_epg[key, varind]
-          xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
-          xticklabel_1[-1]  = ''
-          xticklabel_2[-1] = ''
-          xticklabel_3[0] = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
-          ax.set_xlabel( label + " [" + unit + "]", fontsize = 40)
-          ax.set_xticks(xtick)
-          ax.set_xticklabels(xticklabel_1)
-          ax.set_xlim([xlb, xub])
-        axs[-1, 0] .set_xticklabels(xticklabel_2)
-        axs[-1, 0] .set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
-        axs[-1, -1].set_xticklabels(xticklabel_3)
-        
-        plt.subplots_adjust(wspace=0, hspace=0)
-        plt.savefig("plots/q16/dset_e/{}/dvcs_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
-        plt.clf()
+        for xind, yind in itertools.product(range(5), range(5)):      
+          axs[xind, yind].set_ylim([0, yub[xind, yind]])
+          axs[xind, yind].set_xlim([xlb, xub])
 
+          axs[xind, yind].get_xaxis().set_visible(False)
+          axs[xind, yind].get_yaxis().set_visible(False)
+
+          if (xind == 5 -1) and (yind==0):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_2)
+
+          elif (xind == 5 -1) and (yind < 5 -1):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_1)
+
+          if (xind == 0) and (yind==0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            axs[xind, yind].set_yticks(ytick, yticklabel_2)
+
+          elif (xind < 5 -1) and (yind == 0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            axs[xind, yind].set_yticks(ytick, yticklabel_1)
+
+          if (xind == 5 -1) and (yind==0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            axs[xind, yind].set_yticks(ytick, yticklabel_3)
+
+          if (xind == 5 -1) and (yind == 5 -1):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_3)
+
+            plt.subplots_adjust(wspace=0, hspace=0)
+            plt.savefig("plots/q16/dset_e/{}/dvcs_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
+            plt.clf()
 
         # DVπ0P plots
         var   = pi0vars[varind]
@@ -336,6 +386,15 @@ if args.question == 16:
 
         xlb     = xlbs_epgg[key][varind]
         xub     = xubs_epgg[key][varind]
+
+        xtick        = xticks_epgg[key, varind]
+        xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
+        xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
+        xticklabel_1[-1] = ''
+        xticklabel_2[-1] = ''
+        xticklabel_3[0]  = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
 
         ind = 0 
         filenum = 0
@@ -365,30 +424,42 @@ if args.question == 16:
 
               annotation = "({}, {}, {})".format(xBbin, Q2bin, tbin)
               axs[xind, yind].annotate(annotation, xy = (0.1, 0.9), xytext = (0.02, 0.9), xycoords = 'axes fraction', fontsize = 30)
-              axs[xind, yind].set_ylim(bottom = 0)
-              axs[xind, yind].set_ylim(top    = yub)
-              
-              if ind >24:
-                for ax in axs.flatten():
-                  ax.get_xaxis().set_visible(False)
-                  ax.get_yaxis().set_visible(False)
-                for ax in axs[-1, :]:
-                  ax.get_xaxis().set_visible(True)
-                  xtick        = xticks_epgg[key, varind]
-                  xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
-                  xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
-                  xticklabel_1[-1] = ''
-                  xticklabel_2[-1] = ''
-                  xticklabel_3[0]  = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
-                  ax.set_xlabel(label + " [" + unit + "]", fontsize = 40)
-                  ax.set_xticks(xtick)
-                  ax.set_xticklabels(xticklabel_1)
-                  ax.set_xlim([xlb, xub])
-                axs[-1, 0] .set_xticklabels(xticklabel_2)
-                axs[-1, 0] .set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
-                axs[-1, -1].set_xticklabels(xticklabel_3)
+
+              axs[xind, yind].set_ylim([0, yub])
+              axs[xind, yind].set_xlim([xlb, xub])
+
+              axs[xind, yind].get_xaxis().set_visible(False)
+              axs[xind, yind].get_yaxis().set_visible(False)
+
+              if (xind == 5 -1) and (yind==0):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_2)
+
+              elif (xind == 5 -1) and (yind < 5 -1):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_1)
+
+              if (xind == 0) and (yind==0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                axs[xind, yind].set_yticks(ytick, yticklabel_2)
+
+              elif (xind < 5 -1) and (yind == 0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                axs[xind, yind].set_yticks(ytick, yticklabel_1)
+
+              if (xind == 5 -1) and (yind==0):
+                axs[xind, yind].get_yaxis().set_visible(True)
+                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                axs[xind, yind].set_yticks(ytick, yticklabel_3)
+
+              if (xind == 5 -1) and (yind == 5 -1):
+                axs[xind, yind].get_xaxis().set_visible(True)
+                axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+                axs[xind, yind].set_xticks(xtick, xticklabel_3)
                   
                 plt.subplots_adjust(wspace=0, hspace=0)
                 plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
@@ -396,28 +467,43 @@ if args.question == 16:
                 plt.clf()
                 ind = 0
                 fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
-              
-        for ax in axs.flatten():
-          ax.get_xaxis().set_visible(False)
-          ax.get_yaxis().set_visible(False)
-        for ax in axs[-1, :]:
-          ax.get_xaxis().set_visible(True)
-          xtick        = xticks_epgg[key, varind]
-          xticklabel_1 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_2 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_3 = ["{:.2f}".format(i) for i in xtick]
-          xticklabel_1[0]  = "{}\n{}".format(xticklabel_1[-1], xticklabel_1[0])
-          xticklabel_1[-1]  = ''
-          xticklabel_2[-1] = ''
-          xticklabel_3[0] = "{}\n{}".format(xticklabel_3[-1], xticklabel_3[0])
-          ax.set_xlabel( label + " [" + unit + "]", fontsize = 40)
-          ax.set_xticks(xtick)
-          ax.set_xticklabels(xticklabel_1)
-          ax.set_xlim([xlb, xub])
-        axs[-1, 0].set_xticklabels(xticklabel_2)
-        axs[-1, 0] .set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
-        axs[-1, -1].set_xticklabels(xticklabel_3)
-        
-        plt.subplots_adjust(wspace=0, hspace=0)
-        plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
-        plt.clf()
+        for xind, yind in itertools.product(range(5), range(5)):      
+          axs[xind, yind].set_ylim([0, yub])
+          axs[xind, yind].set_xlim([xlb, xub])
+
+          axs[xind, yind].get_xaxis().set_visible(False)
+          axs[xind, yind].get_yaxis().set_visible(False)
+
+          if (xind == 5 -1) and (yind==0):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel("\n" + label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_2)
+
+          elif (xind == 5 -1) and (yind < 5 -1):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_1)
+
+          if (xind == 0) and (yind==0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            axs[xind, yind].set_yticks(ytick, yticklabel_2)
+
+          elif (xind < 5 -1) and (yind == 0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            axs[xind, yind].set_yticks(ytick, yticklabel_1)
+
+          if (xind == 5 -1) and (yind==0):
+            axs[xind, yind].get_yaxis().set_visible(True)
+            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            axs[xind, yind].set_yticks(ytick, yticklabel_3)
+
+          if (xind == 5 -1) and (yind == 5 -1):
+            axs[xind, yind].get_xaxis().set_visible(True)
+            axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
+            axs[xind, yind].set_xticks(xtick, xticklabel_3)
+
+          plt.subplots_adjust(wspace=0, hspace=0)
+          plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
+          plt.clf()
