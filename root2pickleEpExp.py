@@ -79,35 +79,9 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
-        eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
-        eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
-        eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
-        eleKeysRec.extend(["Enphe"])
-        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
-        proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
-        proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
-        proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
-        # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
+        eleKeysRec = ["Epx", "Epy", "Epz", "nmebar", "TriggerBit"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz"]
 
-        if detRes:
-            eleKeysRec.extend(["Evx", "Evy"])
-            # eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
-            # eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
-            # eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
-            eleKeysRec.extend(["EcalU2", "EcalV2", "EcalW2"])
-            eleKeysRec.extend(["EcalU3", "EcalV3", "EcalW3"])
-            # eleKeysRec.extend(["Enphe"])
-            eleKeysRec.extend(["EhtccX", "EhtccY", "EhtccZ"])
-            # proKeysRec.extend(["Pvz"])
-            proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz"])
-            # proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
-            eleKeysRec.extend(["startTime"])
-            proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
-            proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
-            proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
-            proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
-            proKeysRec.extend(["Pchi2track", "PNDFtrack"])
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
@@ -123,7 +97,6 @@ class root2pickle():
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
         ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
         df_electronRec.loc[:, 'Ep'] = mag(ele)
-        df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index
