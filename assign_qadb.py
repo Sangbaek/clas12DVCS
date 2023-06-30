@@ -25,7 +25,7 @@ if args.pi0:
 qaTree     = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/qaTree.json".format(polarity)).T
 chargeTree = pd.read_json("/volatile/clas12/sangbaek/clasqaDB/qadb/qa.rga_{}ending/chargeTree.json".format(polarity)).T
 filename   = "/volatile/clas12/sangbaek/jan2023/convPkl{}/exp/{}/{}/{}.pkl".format(option, mode, polarity, run)
-if args.file:
+if args.filename:
   filename = args.filename
 file       = pd.read_pickle(filename)
 
