@@ -27,9 +27,9 @@ GeVc2 = "(GeV/c)"+r"${}^{2}$"
 
 import matplotlib
 # initial settings
-cmap = copy(matplotlib.colormaps["jet"])
-cmap.set_under('w',0)
-cmap.set_bad('w',0)
+# cmap = copy(matplotlib.colormaps["jet"])
+# cmap.set_under('w',0)
+# cmap.set_bad('w',0)
 pgf_with_latex = {
     "pgf.texsystem": "pdflatex",
     "text.usetex": True,			# use LaTeX to write all text
@@ -80,23 +80,23 @@ thousandth = r"$10^{-3}$"
 if args.question == 0:
 
   InbExp = []
-  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/inb/"):
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/inb/*.pkl"):
     df = pd.read_pickle(file)
     InbExp.append(df)
   InbExp = pd.concat(InbExp)
   InbSim = []
-  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/inb/"):
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/inb/*.pkl"):
     df = pd.read_pickle(file)
     InbSim.append(df)
   InbSim = pd.concat(InbExp)
 
   OutbExp = []
-  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/outb/"):
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/outb/*.pkl"):
     df = pd.read_pickle(file)
     OutbExp.append(df)
   OutbExp = pd.concat(OutbExp)
   OutbSim = []
-  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/outb/"):
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/outb/*.pkl"):
     df = pd.read_pickle(file)
     OutbSim.append(df)
   OutbSim = pd.concat(OutbExp)
