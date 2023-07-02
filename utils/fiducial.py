@@ -411,21 +411,21 @@ def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
 		df_protonRec.loc[(phi_DC<=phi_DC_min) & (df_protonRec.Psector<7), "PFid_dc"] = 0
 		df_protonRec.loc[(phi_DC>=phi_DC_max) & (df_protonRec.Psector<7), "PFid_dc"] = 0
 
-		pchi2CD_lb,   pchi2CD_ub   = -5.000, 6.345
-		pchi2FD_S1_lb, pchi2FD_S1_ub = -3.296, 3.508
-		pchi2FD_S2_lb, pchi2FD_S2_ub = -3.552, 4.000
-		pchi2FD_S3_lb, pchi2FD_S3_ub = -3.446, 3.937
-		pchi2FD_S4_lb, pchi2FD_S4_ub = -2.747, 3.190
-		pchi2FD_S5_lb, pchi2FD_S5_ub = -2.851, 3.418
-		pchi2FD_S6_lb, pchi2FD_S6_ub = -3.174, 3.514
+		# pchi2CD_lb,   pchi2CD_ub   = -5.000, 6.345
+		# pchi2FD_S1_lb, pchi2FD_S1_ub = -3.296, 3.508
+		# pchi2FD_S2_lb, pchi2FD_S2_ub = -3.552, 4.000
+		# pchi2FD_S3_lb, pchi2FD_S3_ub = -3.446, 3.937
+		# pchi2FD_S4_lb, pchi2FD_S4_ub = -2.747, 3.190
+		# pchi2FD_S5_lb, pchi2FD_S5_ub = -2.851, 3.418
+		# pchi2FD_S6_lb, pchi2FD_S6_ub = -3.174, 3.514
 
-		vzdiffCD_lb,    vzdiffCD_ub    = -2.011, 2.314
-		vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.209, 4.017
-		vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.612, 4.139
-		vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.328, 4.287
-		vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.411, 4.108
-		vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.607, 4.246
-		vzdiffFD_S6_lb, vzdiffFD_S6_ub = -2.999, 3.927
+		# vzdiffCD_lb,    vzdiffCD_ub    = -2.011, 2.314
+		# vzdiffFD_S1_lb, vzdiffFD_S1_ub = -3.209, 4.017
+		# vzdiffFD_S2_lb, vzdiffFD_S2_ub = -3.612, 4.139
+		# vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.328, 4.287
+		# vzdiffFD_S4_lb, vzdiffFD_S4_ub = -3.411, 4.108
+		# vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.607, 4.246
+		# vzdiffFD_S6_lb, vzdiffFD_S6_ub = -2.999, 3.927
 
 	if pol == 'outbending':
 		minparams = p_dc_minparams_out
@@ -450,14 +450,21 @@ def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
 		df_protonRec.loc[(y_rot<=calc_min) & (df_protonRec.Psector<7), "PFid_dc"] = 0
 		df_protonRec.loc[(y_rot>=calc_max) & (df_protonRec.Psector<7), "PFid_dc"] = 0
 
-		pchi2CD_lb,   pchi2CD_ub   = -5.592,  6.785
-		pchi2FD_S1_lb, pchi2FD_S1_ub = -3.905, 4.088
-		pchi2FD_S2_lb, pchi2FD_S2_ub = -3.411, 3.939
-		pchi2FD_S3_lb, pchi2FD_S3_ub = -4.042, 5.954
-		pchi2FD_S4_lb, pchi2FD_S4_ub = -3.820, 5.065
-		pchi2FD_S5_lb, pchi2FD_S5_ub = -3.384, 4.232
-		pchi2FD_S6_lb, pchi2FD_S6_ub = -5.077, 5.100
+		# pchi2CD_lb,   pchi2CD_ub   = -5.592,  6.785
+		# pchi2FD_S1_lb, pchi2FD_S1_ub = -3.905, 4.088
+		# pchi2FD_S2_lb, pchi2FD_S2_ub = -3.411, 3.939
+		# pchi2FD_S3_lb, pchi2FD_S3_ub = -4.042, 5.954
+		# pchi2FD_S4_lb, pchi2FD_S4_ub = -3.820, 5.065
+		# pchi2FD_S5_lb, pchi2FD_S5_ub = -3.384, 4.232
+		# pchi2FD_S6_lb, pchi2FD_S6_ub = -5.077, 5.100
 
+		# vzdiffCD_lb,    vzdiffCD_ub    = -2.737, 2.096
+		# vzdiffFD_S1_lb, vzdiffFD_S1_ub = -4.435, 3.429
+		# vzdiffFD_S2_lb, vzdiffFD_S2_ub = -4.646, 2.978
+		# vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.922, 3.040
+		# vzdiffFD_S4_lb, vzdiffFD_S4_ub = -4.646, 3.493
+		# vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.901, 3.750
+		# vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.846, 3.623
 
 	cut_CD = df_protonRec.Psector > 7
 	if fidlevel == 'mid':
@@ -479,29 +486,22 @@ def protonFiducialCounting(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
 	df_protonRec.loc[cut_total, "PFid_cvt"] = 1 #CD fid
             
 
-	df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid_chi"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid_chi"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid_chi"] = 0
 
-	vzdiffCD_lb,    vzdiffCD_ub    = -2.737, 2.096
-	vzdiffFD_S1_lb, vzdiffFD_S1_ub = -4.435, 3.429
-	vzdiffFD_S2_lb, vzdiffFD_S2_ub = -4.646, 2.978
-	vzdiffFD_S3_lb, vzdiffFD_S3_ub = -3.922, 3.040
-	vzdiffFD_S4_lb, vzdiffFD_S4_ub = -4.646, 3.493
-	vzdiffFD_S5_lb, vzdiffFD_S5_ub = -3.901, 3.750
-	vzdiffFD_S6_lb, vzdiffFD_S6_ub = -3.846, 3.623
 
-	df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.vzdiff<vzdiffCD_lb)   | (df_protonRec.vzdiff>vzdiffCD_ub)  ), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.vzdiff<vzdiffFD_S1_lb) | (df_protonRec.vzdiff>vzdiffFD_S1_ub)), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.vzdiff<vzdiffFD_S2_lb) | (df_protonRec.vzdiff>vzdiffFD_S2_ub)), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.vzdiff<vzdiffFD_S3_lb) | (df_protonRec.vzdiff>vzdiffFD_S3_ub)), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.vzdiff<vzdiffFD_S4_lb) | (df_protonRec.vzdiff>vzdiffFD_S4_ub)), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.vzdiff<vzdiffFD_S5_lb) | (df_protonRec.vzdiff>vzdiffFD_S5_ub)), "PFid_vz"] = 0
-	df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.vzdiff<vzdiffFD_S6_lb) | (df_protonRec.vzdiff>vzdiffFD_S6_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.vzdiff<vzdiffCD_lb)   | (df_protonRec.vzdiff>vzdiffCD_ub)  ), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.vzdiff<vzdiffFD_S1_lb) | (df_protonRec.vzdiff>vzdiffFD_S1_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.vzdiff<vzdiffFD_S2_lb) | (df_protonRec.vzdiff>vzdiffFD_S2_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.vzdiff<vzdiffFD_S3_lb) | (df_protonRec.vzdiff>vzdiffFD_S3_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.vzdiff<vzdiffFD_S4_lb) | (df_protonRec.vzdiff>vzdiffFD_S4_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.vzdiff<vzdiffFD_S5_lb) | (df_protonRec.vzdiff>vzdiffFD_S5_ub)), "PFid_vz"] = 0
+	# df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.vzdiff<vzdiffFD_S6_lb) | (df_protonRec.vzdiff>vzdiffFD_S6_ub)), "PFid_vz"] = 0
 
-	df_protonRec.loc[:, "PFid"] = df_protonRec.PFid_dc * df_protonRec.PFid_cvt * df_protonRec.PFid_chi * df_protonRec.PFid_vz 
+	df_protonRec.loc[:, "PFid"] = df_protonRec.PFid_dc * df_protonRec.PFid_cvt #* df_protonRec.PFid_chi * df_protonRec.PFid_vz 
 	return df_protonRec
