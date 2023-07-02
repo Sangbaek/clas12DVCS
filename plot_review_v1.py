@@ -88,7 +88,7 @@ if args.question == 0:
   for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/inb/*.pkl"):
     df = pd.read_pickle(file)
     InbSim.append(df)
-  InbSim = pd.concat(InbExp)
+  InbSim = pd.concat(InbSim)
 
   OutbExp = []
   for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/outb/*.pkl"):
@@ -99,7 +99,7 @@ if args.question == 0:
   for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/outb/*.pkl"):
     df = pd.read_pickle(file)
     OutbSim.append(df)
-  OutbSim = pd.concat(OutbExp)
+  OutbSim = pd.concat(OutbSim)
 
   print("duplicated numbers Inb. Exp.: {} out of total {}".format(len(InbExp) - len(InbExp.event.unique()), len(InbExp)))
   print("duplicated numbers Inb. Sim.: {} out of total {}".format(len(InbSim) - len(InbSim.event.unique()), len(InbSim)))
