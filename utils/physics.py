@@ -157,6 +157,9 @@ def tmin2(xB, Q2, t, phi):
 def tmax2(xB, Q2, t, phi):
     return -0.5*((Q2/xB-Q2)*(Q2/xB+np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi)
 
+def tcol(xB, Q2, t, phi, ebeam = 10.604):
+    return Q2*(Q2-2*xB*M*ebeam)/xB/(Q2-2*M*ebeam)
+
 def Kfac2(xB, Q2, t, phi):
     return (-del2q2(xB, Q2, t, phi))*(1 - xB)*y1eps(xB, Q2, t, phi)*(1 - np.abs(tmin(xB, Q2, t, phi))/t)*(np.sqrt(1 + eps2(xB, Q2, t, phi)) + 
             ((4*xB*(1 - xB) + eps2(xB, Q2, t, phi))/(4*(1 - xB)))*(-(t - np.abs(tmin(xB, Q2, t, phi)))/Q2))

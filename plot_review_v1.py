@@ -77,6 +77,265 @@ tenth = r"$10^{-1}$"
 hundredth = r"$10^{-2}$"
 thousandth = r"$10^{-3}$"
 
+if args.question == 0:
+
+  InbExp = []
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/inb/"):
+    df = pd.read_pickle(file)
+    InbExp.append(df)
+  InbExp = pd.concat(InbExp)
+  InbSim = []
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/inb/"):
+    df = pd.read_pickle(file)
+    InbSim.append(df)
+  InbSim = pd.concat(InbExp)
+
+  OutbExp = []
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/exp/epg/outb/"):
+    df = pd.read_pickle(file)
+    OutbExp.append(df)
+  OutbExp = pd.concat(OutbExp)
+  OutbSim = []
+  for file in glob("/volatile/clas12/sangbaek/jan2023/convPkl_nofid/bh/outb/"):
+    df = pd.read_pickle(file)
+    OutbSim.append(df)
+  OutbSim = pd.concat(OutbExp)
+
+  print("duplicated numbers Inb. Exp.: {} out of total {}".format(len(InbExp) - len(InbExp.event.unique()), len(InbExp)))
+  print("duplicated numbers Inb. Sim.: {} out of total {}".format(len(InbSim) - len(InbSim.event.unique()), len(InbSim)))
+  print("duplicated numbers Outb. Exp.: {} out of total {}".format(len(OutbExp) - len(OutbExp.event.unique()), len(OutbExp)))
+  print("duplicated numbers Outb. Sim.: {} out of total {}".format(len(OutbSim) - len(OutbSim.event.unique()), len(OutbSim)))
+
+  electronFiducialCounting(InbExp, pol = "inbending", mc = False, fidlevel = 'mid')
+  protonFiducialCounting(InbExp, pol = "inbending")
+  gammaFiducialCounting(InbExp)
+  electronFiducialCounting(InbSim, pol = "inbending", mc = True, fidlevel = 'mid')
+  protonFiducialCounting(InbSim, pol = "inbending")
+  gammaFiducialCounting(InbSim)
+  electronFiducialCounting(OutbExp, pol = "outbending", mc = False, fidlevel = 'mid')
+  protonFiducialCounting(OutbExp, pol = "outbending")
+  gammaFiducialCounting(OutbExp)
+  electronFiducialCounting(OutbSim, pol = "outbending", mc = True, fidlevel = 'mid')
+  protonFiducialCounting(OutbSim, pol = "outbending")
+  gammaFiducialCounting(OutbSim)
+
+  InbExp_effect_Epcal = len(InbExp.loc[InbExp.EFid_pcal>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Edw = len(InbExp.loc[InbExp.EFid_dw>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Edc = len(InbExp.loc[InbExp.EFid_dc>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Esf = len(InbExp.loc[InbExp.EFid_sf>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Evz = len(InbExp.loc[InbExp.EFid_vz>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Eedep = len(InbExp.loc[InbExp.EFid_edep>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Eap = len(InbExp.loc[InbExp.EFid_ap>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Pdc = len(InbExp.loc[(InbExp.Psector < 7) & (InbExp.PFid_dc>0), "event"].unique())/len(InbExp.loc[InbExp.Psector < 7, "event"].unique())
+  InbExp_effect_Pcvt = len(InbExp.loc[(InbExp.Psector > 7) & (InbExp.PFid_cvt>0), "event"].unique())/len(InbExp.loc[InbExp.Psector > 7, "event"].unique())
+  InbExp_effect_Pchi = len(InbExp.loc[InbExp.PFid_chi>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Pvz = len(InbExp.loc[InbExp.PFid_vz>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Gbeta = len(InbExp.loc[InbExp.GFid_beta>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Gpcal = len(InbExp.loc[(InbExp.Gsector < 7) & (InbExp.GFid_Pcal>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector < 7, "event"].unique())
+  InbExp_effect_Gpcal2 = len(InbExp.loc[(InbExp.Gsector < 7) & (InbExp.GFid_Pcal2>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector < 7, "event"].unique())
+  InbExp_effect_Gft = len(InbExp.loc[(InbExp.Gsector > 7) & (InbExp.GFid_FT>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector > 7, "event"].unique())
+  InbExp_effect_FDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==1), "event"].unique())/sum(InbExp.config==1)
+  InbExp_effect_CDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==2), "event"].unique())/sum(InbExp.config==2)
+  InbExp_effect_CDFT = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==3), "event"].unique())/sum(InbExp.config==3)
+
+  InbSim_effect_Epcal = len(InbSim.loc[InbSim.EFid_pcal>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Edw = len(InbSim.loc[InbSim.EFid_dw>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Edc = len(InbSim.loc[InbSim.EFid_dc>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Esf = len(InbSim.loc[InbSim.EFid_sf>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Evz = len(InbSim.loc[InbSim.EFid_vz>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Eedep = len(InbSim.loc[InbSim.EFid_edep>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Eap = len(InbSim.loc[InbSim.EFid_ap>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Pdc = len(InbSim.loc[(InbSim.Psector < 7) & (InbSim.PFid_dc>0), "event"].unique())/len(InbSim.loc[InbSim.Psector < 7, "event"].unique())
+  InbSim_effect_Pcvt = len(InbSim.loc[(InbSim.Psector > 7) & (InbSim.PFid_cvt>0), "event"].unique())/len(InbSim.loc[InbSim.Psector > 7, "event"].unique())
+  InbSim_effect_Pchi = len(InbSim.loc[InbSim.PFid_chi>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Pvz = len(InbSim.loc[InbSim.PFid_vz>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Gbeta = len(InbSim.loc[InbSim.GFid_beta>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Gpcal = len(InbSim.loc[(InbSim.Gsector < 7) & (InbSim.GFid_Pcal>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector < 7, "event"].unique())
+  InbSim_effect_Gpcal2 = len(InbSim.loc[(InbSim.Gsector < 7) & (InbSim.GFid_Pcal2>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector < 7, "event"].unique())
+  InbSim_effect_Gft = len(InbSim.loc[(InbSim.Gsector > 7) & (InbSim.GFid_FT>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector > 7, "event"].unique())
+  InbSim_effect_FDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==1), "event"].unique())/sum(InbSim.config==1)
+  InbSim_effect_CDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==2), "event"].unique())/sum(InbSim.config==2)
+  InbSim_effect_CDFT = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==3), "event"].unique())/sum(InbSim.config==3)
+
+  OutbExp_effect_Epcal = len(OutbExp.loc[OutbExp.EFid_pcal>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Edw = len(OutbExp.loc[OutbExp.EFid_dw>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Edc = len(OutbExp.loc[OutbExp.EFid_dc>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Esf = len(OutbExp.loc[OutbExp.EFid_sf>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Evz = len(OutbExp.loc[OutbExp.EFid_vz>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Eedep = len(OutbExp.loc[OutbExp.EFid_edep>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Eap = len(OutbExp.loc[OutbExp.EFid_ap>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Pdc = len(OutbExp.loc[(OutbExp.Psector < 7) & (OutbExp.PFid_dc>0), "event"].unique())/len(OutbExp.loc[OutbExp.Psector < 7, "event"].unique())
+  OutbExp_effect_Pcvt = len(OutbExp.loc[(OutbExp.Psector > 7) & (OutbExp.PFid_cvt>0), "event"].unique())/len(OutbExp.loc[OutbExp.Psector > 7, "event"].unique())
+  OutbExp_effect_Pchi = len(OutbExp.loc[OutbExp.PFid_chi>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Pvz = len(OutbExp.loc[OutbExp.PFid_vz>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Gbeta = len(OutbExp.loc[OutbExp.GFid_beta>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Gpcal = len(OutbExp.loc[(OutbExp.Gsector < 7) & (OutbExp.GFid_Pcal>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector < 7, "event"].unique())
+  OutbExp_effect_Gpcal2 = len(OutbExp.loc[(OutbExp.Gsector < 7) & (OutbExp.GFid_Pcal2>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector < 7, "event"].unique())
+  OutbExp_effect_Gft = len(OutbExp.loc[(OutbExp.Gsector > 7) & (OutbExp.GFid_FT>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector > 7, "event"].unique())
+  OutbExp_effect_FDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==1), "event"].unique())/sum(OutbExp.config==1)
+  OutbExp_effect_CDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==2), "event"].unique())/sum(OutbExp.config==2)
+  OutbExp_effect_CDFT = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==3), "event"].unique())/sum(OutbExp.config==3)
+
+  OutbSim_effect_Epcal = len(OutbSim.loc[OutbSim.EFid_pcal>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Edw = len(OutbSim.loc[OutbSim.EFid_dw>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Edc = len(OutbSim.loc[OutbSim.EFid_dc>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Esf = len(OutbSim.loc[OutbSim.EFid_sf>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Evz = len(OutbSim.loc[OutbSim.EFid_vz>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Eedep = len(OutbSim.loc[OutbSim.EFid_edep>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Eap = len(OutbSim.loc[OutbSim.EFid_ap>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Pdc = len(OutbSim.loc[(OutbSim.Psector < 7) & (OutbSim.PFid_dc>0), "event"].unique())/len(OutbSim.loc[OutbSim.Psector < 7, "event"].unique())
+  OutbSim_effect_Pcvt = len(OutbSim.loc[(OutbSim.Psector > 7) & (OutbSim.PFid_cvt>0), "event"].unique())/len(OutbSim.loc[OutbSim.Psector > 7, "event"].unique())
+  OutbSim_effect_Pchi = len(OutbSim.loc[OutbSim.PFid_chi>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Pvz = len(OutbSim.loc[OutbSim.PFid_vz>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Gbeta = len(OutbSim.loc[OutbSim.GFid_beta>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Gpcal = len(OutbSim.loc[(OutbSim.Gsector < 7) & (OutbSim.GFid_Pcal>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector < 7, "event"].unique())
+  OutbSim_effect_Gpcal2 = len(OutbSim.loc[(OutbSim.Gsector < 7) & (OutbSim.GFid_Pcal2>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector < 7, "event"].unique())
+  OutbSim_effect_Gft = len(OutbSim.loc[(OutbSim.Gsector > 7) & (OutbSim.GFid_FT>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector > 7, "event"].unique())
+  OutbSim_effect_FDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==1), "event"].unique())/sum(OutbSim.config==1)
+  OutbSim_effect_CDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==2), "event"].unique())/sum(OutbSim.config==2)
+  OutbSim_effect_CDFT = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==3), "event"].unique())/sum(OutbSim.config==3)
+
+  print("&Exp.&Sim.&Exp.:Sim.&Exp.&Sim.& Exp.:Sim.\\\\")
+  print("&Inb.&Inb. &Inb. &Outb.&Outb. &Outb. \\\\\hline")
+  print("$e'$ PCAL &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Epcal, 100*InbSim_effect_Epcal, 100*InbExp_effect_Epcal/InbSim_effect_Epcal, 100*OutbExp_effect_Epcal, 100*OutbSim_effect_Epcal, 100*OutbExp_effect_Epcal/OutbSim_effect_Epcal))
+  print("$e'$ DC &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Edc, 100*InbSim_effect_Edc, 100*InbExp_effect_Edc/InbSim_effect_Edc, 100*OutbExp_effect_Edc, 100*OutbSim_effect_Edc, 100*OutbExp_effect_Edc/OutbSim_effect_Edc))
+  print("$e'$ SF &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Esf, 100*InbSim_effect_Esf, 100*InbExp_effect_Esf/InbSim_effect_Esf, 100*OutbExp_effect_Esf, 100*OutbSim_effect_Esf, 100*OutbExp_effect_Esf/OutbSim_effect_Esf))
+  print("$e'$ $vz$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Evz, 100*InbSim_effect_Evz, 100*InbExp_effect_Evz/InbSim_effect_Evz, 100*OutbExp_effect_Evz, 100*OutbSim_effect_Evz, 100*OutbExp_effect_Evz/OutbSim_effect_Evz))
+  print("$e'$ $E_{dep.}$" + " &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Eedep, 100*InbSim_effect_Eedep, 100*InbExp_effect_Eedep/InbSim_effect_Eedep, 100*OutbExp_effect_Eedep, 100*OutbSim_effect_Eedep, 100*OutbExp_effect_Eedep/OutbSim_effect_Eedep))
+  print("$e'$ anti-$\pi^-$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Eap, 100*InbSim_effect_Eap, 100*InbExp_effect_Eap/InbSim_effect_Eap, 100*OutbExp_effect_Eap, 100*OutbSim_effect_Eap, 100*OutbExp_effect_Eap/OutbSim_effect_Eap))
+  print("$p'$ DC &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pdc, 100*InbSim_effect_Pdc, 100*InbExp_effect_Pdc/InbSim_effect_Pdc, 100*OutbExp_effect_Pdc, 100*OutbSim_effect_Pdc, 100*OutbExp_effect_Pdc/OutbSim_effect_Pdc))
+  print("$p'$ CVT &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pcvt, 100*InbSim_effect_Pcvt, 100*InbExp_effect_Pcvt/InbSim_effect_Pcvt, 100*OutbExp_effect_Pcvt, 100*OutbSim_effect_Pcvt, 100*OutbExp_effect_Pcvt/OutbSim_effect_Pcvt))
+  print("$p'$ $\chi$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pchi, 100*InbSim_effect_Pchi, 100*InbExp_effect_Pchi/InbSim_effect_Pchi, 100*OutbExp_effect_Pchi, 100*OutbSim_effect_Pchi, 100*OutbExp_effect_Pchi/OutbSim_effect_Pchi))
+  print("$p'$ $vz_{e'}-vz_{p'}$" + " &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Pvz, 100*InbSim_effect_Pvz, 100*InbExp_effect_Pvz/InbSim_effect_Pvz, 100*OutbExp_effect_Pvz, 100*OutbSim_effect_Pvz, 100*OutbExp_effect_Pvz/OutbSim_effect_Pvz))
+  print("$\gamma$ $\\beta$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gbeta, 100*InbSim_effect_Gbeta, 100*InbExp_effect_Gbeta/InbSim_effect_Gbeta, 100*OutbExp_effect_Gbeta, 100*OutbSim_effect_Gbeta, 100*OutbExp_effect_Gbeta/OutbSim_effect_Gbeta))
+  print("$\gamma$ PCAL &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gpcal, 100*InbSim_effect_Gpcal, 100*InbExp_effect_Gpcal/InbSim_effect_Gpcal, 100*OutbExp_effect_Gpcal, 100*OutbSim_effect_Gpcal, 100*OutbExp_effect_Gpcal/OutbSim_effect_Gpcal2))
+  print("$\gamma$ FT &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Gft, 100*InbSim_effect_Gft, 100*InbExp_effect_Gft/InbSim_effect_Gft, 100*OutbExp_effect_Gft, 100*OutbSim_effect_Gft, 100*OutbExp_effect_Gft/OutbSim_effect_Gft))
+  print("(FD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_FDFD, 100*InbSim_effect_FDFD, 100*InbExp_effect_FDFD/InbSim_effect_FDFD, 100*OutbExp_effect_FDFD, 100*OutbSim_effect_FDFD, 100*OutbExp_effect_FDFD/OutbSim_effect_FDFD))
+  print("(CD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_CDFD, 100*InbSim_effect_CDFD, 100*InbExp_effect_CDFD/InbSim_effect_CDFD, 100*OutbExp_effect_CDFD, 100*OutbSim_effect_CDFD, 100*OutbExp_effect_CDFD/OutbSim_effect_CDFD))
+  print("(CD, FT) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hhline".format(100*InbExp_effect_CDFT, 100*InbSim_effect_CDFT, 100*InbExp_effect_CDFT/InbSim_effect_CDFT, 100*OutbExp_effect_CDFT, 100*OutbSim_effect_CDFT, 100*OutbExp_effect_CDFT/OutbSim_effect_CDFT)+"{|=|=|=|=|=|=|=|}")
+  print("\n")
+
+  InbExp.loc[:, "EFid"] = 1
+  InbExp.loc[:, "PFid"] = 1
+  InbExp.loc[:, "GFid"] = 1
+  InbSim.loc[:, "EFid"] = 1
+  InbSim.loc[:, "PFid"] = 1
+  InbSim.loc[:, "GFid"] = 1
+  OutbExp.loc[:, "EFid"] = 1
+  OutbExp.loc[:, "PFid"] = 1
+  OutbExp.loc[:, "GFid"] = 1
+  OutbSim.loc[:, "EFid"] = 1
+  OutbSim.loc[:, "PFid"] = 1
+  OutbSim.loc[:, "GFid"] = 1
+  for df_gammaRec in [InbExp, InbSim, OutbExp, OutbSim]:
+    ang = -np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
+    GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
+    GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
+    df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
+    df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
+
+  electronFiducialCounting(InbExp, pol = "inbending", mc = False, fidlevel = 'tight')
+  protonFiducialCounting(InbExp, pol = "inbending", fidlevel = 'tight')
+  gammaFiducialCounting(InbExp)
+  electronFiducialCounting(InbSim, pol = "inbending", mc = True, fidlevel = 'tight')
+  protonFiducialCounting(InbSim, pol = "inbending", fidlevel = 'tight')
+  gammaFiducialCounting(InbSim)
+  electronFiducialCounting(OutbExp, pol = "outbending", mc = False, fidlevel = 'tight')
+  protonFiducialCounting(OutbExp, pol = "outbending", fidlevel = 'tight')
+  gammaFiducialCounting(OutbExp)
+  electronFiducialCounting(OutbSim, pol = "outbending", mc = True, fidlevel = 'tight')
+  protonFiducialCounting(OutbSim, pol = "outbending", fidlevel = 'tight')
+  gammaFiducialCounting(OutbSim)
+
+  InbExp_effect_Epcal = len(InbExp.loc[InbExp.EFid_pcal>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Edc = len(InbExp.loc[InbExp.EFid_dc>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Esf = len(InbExp.loc[InbExp.EFid_sf>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Evz = len(InbExp.loc[InbExp.EFid_vz>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Eedep = len(InbExp.loc[InbExp.EFid_edep>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Eap = len(InbExp.loc[InbExp.EFid_ap>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Pdc = len(InbExp.loc[(InbExp.Psector < 7) & (InbExp.PFid_dc>0), "event"].unique())/len(InbExp.loc[InbExp.Psector < 7, "event"].unique())
+  InbExp_effect_Pcvt = len(InbExp.loc[(InbExp.Psector > 7) & (InbExp.PFid_cvt>0), "event"].unique())/len(InbExp.loc[InbExp.Psector > 7, "event"].unique())
+  InbExp_effect_Pchi = len(InbExp.loc[InbExp.PFid_chi>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Pvz = len(InbExp.loc[InbExp.PFid_vz>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Gbeta = len(InbExp.loc[InbExp.GFid_beta>0, "event"].unique())/len(InbExp.loc[:, "event"].unique())
+  InbExp_effect_Gpcal = len(InbExp.loc[(InbExp.Gsector < 7) & (InbExp.GFid_Pcal>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector < 7, "event"].unique())
+  InbExp_effect_Gft = len(InbExp.loc[(InbExp.Gsector > 7) & (InbExp.GFid_FT>0), "event"].unique())/len(InbExp.loc[InbExp.Gsector > 7, "event"].unique())
+  InbExp_effect_FDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==1), "event"].unique())/sum(InbExp.config==1)
+  InbExp_effect_CDFD = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==2), "event"].unique())/sum(InbExp.config==2)
+  InbExp_effect_CDFT = len(InbExp.loc[(InbExp.EFid*InbExp.PFid*InbExp.GFid > 0) & (InbExp.config==3), "event"].unique())/sum(InbExp.config==3)
+
+  InbSim_effect_Epcal = len(InbSim.loc[InbSim.EFid_pcal>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Edc = len(InbSim.loc[InbSim.EFid_dc>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Esf = len(InbSim.loc[InbSim.EFid_sf>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Evz = len(InbSim.loc[InbSim.EFid_vz>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Eedep = len(InbSim.loc[InbSim.EFid_edep>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Eap = len(InbSim.loc[InbSim.EFid_ap>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Pdc = len(InbSim.loc[(InbSim.Psector < 7) & (InbSim.PFid_dc>0), "event"].unique())/len(InbSim.loc[InbSim.Psector < 7, "event"].unique())
+  InbSim_effect_Pcvt = len(InbSim.loc[(InbSim.Psector > 7) & (InbSim.PFid_cvt>0), "event"].unique())/len(InbSim.loc[InbSim.Psector > 7, "event"].unique())
+  InbSim_effect_Pchi = len(InbSim.loc[InbSim.PFid_chi>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Pvz = len(InbSim.loc[InbSim.PFid_vz>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Gbeta = len(InbSim.loc[InbSim.GFid_beta>0, "event"].unique())/len(InbSim.loc[:, "event"].unique())
+  InbSim_effect_Gpcal = len(InbSim.loc[(InbSim.Gsector < 7) & (InbSim.GFid_Pcal>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector < 7, "event"].unique())
+  InbSim_effect_Gft = len(InbSim.loc[(InbSim.Gsector > 7) & (InbSim.GFid_FT>0), "event"].unique())/len(InbSim.loc[InbSim.Gsector > 7, "event"].unique())
+  InbSim_effect_FDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==1), "event"].unique())/sum(InbSim.config==1)
+  InbSim_effect_CDFD = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==2), "event"].unique())/sum(InbSim.config==2)
+  InbSim_effect_CDFT = len(InbSim.loc[(InbSim.EFid*InbSim.PFid*InbSim.GFid > 0) & (InbSim.config==3), "event"].unique())/sum(InbSim.config==3)
+
+  OutbExp_effect_Epcal = len(OutbExp.loc[OutbExp.EFid_pcal>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Edc = len(OutbExp.loc[OutbExp.EFid_dc>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Esf = len(OutbExp.loc[OutbExp.EFid_sf>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Evz = len(OutbExp.loc[OutbExp.EFid_vz>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Eedep = len(OutbExp.loc[OutbExp.EFid_edep>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Eap = len(OutbExp.loc[OutbExp.EFid_ap>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Pdc = len(OutbExp.loc[(OutbExp.Psector < 7) & (OutbExp.PFid_dc>0), "event"].unique())/len(OutbExp.loc[OutbExp.Psector < 7, "event"].unique())
+  OutbExp_effect_Pcvt = len(OutbExp.loc[(OutbExp.Psector > 7) & (OutbExp.PFid_cvt>0), "event"].unique())/len(OutbExp.loc[OutbExp.Psector > 7, "event"].unique())
+  OutbExp_effect_Pchi = len(OutbExp.loc[OutbExp.PFid_chi>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Pvz = len(OutbExp.loc[OutbExp.PFid_vz>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Gbeta = len(OutbExp.loc[OutbExp.GFid_beta>0, "event"].unique())/len(OutbExp.loc[:, "event"].unique())
+  OutbExp_effect_Gpcal = len(OutbExp.loc[(OutbExp.Gsector < 7) & (OutbExp.GFid_Pcal>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector < 7, "event"].unique())
+  OutbExp_effect_Gft = len(OutbExp.loc[(OutbExp.Gsector > 7) & (OutbExp.GFid_FT>0), "event"].unique())/len(OutbExp.loc[OutbExp.Gsector > 7, "event"].unique())
+  OutbExp_effect_FDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==1), "event"].unique())/sum(OutbExp.config==1)
+  OutbExp_effect_CDFD = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==2), "event"].unique())/sum(OutbExp.config==2)
+  OutbExp_effect_CDFT = len(OutbExp.loc[(OutbExp.EFid*OutbExp.PFid*OutbExp.GFid > 0) & (OutbExp.config==3), "event"].unique())/sum(OutbExp.config==3)
+
+  OutbSim_effect_Epcal = len(OutbSim.loc[OutbSim.EFid_pcal>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Edc = len(OutbSim.loc[OutbSim.EFid_dc>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Esf = len(OutbSim.loc[OutbSim.EFid_sf>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Evz = len(OutbSim.loc[OutbSim.EFid_vz>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Eedep = len(OutbSim.loc[OutbSim.EFid_edep>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Eap = len(OutbSim.loc[OutbSim.EFid_ap>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Pdc = len(OutbSim.loc[(OutbSim.Psector < 7) & (OutbSim.PFid_dc>0), "event"].unique())/len(OutbSim.loc[OutbSim.Psector < 7, "event"].unique())
+  OutbSim_effect_Pcvt = len(OutbSim.loc[(OutbSim.Psector > 7) & (OutbSim.PFid_cvt>0), "event"].unique())/len(OutbSim.loc[OutbSim.Psector > 7, "event"].unique())
+  OutbSim_effect_Pchi = len(OutbSim.loc[OutbSim.PFid_chi>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Pvz = len(OutbSim.loc[OutbSim.PFid_vz>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Gbeta = len(OutbSim.loc[OutbSim.GFid_beta>0, "event"].unique())/len(OutbSim.loc[:, "event"].unique())
+  OutbSim_effect_Gpcal = len(OutbSim.loc[(OutbSim.Gsector < 7) & (OutbSim.GFid_Pcal>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector < 7, "event"].unique())
+  OutbSim_effect_Gft = len(OutbSim.loc[(OutbSim.Gsector > 7) & (OutbSim.GFid_FT>0), "event"].unique())/len(OutbSim.loc[OutbSim.Gsector > 7, "event"].unique())
+  OutbSim_effect_FDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==1), "event"].unique())/sum(OutbSim.config==1)
+  OutbSim_effect_CDFD = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==2), "event"].unique())/sum(OutbSim.config==2)
+  OutbSim_effect_CDFT = len(OutbSim.loc[(OutbSim.EFid*OutbSim.PFid*OutbSim.GFid > 0) & (OutbSim.config==3), "event"].unique())/sum(OutbSim.config==3)
+
+  print("&Exp.&Sim.&Exp.:Sim.&Exp.&Sim.& Exp.:Sim.\\\\")
+  print("&Inb.&Inb. &Inb. &Outb.&Outb. &Outb. \\\\\hline")
+  print("$e'$ PCAL &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Epcal, 100*InbSim_effect_Epcal, 100*InbExp_effect_Epcal/InbSim_effect_Epcal, 100*OutbExp_effect_Epcal, 100*OutbSim_effect_Epcal, 100*OutbExp_effect_Epcal/OutbSim_effect_Epcal))
+  print("$e'$ DC &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Edc, 100*InbSim_effect_Edc, 100*InbExp_effect_Edc/InbSim_effect_Edc, 100*OutbExp_effect_Edc, 100*OutbSim_effect_Edc, 100*OutbExp_effect_Edc/OutbSim_effect_Edc))
+  print("$e'$ SF &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Esf, 100*InbSim_effect_Esf, 100*InbExp_effect_Esf/InbSim_effect_Esf, 100*OutbExp_effect_Esf, 100*OutbSim_effect_Esf, 100*OutbExp_effect_Esf/OutbSim_effect_Esf))
+  print("$e'$ $vz$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Evz, 100*InbSim_effect_Evz, 100*InbExp_effect_Evz/InbSim_effect_Evz, 100*OutbExp_effect_Evz, 100*OutbSim_effect_Evz, 100*OutbExp_effect_Evz/OutbSim_effect_Evz))
+  print("$e'$ $E_{dep.}$" + " &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Eedep, 100*InbSim_effect_Eedep, 100*InbExp_effect_Eedep/InbSim_effect_Eedep, 100*OutbExp_effect_Eedep, 100*OutbSim_effect_Eedep, 100*OutbExp_effect_Eedep/OutbSim_effect_Eedep))
+  print("$e'$ anti-$\pi^-$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Eap, 100*InbSim_effect_Eap, 100*InbExp_effect_Eap/InbSim_effect_Eap, 100*OutbExp_effect_Eap, 100*OutbSim_effect_Eap, 100*OutbExp_effect_Eap/OutbSim_effect_Eap))
+  print("$p'$ DC &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pdc, 100*InbSim_effect_Pdc, 100*InbExp_effect_Pdc/InbSim_effect_Pdc, 100*OutbExp_effect_Pdc, 100*OutbSim_effect_Pdc, 100*OutbExp_effect_Pdc/OutbSim_effect_Pdc))
+  print("$p'$ CVT &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pcvt, 100*InbSim_effect_Pcvt, 100*InbExp_effect_Pcvt/InbSim_effect_Pcvt, 100*OutbExp_effect_Pcvt, 100*OutbSim_effect_Pcvt, 100*OutbExp_effect_Pcvt/OutbSim_effect_Pcvt))
+  print("$p'$ $\chi$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Pchi, 100*InbSim_effect_Pchi, 100*InbExp_effect_Pchi/InbSim_effect_Pchi, 100*OutbExp_effect_Pchi, 100*OutbSim_effect_Pchi, 100*OutbExp_effect_Pchi/OutbSim_effect_Pchi))
+  print("$p'$ $vz_{e'}-vz_{p'}$" + " &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Pvz, 100*InbSim_effect_Pvz, 100*InbExp_effect_Pvz/InbSim_effect_Pvz, 100*OutbExp_effect_Pvz, 100*OutbSim_effect_Pvz, 100*OutbExp_effect_Pvz/OutbSim_effect_Pvz))
+  print("$\gamma$ $\\beta$ &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gbeta, 100*InbSim_effect_Gbeta, 100*InbExp_effect_Gbeta/InbSim_effect_Gbeta, 100*OutbExp_effect_Gbeta, 100*OutbSim_effect_Gbeta, 100*OutbExp_effect_Gbeta/OutbSim_effect_Gbeta))
+  print("$\gamma$ PCAL &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%\\\\".format(100*InbExp_effect_Gpcal, 100*InbSim_effect_Gpcal, 100*InbExp_effect_Gpcal/InbSim_effect_Gpcal, 100*OutbExp_effect_Gpcal, 100*OutbSim_effect_Gpcal, 100*OutbExp_effect_Gpcal/OutbSim_effect_Gpcal2))
+  print("$\gamma$ FT &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hline".format(100*InbExp_effect_Gft, 100*InbSim_effect_Gft, 100*InbExp_effect_Gft/InbSim_effect_Gft, 100*OutbExp_effect_Gft, 100*OutbSim_effect_Gft, 100*OutbExp_effect_Gft/OutbSim_effect_Gft))
+  print("(FD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_FDFD, 100*InbSim_effect_FDFD, 100*InbExp_effect_FDFD/InbSim_effect_FDFD, 100*OutbExp_effect_FDFD, 100*OutbSim_effect_FDFD, 100*OutbExp_effect_FDFD/OutbSim_effect_FDFD))
+  print("(CD, FD) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\".format(100*InbExp_effect_CDFD, 100*InbSim_effect_CDFD, 100*InbExp_effect_CDFD/InbSim_effect_CDFD, 100*OutbExp_effect_CDFD, 100*OutbSim_effect_CDFD, 100*OutbExp_effect_CDFD/OutbSim_effect_CDFD))
+  print("(CD, FT) &{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\%&{:.1f}\% \\\\\hhline".format(100*InbExp_effect_CDFT, 100*InbSim_effect_CDFT, 100*InbExp_effect_CDFT/InbSim_effect_CDFT, 100*OutbExp_effect_CDFT, 100*OutbSim_effect_CDFT, 100*OutbExp_effect_CDFT/OutbSim_effect_CDFT)+"{|=|=|=|=|=|=|=|}")
+  print("\n")
+
+  exit()
 
 if args.question == 16:
 
@@ -286,7 +545,7 @@ if args.question == 16:
               xind = ind//5
               yind = ind%5
               ind  = ind + 1
-              yub[xind, yind] = 1.2*np.max([expDist, simDist])
+              yub[xind, yind] = np.max([expDist, simDist])
               filled[xind, yind] = 1
                                           
               axs[xind, yind].hist(bins[:-1], bins, weights = expDist, histtype = 'step', color='b', linewidth=3, label = exp_label)
@@ -295,7 +554,7 @@ if args.question == 16:
               annotation = "({}, {}, {})".format(xBbin, Q2bin, tbin)
               axs[xind, yind].annotate(annotation, xy = (0.1, 0.9), xytext = (0.02, 0.9), xycoords = 'axes fraction', fontsize = 30)
 
-              axs[xind, yind].set_ylim([0, yub[xind, yind]])
+              axs[xind, yind].set_ylim([0, 1.2*yub[xind, yind]])
               axs[xind, yind].set_xlim([xlb, xub])
 
               axs[xind, yind].get_xaxis().set_visible(False)
@@ -337,13 +596,17 @@ if args.question == 16:
                 plt.clf()
                 ind = 0
                 fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
-              
+                yub    = np.zeros((5, 5))
+                filled = np.zeros((5, 5))
+
         for xind, yind in itertools.product(range(5), range(5)):      
-          axs[xind, yind].set_ylim([0, yub[xind, yind]])
-          axs[xind, yind].set_xlim([xlb, xub])
+
+          if filled[xind, yind]:
+            continue
 
           axs[xind, yind].get_xaxis().set_visible(False)
           axs[xind, yind].get_yaxis().set_visible(False)
+          axs[xind, yind].set_xlim([xlb, xub])
 
           if (xind == 5 -1) and (yind==0):
             axs[xind, yind].get_xaxis().set_visible(True)
@@ -357,17 +620,17 @@ if args.question == 16:
 
           if (xind == 0) and (yind==0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_2)
 
           elif (xind < 5 -1) and (yind == 0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_1)
 
           if (xind == 5 -1) and (yind==0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_3)
 
           if (xind == 5 -1) and (yind == 5 -1):
@@ -400,7 +663,10 @@ if args.question == 16:
         filenum = 0
         
         fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
-        for tbin in range(len(tbins)-1):
+
+        yub    = np.zeros((5, 5))
+        filled = np.zeros((5, 5))
+        for tbin in range(6):
           for xBbin in range(len(newxBbins2)-1):
             for Q2bin in range(len(newQ2bins2)-1):
               df4 = exp_epgg  .loc[(exp_epgg  .config == config ) & (exp_epgg  .xBbin == xBbin ) & (exp_epgg  .Q2bin == Q2bin ) & (exp_epgg  .tbin == tbin ) & (exp_epgg  .Ptheta < 64.23 )   , :]
@@ -417,7 +683,8 @@ if args.question == 16:
               xind = ind//5
               yind = ind%5
               ind  = ind + 1
-              yub  = 1.2*np.max([expDist, simDist])
+              yub[xind, yind] = np.max([expDist, simDist])
+              filled[xind, yind] = 1
                                           
               axs[xind, yind].hist(bins[:-1], bins, weights = expDist, histtype = 'step', color='b', linewidth=3, label = exp_label)
               axs[xind, yind].hist(bins[:-1], bins, weights = simDist, histtype = 'step', color='r', linewidth=3, label = sim_label)
@@ -425,7 +692,7 @@ if args.question == 16:
               annotation = "({}, {}, {})".format(xBbin, Q2bin, tbin)
               axs[xind, yind].annotate(annotation, xy = (0.1, 0.9), xytext = (0.02, 0.9), xycoords = 'axes fraction', fontsize = 30)
 
-              axs[xind, yind].set_ylim([0, yub])
+              axs[xind, yind].set_ylim([0, 1.2*yub[xind, yind]])
               axs[xind, yind].set_xlim([xlb, xub])
 
               axs[xind, yind].get_xaxis().set_visible(False)
@@ -443,17 +710,17 @@ if args.question == 16:
 
               if (xind == 0) and (yind==0):
                 axs[xind, yind].get_yaxis().set_visible(True)
-                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
                 axs[xind, yind].set_yticks(ytick, yticklabel_2)
 
               elif (xind < 5 -1) and (yind == 0):
                 axs[xind, yind].get_yaxis().set_visible(True)
-                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
                 axs[xind, yind].set_yticks(ytick, yticklabel_1)
 
               if (xind == 5 -1) and (yind==0):
                 axs[xind, yind].get_yaxis().set_visible(True)
-                ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+                ytick        = [0 * yub[xind, yind], 0.2 * yub[xind, yind], 0.4 * yub[xind, yind], 0.6 * yub[xind, yind], 0.8 * yub[xind, yind], 1.0 * yub[xind, yind], 1.2 * yub[xind, yind]]
                 axs[xind, yind].set_yticks(ytick, yticklabel_3)
 
               if (xind == 5 -1) and (yind == 5 -1):
@@ -463,16 +730,21 @@ if args.question == 16:
                   
                 plt.subplots_adjust(wspace=0, hspace=0)
                 plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
-                filenum = filenum + 1
                 plt.clf()
+                filenum = filenum + 1
                 ind = 0
                 fig, axs = plt.subplots(5, 5, figsize = (32.5, 45))
+                yub    = np.zeros((5, 5))
+                filled = np.zeros((5, 5))
         for xind, yind in itertools.product(range(5), range(5)):      
-          axs[xind, yind].set_ylim([0, yub])
-          axs[xind, yind].set_xlim([xlb, xub])
+
+          if filled[xind, yind]:
+            continue
 
           axs[xind, yind].get_xaxis().set_visible(False)
           axs[xind, yind].get_yaxis().set_visible(False)
+
+          axs[xind, yind].set_xlim([xlb, xub])
 
           if (xind == 5 -1) and (yind==0):
             axs[xind, yind].get_xaxis().set_visible(True)
@@ -486,17 +758,17 @@ if args.question == 16:
 
           if (xind == 0) and (yind==0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_2)
 
           elif (xind < 5 -1) and (yind == 0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_1)
 
           if (xind == 5 -1) and (yind==0):
             axs[xind, yind].get_yaxis().set_visible(True)
-            ytick        = [0 * yub, 0.2 * yub, 0.4 * yub, 0.6 * yub, 0.8 * yub, 1.0 * yub, 1.2 * yub]
+            ytick        = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
             axs[xind, yind].set_yticks(ytick, yticklabel_3)
 
           if (xind == 5 -1) and (yind == 5 -1):
@@ -504,6 +776,6 @@ if args.question == 16:
             axs[xind, yind].set_xlabel(label + " [" + unit + "]", fontsize = 40)
             axs[xind, yind].set_xticks(xtick, xticklabel_3)
 
-          plt.subplots_adjust(wspace=0, hspace=0)
-          plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
-          plt.clf()
+            plt.subplots_adjust(wspace=0, hspace=0)
+            plt.savefig("plots/q16/dset_e/{}/pi0_{}_{}_{}.pdf".format(polarity, var, topo[config], filenum), bbox_inches='tight')
+            plt.clf()
