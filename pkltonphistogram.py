@@ -52,7 +52,7 @@ if __name__ == "__main__":
 	else:
 		recgen = "Rec"
 
-	if filename:
+	if args.filename:
 		infile = filename
 	else:
 		infile = "{}/{}/{}/{}.pkl".format(args.uri, pol, mode, jobnum)
