@@ -10,6 +10,7 @@ import argparse
 from copy import copy
 from utils.const import *
 from utils.physics import *
+import awkward as ak
 
 
 class root2pickle():
