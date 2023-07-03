@@ -20,6 +20,7 @@ if __name__ == "__main__":
 	parser.add_argument("-u","--uri", help="uri", default = "/volatile/clas12/sangbaek/nov2021/convPkl_full/")
 	parser.add_argument("-o","--output", help="output", default = "/volatile/clas12/sangbaek/clas12DVCS/nphistograms/")
 	parser.add_argument("-kstart","--kstart", help="binning scheme number starting", default=None)
+	parser.add_argument("-f","--filename", help="file name", default=None)
 
 	args = parser.parse_args()
 	jobnum = int(args.jobnum)
@@ -51,7 +52,10 @@ if __name__ == "__main__":
 	else:
 		recgen = "Rec"
 
-	infile = "{}/{}/{}/{}.pkl".format(args.uri, pol, mode, jobnum)
+	if filename:
+		infile = filename
+	else:
+		infile = "{}/{}/{}/{}.pkl".format(args.uri, pol, mode, jobnum)
 	print("reading {}".format(infile))
 	df = pd.read_pickle(infile)
 
