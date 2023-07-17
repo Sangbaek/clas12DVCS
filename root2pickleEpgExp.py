@@ -120,7 +120,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector", "TriggerBit"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Eedep", "Evz", "Esector"]
         eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
@@ -156,8 +156,6 @@ class root2pickle():
             proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             proKeysRec.extend(["Pchi2track", "PNDFtrack"])
-        if logistics:
-            eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
         # read them
         for key in eleKeysRec:
@@ -166,6 +164,12 @@ class root2pickle():
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysRec:
             df_gammaRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        if logistics:
+            df_logisticsRec = pd.DataFrame()
+            logKeysRec = ["TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            for key in logKeysRec:
+                df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
         self.closeFile()
 
         #convert data type to standard double
@@ -684,6 +688,8 @@ class root2pickle():
         #     df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        if logistics:
+            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
 
         df_epgg = pd.merge(df_ep, df_gg, how='outer', on='event')
         df_epgg = df_epgg.loc[~np.isnan(df_epgg["Ppx"]), :]

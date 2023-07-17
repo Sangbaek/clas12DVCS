@@ -45,7 +45,7 @@ class root2pickle():
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
         df_gammaRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector", "RunNum", "beamQ", "liveTime", "helicity"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Evx", "Evy", "Evz", "Esector"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Psector"]
         # gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gsector"]
         # read them
@@ -63,8 +63,14 @@ class root2pickle():
         # df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
 
         #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index
+        df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+        if logistics:
+            df_logisticsRec = pd.DataFrame()
+            logKeysRec = ["TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            for key in logKeysRec:
+                df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
         # df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         # df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
@@ -220,6 +226,8 @@ class root2pickle():
         #                  how='outer', on='event', suffixes=("", "2"))
         # df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        if logistics:
+            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
 
         self.df_ep = df_ep
 

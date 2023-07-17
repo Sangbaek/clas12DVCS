@@ -79,17 +79,22 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Estat", "nmlbar", "TriggerBit"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Estat"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
 
-        if logistics:
-            eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysRec:
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        if logistics:
+            df_logisticsRec = pd.DataFrame()
+            logKeysRec = ["nmlbar", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            for key in logKeysRec:
+                df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
+
         self.closeFile()
 
         #convert data type to standard double
@@ -112,6 +117,8 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        if logistics:
+            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
 
         self.df_ep = df_ep # saves df_ep
 
