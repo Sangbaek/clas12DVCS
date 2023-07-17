@@ -79,8 +79,8 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "nmebar", "TriggerBit"]
-        proKeysRec = ["Ppx", "Ppy", "Ppz"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Estat", "nmebar", "TriggerBit"]
+        proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
 
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
