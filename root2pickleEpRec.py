@@ -134,7 +134,7 @@ class root2pickle():
         df_electronRec.loc[:, 'Ep'] = mag(ele)
 
         #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index
+        df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
         #apply fiducial cuts
         print(len(df_electronRec), len(df_protonRec))

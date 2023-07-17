@@ -176,7 +176,7 @@ class root2pickle():
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
         #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index
+        df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
