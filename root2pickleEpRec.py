@@ -115,8 +115,10 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Estat", "nmlbar"]
+        df_numbers = pd.DataFrame()
+        eleKeysRec = ["Epx", "Epy", "Epz", "Estat"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
+        numKeysRec = ["nmlbar", "nmLBAR", "nma", "nmp", "nmc"]
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
@@ -125,6 +127,8 @@ class root2pickle():
             df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysRec:
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        for key in numKeysRec:
+            df_numbers[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         self.closeFile()
 
         #convert data type to standard double
@@ -136,6 +140,7 @@ class root2pickle():
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+        df_numbers.loc[:,'event'] = df_numbers.index
         #apply fiducial cuts
         print(len(df_electronRec), len(df_protonRec))
 
@@ -147,6 +152,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        df_ep = pd.merge(df_ep, df_numbers, how='outer', on='event')
 
         self.df_ep = df_ep # saves df_ep
 
