@@ -90,7 +90,7 @@ class root2pickle():
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         if logistics:
             df_logisticsRec = pd.DataFrame()
-            logKeysRec = ["nmlbar", "nma", "nmp", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            logKeysRec = ["nmlbar", "nma", "nmc", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
             for key in logKeysRec:
                 df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
