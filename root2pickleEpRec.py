@@ -17,7 +17,7 @@ class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
      detRes = False, raw = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False, nopcorr = False,
-     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
+     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604, ebar = False):
         '''
             clas init.
             Args
@@ -57,8 +57,8 @@ class root2pickle():
 
         self.readEP(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
-            fidlevel = fidlevel)
-        self.saveEPvars()
+            fidlevel = fidlevel, ebar = ebar)
+        self.saveEPvars(ebar = ebar)
         # self.save(raw = raw, pol = pol)
 
 
@@ -74,7 +74,7 @@ class root2pickle():
 
     def readEP(self, entry_start = None, entry_stop = None, pol = "inbending", 
         detRes = False, logistics = False, nofid = False, 
-        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid'):
+        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid', ebar = False):
         '''save data into df_ep for parent class epg'''
         self.readFile()
 
@@ -122,6 +122,15 @@ class root2pickle():
         if logistics:
             eleKeysRec.extend(["EventNum", "RunNum", "beamQ", "liveTime", "helicity"])
 
+        if ebar:
+            eleKeysRec.extend(["Epa"])
+            df_positronRec = pd.DataFrame()
+            posKeysRec = ["Ebarpx", "Ebarpy", "Ebarpz"]
+            for key in posKeysRec:
+                df_positronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+            df_positronRec.loc[:, "event"] = df_positronRec.index.get_level_values('entry')
+            df_positronRec.loc[:, "Ebare"] = getEnergy([df_positronRec.Ebarpx, df_positronRec.Ebarpy, df_positronRec.Ebarpz], me)
+
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
@@ -155,6 +164,15 @@ class root2pickle():
         df_ep = pd.merge(df_ep, df_numbers, how='outer', on='event')
 
         self.df_ep = df_ep # saves df_ep
+
+        if ebar:
+            df_eebar = pd.merge(df_electronRec, df_positronRec, how = 'inner', on = 'event')
+            eebarInvmass2 = (df_eebar.Ee+df_eebar.Ebare)**2 - (df_eebar.Epx+df_eebar.Ebarpx)**2 - (df_eebar.Epy+df_eebar.Ebarpy)**2 - (df_eebar.Epz+df_eebar.Ebarpz)**2
+            eebarInvmass2 = np.where(eebarInvmass2 >= 0, eebarInvmass2, 10**6)
+            eebarInvmass  = np.sqrt(eebarInvmass2)
+            eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
+            df_eebar.loc[:, "IM_eebar"] = eebarInvmass
+            self.df_eebar = df_eebar
 
     def saveEPvars(self, correction=None):
         #set up dvcs variables
@@ -216,6 +234,7 @@ if __name__ == "__main__":
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
+    parser.add_argument("-ebar","--ebar", help="use positron or not", action = "store_true")
 
     args = parser.parse_args()
 
@@ -228,7 +247,18 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start,
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
-     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
-    df = converter.df_ep
+     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, ebar = args.ebar)
 
-    df.to_pickle(args.out)
+    filename_vanilla = args.out
+    filename_nma   = args.out.replace(".pkl", "_nma.pkl")
+    filename_nmc   = args.out.replace(".pkl", "_nmc.pkl")
+    filename_eebar = args.out.replace(".pkl", "_eebar.pkl")
+
+    df = converter.df_ep
+    df.to_pickle(filename_vanilla)
+
+    if args.ebar:
+        df_eebar = converter.df_eebar
+        df.loc[df.nma<=3, :].to_pickle(filename_nma)
+        df.loc[df.nmc<=3, :].to_pickle(filename_nmc)
+        df_eebar            .to_pickle(filename_eebar)
