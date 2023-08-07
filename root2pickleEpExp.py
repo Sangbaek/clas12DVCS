@@ -147,7 +147,7 @@ class root2pickle():
             eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
             df_eebar.loc[:, "IM_eebar"] = eebarInvmass
             df_eebar = pd.merge(df_eebar, df_protonRec, how = 'inner', on = 'event')
-            df_eebar.loc[:, "Ge"] = df_eebar.Ee + df_eebar.Ebarpe + df_eebar.Pe - M
+            df_eebar.loc[:, "Ge"] = df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe - M
             df_eebar.loc[:, "Mpx"] = - (df_eebar.Epx + df_eebar.Ebarpx + df_eebar.Ppx)
             df_eebar.loc[:, "Mpy"] = - (df_eebar.Epy + df_eebar.Ebarpy + df_eebar.Ppy)
             df_eebar.loc[:, "Mpz"] = self.pbeam - (df_eebar.Epz + df_eebar.Ebarpz + df_eebar.Ppz)
