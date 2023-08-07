@@ -145,6 +145,9 @@ class root2pickle():
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
         ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
         df_electronRec.loc[:, 'Ep'] = mag(ele)
+        df_electronRec.loc[:, 'Ee'] = getEnergy(ele, me)
+        df_electronRec.loc[:, 'Etheta'] = getTheta(ele)
+        df_electronRec.loc[:, 'Ephi'] = getPhi(ele)
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
@@ -179,14 +182,9 @@ class root2pickle():
         df_ep = self.df_ep
 
         ele = [df_ep['Epx'], df_ep['Epy'], df_ep['Epz']]
-        df_ep.loc[:, 'Ep'] = mag(ele)
-        df_ep.loc[:, 'Ee'] = getEnergy(ele, me)
-        df_ep.loc[:, 'Etheta'] = getTheta(ele)
-        df_ep.loc[:, 'Ephi'] = getPhi(ele)
-
         pro = [df_ep['Ppx'], df_ep['Ppy'], df_ep['Ppz']]
 
-        Ppt = mag([df_ep['Ppx'], df_ep['Ppy'], 0])
+        #Ppt = mag([df_ep['Ppx'], df_ep['Ppy'], 0])
 
         VGS = [-df_ep['Epx'], -df_ep['Epy'], self.pbeam - df_ep['Epz']]
         v3l = cross(self.beam, ele)
