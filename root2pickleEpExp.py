@@ -113,6 +113,12 @@ class root2pickle():
         df_electronRec.loc[:, 'Ee'] = getEnergy(ele, me)
         df_electronRec.loc[:, 'Etheta'] = getTheta(ele)
         df_electronRec.loc[:, 'Ephi'] = getPhi(ele)
+        VGS = [-df_electronRec['Epx'], -df_electronRec['Epy'], self.pbeam - df_electronRec['Epz']]
+        df_electronRec.loc[:,'Q2'] = -((self.ebeam - df_electronRec['Ee'])**2 - mag2(VGS))
+        df_electronRec.loc[:,'nu'] = (self.ebeam - df_electronRec['Ee'])
+        df_electronRec.loc[:,'y'] = df_electronRec['nu']/self.ebeam
+        df_electronRec.loc[:,'xB'] = df_electronRec['Q2'] / 2.0 / M / df_electronRec['nu']
+        df_electronRec.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_electronRec['Ee'])**2 - mag2(VGS)))
 
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
@@ -152,26 +158,15 @@ class root2pickle():
 
         # Ppt = mag([df_ep['Ppx'], df_ep['Ppy'], 0])
 
-        VGS = [-df_ep['Epx'], -df_ep['Epy'], self.pbeam - df_ep['Epz']]
-        v3l = cross(self.beam, ele)
-        v3h = cross(pro, VGS)
+        # v3l = cross(self.beam, ele)
+        # v3h = cross(pro, VGS)
         Vmiss = [-df_ep["Epx"] - df_ep["Ppx"], -df_ep["Epy"] - df_ep["Ppy"],
                   self.pbeam - df_ep["Epz"] - df_ep["Ppz"]]
 
         # binning kinematics
-        df_ep.loc[:,'Q2'] = -((self.ebeam - df_ep['Ee'])**2 - mag2(VGS))
-        df_ep.loc[:,'nu'] = (self.ebeam - df_ep['Ee'])
-        df_ep.loc[:,'y'] = df_ep['nu']/self.ebeam
-        df_ep.loc[:,'xB'] = df_ep['Q2'] / 2.0 / M / df_ep['nu']
-        df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
-        df_ep.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_ep['Ee'])**2 - mag2(VGS)))
-
-        # trento angles
-        df_ep.loc[:,'phi1'] = angle(v3l, v3h)
-        df_ep.loc[:,'phi1'] = np.where(dot(v3l, pro) > 0, 360.0 -
-                                  df_ep['phi1'], df_ep['phi1'])
 
         # exclusivity variables
+        df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
         df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(Vmiss)
 
         self.df_ep = df_ep
