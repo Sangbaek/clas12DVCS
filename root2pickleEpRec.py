@@ -181,6 +181,15 @@ class root2pickle():
             eebarInvmass  = np.sqrt(eebarInvmass2)
             eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
             df_eebar.loc[:, "IM_eebar"] = eebarInvmass
+            df_eebar = pd.merge(df_eebar, df_protonRec, how = 'inner', on = 'event')
+            df_eebar.loc[:, "Mpx"] = - (df_eebar.Epx + df_eebar.Ebarpx + df_eebar.Ppx)
+            df_eebar.loc[:, "Mpy"] = - (df_eebar.Epy + df_eebar.Ebarpy + df_eebar.Ppy)
+            df_eebar.loc[:, "Mpz"] = self.pbeam - (df_eebar.Epz + df_eebar.Ebarpz + df_eebar.Ppz)
+            df_eebar.loc[:, "Mp"] = mag([df_eebar.Mpx, df_eebar.Mpy, df_eebar.Mpz])
+            df_eebar.loc[:, "ME"] = self.ebeam + M - (df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe)
+            df_eebar.loc[:, "MM2_X"] = df_eebar.ME**2 - df_eebar.Mp**2
+            df_eebar.loc[:, "costheta_miss"] = df_eebar.Mpz/ df_eebar.Mp
+            df_eebar.loc[:, "Q2"] = 2*self.ebeam*df_eebar.Mp*(1-df_eebar.costheta_miss)
             self.df_eebar = df_eebar
 
     def saveEPvars(self, correction=None, ebar = False):
