@@ -143,7 +143,7 @@ class root2pickle():
             self.df_eebar = df_eebar
 
 
-    def saveEPvars(self, correction=None):
+    def saveEPvars(self, correction=None, ebar = False):
         #set up dvcs variables
         df_ep = self.df_ep
 
