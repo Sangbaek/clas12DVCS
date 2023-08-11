@@ -129,7 +129,11 @@ class root2pickle():
             for key in posKeysRec:
                 df_positronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df_positronRec.loc[:, "event"] = df_positronRec.index.get_level_values('entry')
-            df_positronRec.loc[:, "Ebare"] = getEnergy([df_positronRec.Ebarpx, df_positronRec.Ebarpy, df_positronRec.Ebarpz], me)
+            pos = [df_positronRec.Ebarpx, df_positronRec.Ebarpy, df_positronRec.Ebarpz]
+            df_positronRec.loc[:, "Ebarp"] = mag(pos)
+            df_positronRec.loc[:, "Ebare"] = getEnergy(pos, me)
+            df_positronRec.loc[:, "Ebartheta"] = getTheta(pos)
+            df_positronRec.loc[:, "Ebarphi"] = getPhi(pos)
 
         # read them
         for key in eleKeysRec:
@@ -191,6 +195,20 @@ class root2pickle():
             df_eebar.loc[:, "MM2_X"] = df_eebar.ME**2 - df_eebar.Mp**2
             df_eebar.loc[:, "costheta_miss"] = df_eebar.Mpz/ df_eebar.Mp
             df_eebar.loc[:, "Q2"] = 2*self.ebeam*df_eebar.Mp*(1-df_eebar.costheta_miss)
+            scat_ele = [df_eebar.Mpx, df_eebar.Mpy, df_eebar. Mpz]
+            df_eebar.loc[:, "SEp"] = mag(scat_ele)
+            df_eebar.loc[:, "SEe"] = getEnergy(scat_ele, me)
+            df_eebar.loc[:, "SEtheta"] = getTheta(scat_ele)
+            df_eebar.loc[:, "SEphi"] = getPhi(scat_ele)
+            Vmiss = [-df_eebar["Mpx"] - df_eebar["Ppx"], -df_eebar["Mpy"] - df_eebar["Ppy"],
+                      10.604 - df_eebar["Mpz"] - df_eebar["Ppz"]]
+            df_eebar.loc[:,'MM2_ep'] = (-M - 10.604 + df_eebar["SEe"] + df_eebar["Pe"])**2 - mag2(Vmiss)
+            VGS = [-df_eebar['Mpx'], -df_eebar['Mpy'], 10.604 - df_eebar['Mpz']]
+            df_eebar.loc[:,'Q2_new'] = -((10.604 - df_eebar['SEe'])**2 - mag2(VGS))
+            df_eebar.loc[:,'nu'] = (10.604 - df_eebar['SEe'])
+            df_eebar.loc[:,'y'] = df_eebar['nu']/10.604
+            df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
+            df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (10.604 + M - df_eebar['SEe'])**2 - mag2(VGS)))
             self.df_eebar = df_eebar
 
     def saveEPvars(self, correction=None, ebar = False):
@@ -255,6 +273,7 @@ if __name__ == "__main__":
     filename_nma   = args.out.replace(".pkl", "_nma.pkl")
     filename_nmc   = args.out.replace(".pkl", "_nmc.pkl")
     filename_eebar = args.out.replace(".pkl", "_eebar.pkl")
+    filename_nearbeam = args.out.replace(".pkl", "_nearbeam.pkl")
 
     df = converter.df_ep
     df.to_pickle(filename_vanilla)
@@ -263,4 +282,5 @@ if __name__ == "__main__":
         df_eebar = converter.df_eebar
         df.loc[df.nma<=3, :].to_pickle(filename_nma)
         df.loc[df.nmc<=3, :].to_pickle(filename_nmc)
+        df.loc[df.Etheta<=3, :].to_pickle(filename_nearbeam)
         df_eebar            .to_pickle(filename_eebar)
