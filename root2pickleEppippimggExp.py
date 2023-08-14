@@ -172,13 +172,13 @@ class root2pickle():
         df_gg.loc[:, 'Gtheta2'] = getTheta(gam2)
         df_gg.loc[:, 'Gphi2'] = getPhi(gam2)
 
-        pip = [df_pipRec.Pipx, df_pipRec.Pipy, df_pipRec.Pipz]
+        pip = [df_pipRec.Pippx, df_pipRec.Pippy, df_pipRec.Pippz]
         df_pipRec.loc[:, "Pipp"] = mag(pip)
         df_pipRec.loc[:, "Pipe"] = getEnergy(pip, 0.13957039)
         df_pipRec.loc[:, "Piptheta"] = getTheta(pip)
         df_pipRec.loc[:, "Pipphi"] = getPhi(pip)
 
-        pim = [df_pimRec.Pipx, df_pimRec.Pipy, df_pimRec.Pipz]
+        pim = [df_pimRec.Pimpx, df_pimRec.Pimpy, df_pimRec.Pimpz]
         df_pimRec.loc[:, "Pimp"] = mag(pim)
         df_pimRec.loc[:, "Pime"] = getEnergy(pim, 0.13957039)
         df_pimRec.loc[:, "Pimtheta"] = getTheta(pim)
