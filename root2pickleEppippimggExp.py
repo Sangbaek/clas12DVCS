@@ -17,7 +17,7 @@ class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
      detRes = False, raw = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False, nopcorr = False,
-     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604, ebar = False):
+     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
         '''
             clas init.
             Args
@@ -57,8 +57,7 @@ class root2pickle():
 
         self.readEP(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
-            fidlevel = fidlevel, ebar = ebar)
-        self.saveEPvars(ebar = ebar)
+            fidlevel = fidlevel)
 
     def readFile(self):
         '''read root using uproot'''
@@ -72,7 +71,7 @@ class root2pickle():
 
     def readEP(self, entry_start = None, entry_stop = None, pol = "inbending", 
         detRes = False, logistics = False, nofid = False, 
-        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid', ebar = False):
+        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid'):
         '''save data into df_ep for parent class epg'''
         self.readFile()
 
@@ -243,7 +242,7 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start,
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
-     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, ebar = args.ebar)
+     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
 
     filename = args.out
 
