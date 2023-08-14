@@ -143,7 +143,7 @@ class root2pickle():
             df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
 
         print("Electron, proton, ep cases:")
-        print(len(df_electronRec), len(df_protonRec), len(self.df_ep))
+        print(len(df_electronRec), len(df_protonRec), len(df_ep))
 
         #convert data type to standard double
         df_pipRec = df_pipRec.astype({"Pippx": float, "Pippy": float, "Pippz": float})
@@ -186,26 +186,29 @@ class root2pickle():
 
         df_gg.loc[:,'Mgg'] = pi0InvMass(gam, gam2)
 
-        df_pippimeta = pd.merge(df_pipRec, df_pimRec, how='inner', on='event')
-        df_pippimeta = pd.merge(df_pippimeta, df_gg, how='inner', on='event')
-        df_pippimeta.loc[:, "IM2_pippimgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pipe + df_pippimeta.Pime)**2 - \
-        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pippx + df_pippimeta.Pimpx)**2 -\
-        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pippy + df_pippimeta.Pimpy)**2 -\
-        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pippz + df_pippimeta.Pimpz)**2 
-        df_pippimeta.loc[:, "IM2_pimgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pime)**2 - \
-        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pimpx)**2 -\
-        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pimpy)**2 -\
-        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pimpz)**2 
-        df_pippimeta.loc[:, "IM2_pipgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pipe)**2 - \
-        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pippx)**2 -\
-        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pippy)**2 -\
-        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pippz)**2 
-        df_pippimeta.loc[:, "IM2_pippim"] = (df_pippimeta.Pipe + df_pippimeta.Pime)**2 - \
-        (df_pippimeta.Pippx + df_pippimeta.Pimpx)**2 -\
-        (df_pippimeta.Pippy + df_pippimeta.Pimpy)**2 -\
-        (df_pippimeta.Pippz + df_pippimeta.Pimpz)**2 
+        df_pippimgg = pd.merge(df_pipRec, df_pimRec, how='inner', on='event')
+        df_pippimgg = pd.merge(df_pippimgg, df_gg, how='inner', on='event')
+        df_pippimgg.loc[:, "IM2_pippimgg"] = (df_pippimgg.Ge + df_pippimgg.Ge2 + df_pippimgg.Pipe + df_pippimgg.Pime)**2 - \
+        (df_pippimgg.Gpx + df_pippimgg.Gpx2 + df_pippimgg.Pippx + df_pippimgg.Pimpx)**2 -\
+        (df_pippimgg.Gpy + df_pippimgg.Gpy2 + df_pippimgg.Pippy + df_pippimgg.Pimpy)**2 -\
+        (df_pippimgg.Gpz + df_pippimgg.Gpz2 + df_pippimgg.Pippz + df_pippimgg.Pimpz)**2 
+        df_pippimgg.loc[:, "IM2_pimgg"] = (df_pippimgg.Ge + df_pippimgg.Ge2 + df_pippimgg.Pime)**2 - \
+        (df_pippimgg.Gpx + df_pippimgg.Gpx2 + df_pippimgg.Pimpx)**2 -\
+        (df_pippimgg.Gpy + df_pippimgg.Gpy2 + df_pippimgg.Pimpy)**2 -\
+        (df_pippimgg.Gpz + df_pippimgg.Gpz2 + df_pippimgg.Pimpz)**2 
+        df_pippimgg.loc[:, "IM2_pipgg"] = (df_pippimgg.Ge + df_pippimgg.Ge2 + df_pippimgg.Pipe)**2 - \
+        (df_pippimgg.Gpx + df_pippimgg.Gpx2 + df_pippimgg.Pippx)**2 -\
+        (df_pippimgg.Gpy + df_pippimgg.Gpy2 + df_pippimgg.Pippy)**2 -\
+        (df_pippimgg.Gpz + df_pippimgg.Gpz2 + df_pippimgg.Pippz)**2 
+        df_pippimgg.loc[:, "IM2_pippim"] = (df_pippimgg.Pipe + df_pippimgg.Pime)**2 - \
+        (df_pippimgg.Pippx + df_pippimgg.Pimpx)**2 -\
+        (df_pippimgg.Pippy + df_pippimgg.Pimpy)**2 -\
+        (df_pippimgg.Pippz + df_pippimgg.Pimpz)**2 
 
-        self.df_eppippimeta = pd.merge(df_ep, df_pippimeta, how = 'right', on = 'event')
+        self.df_eppippimgg = pd.merge(df_ep, df_pippimgg, how = 'right', on = 'event')
+
+        print("π+, π-, g, gg, π+π-gg cases:")
+        print(len(df_pipRec), len(df_pimRec), len(df_gg), len(df_eppippimgg))
 
 
 
@@ -246,5 +249,5 @@ if __name__ == "__main__":
 
     filename = args.out
 
-    df = converter.df_eppippimeta
+    df = converter.df_eppippimgg
     df.to_pickle(filename)
