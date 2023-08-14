@@ -246,5 +246,5 @@ if __name__ == "__main__":
 
     filename = args.out
 
-    df = converter.df_ep
+    df = converter.df_eppippimeta
     df.to_pickle(filename)
