@@ -79,31 +79,30 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
+        df_pipRec = pd.DataFrame()
+        df_pimRec = pd.DataFrame()
+        df_gammaRec = pd.DataFrame()
+
         eleKeysRec = ["Epx", "Epy", "Epz", "Estat"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
-
-        if ebar:
-            eleKeysRec.extend(["Epa"])
-            df_positronRec = pd.DataFrame()
-            posKeysRec = ["Ebarpx", "Ebarpy", "Ebarpz"]
-            for key in posKeysRec:
-                df_positronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
-            df_positronRec = df_positronRec.astype({"Ebarpx": float, "Ebarpy": float, "Ebarpz": float})
-            df_positronRec.loc[:, "event"] = df_positronRec.index.get_level_values('entry')
-            pos = [df_positronRec.Ebarpx, df_positronRec.Ebarpy, df_positronRec.Ebarpz]
-            df_positronRec.loc[:, "Ebarp"] = mag(pos)
-            df_positronRec.loc[:, "Ebare"] = getEnergy(pos, me)
-            df_positronRec.loc[:, "Ebartheta"] = getTheta(pos)
-            df_positronRec.loc[:, "Ebarphi"] = getPhi(pos)
+        pipKeysRec = ["Pippx", "Pippy", "Pippz"]
+        pimKeysRec = ["Pimpx", "Pimpy", "Pimpz"]
+        gamKeysRec = ["Gpx", "Gpy", "Gpz"]
 
         # read them
         for key in eleKeysRec:
             df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in proKeysRec:
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        for key in pipKeysRec:
+            df_pipRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        for key in pimKeysRec:
+            df_pimRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        for key in gamKeysRec:
+            df_gammaRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         if logistics:
             df_logisticsRec = pd.DataFrame()
-            logKeysRec = ["nmlbar", "nma", "nmc", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            logKeysRec = ["nma", "nmc", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
             for key in logKeysRec:
                 df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
@@ -113,6 +112,10 @@ class root2pickle():
         #convert data type to standard double
         df_electronRec = df_electronRec.astype({"Epx": float, "Epy": float, "Epz": float})
         df_protonRec = df_protonRec.astype({"Ppx": float, "Ppy": float, "Ppz": float})
+        #set up a dummy index for merging
+        df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
+        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
+
         ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
         df_electronRec.loc[:, 'Ep'] = mag(ele)
         df_electronRec.loc[:, 'Ee'] = getEnergy(ele, me)
@@ -125,80 +128,86 @@ class root2pickle():
         df_electronRec.loc[:,'xB'] = df_electronRec['Q2'] / 2.0 / M / df_electronRec['nu']
         df_electronRec.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_electronRec['Ee'])**2 - mag2(VGS)))
 
-        #set up a dummy index for merging
-        df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
-        df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
-        #apply fiducial cuts
-        print(len(df_electronRec), len(df_protonRec))
-
-        #prepare for proton energy loss corrections correction
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
         df_protonRec.loc[:, 'Pp'] = mag(pro)
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
-        
+        df_protonRec.loc[:, 't1'] = 2 * M * (df_protonRec['Pe'] - M)
+
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        ep_inner_cond = (~np.isnan(df_ep.Epx)) & (~np.isnan(df_ep.Ppx))
+        Vmiss = [-df_ep.loc[ep_inner_cond, "Epx"] - df_ep.loc[ep_inner_cond, "Ppx"], -df_ep.loc[ep_inner_cond, "Epy"] - df_ep.loc[ep_inner_cond, "Ppy"],
+                  self.pbeam - df_ep.loc[ep_inner_cond, "Epz"] - df_ep.loc[ep_inner_cond, "Ppz"]]
+        df_ep.loc[ep_inner_cond, 'MM2_ep'] = (-M - self.ebeam + df_ep.loc[ep_inner_cond, "Ee"] + df_ep.loc[ep_inner_cond, "Pe"])**2 - mag2(Vmiss)
         if logistics:
             df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
 
-        self.df_ep = df_ep # saves df_ep
+        print("Electron, proton, ep cases:")
+        print(len(df_electronRec), len(df_protonRec), len(self.df_ep))
 
-        if ebar:
-            df_eebar = pd.merge(df_electronRec, df_positronRec, how = 'inner', on = 'event')
-            eebarInvmass2 = (df_eebar.Ee+df_eebar.Ebare)**2 - (df_eebar.Epx+df_eebar.Ebarpx)**2 - (df_eebar.Epy+df_eebar.Ebarpy)**2 - (df_eebar.Epz+df_eebar.Ebarpz)**2
-            eebarInvmass2 = np.where(eebarInvmass2 >= 0, eebarInvmass2, 10**6)
-            eebarInvmass  = np.sqrt(eebarInvmass2)
-            eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
-            df_eebar.loc[:, "IM_eebar"] = eebarInvmass
-            df_eebar = pd.merge(df_eebar, df_protonRec, how = 'inner', on = 'event')
-            df_eebar.loc[:, "Ge"] = df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe - M
-            df_eebar.loc[:, "Mpx"] = - (df_eebar.Epx + df_eebar.Ebarpx + df_eebar.Ppx)
-            df_eebar.loc[:, "Mpy"] = - (df_eebar.Epy + df_eebar.Ebarpy + df_eebar.Ppy)
-            df_eebar.loc[:, "Mpz"] = self.pbeam - (df_eebar.Epz + df_eebar.Ebarpz + df_eebar.Ppz)
-            df_eebar.loc[:, "Mp"] = mag([df_eebar.Mpx, df_eebar.Mpy, df_eebar.Mpz])
-            df_eebar.loc[:, "ME"] = self.ebeam + M - (df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe)
-            df_eebar.loc[:, "MM2_X"] = df_eebar.ME**2 - df_eebar.Mp**2
-            df_eebar.loc[:, "costheta_miss"] = df_eebar.Mpz/ df_eebar.Mp
-            df_eebar.loc[:, "Q2"] = 2*self.ebeam*df_eebar.Mp*(1-df_eebar.costheta_miss)
-            scat_ele = [df_eebar.Mpx, df_eebar.Mpy, df_eebar. Mpz]
-            df_eebar.loc[:, "SEp"] = mag(scat_ele)
-            df_eebar.loc[:, "SEe"] = getEnergy(scat_ele, me)
-            df_eebar.loc[:, "SEtheta"] = getTheta(scat_ele)
-            df_eebar.loc[:, "SEphi"] = getPhi(scat_ele)
-            Vmiss = [-df_eebar["Mpx"] - df_eebar["Ppx"], -df_eebar["Mpy"] - df_eebar["Ppy"],
-                      10.604 - df_eebar["Mpz"] - df_eebar["Ppz"]]
-            df_eebar.loc[:,'MM2_ep'] = (-M - 10.604 + df_eebar["SEe"] + df_eebar["Pe"])**2 - mag2(Vmiss)
-            VGS = [-df_eebar['Mpx'], -df_eebar['Mpy'], 10.604 - df_eebar['Mpz']]
-            df_eebar.loc[:,'Q2_new'] = -((10.604 - df_eebar['SEe'])**2 - mag2(VGS))
-            df_eebar.loc[:,'nu'] = (10.604 - df_eebar['SEe'])
-            df_eebar.loc[:,'y'] = df_eebar['nu']/10.604
-            df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
-            df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (10.604 + M - df_eebar['SEe'])**2 - mag2(VGS)))
-            self.df_eebar = df_eebar
+        #convert data type to standard double
+        df_pipRec = df_pipRec.astype({"Pippx": float, "Pippy": float, "Pippz": float})
+        df_pimRec = df_pimRec.astype({"Pimpx": float, "Pimpy": float, "Pimpz": float})
+        df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float})
+        #set up a dummy index for merging
+        df_pipRec.loc[:,'event'] = df_pipRec.index.get_level_values('entry')
+        df_pimRec.loc[:,'event'] = df_pimRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
+        df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
 
+        df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                         how='outer', on='event', suffixes=("", "2"))
+        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
-    def saveEPvars(self, correction=None, ebar = False):
-        #set up dvcs variables
-        df_ep = self.df_ep
+        gam = [df_gg['Gpx'], df_gg['Gpy'], df_gg['Gpz']]
+        df_gg.loc[:, 'Gp'] = mag(gam)
+        df_gg.loc[:, 'Ge'] = getEnergy(gam, 0)
+        df_gg.loc[:, 'Gtheta'] = getTheta(gam)
+        df_gg.loc[:, 'Gphi'] = getPhi(gam)
 
-        ele = [df_ep['Epx'], df_ep['Epy'], df_ep['Epz']]
-        pro = [df_ep['Ppx'], df_ep['Ppy'], df_ep['Ppz']]
+        gam2 = [df_gg['Gpx2'], df_gg['Gpy2'], df_gg['Gpz2']]
+        df_gg.loc[:, 'Gp2'] = mag(gam2)
+        df_gg.loc[:,'Ge2'] = getEnergy(gam2, 0)
+        df_gg.loc[:, 'Gtheta2'] = getTheta(gam2)
+        df_gg.loc[:, 'Gphi2'] = getPhi(gam2)
 
-        # Ppt = mag([df_ep['Ppx'], df_ep['Ppy'], 0])
+        pip = [df_pipRec.Pipx, df_pipRec.Pipy, df_pipRec.Pipz]
+        df_pipRec.loc[:, "Pipp"] = mag(pip)
+        df_pipRec.loc[:, "Pipe"] = getEnergy(pip, 0.13957039)
+        df_pipRec.loc[:, "Piptheta"] = getTheta(pip)
+        df_pipRec.loc[:, "Pipphi"] = getPhi(pip)
 
-        # v3l = cross(self.beam, ele)
-        # v3h = cross(pro, VGS)
-        Vmiss = [-df_ep["Epx"] - df_ep["Ppx"], -df_ep["Epy"] - df_ep["Ppy"],
-                  self.pbeam - df_ep["Epz"] - df_ep["Ppz"]]
+        pim = [df_pimRec.Pipx, df_pimRec.Pipy, df_pimRec.Pipz]
+        df_pimRec.loc[:, "Pimp"] = mag(pim)
+        df_pimRec.loc[:, "Pime"] = getEnergy(pim, 0.13957039)
+        df_pimRec.loc[:, "Pimtheta"] = getTheta(pim)
+        df_pimRec.loc[:, "Pimphi"] = getPhi(pim)
 
-        # binning kinematics
+        df_gg.loc[:,'Mgg'] = pi0InvMass(gam, gam2)
 
-        # exclusivity variables
-        df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
-        df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(Vmiss)
+        df_pippimeta = pd.merge(df_pipRec, df_pimRec, how='inner', on='event')
+        df_pippimeta = pd.merge(df_pippimeta, df_gg, how='inner', on='event')
+        df_pippimeta.loc[:, "IM2_pippimgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pipe + df_pippimeta.Pime)**2 - \
+        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pippx + df_pippimeta.Pimpx)**2 -\
+        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pippy + df_pippimeta.Pimpy)**2 -\
+        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pippz + df_pippimeta.Pimpz)**2 
+        df_pippimeta.loc[:, "IM2_pimgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pime)**2 - \
+        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pimpx)**2 -\
+        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pimpy)**2 -\
+        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pimpz)**2 
+        df_pippimeta.loc[:, "IM2_pipgg"] = (df_pippimeta.Ge + df_pippimeta.Ge2 + df_pippimeta.Pipe)**2 - \
+        (df_pippimeta.Gpx + df_pippimeta.Gpx2 + df_pippimeta.Pippx)**2 -\
+        (df_pippimeta.Gpy + df_pippimeta.Gpy2 + df_pippimeta.Pippy)**2 -\
+        (df_pippimeta.Gpz + df_pippimeta.Gpz2 + df_pippimeta.Pippz)**2 
+        df_pippimeta.loc[:, "IM2_pippim"] = (df_pippimeta.Pipe + df_pippimeta.Pime)**2 - \
+        (df_pippimeta.Pippx + df_pippimeta.Pimpx)**2 -\
+        (df_pippimeta.Pippy + df_pippimeta.Pimpy)**2 -\
+        (df_pippimeta.Pippz + df_pippimeta.Pimpz)**2 
 
-        self.df_ep = df_ep
+        self.df_eppippimeta = pd.merge(df_ep, df_pippimeta, how = 'right', on = 'event')
+
 
 
 if __name__ == "__main__":
@@ -222,7 +231,6 @@ if __name__ == "__main__":
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
-    parser.add_argument("-ebar","--ebar", help="use positron or not", action = "store_true")
 
     args = parser.parse_args()
 
@@ -237,18 +245,7 @@ if __name__ == "__main__":
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, ebar = args.ebar)
 
-    filename_vanilla = args.out
-    filename_nma   = args.out.replace(".pkl", "_nma.pkl")
-    filename_nmc   = args.out.replace(".pkl", "_nmc.pkl")
-    filename_eebar = args.out.replace(".pkl", "_eebar.pkl")
-    filename_nearbeam = args.out.replace(".pkl", "_nearbeam.pkl")
+    filename = args.out
 
     df = converter.df_ep
-    df.to_pickle(filename_vanilla)
-
-    if args.ebar:
-        df_eebar = converter.df_eebar
-        df.loc[df.nma<=3, :].to_pickle(filename_nma)
-        df.loc[df.nmc<=3, :].to_pickle(filename_nmc)
-        df.loc[df.Etheta<=3, :].to_pickle(filename_nearbeam)
-        df_eebar            .to_pickle(filename_eebar)
+    df.to_pickle(filename)
