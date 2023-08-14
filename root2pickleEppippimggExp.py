@@ -207,8 +207,8 @@ class root2pickle():
 
         self.df_eppippimgg = pd.merge(df_ep, df_pippimgg, how = 'right', on = 'event')
 
-        print("π+, π-, g, gg, π+π-gg cases:")
-        print(len(df_pipRec), len(df_pimRec), len(df_gg), len(df_eppippimgg))
+        print("π+, π-, g, gg, π+π-gg, epπ+π-gg cases:")
+        print(len(df_pipRec), len(df_pimRec), len(df_gg), len(df_pippimgg), len(self.df_eppippimgg))
 
 
 
