@@ -5,7 +5,7 @@ to merge the mc files in /volatile/clas12/osg2
 
 import numpy as np
 import sys, os, subprocess
-
+import argparse
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
