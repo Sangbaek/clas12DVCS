@@ -46,7 +46,7 @@ if __name__ == "__main__":
         try:
             subprocess.check_output(['ls', thisFile])
         except:
-        continue
+            continue
         run = subprocess.run(['ln','-s', thisFile, symlinkFile])  # quieter
         runCmd.append("{}".format(symlinkFile))
 
