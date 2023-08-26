@@ -35,7 +35,7 @@ if __name__ == "__main__":
     outputDir = "/volatile/clas12/sangbaek/regular_backup/temp/"
     targetDir = "{}{}".format(outputDir, jobNum)
     mergedFile = "{}/{}/{}/{}_{}.hipo".format(outputDir, process, polarity, jobNum, collectionNum)
-    runCmd = ["hipo-utils", "-filter", "-b", "'RUN::*,RAW::epics,RAW::scaler,HEL::flip,HEL::online,REC::*,RECFT::*,MC::*'", "-merge", "-o", mergedFile]
+    runCmd = ["hipo-utils", "-merge", "-o", mergedFile]
 
     print("creating sym links inside {}".format(targetDir))
 
