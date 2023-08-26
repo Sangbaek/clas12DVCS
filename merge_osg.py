@@ -35,23 +35,23 @@ if __name__ == "__main__":
     outputDir = "/volatile/clas12/sangbaek/regular_backup/temp/"
     targetDir = "{}{}".format(outputDir, jobNum)
     mergedFile = "{}/{}/{}/{}_{}.hipo".format(outputDir, process, polarity, jobNum, collectionNum)
-	runCmd = ["hipo-utils", "-filter", "-b", "'RUN::*,RAW::epics,RAW::scaler,HEL::flip,HEL::online,REC::*,RECFT::*,MC::*'", "-merge", "-o", mergedFile]
+    runCmd = ["hipo-utils", "-filter", "-b", "'RUN::*,RAW::epics,RAW::scaler,HEL::flip,HEL::online,REC::*,RECFT::*,MC::*'", "-merge", "-o", mergedFile]
 
     print("creating sym links inside {}".format(targetDir))
 
     subprocess.run(['mkdir','-p',targetDir])
     for fileInd in fileInds:
-    	thisFile   = "{}{}/dst.hipo".format(jobDir, fileInd)
-    	symlinkFile = "{}/{}_{}.hipo".format(targetDir, jobNum, fileInd)
-    	try:
-    		subprocess.check_output(['ls', thisFile])
-    	except:
-    		continue
+        thisFile   = "{}{}/dst.hipo".format(jobDir, fileInd)
+        symlinkFile = "{}/{}_{}.hipo".format(targetDir, jobNum, fileInd)
+        try:
+            subprocess.check_output(['ls', thisFile])
+        except:
+        continue
         run = subprocess.run(['ln','-s', thisFile, symlinkFile])  # quieter
         runCmd.append("{}".format(symlinkFile))
 
     print("merging the files as {}".format(mergedFile))
     print("running {}".format(runCmd))
-	
+    
 
-	subprocess.run(runCmd)
+    subprocess.run(runCmd)
