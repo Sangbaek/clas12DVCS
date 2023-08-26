@@ -22,7 +22,7 @@ if __name__ == "__main__":
     collectionNum = args.collectionNum
     process = args.process
     polarity = args.polarity
-    user = args.username
+    username = args.username
 
     jobStart = collectionNum * 500
     jobEnd   = collectionNum * 500 + 500
