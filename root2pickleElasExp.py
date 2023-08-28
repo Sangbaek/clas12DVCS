@@ -505,8 +505,8 @@ class root2pickle():
         cut_back2back = np.abs(df_ep["delPhi"]-180) < 7.5
 
         # proton reconstruction quality
-        cut_FD_proton = (df_epgg.loc[:, "Psector"]<7) & (df_epgg.loc[:, "Ptheta"]<35)
-        cut_CD_proton = (df_epgg.loc[:, "Psector"]>7) & (df_epgg.loc[:, "Ptheta"]>45) & (df_epgg.loc[:, "Ptheta"]<65)
+        cut_FD_proton = (df_ep.loc[:, "Psector"]<7) & (df_ep.loc[:, "Ptheta"]<35)
+        cut_CD_proton = (df_ep.loc[:, "Psector"]>7) & (df_ep.loc[:, "Ptheta"]>45) & (df_ep.loc[:, "Ptheta"]<65)
         cut_proton = (cut_FD_proton)|(cut_CD_proton)
 
         df_elas_cand = df_ep[cut_Ee & cut_Pp & cut_Vz & cut_back2back & cut_proton]
@@ -521,7 +521,7 @@ class root2pickle():
         cut_rad = np.abs(df_elas_cand["Ep"] - df_elas_cand["radElastElecMom"]) < 0.12 * df_elas_cand["radElastElecMom"]
         cut_missDir = np.sqrt(df_elas_cand["Mpx"]**2 + df_elas_cand["Mpy"]**2)/np.sqrt(df_elas_cand["Mpx"]**2 + df_elas_cand["Mpy"]**2 + df_elas_cand["Mpz"]**2) < 0.25
         cut_exclude_pure = ~df_elas_cand["event"].isin(df_elas_pure["event"])
-        df_elas_rad = df_elas_cand[cut_rad & cut_missDir & cut_ignore_pure]
+        df_elas_rad = df_elas_cand[cut_rad & cut_missDir & cut_exclude_pure]
         df_elas_rad.loc[:, 'pure'] = False
 
         df_elas = pd.concat([df_elas_pure, df_elas_rad])
