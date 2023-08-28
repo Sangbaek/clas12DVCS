@@ -620,6 +620,7 @@ class root2pickle():
             if len(df_protonRecFD_2):
                 df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
                 df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
+                df_protonRecFD_2.loc[:, "PphiEloss"] = CorrectedPphi_FD_2
                 df_protonRecFD_2.loc[:, "Pband"] = "upper"
 
             if len(df_protonRecCD):
@@ -643,7 +644,7 @@ class root2pickle():
                     df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
                     df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
                 
-                if len(df_protonCD):
+                if len(df_protonRecCD):
                     df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
                     df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
                     df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD

@@ -592,35 +592,43 @@ class root2pickle():
                 coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRecCD.Ptheta + 1.56575252*10**(-1) * df_protonRecCD.Ptheta**2 -7.71489734*10**(-4) * df_protonRecCD.Ptheta**3
                 CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
-            df_protonRecFD_1.loc[:, "PpEloss"] = CorrectedPp_FD_1
-            df_protonRecFD_1.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_1
-            df_protonRecFD_1.loc[:, "PphiEloss"] = CorrectedPphi_FD_1
-            df_protonRecFD_1.loc[:, "Pband"] = "lower"
+            if len(df_protonRecFD_1):
+                df_protonRecFD_1.loc[:, "PpEloss"] = CorrectedPp_FD_1
+                df_protonRecFD_1.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_1
+                df_protonRecFD_1.loc[:, "PphiEloss"] = CorrectedPphi_FD_1
+                df_protonRecFD_1.loc[:, "Pband"] = "lower"
 
-            df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
-            df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
-            df_protonRecFD_2.loc[:, "Pband"] = "upper"
+            if len(df_protonRecFD_2):
+                df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
+                df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
+                df_protonRecFD_2.loc[:, "PphiEloss"] = CorrectedPphi_FD_2
+                df_protonRecFD_2.loc[:, "Pband"] = "upper"
 
-            df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
-            df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
-            df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
+            if len(df_protonRecCD):
+                df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
+                df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
+                df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
 
             if noeloss or nopcorr:
                 print("no energy loss correction applied.")
                 pass
             else:
                 print("energy loss correction applied for " + pol)
-                df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
-                df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
-                df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
-                df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-                df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-                df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+                if len(df_protonRecFD_1):
+                    df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+                    df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
+                    df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
 
-                df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-                df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-                df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+                if len(df_protonRecFD_2):
+                    df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+                    df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
+                    df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+                
+                if len(df_protonRecCD):
+                    df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
+                    df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
+                    df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
 
             #smearing proton after the energy loss correction
             df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
