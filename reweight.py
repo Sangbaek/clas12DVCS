@@ -7,76 +7,61 @@ import subprocess, os
 from gepard.fits import th_KM15
 import gepard as g
 
-def printDVCS(xB, Q2, t, phi, heli):
-    my_env = os.environ.copy()
-    my_env["CLASDVCS_PDF"] = "/volatile/clas12/sangbaek/rad2/"
-    dstot = subprocess.check_output(['/volatile/clas12/sangbaek/rad2/dvcsgen', '--printdstot', '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--gpd', '101', '--phi', str(phi), '--heli', str(heli), '--vv2cut', '0.6', '--delta', '0.1', '--w', '3.61'], env = my_env)
-    lines = dstot.decode("utf-8").split("\n")
-    dstotline = lines[-2]
-    if "xsec_obs" in dstotline:
-        return float(dstotline.split()[1]), float(dstotline.split()[2])
-    else:
-        return 0, 0
-
-def printDVCSarray(xBarray, Q2array, tarray, phiarray, heliarray):
-    XsecObs = []
-    XsecBorn = []
-    if isinstance(xBarray, pd.core.series.Series):
-        xBarray = xBarray.to_numpy()
-        Q2array = Q2array.to_numpy()
-        tarray = tarray.to_numpy()
-        phiarray = phiarray.to_numpy()
-        heliarray = heliarray.to_numpy()
-        
-    for xB, Q2, t, phi, heli in zip(xBarray, Q2array, tarray, phiarray, heliarray):
-        XsecObs.append(printDVCS(xB, Q2, t, phi, heli)[0])
-        XsecBorn.append(printDVCS(xB, Q2, t, phi, heli)[1])
-    return XsecObs, XsecBorn
-
-def printDVCSKMarray(xBarray, Q2array, tarray, phiarray, heliarray):
-    KMarray = []
-    if isinstance(xBarray, pd.core.series.Series):
-        xBarray = xBarray.to_numpy()
-        Q2array = Q2array.to_numpy()
-        tarray = tarray.to_numpy()
-        phiarray = phiarray.to_numpy()
-        
-    for xB, Q2, t, phi, heli in zip(xBarray, Q2array, tarray, phiarray, heliarray):
-        KMarray.append(printDVCSKM(xB, Q2, t, phi, heli))
-    return KMarray
-
-def printDVCSKM(xB, Q2, t, phi, heli):
-    phi = np.pi - phi
-    pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-                  process='ep2epgamma', exptype='fixed target', frame ='trento',
-                  in1energy=10.604, in1charge=-1, in1polarization=heli)
-#     pt2 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
-#                    process='ep2epgamma', exptype='fixed target', frame = 'trento',
-#                    in1energy=10.604, in1charge=-1, in1polarization=+1)
-    return th_KM15.XS(pt1)/(2*np.pi/1000)
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-f","--fname", help="file to be reweighted", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
-    parser.add_argument("-S","--entry_start", help="entry_start", default="0")
-    parser.add_argument("-s","--entry_stop", help="entry_stop", default="100")
-    parser.add_argument("-o","--ofname", help="file to be saved", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
-    
+    parser.add_argument("-file", "--filename", type = str)
+    parser.add_argument("-Nind", "--Nind", type = int)
+    parser.add_argument("-Nmax", "--Nmax", type = int)
+
     args = parser.parse_args()
+    filename = args.filename
+    Nind = args.Nind
+    Nmax = args.Nmax
 
-    df = pd.read_pickle(args.fname)
-    entry_start = int(args.entry_start)
-    if args.entry_stop == "inf":
-        df = df.loc[(df.index>=entry_start), :]
-    else:
-        entry_stop = int(args.entry_stop)
-        df = df.loc[(df.index>=entry_start) & (df.index<entry_stop), :]
-    XsecObs, XsecBorn = printDVCSarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
-    XsecKMBorn = printDVCSKMarray(df.xB.to_numpy(), df.Q2.to_numpy(), df.t1.to_numpy(), np.radians(df.phi1.to_numpy()), df.helicity)
+    df = pd.read_pickle(args.filename)
 
-    df.loc[:, "BHrad"] = XsecObs
-    df.loc[:, "BHborn"] = XsecBorn
-    df.loc[:, "KMborn"] = XsecKMBorn
-    df.to_pickle(args.ofname)
+    if not df.index.is_unique:
+      df.index = np.linspace(0, len(df)-1, len(df), dtype = int)
+
+    indices = np.array_split(df.index.to_numpy(), Nmax)[Nind]
+
+    df.loc[:, "BornWeight_KM"] = 0
+    df.loc[:, "RadWeight_KM"] = 0
+
+    for index in indices:
+      this_row = df.loc[df.index == index, :]
+
+      ebeam = 10.604
+      pbeam = np.sqrt(ebeam * ebeam - me * me)
+      GenxB = this_row.GenxB[index]
+      GenQ2 = this_row.GenQ2[index]
+      Gent = this_row.Gent[index]
+      Genphi = this_row.Genphi[index]
+
+      ds_born = printKM(GenxB, GenQ2, Gent, np.radians(Genphi))
+
+      if this_row.radMode[index] == 1:
+        ds_rad = ds_born
+      elif this_row.radMode[index] == 2:
+        ebeam = 10.604 - this_row.GenGp2[index]
+        pbeam = np.sqrt(ebeam * ebeam - me * me)
+        GenEe = np.sqrt(this_row.GenEp[index]**2 + me**2)
+        VGS = [-this_row.GenEpx[index], -this_row.GenEpy[index], pbeam - this_row.GenEpz[index]]
+        GenQ2 = -((ebeam - GenEe)**2 - mag2(VGS))
+        Gennu = (ebeam - GenEe)
+        GenxB = GenQ2/2.0/M/Gennu
+        ds_rad = printKM(GenxB, GenQ2, Gent, np.radians(Genphi))
+      elif this_row.radMode[index] == 3:
+        GenEe = np.sqrt((this_row.GenEp[index] + this_row.GenGp2[index])**2 + me**2)
+        VGS = [-(this_row.GenEpx + this_row.GenGpx2)[index], -(this_row.GenEpy + this_row.GenGpy2)[index], pbeam - (this_row.GenEpz + this_row.GenGpz2)[index]]
+        GenQ2 = -((ebeam - GenEe)**2 - mag2(VGS))
+        Gennu = (ebeam - GenEe)
+        GenxB = GenQ2/2.0/M/Gennu
+        ds_rad = printKM(GenxB, GenQ2, Gent, np.radians(Genphi))
+      df.loc[df.index == index, "BornWeight_KM"] = ds_born/(2*np.pi/1000)
+      df.loc[df.index == index, "RadWeight_KM"] = ds_rad/(2*np.pi/1000)
+
+      new_filename = filename.replace('.pkl', '_{}_{}.pkl'.format(Nind, Nmax))
+      df.loc[df.index.isin(indices), ["BornWeight_KM", "RadWeight_KM"]].to_pickle(new_filename)
