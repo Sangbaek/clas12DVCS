@@ -137,7 +137,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
-        df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
+        df_ep = pd.merge(df_electronRec, df_protonRec, how='inner', on='event')
         df_ep = df_ep.loc[df_ep.Estat < 2000, :] #Save FT only
 
         if ebar:
