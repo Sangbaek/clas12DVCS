@@ -171,7 +171,6 @@ class root2pickle():
             df_eebar.loc[:,'y'] = df_eebar['nu']/10.604
             df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
             df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (10.604 + M - df_eebar['SEe'])**2 - mag2(VGS)))
-            self.df_eebar = df_eebar
 
             df_eeebar = pd.merge(df_electronRec, df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
             df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (df_eeebar.Estat < 2000), :]
@@ -251,9 +250,6 @@ if __name__ == "__main__":
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, ebar = args.ebar)
-        self.df_eeebar = df_eeebar
-        self.df_peebar = df_peebar
-        self.df_epeebar = df_epeebar
 
     filename_ep      = args.out.replace(".pkl", "_ep.pkl")
     filename_eebar   = args.out.replace(".pkl", "_eebar.pkl")
