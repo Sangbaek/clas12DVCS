@@ -79,11 +79,10 @@ class root2pickle():
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
-        eleKeysRec = ["Epx", "Epy", "Epz", "Estat"]
+        eleKeysRec = ["Epx", "Epy", "Epz", "Epa", "Estat"]
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
 
         if ebar:
-            eleKeysRec.extend(["Epa"])
             df_positronRec = pd.DataFrame()
             posKeysRec = ["Ebarpx", "Ebarpy", "Ebarpz"]
             for key in posKeysRec:
@@ -103,7 +102,7 @@ class root2pickle():
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         if logistics:
             df_logisticsRec = pd.DataFrame()
-            logKeysRec = ["nmlbar", "nma", "nmc", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
+            logKeysRec = ["nmlbar", "nma", "nmc", "TriggerPid", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
             for key in logKeysRec:
                 df_logisticsRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
             df_logisticsRec.loc[:,'event'] = df_logisticsRec.index
@@ -139,10 +138,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='outer', on='event')
-        if logistics:
-            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
-
-        self.df_ep = df_ep # saves df_ep
+        df_ep = df_ep.loc[df_ep.Estat < 2000, :] #Save FT only
 
         if ebar:
             df_eebar = pd.merge(df_electronRec, df_positronRec, how = 'inner', on = 'event')
@@ -176,6 +172,25 @@ class root2pickle():
             df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
             df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (10.604 + M - df_eebar['SEe'])**2 - mag2(VGS)))
             self.df_eebar = df_eebar
+
+            df_eeebar = pd.merge(df_electronRec, df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
+            df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (df_eeebar.Estat < 2000), :]
+
+            df_peebar = pd.merge(df_protonRec, df_eebar, how = 'inner', on = 'event')
+            df_epeebar = pd.merge(df_protonRec, df_eeebar, how = 'inner', on = 'event')
+
+        if logistics:
+            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
+            df_eebar = pd.merge(df_eebar, df_logisticsRec, how='outer', on='event')
+            df_eeebar = pd.merge(df_eeebar, df_logisticsRec, how='outer', on='event')
+            df_peebar = pd.merge(df_peebar, df_logisticsRec, how='outer', on='event')
+            df_epeebar = pd.merge(df_epeebar, df_logisticsRec, how='outer', on='event')
+
+        self.df_ep = df_ep
+        self.df_eebar = df_eebar
+        self.df_eeebar = df_eeebar
+        self.df_peebar = df_peebar
+        self.df_epeebar = df_epeebar
 
 
     def saveEPvars(self, correction=None, ebar = False):
@@ -236,19 +251,21 @@ if __name__ == "__main__":
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
      fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, ebar = args.ebar)
+        self.df_eeebar = df_eeebar
+        self.df_peebar = df_peebar
+        self.df_epeebar = df_epeebar
 
-    filename_vanilla = args.out
-    filename_nma   = args.out.replace(".pkl", "_nma.pkl")
-    filename_nmc   = args.out.replace(".pkl", "_nmc.pkl")
-    filename_eebar = args.out.replace(".pkl", "_eebar.pkl")
-    filename_nearbeam = args.out.replace(".pkl", "_nearbeam.pkl")
+    filename_ep      = args.out.replace(".pkl", "_ep.pkl")
+    filename_eebar   = args.out.replace(".pkl", "_eebar.pkl")
+    filename_eeebar  = args.out.replace(".pkl", "_eeebar.pkl")
+    filename_peebar  = args.out.replace(".pkl", "_peebar.pkl")
+    filename_epeebar = args.out.replace(".pkl", "_epeebar.pkl")
 
     df = converter.df_ep
-    df.to_pickle(filename_vanilla)
+    df.to_pickle(filename_ep)
 
     if args.ebar:
-        df_eebar = converter.df_eebar
-        df.loc[df.nma<=3, :].to_pickle(filename_nma)
-        df.loc[df.nmc<=3, :].to_pickle(filename_nmc)
-        df.loc[df.Etheta<=3, :].to_pickle(filename_nearbeam)
-        df_eebar            .to_pickle(filename_eebar)
+        converter.df_eebar.to_pickle("filename_eebar") 
+        converter.df_eeebar.to_pickle("filename_eeebar")
+        converter.df_peebar.to_pickle("filename_peebar")
+        converter.df_epeebar.to_pickle("filename_epeebar")
