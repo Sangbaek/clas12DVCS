@@ -138,7 +138,7 @@ class root2pickle():
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
         df_ep = pd.merge(df_electronRec, df_protonRec, how='inner', on='event')
-        df_ep = df_ep.loc[df_ep.Estat < 2000, :] #Save FT only
+        df_ep = df_ep.loc[np.abs(df_ep.Estat) < 2000, :] #Save FT only
 
         if ebar:
             df_eebar = pd.merge(df_electronRec, df_positronRec, how = 'inner', on = 'event')
@@ -147,35 +147,35 @@ class root2pickle():
             eebarInvmass  = np.sqrt(eebarInvmass2)
             eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
             df_eebar.loc[:, "IM_eebar"] = eebarInvmass
-            df_eebar = pd.merge(df_eebar, df_protonRec, how = 'inner', on = 'event')
-            df_eebar.loc[:, "Ge"] = df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe - M
-            df_eebar.loc[:, "Mpx"] = - (df_eebar.Epx + df_eebar.Ebarpx + df_eebar.Ppx)
-            df_eebar.loc[:, "Mpy"] = - (df_eebar.Epy + df_eebar.Ebarpy + df_eebar.Ppy)
-            df_eebar.loc[:, "Mpz"] = self.pbeam - (df_eebar.Epz + df_eebar.Ebarpz + df_eebar.Ppz)
-            df_eebar.loc[:, "Mp"] = mag([df_eebar.Mpx, df_eebar.Mpy, df_eebar.Mpz])
-            df_eebar.loc[:, "ME"] = self.ebeam + M - (df_eebar.Ee + df_eebar.Ebare + df_eebar.Pe)
-            df_eebar.loc[:, "MM2_X"] = df_eebar.ME**2 - df_eebar.Mp**2
-            df_eebar.loc[:, "costheta_miss"] = df_eebar.Mpz/ df_eebar.Mp
-            df_eebar.loc[:, "Q2"] = 2*self.ebeam*df_eebar.Mp*(1-df_eebar.costheta_miss)
-            scat_ele = [df_eebar.Mpx, df_eebar.Mpy, df_eebar. Mpz]
-            df_eebar.loc[:, "SEp"] = mag(scat_ele)
-            df_eebar.loc[:, "SEe"] = getEnergy(scat_ele, me)
-            df_eebar.loc[:, "SEtheta"] = getTheta(scat_ele)
-            df_eebar.loc[:, "SEphi"] = getPhi(scat_ele)
-            Vmiss = [-df_eebar["Mpx"] - df_eebar["Ppx"], -df_eebar["Mpy"] - df_eebar["Ppy"],
-                      self.ebeam - df_eebar["Mpz"] - df_eebar["Ppz"]]
-            df_eebar.loc[:,'MM2_ep'] = (-M - self.ebeam + df_eebar["SEe"] + df_eebar["Pe"])**2 - mag2(Vmiss)
-            VGS = [-df_eebar['Mpx'], -df_eebar['Mpy'], self.ebeam - df_eebar['Mpz']]
-            df_eebar.loc[:,'Q2_new'] = -((self.ebeam - df_eebar['SEe'])**2 - mag2(VGS))
-            df_eebar.loc[:,'nu'] = (self.ebeam - df_eebar['SEe'])
-            df_eebar.loc[:,'y'] = df_eebar['nu']/self.ebeam
-            df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
-            df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_eebar['SEe'])**2 - mag2(VGS)))
 
             df_eeebar = pd.merge(df_electronRec, df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
-            df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (df_eeebar.Estat < 2000), :]
+            df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (np.abs(df_eeebar.Estat) < 2000), :]
 
             df_peebar = pd.merge(df_protonRec, df_eebar, how = 'inner', on = 'event')
+            df_peebar.loc[:, "Ge"] = df_peebar.Ee + df_peebar.Ebare + df_peebar.Pe - M
+            df_peebar.loc[:, "Mpx"] = - (df_peebar.Epx + df_peebar.Ebarpx + df_peebar.Ppx)
+            df_peebar.loc[:, "Mpy"] = - (df_peebar.Epy + df_peebar.Ebarpy + df_peebar.Ppy)
+            df_peebar.loc[:, "Mpz"] = self.pbeam - (df_peebar.Epz + df_peebar.Ebarpz + df_peebar.Ppz)
+            df_peebar.loc[:, "Mp"] = mag([df_peebar.Mpx, df_peebar.Mpy, df_peebar.Mpz])
+            df_peebar.loc[:, "ME"] = self.ebeam + M - (df_peebar.Ee + df_peebar.Ebare + df_peebar.Pe)
+            df_peebar.loc[:, "MM2_X"] = df_peebar.ME**2 - df_peebar.Mp**2
+            df_peebar.loc[:, "costheta_miss"] = df_peebar.Mpz/ df_peebar.Mp
+            df_peebar.loc[:, "Q2"] = 2*self.ebeam*df_peebar.Mp*(1-df_peebar.costheta_miss)
+            scat_ele = [df_peebar.Mpx, df_peebar.Mpy, df_peebar. Mpz]
+            df_peebar.loc[:, "SEp"] = mag(scat_ele)
+            df_peebar.loc[:, "SEe"] = getEnergy(scat_ele, me)
+            df_peebar.loc[:, "SEtheta"] = getTheta(scat_ele)
+            df_peebar.loc[:, "SEphi"] = getPhi(scat_ele)
+            Vmiss = [-df_peebar["Mpx"] - df_peebar["Ppx"], -df_peebar["Mpy"] - df_peebar["Ppy"],
+                      self.ebeam - df_peebar["Mpz"] - df_peebar["Ppz"]]
+            df_peebar.loc[:,'MM2_ep'] = (-M - self.ebeam + df_peebar["SEe"] + df_peebar["Pe"])**2 - mag2(Vmiss)
+            VGS = [-df_peebar['Mpx'], -df_peebar['Mpy'], self.ebeam - df_peebar['Mpz']]
+            df_peebar.loc[:,'Q2_new'] = -((self.ebeam - df_peebar['SEe'])**2 - mag2(VGS))
+            df_peebar.loc[:,'nu'] = (self.ebeam - df_peebar['SEe'])
+            df_peebar.loc[:,'y'] = df_peebar['nu']/self.ebeam
+            df_peebar.loc[:,'xB'] = df_peebar['Q2_new'] / 2.0 / M / df_peebar['nu']
+            df_peebar.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_peebar['SEe'])**2 - mag2(VGS)))
+
             df_epeebar = pd.merge(df_protonRec, df_eeebar, how = 'inner', on = 'event')
 
         if logistics:
