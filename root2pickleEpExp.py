@@ -261,7 +261,7 @@ if __name__ == "__main__":
     df.to_pickle(filename_ep)
 
     if args.ebar:
-        converter.df_eebar.to_pickle("filename_eebar") 
-        converter.df_eeebar.to_pickle("filename_eeebar")
-        converter.df_peebar.to_pickle("filename_peebar")
-        converter.df_epeebar.to_pickle("filename_epeebar")
+        converter.df_eebar.to_pickle(filename_eebar) 
+        converter.df_eeebar.to_pickle(filename_eeebar)
+        converter.df_peebar.to_pickle(filename_peebar)
+        converter.df_epeebar.to_pickle(filename_epeebar)
