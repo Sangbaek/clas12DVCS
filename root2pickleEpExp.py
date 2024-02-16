@@ -163,14 +163,14 @@ class root2pickle():
             df_eebar.loc[:, "SEtheta"] = getTheta(scat_ele)
             df_eebar.loc[:, "SEphi"] = getPhi(scat_ele)
             Vmiss = [-df_eebar["Mpx"] - df_eebar["Ppx"], -df_eebar["Mpy"] - df_eebar["Ppy"],
-                      10.604 - df_eebar["Mpz"] - df_eebar["Ppz"]]
-            df_eebar.loc[:,'MM2_ep'] = (-M - 10.604 + df_eebar["SEe"] + df_eebar["Pe"])**2 - mag2(Vmiss)
-            VGS = [-df_eebar['Mpx'], -df_eebar['Mpy'], 10.604 - df_eebar['Mpz']]
-            df_eebar.loc[:,'Q2_new'] = -((10.604 - df_eebar['SEe'])**2 - mag2(VGS))
-            df_eebar.loc[:,'nu'] = (10.604 - df_eebar['SEe'])
-            df_eebar.loc[:,'y'] = df_eebar['nu']/10.604
+                      self.ebeam - df_eebar["Mpz"] - df_eebar["Ppz"]]
+            df_eebar.loc[:,'MM2_ep'] = (-M - self.ebeam + df_eebar["SEe"] + df_eebar["Pe"])**2 - mag2(Vmiss)
+            VGS = [-df_eebar['Mpx'], -df_eebar['Mpy'], self.ebeam - df_eebar['Mpz']]
+            df_eebar.loc[:,'Q2_new'] = -((self.ebeam - df_eebar['SEe'])**2 - mag2(VGS))
+            df_eebar.loc[:,'nu'] = (self.ebeam - df_eebar['SEe'])
+            df_eebar.loc[:,'y'] = df_eebar['nu']/self.ebeam
             df_eebar.loc[:,'xB'] = df_eebar['Q2_new'] / 2.0 / M / df_eebar['nu']
-            df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (10.604 + M - df_eebar['SEe'])**2 - mag2(VGS)))
+            df_eebar.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_eebar['SEe'])**2 - mag2(VGS)))
 
             df_eeebar = pd.merge(df_electronRec, df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
             df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (df_eeebar.Estat < 2000), :]
@@ -179,11 +179,11 @@ class root2pickle():
             df_epeebar = pd.merge(df_protonRec, df_eeebar, how = 'inner', on = 'event')
 
         if logistics:
-            df_ep = pd.merge(df_ep, df_logisticsRec, how='outer', on='event')
-            df_eebar = pd.merge(df_eebar, df_logisticsRec, how='outer', on='event')
-            df_eeebar = pd.merge(df_eeebar, df_logisticsRec, how='outer', on='event')
-            df_peebar = pd.merge(df_peebar, df_logisticsRec, how='outer', on='event')
-            df_epeebar = pd.merge(df_epeebar, df_logisticsRec, how='outer', on='event')
+            df_ep = pd.merge(df_ep, df_logisticsRec, how='inner', on='event')
+            df_eebar = pd.merge(df_eebar, df_logisticsRec, how='inner', on='event')
+            df_eeebar = pd.merge(df_eeebar, df_logisticsRec, how='inner', on='event')
+            df_peebar = pd.merge(df_peebar, df_logisticsRec, how='inner', on='event')
+            df_epeebar = pd.merge(df_epeebar, df_logisticsRec, how='inner', on='event')
 
         self.df_ep = df_ep
         self.df_eebar = df_eebar
