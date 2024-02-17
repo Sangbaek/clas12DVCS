@@ -83,6 +83,7 @@ class root2pickle():
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pstat"]
 
         if ebar:
+            print ("read positrons")
             df_positronRec = pd.DataFrame()
             posKeysRec = ["Ebarpx", "Ebarpy", "Ebarpz"]
             for key in posKeysRec:
@@ -96,10 +97,13 @@ class root2pickle():
             df_positronRec.loc[:, "Ebarphi"] = getPhi(pos)
 
         # read them
+        print ("read electrons")
         for key in eleKeysRec:
             df_electronRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        print ("read protons")
         for key in proKeysRec:
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
+        print ("read logistics")
         if logistics:
             df_logisticsRec = pd.DataFrame()
             logKeysRec = ["nmlbar", "nma", "nmc", "TriggerPid", "TriggerBit", "EventNum", "RunNum", "beamQ", "liveTime", "helicity"]
@@ -137,10 +141,12 @@ class root2pickle():
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
         
-        df_ep = pd.merge(df_electronRec, df_protonRec, how='inner', on='event')
+        print ("make e'p")
+        df_ep = pd.merge(df_electronRec.loc[df_electronRec.Estat<2000, :], df_protonRec, how='inner', on='event')
         df_ep = df_ep.loc[np.abs(df_ep.Estat) < 2000, :] #Save FT only
 
         if ebar:
+            print ("make e+e-")
             df_eebar = pd.merge(df_electronRec, df_positronRec, how = 'inner', on = 'event')
             eebarInvmass2 = (df_eebar.Ee+df_eebar.Ebare)**2 - (df_eebar.Epx+df_eebar.Ebarpx)**2 - (df_eebar.Epy+df_eebar.Ebarpy)**2 - (df_eebar.Epz+df_eebar.Ebarpz)**2
             eebarInvmass2 = np.where(eebarInvmass2 >= 0, eebarInvmass2, 10**6)
@@ -148,9 +154,11 @@ class root2pickle():
             eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
             df_eebar.loc[:, "IM_eebar"] = eebarInvmass
 
-            df_eeebar = pd.merge(df_electronRec, df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
+            print ("make e'e+e-")
+            df_eeebar = pd.merge(df_electronRec.loc[df_electronRec.Estat<2000, :], df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
             df_eeebar = df_eeebar.loc[(df_eeebar.Epa != df_eeebar.Epajpsi) & (np.abs(df_eeebar.Estat) < 2000), :]
 
+            print ("make pe+e-")
             df_peebar = pd.merge(df_protonRec, df_eebar, how = 'inner', on = 'event')
             df_peebar.loc[:, "Ge"] = df_peebar.Ee + df_peebar.Ebare + df_peebar.Pe - M
             df_peebar.loc[:, "Mpx"] = - (df_peebar.Epx + df_peebar.Ebarpx + df_peebar.Ppx)
@@ -176,6 +184,7 @@ class root2pickle():
             df_peebar.loc[:,'xB'] = df_peebar['Q2_new'] / 2.0 / M / df_peebar['nu']
             df_peebar.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_peebar['SEe'])**2 - mag2(VGS)))
 
+            print ("make e'pe+e-")
             df_epeebar = pd.merge(df_protonRec, df_eeebar, how = 'inner', on = 'event')
 
         if logistics:
