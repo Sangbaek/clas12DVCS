@@ -140,7 +140,8 @@ class root2pickle():
         df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
         df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
         df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
-        
+        df_protonRec.loc[:, 't1'] = 2 * M * (df_protonRec['Pe'] - M)
+
         print ("make e'p")
         df_ep = pd.merge(df_electronRec.loc[df_electronRec.Estat<2000, :], df_protonRec, how='inner', on='event')
         df_ep = df_ep.loc[np.abs(df_ep.Estat) < 2000, :] #Save FT only
@@ -219,7 +220,7 @@ class root2pickle():
         # binning kinematics
 
         # exclusivity variables
-        df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
+        # df_ep.loc[:,'t1'] = 2 * M * (df_ep['Pe'] - M)
         df_ep.loc[:,'MM2_ep'] = (-M - self.ebeam + df_ep["Ee"] + df_ep["Pe"])**2 - mag2(Vmiss)
 
         self.df_ep = df_ep
