@@ -153,6 +153,7 @@ class root2pickle():
             eebarInvmass  = np.sqrt(eebarInvmass2)
             eebarInvmass = np.where(eebarInvmass > 100, -1000, eebarInvmass)
             df_eebar.loc[:, "IM_eebar"] = eebarInvmass
+            df_eebar = df_eebar.loc[df_eebar.IM_eebar>2.5, :]
 
             print ("make e'e+e-")
             df_eeebar = pd.merge(df_electronRec.loc[df_electronRec.Estat<2000, :], df_eebar, how = 'inner', on = 'event', suffixes=("", "jpsi"))
