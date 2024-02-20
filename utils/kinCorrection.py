@@ -66,20 +66,20 @@ def protonEnergyLossCorr(pol, topo, df_protonRec):
             CorrectedPphi = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
         elif topo == "CD":
-            const = 1.93686914 - 0.116288824*df_protonRec.Ptheta + 0.00223685833*df_protonRec.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRec.Ptheta**3
-            coeff = -0.738047800 + 0.0443343685*df_protonRec.Ptheta - 8.50985972*10**(-4)*df_protonRec.Ptheta*df_protonRec.Ptheta + 5.36810280 * 10**(-6) * df_protonRec.Ptheta**3
+            const = 1.93686914 - 0.116288824*np.minimum(60, df_protonRec.Ptheta) + 0.00223685833*df_protonRec.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRec.Ptheta**3
+            coeff = -0.738047800 + 0.0443343685*np.minimum(60, df_protonRec.Ptheta) - 8.50985972*10**(-4)*df_protonRec.Ptheta*np.minimum(60, df_protonRec.Ptheta) + 5.36810280 * 10**(-6) * df_protonRec.Ptheta**3
 
             CorrectedPp = const + coeff/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
 
-            const = -1.09849291*100 + 8.86664014 * df_protonRec.Ptheta - 0.26643881 * df_protonRec.Ptheta**2 + 3.53814210 * 10**(-3) * df_protonRec.Ptheta**3 - 1.75297107 * 10**(-5) * df_protonRec.Ptheta**4
-            coeff = 9.52034523*100 -5.74808292 * 10 * df_protonRec.Ptheta + 1.15386949 * df_protonRec.Ptheta**2 - 7.57970373 * 0.001 * df_protonRec.Ptheta**3
-            coeff2 = -2.00387313*100 + 1.18979079 * 10 * df_protonRec.Ptheta - 2.37730217*0.1 * df_protonRec.Ptheta**2 + 1.55153003*0.001*df_protonRec.Ptheta**3
+            const = -1.09849291*100 + 8.86664014 * np.minimum(60, df_protonRec.Ptheta) - 0.26643881 * df_protonRec.Ptheta**2 + 3.53814210 * 10**(-3) * df_protonRec.Ptheta**3 - 1.75297107 * 10**(-5) * df_protonRec.Ptheta**4
+            coeff = 9.52034523*100 -5.74808292 * 10 * np.minimum(60, df_protonRec.Ptheta) + 1.15386949 * df_protonRec.Ptheta**2 - 7.57970373 * 0.001 * df_protonRec.Ptheta**3
+            coeff2 = -2.00387313*100 + 1.18979079 * 10 * np.minimum(60, df_protonRec.Ptheta) - 2.37730217*0.1 * df_protonRec.Ptheta**2 + 1.55153003*0.001*df_protonRec.Ptheta**3
 
             CorrectedPtheta = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
 
-            const = 4.94546178 -3.26662886*0.1 * df_protonRec.Ptheta +  7.39069603 * 0.001 * df_protonRec.Ptheta**2 -6.83599356*10**(-5) * df_protonRec.Ptheta**3 + 2.12303103*10**(-7) * df_protonRec.Ptheta**4
-            coeff = 1.72181613*10**(5) -1.36827111*10**(4) * df_protonRec.Ptheta + 4.00923146*10**(2) * df_protonRec.Ptheta**2 - 5.12792347 * df_protonRec.Ptheta**3 + 2.41793167*10**(-2) * df_protonRec.Ptheta**4
-            coeff2 =  1.20477219*10**(2) -5.86630228 * df_protonRec.Ptheta + 7.44007875*10**(-2) * df_protonRec.Ptheta**2 -2.42652473*10**(-4) * df_protonRec.Ptheta**3
+            const = 4.94546178 -3.26662886*0.1 * np.minimum(60, df_protonRec.Ptheta) +  7.39069603 * 0.001 * df_protonRec.Ptheta**2 -6.83599356*10**(-5) * df_protonRec.Ptheta**3 + 2.12303103*10**(-7) * df_protonRec.Ptheta**4
+            coeff = 1.72181613*10**(5) -1.36827111*10**(4) * np.minimum(60, df_protonRec.Ptheta) + 4.00923146*10**(2) * df_protonRec.Ptheta**2 - 5.12792347 * df_protonRec.Ptheta**3 + 2.41793167*10**(-2) * df_protonRec.Ptheta**4
+            coeff2 =  1.20477219*10**(2) -5.86630228 * np.minimum(60, df_protonRec.Ptheta) + 7.44007875*10**(-2) * df_protonRec.Ptheta**2 -2.42652473*10**(-4) * df_protonRec.Ptheta**3
             CorrectedPphi = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
     #outbending proton energy loss correction
@@ -111,20 +111,20 @@ def protonEnergyLossCorr(pol, topo, df_protonRec):
             CorrectedPphi = const + coeff/df_protonRec.loc[:, "Pp"]/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pphi"]
 
         elif topo == "CD":
-            const = 1.92657376 - 0.113836734*df_protonRec.Ptheta + 0.00215038526*df_protonRec.Ptheta**2 - 1.32525053 * 10**(-5)*df_protonRec.Ptheta**3
-            coeff = -0.755650043 + 0.0445538936*df_protonRec.Ptheta - 8.38241864*10**(-4)*df_protonRec.Ptheta*df_protonRec.Ptheta + 5.16887255 * 10**(-6) * df_protonRec.Ptheta**3
+            const = 1.92657376 - 0.113836734*np.minimum(60, df_protonRec.Ptheta) + 0.00215038526*np.minimum(60, df_protonRec.Ptheta)**2 - 1.32525053 * 10**(-5)*np.minimum(60, df_protonRec.Ptheta)**3
+            coeff = -0.755650043 + 0.0445538936*np.minimum(60, df_protonRec.Ptheta) - 8.38241864*10**(-4)*np.minimum(60, df_protonRec.Ptheta)*np.minimum(60, df_protonRec.Ptheta) + 5.16887255 * 10**(-6) * np.minimum(60, df_protonRec.Ptheta)**3
 
             CorrectedPp = const + coeff/df_protonRec.loc[:, "Pp"] + df_protonRec.loc[:, "Pp"]
 
-            const = -5.79024055*10 + 4.67197531 * df_protonRec.Ptheta - 0.140156897 * df_protonRec.Ptheta**2 + 1.85853057 * 10**(-3) * df_protonRec.Ptheta**3 - 9.19989908 * 10**(-6) * df_protonRec.Ptheta**4
-            coeff = 2.99700765*1000 - 2.18027982 * 10**2 * df_protonRec.Ptheta + 5.84757503 * df_protonRec.Ptheta**2 - 6.80409195 * 0.01 * df_protonRec.Ptheta**3 + 2.89244618 * 0.0001 * df_protonRec.Ptheta**4
-            coeff2 = -1.82237904*100 + 1.10153549 * 10 * df_protonRec.Ptheta - 2.24699931*0.1 * df_protonRec.Ptheta**2 + 1.49390960*0.001*df_protonRec.Ptheta**3
+            const = -5.79024055*10 + 4.67197531 * np.minimum(60, df_protonRec.Ptheta) - 0.140156897 * np.minimum(60, df_protonRec.Ptheta)**2 + 1.85853057 * 10**(-3) * np.minimum(60, df_protonRec.Ptheta)**3 - 9.19989908 * 10**(-6) * np.minimum(60, df_protonRec.Ptheta)**4
+            coeff = 2.99700765*1000 - 2.18027982 * 10**2 * np.minimum(60, df_protonRec.Ptheta) + 5.84757503 * np.minimum(60, df_protonRec.Ptheta)**2 - 6.80409195 * 0.01 * np.minimum(60, df_protonRec.Ptheta)**3 + 2.89244618 * 0.0001 * np.minimum(60, df_protonRec.Ptheta)**4
+            coeff2 = -1.82237904*100 + 1.10153549 * 10 * np.minimum(60, df_protonRec.Ptheta) - 2.24699931*0.1 * np.minimum(60, df_protonRec.Ptheta)**2 + 1.49390960*0.001*np.minimum(60, df_protonRec.Ptheta)**3
 
             CorrectedPtheta = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Ptheta"]
 
-            const = 7.58761670 - 5.28224578*0.1 * df_protonRec.Ptheta +  1.31580117 * 0.01 * df_protonRec.Ptheta**2 -1.41738951*10**(-4) * df_protonRec.Ptheta**3 + 5.62884363*10**(-7) * df_protonRec.Ptheta**4
-            coeff = 1.07644097*10**(5) - 8.67994639*10**(3) * df_protonRec.Ptheta + 2.57187193*10**(2) * df_protonRec.Ptheta**2 - 3.31379317 * df_protonRec.Ptheta**3 + 1.56896621*10**(-2) * df_protonRec.Ptheta**4
-            coeff2 =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRec.Ptheta + 1.56575252*10**(-1) * df_protonRec.Ptheta**2 -7.71489734*10**(-4) * df_protonRec.Ptheta**3
+            const = 7.58761670 - 5.28224578*0.1 * np.minimum(60, df_protonRec.Ptheta) +  1.31580117 * 0.01 * np.minimum(60, df_protonRec.Ptheta)**2 -1.41738951*10**(-4) * np.minimum(60, df_protonRec.Ptheta)**3 + 5.62884363*10**(-7) * np.minimum(60, df_protonRec.Ptheta)**4
+            coeff = 1.07644097*10**(5) - 8.67994639*10**(3) * np.minimum(60, df_protonRec.Ptheta) + 2.57187193*10**(2) * np.minimum(60, df_protonRec.Ptheta)**2 - 3.31379317 * np.minimum(60, df_protonRec.Ptheta)**3 + 1.56896621*10**(-2) * np.minimum(60, df_protonRec.Ptheta)**4
+            coeff2 =  1.92263184*10**(2) -1.00870704 * 10 * np.minimum(60, df_protonRec.Ptheta) + 1.56575252*10**(-1) * np.minimum(60, df_protonRec.Ptheta)**2 -7.71489734*10**(-4) * np.minimum(60, df_protonRec.Ptheta)**3
             CorrectedPphi = const + coeff*np.exp(coeff2*df_protonRec.loc[:, "Pp"]) + df_protonRec.loc[:, "Pphi"]
 
     return [CorrectedPp, CorrectedPtheta, CorrectedPphi]
