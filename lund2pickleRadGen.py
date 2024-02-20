@@ -53,12 +53,10 @@ class lund2pickle():
             Epx = eleQuantities[6]
             Epy = eleQuantities[7]
             Epz = eleQuantities[8]
-            proLine = txtlst[ind+2]
             proQuantities = proLine.split()
             Ppx = proQuantities[6]
             Ppy = proQuantities[7]
             Ppz = proQuantities[8]
-            gamLine = txtlst[ind+3]
             gamQuantities = gamLine.split()
             Gpx = gamQuantities[6]
             Gpy = gamQuantities[7]

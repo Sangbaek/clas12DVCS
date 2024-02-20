@@ -77,6 +77,7 @@ class lund2pickle():
             Ppx = proQuantities[6]
             Ppy = proQuantities[7]
             Ppz = proQuantities[8]
+            beamE = gamQuantities[1]
             Gpx = gamQuantities[6]
             Gpy = gamQuantities[7]
             Gpz = gamQuantities[8]
@@ -84,11 +85,17 @@ class lund2pickle():
                 Gpx2 = 0
                 Gpy2 = 0
                 Gpz2 = 0
+                Gpx3 = 0
+                Gpy3 = 0
+                Gpz3 = 0
             elif num_particles == "4":
                 radQuantities = radLine.split()
                 Gpx2 = radQuantities[6]
                 Gpy2 = radQuantities[7]
                 Gpz2 = radQuantities[8]
+                Gpx3 = 0
+                Gpy3 = 0
+                Gpz3 = 0
             elif num_particles == "5":
                 radQuantities = radLine.split()
                 Gpx2 = radQuantities[6]
@@ -99,9 +106,9 @@ class lund2pickle():
                 Gpy3 = radQuantities2[7]
                 Gpz3 = radQuantities2[8]
 
-            kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity))])
+            kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity)), float(beamE)])
 
-        df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity"])
+        df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity", "beamE"])
         self.df = df_epgg
 
         self.closeFile()

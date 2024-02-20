@@ -75,11 +75,17 @@ class lund2pickle():
                 Gpx2 = 0
                 Gpy2 = 0
                 Gpz2 = 0
+                Gpx3 = 0
+                Gpy3 = 0
+                Gpz3 = 0
             elif num_particles == "4":
                 radQuantities = radLine.split()
                 Gpx2 = radQuantities[6]
                 Gpy2 = radQuantities[7]
                 Gpz2 = radQuantities[8]
+                Gpx3 = 0
+                Gpy3 = 0
+                Gpz3 = 0
             elif num_particles == "5":
                 radQuantities = radLine.split()
                 Gpx2 = radQuantities[6]
