@@ -8,7 +8,7 @@ def electronCorrection(pol, df_electronRec):
     df_electronRec.loc[:, "dp"] = 0
 
     eleCorr = df_electronRec.loc[:, ["Ep", "Ephi", "Esector"]]
-    eleCorr.loc[ (df_electronRec.Esector == 4 | df_electronRec.Esector == 3) & eleCorr.Ephi < 0) || (df_electronRec.Esector > 4 & eleCorr.Ephi < 90), "Ephi"] += 360
+    eleCorr.loc[ ((df_electronRec.Esector == 4 | df_electronRec.Esector == 3) & eleCorr.Ephi < 0) | (df_electronRec.Esector > 4 & eleCorr.Ephi < 90), "Ephi"] += 360
     eleCorr.loc[:, "Ephi"] = eleCorr.Ephi - (eleCorr.Esector - 1)*60
     if pol == "inbending":
         eleCorr.loc[eleCorr.Esector == 1, "dp"] = ((-4.3303e-06)*eleCorr.loc[eleCorr.Esector==1, "Ephi"]*eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (1.1006e-04)* eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (-5.7235e-04))*eleCorr.loc[eleCorr.Esector==1, "Ep"]*eleCorr.loc[eleCorr.Esector==1, "Ep"] + ((3.2555e-05)* eleCorr.loc[eleCorr.Esector==1, "Ephi"]*eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (-0.0014559)* eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (0.0014878))*  eleCorr.loc[eleCorr.Esector==1, "Ep"] + ((-1.9577e-05)*eleCorr.loc[eleCorr.Esector==1, "Ephi"]*eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (0.0017996)*  eleCorr.loc[eleCorr.Esector==1, "Ephi"] + (0.025963));

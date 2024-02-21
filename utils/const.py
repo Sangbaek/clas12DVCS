@@ -10,7 +10,7 @@ M = 0.938272081 # target mass
 me = 0.5109989461 * 0.001 # electron mass
 target = [0, 0, 0] # target vector
 alpha = 1/137.036
-hc2  = 0.38938
+hc2  = 0.38938 # in mbarn https://www.physicsforums.com/threads/conversion-gev-barn.329940/
 
 #reaction: dvcs, pi0
 #polarity: inb, outb

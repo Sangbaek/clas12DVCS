@@ -365,7 +365,7 @@ def getCFFarrays(xB, Q2, t, phi):
     return H1_RE, H1_IM, E1_RE, E1_IM, H1T_RE, H1T_IM, E1T_RE, E1T_IM
 
 def getBHDVCS(xB, Q2, t, phi, Ed = 10.604, mode = 1):
-    coeff = 10**9*hc2*alpha**3
+    coeff = 10**9*hc2*alpha**3 # in pb
     del2  = -t
     Phi_gb = np.pi-np.radians(phi)
     phigd = Phi_gb
@@ -375,7 +375,7 @@ def getBHDVCS(xB, Q2, t, phi, Ed = 10.604, mode = 1):
     eps2=eps*eps
     qeps2=1 + eps2
     sqeps2=np.sqrt(qeps2)
-    ds = 2*np.pi*0.001*coeff*(xB*yb**2/(16*np.pi**2*Q2**2))/sqeps2
+    ds = 2*np.pi*0.001*coeff*(xB*yb**2/(16*np.pi**2*Q2**2))/sqeps2 # in nb
     del2min=-Q2*(2*(1-xB)*(1-sqeps2)+eps2)
     del2min=del2min/(4*xB*(1-xB)+eps2)
     tau  = del2/(4*M**2)
