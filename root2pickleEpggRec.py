@@ -2,6 +2,8 @@
 """
 A simple script to save data in pickle.
 """
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import uproot
 import argparse
@@ -9,6 +11,7 @@ from copy import copy
 from utils.const import *
 from utils.physics import *
 from utils.fiducial import *
+from utils.kinCorrection import *
 import awkward as ak
 pd.options.mode.chained_assignment = None 
 
@@ -237,6 +240,7 @@ class root2pickle():
         print("debug:: number of events", len(df_electronGen))
         print("debug:: number of all MC df", len(df_MC))
 
+        '''save data into df_epg, df_epgg for parent class epg'''
         # data frames and their keys to read X part
         df_electronRec = pd.DataFrame()
         df_protonRec = pd.DataFrame()
@@ -250,6 +254,8 @@ class root2pickle():
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
         proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
         proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
+        proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
+        proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
         # proKeysRec.extend(["Pchi2pid", "Pchi2track", "PNDFtrack"])
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
         gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1", "Gbeta"])
@@ -273,8 +279,8 @@ class root2pickle():
             # proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
             eleKeysRec.extend(["startTime"])
             proKeysRec.extend(["PFtof1aTime", "PFtof1bTime", "PFtof2Time", "PCtofTime"])
-            proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
-            proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
+            # proKeysRec.extend(["PFtof1aHitx", "PFtof1bHitx", "PFtof2Hitx", "PCtofHitx"])
+            # proKeysRec.extend(["PFtof1aHity", "PFtof1bHity", "PFtof2Hity", "PCtofHity"])
             proKeysRec.extend(["PFtof1aHitz", "PFtof1bHitz", "PFtof2Hitz", "PCtofHitz"])
             proKeysRec.extend(["Pchi2track", "PNDFtrack"])
 
@@ -285,7 +291,6 @@ class root2pickle():
             df_protonRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
         for key in gamKeysRec:
             df_gammaRec[key] = ak.to_dataframe(self.tree[key].array(library="ak", entry_start=entry_start, entry_stop=entry_stop))
-
         self.closeFile()
 
         #convert data type to standard double
@@ -294,6 +299,9 @@ class root2pickle():
         df_gammaRec = df_gammaRec.astype({"Gpx": float, "Gpy": float, "Gpz": float, "Gedep": float, "GcX": float, "GcY": float})
         ele = [df_electronRec['Epx'], df_electronRec['Epy'], df_electronRec['Epz']]
         df_electronRec.loc[:, 'Ep'] = mag(ele)
+        df_electronRec.loc[:, 'Ee'] = getEnergy(ele, me)
+        df_electronRec.loc[:, 'Etheta'] = getTheta(ele)
+        df_electronRec.loc[:, 'Ephi'] = getPhi(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
         #set up a dummy index for merging
@@ -301,14 +309,31 @@ class root2pickle():
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'event'] = df_gammaRec.index.get_level_values('entry')
         df_gammaRec.loc[:,'GIndex'] = df_gammaRec.index.get_level_values('subentry')
+
+        # assign ftof sector to proton sectors
+        df_protonRec.loc[df_protonRec.Pstat<4000, "Psector"] = -1000
+        df_protonRec.loc[df_protonRec.PFtof1aHitx > -1000, "Psector"] = determineSector(df_protonRec.loc[df_protonRec.PFtof1aHitx > -1000, "PFtof1aHitx"], df_protonRec.loc[df_protonRec.PFtof1aHitx > -1000, "PFtof1aHity"])
+        df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "Psector"] = determineSector(df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "PFtof1bHitx"], df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "PFtof1bHity"])
+        df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "Psector"]  = determineSector(df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "PFtof2Hitx"], df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "PFtof2Hity"])
+
+        #create df_gg for pi0 exclusion
+        gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
+        df_gammaRec.loc[:, 'Gp'] = mag(gam)
+        df_gammaRec.loc[:, 'Ge'] = getEnergy(gam, 0)
+        df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
+        df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
+        df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
+
         #apply fiducial cuts
         print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
         if nofid:
+            # skip the fiducial cuts
             df_electronRec.loc[:, "EFid"] = 1
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
         else:
-            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = True, fidlevel = fidlevel)
+            # perform the fiducial cuts
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
@@ -317,126 +342,43 @@ class root2pickle():
             df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
             df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+        df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                         how='inner', on='event', suffixes=("", "2"))
+        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
-            #electron pcal dead wires
-            exclusion1_1 = (df_electronRec.EcalW1 > 74) & (df_electronRec.EcalW1 < 79.8)
-            exclusion1_2 = (df_electronRec.EcalW1 > 83.6) & (df_electronRec.EcalW1 < 92.2)
-            exclusion1_3 = (df_electronRec.EcalW1 > 212.5) & (df_electronRec.EcalW1 < 230)
-            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
-            df_electronRec.loc[(df_electronRec.Esector == 1) & exclusion1, "EFid"] = 0
-            exclusion2_1 = (df_electronRec.EcalW1 < 14)
-            exclusion2_2 = (df_electronRec.EcalU1 > 111.2) & (df_electronRec.EcalU1 < 119.3)
-            exclusion2_3 = (df_electronRec.EcalV1 > 113) & (df_electronRec.EcalV1 < 118.7)
-            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
-            df_electronRec.loc[(df_electronRec.Esector == 2) & exclusion2, "EFid"] = 0
-            exclusion3 = df_electronRec.EcalW1 < 14
-            df_electronRec.loc[(df_electronRec.Esector == 3) & exclusion3, "EFid"] = 0
-            exclusion4_1 = (df_electronRec.EcalV1 < 14)
-            exclusion4_2 = (df_electronRec.EcalV1 > 229.4) & (df_electronRec.EcalV1 < 240.7)
-            exclusion4_3 = (df_electronRec.EcalW1 > 135) & (df_electronRec.EcalW1 < 150)
-            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
-            df_electronRec.loc[(df_electronRec.Esector == 4) & exclusion4, "EFid"] = 0
-            exclusion6 = (df_electronRec.EcalW1 > 170) & (df_electronRec.EcalW1 < 192)
-            df_electronRec.loc[(df_electronRec.Esector == 6) & exclusion6, "EFid"] = 0
+        # Done with the fiducial cuts.
 
-            #photon FD fiducial cuts by F.X. Girod
-            df_gammaRec.loc[:, "GFid"] = 0
-
-            #apply photon fiducial cuts
-            sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
-            psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
-            tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
-            tright = np.select(sector_cond, [58.7477, 51.2589, 59.2357, 56.2415, 60.8219, 49.8914])
-            sleft = np.select(sector_cond, [0.582053, 0.544976, 0.549788, 0.56899, 0.56414, 0.57343])
-            sright = np.select(sector_cond, [-0.591876, -0.562926, -0.562246, -0.563726, -0.568902, -0.550729])
-            rleft = np.select(sector_cond, [64.9348, 64.7541, 67.832, 55.9324, 55.9225, 60.0997])
-            rright = np.select(sector_cond, [65.424, 54.6992, 63.6628, 57.8931, 56.5367, 56.4641])
-            qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
-            qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
-            #first condition
-            ang = np.radians((df_gammaRec.loc[df_gammaRec.Gsector<7, "Gsector"]-1) * 60)
-            GcX_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.sin(ang) + df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.cos(ang)
-            GcY_rot = df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] * np.cos(ang) - df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] * np.sin(ang)
-
-            df_gammaRec.loc[df_gammaRec.Gsector<7, "GcX"] = GcX_rot
-            df_gammaRec.loc[df_gammaRec.Gsector<7, "GcY"] = GcY_rot
-
-            cond1_1 = df_gammaRec.GcX >= psplit
-            cond1_2 = df_gammaRec.GcY < sleft * (df_gammaRec.GcX - tleft)
-            cond1_3 = df_gammaRec.GcY > sright * (df_gammaRec.GcX - tright)
-            cond1_4 = df_gammaRec.Gsector < 7
-            cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
-            df_gammaRec.loc[cond1, "GFid"] = 1
-            #second condition else if the first
-            # cond2_0 = df_gammaRec.GFid == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
-            cond2_1 = df_gammaRec.GcX < psplit
-            cond2_2 = df_gammaRec.GcY < qleft * (df_gammaRec.GcX - rleft)
-            cond2_3 = df_gammaRec.GcY > qright * (df_gammaRec.GcX - rright)
-            cond2_4 = df_gammaRec.Gsector < 7
-            cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
-            df_gammaRec.loc[cond2, "GFid"] = 1
-
-            df_gammaRec.loc[df_gammaRec.Gsector > 7, "GFid"] = 1
-
-            #FT fiducial cuts
-            circleCenterX1 = -8.419
-            circleCenterY1 = 9.889
-            circleRadius1 = 1.6
-
-            circleCenterX2 = -9.89
-            circleCenterY2 = -5.327
-            circleRadius2 = 1.6
-
-            circleCenterX3 = -6.15
-            circleCenterY3 = -13
-            circleRadius3 = 2.3
-
-            circleCenterX4 = 3.7
-            circleCenterY4 = -6.5
-            circleRadius4 = 2
-            
-            circle1 = (df_gammaRec.GcX - circleCenterX1)**2 + (df_gammaRec.GcY - circleCenterY1)**2 < circleRadius1**2
-            circle2 = (df_gammaRec.GcX - circleCenterX2)**2 + (df_gammaRec.GcY - circleCenterY2)**2 < circleRadius2**2
-            circle3 = (df_gammaRec.GcX - circleCenterX3)**2 + (df_gammaRec.GcY - circleCenterY3)**2 < circleRadius3**2
-            circle4 = (df_gammaRec.GcX - circleCenterX4)**2 + (df_gammaRec.GcY - circleCenterY4)**2 < circleRadius4**2
-
-            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle1, "GFid"] = 0
-            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle2, "GFid"] = 0
-            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle3, "GFid"] = 0
-            df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
-
-            exclusion1_1 = (df_gammaRec.GcalW1 > 74) & (df_gammaRec.GcalW1 < 79.8)
-            exclusion1_2 = (df_gammaRec.GcalW1 > 83.6) & (df_gammaRec.GcalW1 < 92.2)
-            exclusion1_3 = (df_gammaRec.GcalW1 > 212.5) & (df_gammaRec.GcalW1 < 230)
-            exclusion1 = exclusion1_1 | exclusion1_2 | exclusion1_3
-            df_gammaRec.loc[(df_gammaRec.Gsector == 1) & exclusion1, "GFid"] = 0
-            exclusion2_1 = (df_gammaRec.GcalW1 < 14)
-            exclusion2_2 = (df_gammaRec.GcalU1 > 111.2) & (df_gammaRec.GcalU1 < 119.3)
-            exclusion2_3 = (df_gammaRec.GcalV1 > 113) & (df_gammaRec.GcalV1 < 118.7)
-            exclusion2 = exclusion2_1 | exclusion2_2 | exclusion2_3
-            df_gammaRec.loc[(df_gammaRec.Gsector == 2) & exclusion2, "GFid"] = 0
-            exclusion3 = df_gammaRec.GcalW1 < 14
-            df_gammaRec.loc[(df_gammaRec.Gsector == 3) & exclusion3, "GFid"] = 0
-            exclusion4_1 = (df_gammaRec.GcalV1 < 14)
-            exclusion4_2 = (df_gammaRec.GcalV1 > 229.4) & (df_gammaRec.GcalV1 < 240.7)
-            exclusion4_3 = (df_gammaRec.GcalW1 > 135) & (df_gammaRec.GcalW1 < 150)
-            exclusion4 = exclusion4_1 | exclusion4_2 | exclusion4_3
-            df_gammaRec.loc[(df_gammaRec.Gsector == 4) & exclusion4, "GFid"] = 0
-            exclusion6 = (df_gammaRec.GcalW1 > 170) & (df_gammaRec.GcalW1 < 192)
-            df_gammaRec.loc[(df_gammaRec.Gsector == 6) & exclusion6, "GFid"] = 0
-
-        #prepare for proton energy loss corrections correction
-        pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
-        df_protonRec.loc[:, 'Pp'] = mag(pro)
-        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
-        df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
-        df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
-        df_protonRec.loc[:, "PpOrig"] = df_protonRec.Pp
-        df_protonRec.loc[:, "PeOrig"] = df_protonRec.Pe
-        df_protonRec.loc[:, "PthetaOrig"] = df_protonRec.Ptheta
-        df_protonRec.loc[:, "PphiOrig"] = df_protonRec.Pphi
-
-        df_protonRec.loc[:, "PDc1theta"] = -100000
+        # Post-processing
+        # e1: Electron correction  - exp only
+        # e2: Electron smearing    - mc only 
+        # p1: Proton energy loss   - exp, mc both
+        # p2: Proton correction    - exp only
+        # p3: Proton smearing      - mc only
+        # g1: Gamma correction     - exp only
+        # g1: Gamma smearing       - mc only
+        if nocorr:
+            print("no correction applied")
+            pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+            df_protonRec.loc[:, 'Pp'] = mag(pro)
+            df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+            df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
+            df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
+        else:
+            # #e1
+            # df_electronRec = electronMomentumCorrection(pol, df_electronRec)
+            #e2
+            df_electronRec = electronMomentumSmearing(df_electronRec)
+            #p1
+            df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
+            # #p2
+            # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
+            #p3
+            df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = 1)
+            # #g1
+            # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
+            #g2
+            df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = 1)
 
         if detRes:
             df_protonRec.loc[:, "PDc3theta"] = -100000
@@ -460,319 +402,60 @@ class root2pickle():
             df_protonRec.loc[:, "PCvt12r"] = -100000
             df_protonRec.loc[:, "PCvt12theta"] = -100000
             df_protonRec.loc[:, "PCvt12phi"] = -100000
-        else:
-            df_protonRec.loc[:, "PCvt12theta"] = -100000
-            df_protonRec.loc[:, "PCvt12phi"] = -100000
+            cutCD = df_protonRec.Psector>7
+            df_protonRec.loc[cutCD, "PCvt1r"] = mag([df_protonRec.loc[cutCD].PCvt1Hitx, df_protonRec.loc[cutCD].PCvt1Hity, df_protonRec.loc[cutCD].PCvt1Hitz])
+            df_protonRec.loc[cutCD, "PCvt1theta"] = getTheta([df_protonRec.loc[cutCD].PCvt1Hitx, df_protonRec.loc[cutCD].PCvt1Hity, df_protonRec.loc[cutCD].PCvt1Hitz])
+            df_protonRec.loc[cutCD, "PCvt1phi"] = getPhi([df_protonRec.loc[cutCD].PCvt1Hitx, df_protonRec.loc[cutCD].PCvt1Hity, df_protonRec.loc[cutCD].PCvt1Hitz])
+            df_protonRec.loc[cutCD, "PCvt3r"] = mag([df_protonRec.loc[cutCD].PCvt3Hitx, df_protonRec.loc[cutCD].PCvt3Hity, df_protonRec.loc[cutCD].PCvt3Hitz])
+            df_protonRec.loc[cutCD, "PCvt3theta"] = getTheta([df_protonRec.loc[cutCD].PCvt3Hitx, df_protonRec.loc[cutCD].PCvt3Hity, df_protonRec.loc[cutCD].PCvt3Hitz])
+            df_protonRec.loc[cutCD, "PCvt3phi"] = getPhi([df_protonRec.loc[cutCD].PCvt3Hitx, df_protonRec.loc[cutCD].PCvt3Hity, df_protonRec.loc[cutCD].PCvt3Hitz])
+            df_protonRec.loc[cutCD, "PCvt5r"] = mag([df_protonRec.loc[cutCD].PCvt5Hitx, df_protonRec.loc[cutCD].PCvt5Hity, df_protonRec.loc[cutCD].PCvt5Hitz])
+            df_protonRec.loc[cutCD, "PCvt5theta"] = getTheta([df_protonRec.loc[cutCD].PCvt5Hitx, df_protonRec.loc[cutCD].PCvt5Hity, df_protonRec.loc[cutCD].PCvt5Hitz])
+            df_protonRec.loc[cutCD, "PCvt5phi"] = getPhi([df_protonRec.loc[cutCD].PCvt5Hitx, df_protonRec.loc[cutCD].PCvt5Hity, df_protonRec.loc[cutCD].PCvt5Hitz])
+            df_protonRec.loc[cutCD, "PCvt7r"] = mag([df_protonRec.loc[cutCD].PCvt7Hitx, df_protonRec.loc[cutCD].PCvt7Hity, df_protonRec.loc[cutCD].PCvt7Hitz])
+            df_protonRec.loc[cutCD, "PCvt7theta"] = getTheta([df_protonRec.loc[cutCD].PCvt7Hitx, df_protonRec.loc[cutCD].PCvt7Hity, df_protonRec.loc[cutCD].PCvt7Hitz])
+            df_protonRec.loc[cutCD, "PCvt7phi"] = getPhi([df_protonRec.loc[cutCD].PCvt7Hitx, df_protonRec.loc[cutCD].PCvt7Hity, df_protonRec.loc[cutCD].PCvt7Hitz])
+            df_protonRec.loc[cutCD, "PCvt12r"] = mag([df_protonRec.loc[cutCD].PCvt12Hitx, df_protonRec.loc[cutCD].PCvt12Hity, df_protonRec.loc[cutCD].PCvt12Hitz])
+            df_protonRec.loc[cutCD, "PCvt12theta"] = getTheta([df_protonRec.loc[cutCD].PCvt12Hitx, df_protonRec.loc[cutCD].PCvt12Hity, df_protonRec.loc[cutCD].PCvt12Hitz])
+            df_protonRec.loc[cutCD, "PCvt12phi"] = getPhi([df_protonRec.loc[cutCD].PCvt12Hitx, df_protonRec.loc[cutCD].PCvt12Hity, df_protonRec.loc[cutCD].PCvt12Hitz])
 
-        df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
-        df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta<75), :]
-        df_protonRecOthers = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.Ptheta>=75), :]
 
-        #two band criterion
-        def corr(x, t):
-            x0, x1, x2, x3 = x
-            return x0 + x1*np.power(t-np.ones(len(t))*0.3, x3)
+        #moduli proton phi
+        df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
 
-        df_protonRecFD = df_protonRecFD.loc[df_protonRec.Pp > 0.3, :]
-        df_protonRecFD.loc[:, "PDc1theta"] = getTheta([df_protonRecFD.PDc1Hitx, df_protonRecFD.PDc1Hity, df_protonRecFD.PDc1Hitz])
-        if detRes:
-            df_protonRecFD.loc[:, "PDc3theta"] = getTheta([df_protonRecFD.PDc3Hitx, df_protonRecFD.PDc3Hity, df_protonRecFD.PDc3Hitz])
-        best_params = [-53.14680163254601, 79.61307254040804, 0.3, 0.05739232362022314]
-        df_protonRecFD_1 = df_protonRecFD.loc[df_protonRecFD.PDc1theta < corr(best_params, df_protonRecFD.Pp), :]
-        df_protonRecFD_2 = df_protonRecFD.loc[df_protonRecFD.PDc1theta >= corr(best_params, df_protonRecFD.Pp), :]
+        df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+        df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+        pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
 
-        if detRes:
-            df_protonRecCD.loc[:, "PCvt1r"] = mag([df_protonRecCD.PCvt1Hitx, df_protonRecCD.PCvt1Hity, df_protonRecCD.PCvt1Hitz])
-            df_protonRecCD.loc[:, "PCvt1theta"] = getTheta([df_protonRecCD.PCvt1Hitx, df_protonRecCD.PCvt1Hity, df_protonRecCD.PCvt1Hitz])
-            df_protonRecCD.loc[:, "PCvt1phi"] = getPhi([df_protonRecCD.PCvt1Hitx, df_protonRecCD.PCvt1Hity, df_protonRecCD.PCvt1Hitz])
-            df_protonRecCD.loc[:, "PCvt3r"] = mag([df_protonRecCD.PCvt3Hitx, df_protonRecCD.PCvt3Hity, df_protonRecCD.PCvt3Hitz])
-            df_protonRecCD.loc[:, "PCvt3theta"] = getTheta([df_protonRecCD.PCvt3Hitx, df_protonRecCD.PCvt3Hity, df_protonRecCD.PCvt3Hitz])
-            df_protonRecCD.loc[:, "PCvt3phi"] = getPhi([df_protonRecCD.PCvt3Hitx, df_protonRecCD.PCvt3Hity, df_protonRecCD.PCvt3Hitz])
-            df_protonRecCD.loc[:, "PCvt5r"] = mag([df_protonRecCD.PCvt5Hitx, df_protonRecCD.PCvt5Hity, df_protonRecCD.PCvt5Hitz])
-            df_protonRecCD.loc[:, "PCvt5theta"] = getTheta([df_protonRecCD.PCvt5Hitx, df_protonRecCD.PCvt5Hity, df_protonRecCD.PCvt5Hitz])
-            df_protonRecCD.loc[:, "PCvt5phi"] = getPhi([df_protonRecCD.PCvt5Hitx, df_protonRecCD.PCvt5Hity, df_protonRecCD.PCvt5Hitz])
-            df_protonRecCD.loc[:, "PCvt7r"] = mag([df_protonRecCD.PCvt7Hitx, df_protonRecCD.PCvt7Hity, df_protonRecCD.PCvt7Hitz])
-            df_protonRecCD.loc[:, "PCvt7theta"] = getTheta([df_protonRecCD.PCvt7Hitx, df_protonRecCD.PCvt7Hity, df_protonRecCD.PCvt7Hitz])
-            df_protonRecCD.loc[:, "PCvt7phi"] = getPhi([df_protonRecCD.PCvt7Hitx, df_protonRecCD.PCvt7Hity, df_protonRecCD.PCvt7Hitz])
-            df_protonRecCD.loc[:, "PCvt12r"] = mag([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
-            df_protonRecCD.loc[:, "PCvt12theta"] = getTheta([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
-            df_protonRecCD.loc[:, "PCvt12phi"] = getPhi([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
-        else:
-            df_protonRecCD.loc[:, "PCvt12theta"] = getTheta([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
-            df_protonRecCD.loc[:, "PCvt12phi"] = getPhi([df_protonRecCD.PCvt12Hitx, df_protonRecCD.PCvt12Hity, df_protonRecCD.PCvt12Hitz])
+        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
 
-        if nocorr:
-            print("no correction applied")
-            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
-        else:
-            #inbending proton energy loss correction
-            if pol == "inbending":
-                const_FD = -0.00051894 - 0.00018104 * df_protonRecFD_1.Ptheta
-                coeff_FD = 3.29466917*10**(-3) +  5.73663160*10**(-4) * df_protonRecFD_1.Ptheta - 1.40807209 * 10**(-5) * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
-                CorrectedPp_FD_1 = np.select([df_protonRecFD_1.Pp<1, df_protonRecFD_1.Pp>=1], [const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Pp"], np.exp(-2.739 - 3.932*df_protonRecFD_1.Pp) + 0.002907+df_protonRecFD_1.Pp])
+        df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
+        df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
+        df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
+        df_gg.loc[:,'GSamplFrac'] = df_gg.Gedep/ df_gg.Gp
 
-                const_FD = -0.16742969 + 0.00697925 * df_protonRecFD_1.Ptheta
-                coeff_FD = 0.23352115 - 0.01338697 * df_protonRecFD_1.Ptheta
-                CorrectedPtheta_FD_1 = const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"]/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Ptheta"]
-
-                const_FD = 0.21192125 -0.0115175 * df_protonRecFD_1.Ptheta
-                coeff_FD = -8.94307411*0.1 + 1.66349766*0.1 * df_protonRecFD_1.Ptheta -8.90617559*0.001 * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta + 1.64803754*0.0001 * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta * df_protonRecFD_1.Ptheta
-                CorrectedPphi_FD_1 = const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"]/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Pphi"]
-
-                const_FD = -3.03346359*10**(-1) + 1.83368163*10**(-2)*df_protonRecFD_2.Ptheta - 2.86486404*10**(-4)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff_FD =  2.01023276*10**(-1) - 1.13312215*10**(-2)*df_protonRecFD_2.Ptheta + 1.82487916*10**(-4)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                CorrectedPp_FD_2 = np.select([df_protonRecFD_2.Pp<1, df_protonRecFD_2.Pp>=1], [const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Pp"], np.exp(-1.2 - 4.228*df_protonRecFD_2.Pp) + 0.007502+df_protonRecFD_2.Pp])
-
-                const_FD = 2.04334532 * 10 -1.81052405 * df_protonRecFD_2.Ptheta + 5.32556360*0.01 * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta -5.23157558*0.0001 * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta
-                coeff_FD = 8.74233279 -7.63869344 * 0.1 * df_protonRecFD_2.Ptheta + 2.22376362*0.01 * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta -2.16457260*0.0001 * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta * df_protonRecFD_2.Ptheta
-                CorrectedPtheta_FD_2 = const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"]/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Ptheta"]
-
-                const_FD = 0.54697831 -0.04896981*df_protonRecFD_2.Ptheta +  0.00111376*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff_FD = -4.06733541*10**2 + 2.43696202*10*df_protonRecFD_2.Ptheta -3.36144736*10**(-1)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff2_FD = 2.06378660*10 - 1.42866062*df_protonRecFD_2.Ptheta + 2.01085440*10**(-2)*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                CorrectedPphi_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_2.loc[:, "Pp"]) + df_protonRecFD_2.loc[:, "Pphi"]
-
-                #CD part
-                const_CD = 1.93686914 - 0.116288824*df_protonRecCD.Ptheta + 0.00223685833*df_protonRecCD.Ptheta**2 - 1.40771969 * 10**(-5)*df_protonRecCD.Ptheta**3
-                coeff_CD = -0.738047800 + 0.0443343685*df_protonRecCD.Ptheta - 8.50985972*10**(-4)*df_protonRecCD.Ptheta*df_protonRecCD.Ptheta + 5.36810280 * 10**(-6) * df_protonRecCD.Ptheta**3
-
-                CorrectedPp_CD = const_CD + coeff_CD/df_protonRecCD.loc[:, "Pp"] + df_protonRecCD.loc[:, "Pp"]
-
-                const_CD = -1.09849291*100 + 8.86664014 * df_protonRecCD.Ptheta - 0.26643881 * df_protonRecCD.Ptheta**2 + 3.53814210 * 10**(-3) * df_protonRecCD.Ptheta**3 - 1.75297107 * 10**(-5) * df_protonRecCD.Ptheta**4
-                coeff_CD = 9.52034523*100 -5.74808292 * 10 * df_protonRecCD.Ptheta + 1.15386949 * df_protonRecCD.Ptheta**2 - 7.57970373 * 0.001 * df_protonRecCD.Ptheta**3
-                coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * df_protonRecCD.Ptheta - 2.37730217*0.1 * df_protonRecCD.Ptheta**2 + 1.55153003*0.001*df_protonRecCD.Ptheta**3
-
-                CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Ptheta"]
-
-                const_CD = 4.94546178 -3.26662886*0.1 * df_protonRecCD.Ptheta +  7.39069603 * 0.001 * df_protonRecCD.Ptheta**2 -6.83599356*10**(-5) * df_protonRecCD.Ptheta**3 + 2.12303103*10**(-7) * df_protonRecCD.Ptheta**4
-                coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * df_protonRecCD.Ptheta + 4.00923146*10**(2) * df_protonRecCD.Ptheta**2 - 5.12792347 * df_protonRecCD.Ptheta**3 + 2.41793167*10**(-2) * df_protonRecCD.Ptheta**4
-                coeff2_CD =  1.20477219*10**(2) -5.86630228 * df_protonRecCD.Ptheta + 7.44007875*10**(-2) * df_protonRecCD.Ptheta**2 -2.42652473*10**(-4) * df_protonRecCD.Ptheta**3
-                CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
-
-            #outbending proton energy loss correction
-            elif pol == "outbending":
-                #FD part
-                const_FD = 0.05083242 -0.00469777*df_protonRecFD_1.Ptheta + 0.0001082*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                coeff_FD = -1.47443264*0.01 + 1.58220893*0.001*df_protonRecFD_1.Ptheta -3.19490013*0.00001*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                CorrectedPp_FD_1 = np.select([df_protonRecFD_1.Pp<1, df_protonRecFD_1.Pp>=1], [const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Pp"], np.exp(-2.739 - 3.932*df_protonRecFD_1.Pp) + 0.002907 + df_protonRecFD_1.Pp])
-
-                const_FD = -2.56460305*10 + 3.29877542*df_protonRecFD_1.Ptheta -1.43106886*0.1*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta + 2.08341898*0.001*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                coeff_FD =  9.12532740*10 -1.20100762*10*df_protonRecFD_1.Ptheta + 5.27654711*0.1*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta -7.72656759*0.001*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                CorrectedPtheta_FD_1 = const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"]/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Ptheta"]
-
-                const_FD = -20.4780893 + 1.67020488*df_protonRecFD_1.Ptheta - 0.03419348*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                coeff_FD = 35.02807194 - 2.9098043*df_protonRecFD_1.Ptheta +  0.06037906*df_protonRecFD_1.Ptheta*df_protonRecFD_1.Ptheta
-                CorrectedPphi_FD_1 = const_FD + coeff_FD/df_protonRecFD_1.loc[:, "Pp"]/df_protonRecFD_1.loc[:, "Pp"] + df_protonRecFD_1.loc[:, "Pphi"]
-
-                const_FD = 0.09832589 -0.0066463*df_protonRecFD_2.Ptheta + 0.00010312*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff_FD = -9.61421691*0.01 + 6.85638807*0.001*df_protonRecFD_2.Ptheta -9.75766427*0.00001*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                CorrectedPp_FD_2 = np.select([df_protonRecFD_2.Pp<1, df_protonRecFD_2.Pp>=1], [const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Pp"], np.exp(-1.871 - 3.063*df_protonRecFD_2.Pp) + 0.007517 + df_protonRecFD_2.Pp])
-
-                const_FD = -1.68873940 + 9.56867163*0.01*df_protonRecFD_2.Ptheta -1.43741464*0.001*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff_FD = 1.49978357*10 -1.40137094*df_protonRecFD_2.Ptheta + 4.38501543*0.01*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta -4.57982872*0.0001*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                CorrectedPtheta_FD_2 = const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"]/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Ptheta"]
-
-                const_FD = 6.75359137 - 0.43199851*df_protonRecFD_2.Ptheta + 0.0068995*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                coeff_FD = -1.68588219 + 1.05609627*0.1*df_protonRecFD_2.Ptheta -1.50452832*0.001*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
-                CorrectedPphi_FD_2 = const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"]/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Pphi"]
-                #CD part
-                const_CD = 1.92657376 - 0.113836734*df_protonRecCD.Ptheta + 0.00215038526*df_protonRecCD.Ptheta**2 - 1.32525053 * 10**(-5)*df_protonRecCD.Ptheta**3
-                coeff_CD = -0.755650043 + 0.0445538936*df_protonRecCD.Ptheta - 8.38241864*10**(-4)*df_protonRecCD.Ptheta*df_protonRecCD.Ptheta + 5.16887255 * 10**(-6) * df_protonRecCD.Ptheta**3
-
-                CorrectedPp_CD = const_CD + coeff_CD/df_protonRecCD.loc[:, "Pp"] + df_protonRecCD.loc[:, "Pp"]
-
-                const_CD = -5.79024055*10 + 4.67197531 * df_protonRecCD.Ptheta - 0.140156897 * df_protonRecCD.Ptheta**2 + 1.85853057 * 10**(-3) * df_protonRecCD.Ptheta**3 - 9.19989908 * 10**(-6) * df_protonRecCD.Ptheta**4
-                coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * df_protonRecCD.Ptheta + 5.84757503 * df_protonRecCD.Ptheta**2 - 6.80409195 * 0.01 * df_protonRecCD.Ptheta**3 + 2.89244618 * 0.0001 * df_protonRecCD.Ptheta**4
-                coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * df_protonRecCD.Ptheta - 2.24699931*0.1 * df_protonRecCD.Ptheta**2 + 1.49390960*0.001*df_protonRecCD.Ptheta**3
-
-                CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Ptheta"]
-
-                const_CD = 7.58761670 - 5.28224578*0.1 * df_protonRecCD.Ptheta +  1.31580117 * 0.01 * df_protonRecCD.Ptheta**2 -1.41738951*10**(-4) * df_protonRecCD.Ptheta**3 + 5.62884363*10**(-7) * df_protonRecCD.Ptheta**4
-                coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * df_protonRecCD.Ptheta + 2.57187193*10**(2) * df_protonRecCD.Ptheta**2 - 3.31379317 * df_protonRecCD.Ptheta**3 + 1.56896621*10**(-2) * df_protonRecCD.Ptheta**4
-                coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * df_protonRecCD.Ptheta + 1.56575252*10**(-1) * df_protonRecCD.Ptheta**2 -7.71489734*10**(-4) * df_protonRecCD.Ptheta**3
-                CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
-
-            if len(df_protonRecFD_1):
-                df_protonRecFD_1.loc[:, "PpEloss"] = CorrectedPp_FD_1
-                df_protonRecFD_1.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_1
-                df_protonRecFD_1.loc[:, "PphiEloss"] = CorrectedPphi_FD_1
-                df_protonRecFD_1.loc[:, "Pband"] = "lower"
-
-            if len(df_protonRecFD_2):
-                df_protonRecFD_2.loc[:, "PpEloss"] = CorrectedPp_FD_2
-                df_protonRecFD_2.loc[:, "PthetaEloss"] = CorrectedPtheta_FD_2
-                df_protonRecFD_2.loc[:, "PphiEloss"] = CorrectedPphi_FD_2
-                df_protonRecFD_2.loc[:, "Pband"] = "upper"
-
-            if len(df_protonRecCD):
-                df_protonRecCD.loc[:, "PpEloss"] = CorrectedPp_CD
-                df_protonRecCD.loc[:, "PthetaEloss"] = CorrectedPtheta_CD
-                df_protonRecCD.loc[:, "PphiEloss"] = CorrectedPphi_CD
-
-            if noeloss or nopcorr:
-                print("no energy loss correction applied.")
-                pass
-            else:
-                print("energy loss correction applied for " + pol)
-
-                if len(df_protonRecFD_1):
-                    df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
-                    df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-                    df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
-
-                if len(df_protonRecFD_2):
-                    df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
-                    df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-                    df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
-                
-                if len(df_protonRecCD):
-                    df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
-                    df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
-                    df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
-
-            #smearing proton after the energy loss correction
-            df_protonRecFD = pd.concat([df_protonRecFD_1, df_protonRecFD_2])
-            df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
-
-            print("smearing factor {} from nominal".format(smearing))
-            #CD proton
-            def cubic(args, x): #equivalent to poly1d
-                a, b, c, d = args
-                return a*x**3 +b*x**2 + c*x + d
-            regulator = np.abs(2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
-            sigma1_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<0.85, cubic([0.0926, 0.137, -0.230, 0.139], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.1)
-            sigma2_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<1.34, cubic([-2.797, 9.351, -9.488, 3.503], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.85)
-            sigma3_CD = 0.8 + 2.2/(1+np.exp(5.518*(df_protonRec.loc[df_protonRec.Psector>7, "Pp"]-0.625)))
-            df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]*np.random.normal(1, smearing*regulator*sigma1_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
-            df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Ptheta"] + np.random.normal(0, smearing*sigma2_CD, len(df_protonRec.loc[df_protonRec.Psector>7]))
-            df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] = df_protonRec.loc[df_protonRec["Psector"]>7, "Pphi"] + np.random.normal(0, smearing*sigma3_CD, len(df_protonRec.loc[df_protonRec.Psector>7])) 
-            #FD proton
-            args_sigmas_FD_inb = [[-0.233, 1.216, -2.279, 1.812, -0.445], [ 0.277, -1.366, 2.318, -1.619,  0.466 ],[ 0.0728, -0.223, 0.0888,  0.225, -0.0889],[-0.204, 0.977, -1.766, 1.411, -0.342], [ 0.277, -1.059, 1.362, -0.641, 0.137], [-0.219, 1.132, -2.153, 1.763, -0.447]]
-            args_sigmas_FD_outb = [[0.481,-1.548, 1.524,-0.415, 0.0277], [1.872, -8.054, 12.536, -8.358,  2.083], [-0.0656, 0.480, -1.191, 1.169, -0.315], [-1.559, 7.356, -12.639, 9.312,  -2.405], [ 0.189, -0.344, -0.253,  0.717, -0.238], [0.466, -1.560, 1.622, -0.485, 0.0322]]
-            def quartic(x, sector, pol = "inbending"):
-                if pol == "inbending":
-                    a, b, c, d, e = args_sigmas_FD_inb[sector - 1]
-                    return np.select( [x<0.55, (x>=0.55)& (x < 1.55), x>=1.55], [a*0.55**4+b*0.55**3+c*0.55**2+d*0.55+e, a*x**4 +b*x**3 + c*x**2 + d*x + e, a*1.55**4 + b*1.55**3 + c*1.55**2+d*1.55 +e])
-                if pol == "outbending":
-                    a, b, c, d, e = args_sigmas_FD_outb[sector - 1]
-                    return np.select( [x<0.65, (x>=0.65)& (x < 1.55), x>=1.55], [a*0.65**4+b*0.65**3+c*0.65**2+d*0.65+e, a*x**4 +b*x**3 + c*x**2 + d*x + e, a*1.55**4 + b*1.55**3 + c*1.55**2+d*1.55 +e])
-            def sigmaFDOutb(x):
-                return np.select([x<.95, (x>=.95) & (x<1.2), (x>=1.2)&(x<1.575), (x>=1.575) & (x<1.9), (x>1.9)], [0.1, -0.045/(1.2-.95)*x+1.2*0.045/(1.2-.95) + 0.055, 0.055, -0.015/(1.9-1.575)*x+1.9*0.015/(1.9-1.575) + 0.04,0.04])
-
-            for sector in range(1, 7):
-                if pol == "inbending":
-                    regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]-0.5)/0.05)))
-                    sigmas_FD = quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
-                elif pol == "outbending":
-                    regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]-0.6)/0.05)))
-                    sigmas_FD = sigmaFDOutb(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]) #quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
-                df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]*np.random.normal(1, smearing*regulator*sigmas_FD, len(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]))
-
-            #moduli proton phi
-            df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
-
-            df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
-            df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
-
-            pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
-            df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
-
-        # proton fiducial cuts
-        if nofid:
-            df_protonRec.loc[:, "PFid"] = 1
-        else:
-            df_protonRec.loc[:, "PFid"] = 0
-
-            df_protonRec.loc[df_protonRec.Psector<7, "PFid"] = 1 #FD fid done by previous pipeline
-
-            cut_CD = df_protonRec.Psector > 7
-            if fidlevel == 'mid':
-                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta)
-            elif fidlevel == 'tight':
-                cut_right = cut_CD & (df_protonRec.Ptheta<max_Ptheta-5)
-            cut_bottom = cut_CD & (df_protonRec.PCvt12theta>44.5)
-            cut_sidel = cut_CD & (df_protonRec.PCvt12theta<-2.942 + 1.274*df_protonRec.Ptheta)
-            cut_sider = cut_CD & (df_protonRec.PCvt12theta>-3.523 + 1.046*df_protonRec.Ptheta)
-
-            cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
-
-            cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
-            cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
-            cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
-            cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
-            cut_total = cut_gaps & cut_trapezoid
-
-            df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
-        
-            # if pol == "inbending":
-            #     pchi2CD_lb,   pchi2CD_ub     = -5.47,  6.273
-            #     pchi2FD_S1_lb, pchi2FD_S1_ub = -3.362, 3.403
-            #     pchi2FD_S2_lb, pchi2FD_S2_ub = -4.051, 3.907
-            #     pchi2FD_S3_lb, pchi2FD_S3_ub = -3.697, 3.702
-            #     pchi2FD_S4_lb, pchi2FD_S4_ub = -3.837, 3.792
-            #     pchi2FD_S5_lb, pchi2FD_S5_ub = -3.756, 3.672
-            #     pchi2FD_S6_lb, pchi2FD_S6_ub = -3.402, 3.351
-            # elif pol == "outbending":
-            #     pchi2CD_lb,   pchi2CD_ub     = -5.629, 6.404
-            #     pchi2FD_S1_lb, pchi2FD_S1_ub = -4.110, 4.150
-            #     pchi2FD_S2_lb, pchi2FD_S2_ub = -4.554, 4.708
-            #     pchi2FD_S3_lb, pchi2FD_S3_ub = -3.934, 4.170
-            #     pchi2FD_S4_lb, pchi2FD_S4_ub = -4.062, 4.346
-            #     pchi2FD_S5_lb, pchi2FD_S5_ub = -4.404, 4.457
-            #     pchi2FD_S6_lb, pchi2FD_S6_ub = -4.222, 4.000
-
-            # df_protonRec.loc[ (df_protonRec.Psector>4000) & ((df_protonRec.Pchi2pid<pchi2CD_lb)   | (df_protonRec.Pchi2pid>pchi2CD_ub)  ), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==1)   & ((df_protonRec.Pchi2pid<pchi2FD_S1_lb) | (df_protonRec.Pchi2pid>pchi2FD_S1_ub)), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==2)   & ((df_protonRec.Pchi2pid<pchi2FD_S2_lb) | (df_protonRec.Pchi2pid>pchi2FD_S2_ub)), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==3)   & ((df_protonRec.Pchi2pid<pchi2FD_S3_lb) | (df_protonRec.Pchi2pid>pchi2FD_S3_ub)), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==4)   & ((df_protonRec.Pchi2pid<pchi2FD_S4_lb) | (df_protonRec.Pchi2pid>pchi2FD_S4_ub)), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==5)   & ((df_protonRec.Pchi2pid<pchi2FD_S5_lb) | (df_protonRec.Pchi2pid>pchi2FD_S5_ub)), "PFid"] = 0
-            # df_protonRec.loc[ (df_protonRec.Psector==6)   & ((df_protonRec.Pchi2pid<pchi2FD_S6_lb) | (df_protonRec.Pchi2pid>pchi2FD_S6_ub)), "PFid"] = 0
-
-        if nocorr:
-            print("no photon smearing applied.")
-        else:
-            print("applying the photon smearing for " + pol)
-            #smearing photon
-            gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
-            df_gammaRec.loc[:, 'Gp'] = mag(gam)
-            df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
-            df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
-            #FT photon
-            df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]*np.random.normal(1, smearing*(0.013 + 0.003/(1+np.exp(0.761*(df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]-6)))), len(df_gammaRec.loc[df_gammaRec.Gsector>7]))
-            #FD photon
-            df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]*np.random.normal(1, smearing*(0.0395/(1+np.exp(5.308*(df_gammaRec.loc[df_gammaRec["Gsector"]<7, "Gp"]- 8.005)))), len(df_gammaRec.loc[df_gammaRec.Gsector<7]))
-
-            df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
-            df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
-            df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
-
-        gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
-        df_gammaRec.loc[:, 'Gp'] = mag(gam)
+        df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
+        df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
+        df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
         df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
-
-        df_gg = pd.merge(df_gammaRec, df_gammaRec,
-                         how='inner', on='event', suffixes=("", "2"))
-        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
-        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
         if detRes:
             df_gg = df_gg.loc[:, ~df_gg.columns.duplicated()]
             df_gg.loc[:, "Gedep2_tot"] = df_gg.Gedep12 + df_gg.Gedep22 + df_gg.Gedep32
-        # else:
-        #     df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz", "PCvt12theta", "PCvt12phi"], axis = 1)
-        #     df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
-        #     df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
-
+        else:
+            # df_protonRec = df_protonRec.drop(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PDc1theta", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"], axis = 1)
+            df_gammaRec = df_gammaRec.drop(["GcX", "GcY"], axis = 1)
+            df_gg = df_gg.drop(["GcX", "GcY", "GcX2", "GcY2"], axis = 1)
+        
         df_ep = pd.merge(df_electronRec, df_protonRec, how='inner', on='event')
 
         df_epgg = pd.merge(df_ep, df_gg, how='inner', on='event')
-        df_epgg = df_epgg[~np.isnan(df_epgg["Ppx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx"])]
-        df_epgg = df_epgg[~np.isnan(df_epgg["Gpx2"])]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Ppx"]), :]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Gpx"]), :]
+        df_epgg = df_epgg.loc[~np.isnan(df_epgg["Gpx2"]), :]
 
-        self.df_epgg = df_epgg #temporarily saves df_epgg
+        self.df_epgg = df_epgg # saves df_epgg
 
     def saveDVpi0vars(self):
         #set up pi0 variables
@@ -786,6 +469,10 @@ class root2pickle():
         df_epgg.loc[:, 'Ephi'] = getPhi(ele)
 
         pro = [df_epgg['Ppx'], df_epgg['Ppy'], df_epgg['Ppz']]
+        df_epgg.loc[:, 'Pp'] = mag(pro)
+        df_epgg.loc[:, 'Pe'] = getEnergy(pro, M)
+        df_epgg.loc[:, 'Ptheta'] = getTheta(pro)
+        df_epgg.loc[:, 'Pphi'] = getPhi(pro)
 
         gam = [df_epgg['Gpx'], df_epgg['Gpy'], df_epgg['Gpz']]
         df_epgg.loc[:, 'Gp'] = mag(gam)
@@ -823,7 +510,7 @@ class root2pickle():
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
         df_epgg.loc[:,'y'] = df_epgg['nu']/self.ebeam
         df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
-        df_epgg.loc[:,'t1Orig'] = 2 * M * (df_epgg['PeOrig'] - M)
+        # df_epgg.loc[:,'t1Orig'] = 2 * M * (df_epgg['PeOrig'] - M)
         df_epgg.loc[:,'t2'] = (M * df_epgg['Q2'] + 2 * M * df_epgg['nu'] * (df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta))\
         / (M + df_epgg['nu'] - np.sqrt(df_epgg['nu'] * df_epgg['nu'] + df_epgg['Q2']) * costheta)
         df_epgg.loc[:,'W'] = np.sqrt(np.maximum(0, (self.ebeam + M - df_epgg['Ee'])**2 - mag2(VGS)))
