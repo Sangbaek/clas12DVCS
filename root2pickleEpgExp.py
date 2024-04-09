@@ -2,8 +2,6 @@
 """
 A simple script to save data in pickle.
 """
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import uproot
 import argparse
@@ -14,6 +12,10 @@ from utils.fiducial import *
 from utils.kinCorrection import *
 import awkward as ak
 pd.options.mode.chained_assignment = None 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning))
+
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
