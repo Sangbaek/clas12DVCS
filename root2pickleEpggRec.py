@@ -333,7 +333,7 @@ class root2pickle():
             df_gammaRec.loc[:, "GFid"] = 1
         else:
             # perform the fiducial cuts
-            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = False, fidlevel = fidlevel)
+            df_electronRec = electronFiducial(df_electronRec, pol = pol, mc = True, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, pol = pol)
             df_gammaRec = gammaFiducial(df_gammaRec)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
