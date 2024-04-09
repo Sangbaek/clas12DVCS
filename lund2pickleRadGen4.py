@@ -68,19 +68,20 @@ class lund2pickle():
             helicity = logQuantities[4]
             xB = eleQuantities[1]
             radMode = eleQuantities[5]
-            Epx = eleQuantities[6]
-            Epy = eleQuantities[7]
-            Epz = eleQuantities[8]
+            Epx = float(eleQuantities[6])
+            Epy = float(eleQuantities[7])
+            Epz = float(eleQuantities[8])
             Q2 = eleQuantities[9]
             t1 = eleQuantities[10]
             phi1 = proQuantities[1]
-            Ppx = proQuantities[6]
-            Ppy = proQuantities[7]
-            Ppz = proQuantities[8]
+            Ppx = float(proQuantities[6])
+            Ppy = float(proQuantities[7])
+            Ppz = float(proQuantities[8])
             beamE = gamQuantities[1]
-            Gpx = gamQuantities[6]
-            Gpy = gamQuantities[7]
-            Gpz = gamQuantities[8]
+            dsigma_born = gamQuantities[10]
+            Gpx = float(gamQuantities[6])
+            Gpy = float(gamQuantities[7])
+            Gpz = float(gamQuantities[8])
             if num_particles == "3":
                 Gpx2 = 0
                 Gpy2 = 0
@@ -105,10 +106,24 @@ class lund2pickle():
                 Gpx3 = radQuantities2[6]
                 Gpy3 = radQuantities2[7]
                 Gpz3 = radQuantities2[8]
+            Etheta = (180.0/np.pi)*np.arctan2(np.sqrt(Epx*Epx+Epy*Epy),Epz)
+            Ptheta = (180.0/np.pi)*np.arctan2(np.sqrt(Ppx*Ppx+Ppy*Ppy),Ppz)
+            Gtheta = (180.0/np.pi)*np.arctan2(np.sqrt(Gpx*Gpx+Gpy*Gpy),Gpz)
 
-            kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), int(radMode), int(float(helicity)), float(beamE)])
+            if (Ptheta<40) and (Gtheta<5):
+                config = 0; # FDFT
+            elif (Ptheta<40) and (Gtheta>=5):
+                config = 1; #FDFD
+            elif (Ptheta>=40) and (Gtheta>=5):
+                config = 2; #CDFD
+            elif (Ptheta>=40) and (Gtheta<5):
+                config = 3; #CDFT
+            else:
+                config = -1;#errorneous bit
 
-        df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "dsigma", "radMode", "helicity", "beamE"])
+            kinArray.append([float(xB), float(Q2), float(t1), np.degrees(float(phi1)), float(dsigma), float(dsigma_born), int(radMode), int(float(helicity)), config, float(beamE)])
+
+        df_epgg = pd.DataFrame(kinArray, columns = ["xB", "Q2", "t1", "phi1", "GenWeight", "BornWeight", "radMode", "helicity", "config", "beamE"])
         self.df = df_epgg
 
         self.closeFile()
@@ -118,13 +133,40 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument("-model","--model", help="cross section model", default=None)
+    parser.add_argument("-bin","--bin", help="bin number", default=None)
     parser.add_argument("-f","--fname", help="a single root file to convert into pickles", default="/Users/sangbaek/Dropbox (MIT)/data/project/merged_9628_files.root")
     parser.add_argument("-o","--out", help="a single pickle file name as an output", default="goodbyeRoot.pkl")
     parser.add_argument("-s","--entry_stop", help="entry_stop to stop reading the root file", default = None)
 
     args = parser.parse_args()
+    if args.model:
+        dfs = []
+        for filenum in range(1, 68+1):
+            file = "/volatile/clas12/sangbaek/dvcs_related/sim_rad_gen/{0}/fall2018_inb3/{0}_{1}_{2}.dat".format(args.model, args.bin, filenum)
+            converter = lund2pickle(file, entry_stop = args.entry_stop)
+            df = converter.df
+            dfs.append(df)
+        dfs = pd.concat(dfs)
+        dfs = dfs.reset_index()
+        dfs = dfs.loc[:, dfs.columns[1:]]
+        outfile = "/volatile/clas12/sangbaek/dvcs_related/sim_rad_gen/{0}/root/fall2018_inb3/{1}.pkl".format(args.model, args.bin)
+        dfs.to_pickle(outfile)
 
-    converter = lund2pickle(args.fname, entry_stop = args.entry_stop)
-    df = converter.df
+        dfs = []
+        for filenum in range(1+68, 68+1+68):
+            file = "/volatile/clas12/sangbaek/dvcs_related/sim_rad_gen/{0}/fall2018_outb3/{0}_{1}_{2}.dat".format(args.model, args.bin, filenum)
+            converter = lund2pickle(file, entry_stop = args.entry_stop)
+            df = converter.df
+            dfs.append(df)
+        dfs = pd.concat(dfs)
+        dfs = dfs.reset_index()
+        dfs = dfs.loc[:, dfs.columns[1:]]
+        outfile = "/volatile/clas12/sangbaek/dvcs_related/sim_rad_gen/{0}/root/fall2018_outb3/{1}.pkl".format(args.model, args.bin)
+        dfs.to_pickle(outfile)
 
-    df.to_pickle(args.out)
+    else:
+        converter = lund2pickle(args.fname, entry_stop = args.entry_stop)
+        df = converter.df
+
+        df.to_pickle(args.out)

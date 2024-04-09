@@ -130,7 +130,8 @@ class lund2pickle():
         df_epgg.loc[:,'nu'] = (10.604 - df_epgg['Ee'])
         df_epgg.loc[:,'xB'] = df_epgg['Q2'] / 2.0 / M / df_epgg['nu']
         df_epgg.loc[:,'t1'] = 2 * M * (df_epgg['Pe'] - M)
-
+        df_epgg.loc[:,'MM2_ep'] = (-M - 10.604 + df_epgg["Ee"] +
+                             df_epgg["Pe"] + df_epgg["Ge"])**2 - mag2(Vmiss)
         VmissPi0 = [-df_epgg["Epx"] - df_epgg["Ppx"], -df_epgg["Epy"] -
                     df_epgg["Ppy"], self.pbeam - df_epgg["Epz"] - df_epgg["Ppz"]]
         VmissP = [-df_epgg["Epx"] - df_epgg["Gpx"] - df_epgg["Gpx2"], -df_epgg["Epy"] -
