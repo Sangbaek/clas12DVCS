@@ -1,7 +1,328 @@
 from utils.const import *
 from utils.physics import *
 
-def electronFiducial(df_electronRec, pol = "inbending", mc = False, fidlevel = 'mid'):
+def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
+	# following inclusive analysis note
+	df_electronRec.loc[:, "EFid"] = 1
+	# E. vz cut
+	# df_electronRec.loc[df_electronRec.Evz < -8, "EFid"] = 0
+	# df_electronRec.loc[df_electronRec.Evz >  2, "EFid"] = 0
+	# F. Minimum PCAL energy Threshold cut
+	df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
+	# G. DC Fiducial Cuts
+	dcsec_l1 = determineSector(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity)
+	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity, dcsec_l1)
+	calc_min_l1 = -0.50 * (x_rot_l1 + 72)
+	calc_max_l1 =  0.50 * (x_rot_l1 + 72)
+	df_electronRec.loc[y_rot_l1 < calc_min_l1, "EFid"] = 0
+	df_electronRec.loc[y_rot_l1 > calc_max_l1, "EFid"] = 0
+
+	dcsec_l2 = determineSector(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity)
+	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity, dcsec_l2)
+	calc_min_l2 = -0.505 * (x_rot_l2 + 114)
+	calc_max_l2 =  0.505 * (x_rot_l2 + 114)
+	df_electronRec.loc[y_rot_l2 < calc_min_l2, "EFid"] = 0
+	df_electronRec.loc[y_rot_l2 > calc_max_l2, "EFid"] = 0
+
+	dcsec_l3 = determineSector(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity)
+	x_rot_l3, y_rot_l3 = rotateDCHitPosition(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity, dcsec_l3)
+	calc_min_l3 = -0.505 * (x_rot_l3 + 114)
+	calc_max_l3 =  0.505 * (x_rot_l3 + 114)
+	df_electronRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
+	df_electronRec.loc[y_rot_l3 > calc_max_l3, "EFid"] = 0
+	# # H. PCAL Fid Cuts
+	df_electronRec.loc[df_electronRec.EcalV1<19, "EFid"] = 0
+	df_electronRec.loc[df_electronRec.EcalW1<19, "EFid"] = 0
+	df_electronRec.loc[df_electronRec.EcalU1>395, "EFid"] = 0
+	# I. ECAL SF Cut
+	A = [0.286, 0.280, 0.275, 0.273, 0.271, 0.276]
+	B = [-0.040, -0.038, -0.034, -0.033, -0.032, -0.034]
+	C = [-0.0030, -0.0012, -0.0014, -0.0007, 0.0005, -0.0014]
+	A_sim = [0.29]*6
+	B_sim = [-0.040]*6
+	C_sim = [-0.0029]*6
+	D = [0.017, 0.019, 0.017, 0.0157, 0.016, 0.017]
+	E = [-0.0012, -0.003, -0.002, 0.0003, -0.00135, -0.002]
+	F = [-0.0012, -0.00135, -0.00129, -0.0013, -0.001, -0.001]
+	D_sim = [0.015]*6
+	E_sim = [-0.00053]*6
+	F_sim = [-0.0014]*6
+
+	pcal_sf_mu    = [A, B, C]
+	pcal_sf_sigma = [D, E, F]
+	if mc:
+		pcal_sf_mu    = [A_sim, B_sim, C_sim]
+		pcal_sf_sigma = [D_sim, E_sim, F_sim]
+
+	sector_cond = [df_electronRec.Esector ==1, df_electronRec.Esector ==2, df_electronRec.Esector ==3, df_electronRec.Esector ==4, df_electronRec.Esector ==5, df_electronRec.Esector ==6]
+
+	ecal_e_sampl_mu_0 = np.select(sector_cond, pcal_sf_mu[0])
+	ecal_e_sampl_mu_1 = np.select(sector_cond, pcal_sf_mu[1])
+	ecal_e_sampl_mu_2 = np.select(sector_cond, pcal_sf_mu[2])
+	ecal_e_sampl_sigm_0 = np.select(sector_cond, pcal_sf_sigma[0])
+	ecal_e_sampl_sigm_1 = np.select(sector_cond, pcal_sf_sigma[1])
+	ecal_e_sampl_sigm_2 = np.select(sector_cond, pcal_sf_sigma[2])
+
+	mean =  ecal_e_sampl_mu_0   + ecal_e_sampl_mu_1  /df_electronRec.Eedep + ecal_e_sampl_mu_2  /df_electronRec.Eedep/df_electronRec.Eedep
+	sigma = ecal_e_sampl_sigm_0 + ecal_e_sampl_sigm_1/df_electronRec.Eedep + ecal_e_sampl_sigm_2/df_electronRec.Eedep/df_electronRec.Eedep
+
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.ESamplFrac < mean - 3.5*sigma, "EFid"]  = 0
+		df_electronRec.loc[df_electronRec.ESamplFrac > mean + 3.5*sigma, "EFid"]  = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (3.5-0.5)*sigma, "EFid"]  = 0
+		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5-0.5)*sigma, "EFid"]  = 0
+	#J. Pion Separtaion Cut
+	eleFidCut = df_electronRec.loc[:, ["Ep", "Esector", "Eedep1", "Eedep2"]]
+	eleFidCut.loc[:, "a"] = 0
+	eleFidCut.loc[:, "b"] = 0
+
+	if not mc:
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep < 2)       , "a"] =  0.201232 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.207553 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.213829 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.217145 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.220458 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.22359  
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.226479 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.226668 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 9)      , "a"] =  0.225488 
+
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep < 2)       , "b"] = -1.00947
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.07716
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.10165
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.12186
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.16741
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.22825
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.30402
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.37011
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 9)      , "b"] = -1.45688
+
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep < 2)       , "a"] =  0.197423
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.20437 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.215049
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.218486
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.218645
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.219856
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.219286
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.219087
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 9)      , "a"] =  0.221795
+
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep < 2)       , "b"] = -0.975077
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.01246 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.08631 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.1006  
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.10554 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.13945 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.16559 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.21059 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 9)      , "b"] = -1.30088 
+
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep < 2)       , "a"] =  0.197381
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.209949
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.215857
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.21988 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.220504
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.226815
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.22881 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.226924
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 9)      , "a"] =  0.21997 
+
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep < 2)       , "b"] = -0.988142
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.10285 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.1188  
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.14603 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.15965 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.26374 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.33568 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.38956 
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 9)      , "b"] = -1.4082  
+
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep < 2)       , "a"] =  0.18777 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.198804
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.209816
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.215048
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.218401
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.221764
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.225656
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.228833
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 9)      , "a"] =  0.228161
+
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep < 2)       , "b"] = -0.892892
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.00481 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.0906  
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11891 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.13694 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.16584 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.2161  
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.28444 
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 9)      , "b"] = -1.34519 
+
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep < 2)       , "a"] = 0.197711
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 2) &  3 , "a"] = 0.208762
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 3) &  4 , "a"] = 0.218481
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 4) &  5 , "a"] = 0.221863
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 5) &  6 , "a"] = 0.222802
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 6) &  7 , "a"] = 0.222474
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 7) &  8 , "a"] = 0.22175 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 8) &  9 , "a"] = 0.21954 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 9)      , "a"] = 0.216218
+
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep < 2)       , "b"] = -0.97406
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.07982
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.15156
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.16233
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.1562 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.14528
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.13725
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.11712
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 9)      , "b"] = -1.09426
+
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep < 2)       , "a"] = 0.198306
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 2) &  3 , "a"] = 0.209544
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 3) &  4 , "a"] = 0.221003
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 4) &  5 , "a"] = 0.22733 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 5) &  6 , "a"] = 0.230317
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 6) &  7 , "a"] = 0.23842 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 7) &  8 , "a"] = 0.242428
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "a"] = 0.24472 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "a"] = 0.246185
+
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep < 2)       , "b"] = -0.981174
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.08578 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.17655 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.22691 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.26216 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.38061 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.47588 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.57429 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "b"] = -1.67625 
+	else:
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep < 2)       , "a"] = 0.20233  
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 2) &  3 , "a"] = 0.212437 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 3) &  4 , "a"] = 0.219554 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 4) &  5 , "a"] = 0.224078 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 5) &  6 , "a"] = 0.22785  
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 6) &  7 , "a"] = 0.230326 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 7) &  8 , "a"] = 0.23258  
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 8) &  9 , "a"] = 0.232341 
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 9)      , "a"] = 0.22484  
+
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep < 2)       , "b"] = -0.949695
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.04219
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.08307
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11223
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.13177
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.14596
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.16058
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15733
+		eleFidCut.loc[ (eleFidCut.Esector == 1) & (eleFidCut.Ep >= 9)      , "b"] = -1.08707
+
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep < 2)       , "a"] =  0.202647
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.21288 
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.220162
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.224914
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.228319
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.230837
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.233087
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.233287
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 9)      , "a"] =  0.233669
+
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep < 2)       , "b"] = -0.956382
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.04446
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.09327
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11772
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.13684
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.14755
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.16113
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.16306
+		eleFidCut.loc[ (eleFidCut.Esector == 2) & (eleFidCut.Ep >= 9)      , "b"] = -1.16674
+
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep < 2)       , "a"] =  0.200986
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.211826
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.219478
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.223814
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.227713
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.230451
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.2319  
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.231747
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 9)      , "a"] =  0.236727
+
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep < 2)       , "b"] = -0.934262
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.035
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.08529
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.10889
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.13048
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.14677
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.1519
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.14965
+		eleFidCut.loc[ (eleFidCut.Esector == 3) & (eleFidCut.Ep >= 9)      , "b"] = -1.21746
+
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep < 2)       , "a"] =  0.201774
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 2) &  3 , "a"] =  0.213158
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 3) &  4 , "a"] =  0.220034
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 4) &  5 , "a"] =  0.224357
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 5) &  6 , "a"] =  0.228105
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 6) &  7 , "a"] =  0.230969
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 7) &  8 , "a"] =  0.233145
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 8) &  9 , "a"] =  0.232848
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 9)      , "a"] =  0.233346
+
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep < 2)       , "b"] = -0.940217
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.04832
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.08885
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11142
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.13521
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.15218
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.1639
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15888
+		eleFidCut.loc[ (eleFidCut.Esector == 4) & (eleFidCut.Ep >= 9)      , "b"] = -1.18771
+
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep < 2)       , "a"] = 0.201084 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 2) &  3 , "a"] = 0.212129 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 3) &  4 , "a"] = 0.219012 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 4) &  5 , "a"] = 0.224371 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 5) &  6 , "a"] = 0.22709  
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 6) &  7 , "a"] = 0.229402 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 7) &  8 , "a"] = 0.232148 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 8) &  9 , "a"] = 0.231751 
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 9)      , "a"] = 0.233825 
+
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep < 2)       , "b"] = -0.933617
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.03597
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.07962
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11528
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.12421
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.13488
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.15457
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15131
+		eleFidCut.loc[ (eleFidCut.Esector == 5) & (eleFidCut.Ep >= 9)      , "b"] = -1.17542
+
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep < 2)       , "a"] = 0.201648 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 2) &  3 , "a"] = 0.212346 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 3) &  4 , "a"] = 0.219218 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 4) &  5 , "a"] = 0.224192 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 5) &  6 , "a"] = 0.227346 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 6) &  7 , "a"] = 0.229665 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 7) &  8 , "a"] = 0.232072 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "a"] = 0.232098 
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "a"] = 0.23524  
+
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep < 2)       , "b"] = -0.936363
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 2) &  3 , "b"] = -1.03963
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 3) &  4 , "b"] = -1.08145
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 4) &  5 , "b"] = -1.11228
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 5) &  6 , "b"] = -1.12983
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 6) &  7 , "b"] = -1.14008
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.1564
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15527
+		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "b"] = -1.19943
+	df_electronRec.loc[eleFidCut.Eedep1/eleFidCut.Ep <= eleFidCut.a + eleFidCut.b * (eleFidCut.Eedep2/eleFidCut.Ep), "EFid"] = 0
+
+	return df_electronRec.loc[df_electronRec.EFid==1, :]
+
+
+def electronFiducial_legacy(df_electronRec, pol = "inbending", mc = False, fidlevel = 'mid'):
 	df_electronRec.loc[:, "EFid"] = 1
 
 	# #PCAL dead wires
