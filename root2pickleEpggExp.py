@@ -125,7 +125,6 @@ class root2pickle():
         eleKeysRec.extend(["Eedep1", "Eedep2", "Eedep3"])
         eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
         eleKeysRec.extend(["EcalHx1", "EcalHy1"])
-        eleKeysRec.extend(["EcalHx2", "EcalHy2"])
         eleKeysRec.extend(["EcalHx3", "EcalHy3"])
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
         eleKeysRec.extend(["EFtof1bSector", "EFtof1bComponent"])
@@ -139,7 +138,6 @@ class root2pickle():
         gamKeysRec = ["Gpx", "Gpy", "Gpz", "Gedep", "GcX", "GcY", "Gsector"]
         gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1", "Gbeta"])
         gamKeysRec.extend(["GcalX1", "GcalY1"])
-        gamKeysRec.extend(["GcalX2", "GcalY2"])
         gamKeysRec.extend(["GcalX3", "GcalY3"])
 
         if detRes:
@@ -149,12 +147,14 @@ class root2pickle():
             # eleKeysRec.extend(["EcalU1", "EcalV1", "EcalW1"])
             eleKeysRec.extend(["EcalU2", "EcalV2", "EcalW2"])
             eleKeysRec.extend(["EcalU3", "EcalV3", "EcalW3"])
+            eleKeysRec.extend(["EcalHx2", "EcalHy2"])
             # eleKeysRec.extend(["Enphe"])
             eleKeysRec.extend(["EhtccZ"])
             gamKeysRec.extend(["Gedep1", "Gedep2", "Gedep3"])
             # gamKeysRec.extend(["GcalU1", "GcalV1", "GcalW1"])
             gamKeysRec.extend(["GcalU2", "GcalV2", "GcalW2"])
             gamKeysRec.extend(["GcalU3", "GcalV3", "GcalW3"])
+            gamKeysRec.extend(["GcalX2", "GcalY2"])
             # gamKeysRec.extend(["Gbeta"])
             # proKeysRec.extend(["Pvz"])
             proKeysRec.extend(["PCvt1Hitx", "PCvt1Hity", "PCvt1Hitz", "PCvt3Hitx", "PCvt3Hity", "PCvt3Hitz", "PCvt5Hitx", "PCvt5Hity", "PCvt5Hitz", "PCvt7Hitx", "PCvt7Hity", "PCvt7Hitz"])
