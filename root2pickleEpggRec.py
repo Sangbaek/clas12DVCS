@@ -371,14 +371,14 @@ class root2pickle():
             df_electronRec = electronMomentumSmearing(df_electronRec)
             #p1
             df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
-            # #p2
-            # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
-            #p3
-            df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = 1)
-            # #g1
-            # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
-            #g2
-            df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = 1)
+            # # #p2
+            # # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
+            # #p3
+            # df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = 1)
+            # # #g1
+            # # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
+            # #g2
+            # df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = 1)
 
         if detRes:
             df_protonRec.loc[:, "PDc3theta"] = -100000
