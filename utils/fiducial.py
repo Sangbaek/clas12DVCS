@@ -5,8 +5,8 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	# following inclusive analysis note
 	df_electronRec.loc[:, "EFid"] = 1
 	# E. vz cut
-	# df_electronRec.loc[df_electronRec.Evz < -8, "EFid"] = 0
-	# df_electronRec.loc[df_electronRec.Evz >  2, "EFid"] = 0
+	df_electronRec.loc[df_electronRec.Evz < -8, "EFid"] = 0
+	df_electronRec.loc[df_electronRec.Evz >  2, "EFid"] = 0
 	# F. Minimum PCAL energy Threshold cut
 	df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
 	# G. DC Fiducial Cuts
@@ -318,6 +318,23 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15527
 		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "b"] = -1.19943
 	df_electronRec.loc[eleFidCut.Eedep1/eleFidCut.Ep <= eleFidCut.a + eleFidCut.b * (eleFidCut.Eedep2/eleFidCut.Ep), "EFid"] = 0
+
+	#Table XII.
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -92        + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -94.4         - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -101.1     + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -103.5        - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -219       + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -221.4        - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -227       + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -229.4        - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 0.5897   * df_electronRec.EcalHx1 +120.7937  + 0.25) & (df_electronRec.EcalHy1 >= 0.5913  * df_electronRec.EcalHx1 +114.3872     - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 107.2766 * df_electronRec.EcalHx1 -10602.9779+ 0.25) & (df_electronRec.EcalHy1 >= 98.9667 * df_electronRec.EcalHx1 -10262.0167   - 0.25), "EFid"] = 0
+ 	df_electronRec.loc[ (df_electronRec.Esector == 3) & (df_electronRec.EcalHx1 <= -302.38) & (df_electronRec.EcalHx1 >= -313.71), "EFid"] = 0
+ 	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHx1 <= -122.5 ) & (df_electronRec.EcalHx1 >= -127.5 ), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHy1 <= -0.568   * df_electronRec.EcalHx1 -232.8     + 0.25) & (df_electronRec.EcalHy1 >= -0.568  * df_electronRec.EcalHx1 -236.3        - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy1 <= 98.0644  * df_electronRec.EcalHx1 +5825.4023 + 0.25) & (df_electronRec.EcalHy1 >= 99.9337 * df_electronRec.EcalHx1 +5098.3456    - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.4547   * df_electronRec.EcalHx1 -275.9317  + 0.25) & (df_electronRec.EcalHy1 >= 0.4547  * df_electronRec.EcalHx1 -285.9317     - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -185      + 0.25) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -187          - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -193.3    + 0.25) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -195.5        - 0.25), "EFid"] = 0
+
+   	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25), "EFid"] = 0
 
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
