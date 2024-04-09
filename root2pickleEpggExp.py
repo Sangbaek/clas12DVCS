@@ -13,7 +13,7 @@ import awkward as ak
 pd.options.mode.chained_assignment = None 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning))
+warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 
 class root2pickle():
     #class to read root to make epg pairs, inherited from epg
