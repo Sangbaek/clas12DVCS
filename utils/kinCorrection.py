@@ -328,7 +328,7 @@ def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
     df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
     #FT - df_gg: perform correction for only one photon
-    FT_phot_corr = 0.02815846*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]#(-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
+    FT_phot_corr = 0.02815846*df_gg.loc[df_gg["Gsector"]>7, "Gp"]#(-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
     df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
     #FT - df_gammaRec: perform every photon
     FT_phot_corr = 0.02815846*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]#(-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
