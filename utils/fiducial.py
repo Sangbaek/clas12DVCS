@@ -527,21 +527,21 @@ def gammaFiducial(df_gammaRec):
 	df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
 
 	#Table XII.
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalHy1 <= 0.56575  * df_gammaRec.GcalHx1 -92        + 0.25) & (df_gammaRec.GcalHy1 >= 0.56575 * df_gammaRec.GcalHx1 -94.4         - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalHy1 <= 0.56575  * df_gammaRec.GcalHx1 -101.1     + 0.25) & (df_gammaRec.GcalHy1 >= 0.56575 * df_gammaRec.GcalHx1 -103.5        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalHy1 <= 0.56575  * df_gammaRec.GcalHx1 -219       + 0.25) & (df_gammaRec.GcalHy1 >= 0.56575 * df_gammaRec.GcalHx1 -221.4        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalHy1 <= 0.56575  * df_gammaRec.GcalHx1 -227       + 0.25) & (df_gammaRec.GcalHy1 >= 0.56575 * df_gammaRec.GcalHx1 -229.4        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalHy1 <= 0.5897   * df_gammaRec.GcalHx1 +120.7937  + 0.25) & (df_gammaRec.GcalHy1 >= 0.5913  * df_gammaRec.GcalHx1 +114.3872     - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalHy1 <= 107.2766 * df_gammaRec.GcalHx1 -10602.9779+ 0.25) & (df_gammaRec.GcalHy1 >= 98.9667 * df_gammaRec.GcalHx1 -10262.0167   - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalHx1 <= -302.38) & (df_gammaRec.GcalHx1 >= -313.71), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalHx1 <= -122.5 ) & (df_gammaRec.GcalHx1 >= -127.5 ), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalHy1 <= -0.568   * df_gammaRec.GcalHx1 -232.8     + 0.25) & (df_gammaRec.GcalHy1 >= -0.568  * df_gammaRec.GcalHx1 -236.3        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalHy1 <= 98.0644  * df_gammaRec.GcalHx1 +5825.4023 + 0.25) & (df_gammaRec.GcalHy1 >= 99.9337 * df_gammaRec.GcalHx1 +5098.3456    - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalHy1 <= 0.4547   * df_gammaRec.GcalHx1 -275.9317  + 0.25) & (df_gammaRec.GcalHy1 >= 0.4547  * df_gammaRec.GcalHx1 -285.9317     - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalHy1 <= 0.591377  * df_gammaRec.GcalHx1 -185      + 0.25) & (df_gammaRec.GcalHy1 >= 0.591377* df_gammaRec.GcalHx1 -187          - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalHy1 <= 0.591377  * df_gammaRec.GcalHx1 -193.3    + 0.25) & (df_gammaRec.GcalHy1 >= 0.591377* df_gammaRec.GcalHx1 -195.5        - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -92        + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -94.4         - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -101.1     + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -103.5        - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -219       + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -221.4        - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -227       + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -229.4        - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 0.5897   * df_gammaRec.GcalX1 +120.7937  + 0.25) & (df_gammaRec.GcalY1 >= 0.5913  * df_gammaRec.GcalX1 +114.3872     - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 107.2766 * df_gammaRec.GcalX1 -10602.9779+ 0.25) & (df_gammaRec.GcalY1 >= 98.9667 * df_gammaRec.GcalX1 -10262.0167   - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalX1 <= -302.38) & (df_gammaRec.GcalX1 >= -313.71), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalX1 <= -122.5 ) & (df_gammaRec.GcalX1 >= -127.5 ), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalY1 <= -0.568   * df_gammaRec.GcalX1 -232.8     + 0.25) & (df_gammaRec.GcalY1 >= -0.568  * df_gammaRec.GcalX1 -236.3        - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY1 <= 98.0644  * df_gammaRec.GcalX1 +5825.4023 + 0.25) & (df_gammaRec.GcalY1 >= 99.9337 * df_gammaRec.GcalX1 +5098.3456    - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.4547   * df_gammaRec.GcalX1 -275.9317  + 0.25) & (df_gammaRec.GcalY1 >= 0.4547  * df_gammaRec.GcalX1 -285.9317     - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -185      + 0.25) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -187          - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25), "GFid"] = 0
 
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalHy3 <= -0.5841  * df_gammaRec.GcalHx3 -252.11    + 0.25) & (df_gammaRec.GcalHy3 >= -0.5775 * df_gammaRec.GcalHx3 -263.2072    - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25), "GFid"] = 0
 
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
