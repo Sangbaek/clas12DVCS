@@ -311,9 +311,10 @@ def quartic_without_const(args, x):
     x = np.array(x)
     return a*x**4 + b*x**3 + c*x**2 + d*x**1
 
-def gammaMomentumCorrection(pol, df_gammaRec):
+def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
     print("applying the photon kinematic corrections for " + pol)
     df_gammaRec = copy(df_gammaRec)
+    df_gg       = copy(df_gg)
 
     #photon kinematic correction of df_gg
     gam = [df_gg['Gpx'], df_gg['Gpy'], df_gg['Gpz']]
