@@ -1,7 +1,9 @@
 from utils.const import *
 from utils.physics import *
+from copy import copy
 
 def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
+	df_electronRec = copy(df_electronRec)
 	# following inclusive analysis note
 	df_electronRec.loc[:, "EFid"] = 1
 	# D. nphe cut
@@ -343,6 +345,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 
 def electronFiducial_legacy(df_electronRec, pol = "inbending", mc = False, fidlevel = 'mid'):
+	df_electronRec = copy(df_electronRec)
 	df_electronRec.loc[:, "EFid"] = 1
 
 	# #PCAL dead wires
@@ -450,6 +453,7 @@ def electronFiducial_legacy(df_electronRec, pol = "inbending", mc = False, fidle
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
 def gammaFiducial(df_gammaRec):
+	df_gammaRec = copy(df_gammaRec)
 	df_gammaRec.loc[:, "GFid"] = 1
 	#passGammaPCALFiducialCut
 	df_gammaRec.loc[(df_gammaRec.GcalV1 <= g_min_v) & (df_gammaRec.Gsector<7), "GFid"] = 0
@@ -544,6 +548,7 @@ def gammaFiducial(df_gammaRec):
 
 
 def gammaFiducialLegacy(df_gammaRec):
+	df_gammaRec = copy(df_gammaRec)
 	df_gammaRec.loc[:, "GFid"] = 1
 	#passGammaPCALFiducialCut
 	df_gammaRec.loc[(df_gammaRec.GcalV1 <= g_min_v) & (df_gammaRec.Gsector<7), "GFid"] = 0
@@ -639,6 +644,7 @@ def gammaFiducialLegacy(df_gammaRec):
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
 def protonFiducial(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
+	df_protonRec = copy(df_protonRec)
 	df_protonRec.loc[:, "PFid"] = 1
 
 	dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
