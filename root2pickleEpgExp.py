@@ -461,8 +461,6 @@ class root2pickle():
         # cut_proton = (cut_FD_proton)|(cut_CD_proton)
         cut_proton = 1
 
-        df_dvpi0p.loc[:, "config"] = 0
-
         CD_Ptheta_ub = CD_Ptheta_ub_nominal
         CD_Ptheta_lb = CD_Ptheta_lb_nominal
         FD_Ptheta_inb_ub = FD_Ptheta_inb_ub_nominal
@@ -828,8 +826,6 @@ class root2pickle():
         # cut_CD_proton = (df_dvcs.loc[:, "Psector"]>7) #& (df_dvcs.loc[:, "Ptheta"]<66) #& (df_dvcs.loc[:, "Ptheta"]>40) 
         # cut_proton = (cut_FD_proton)|(cut_CD_proton)
         #(cut_FD_proton)|(cut_CD_proton)
-
-        df_dvcs.loc[:, "config"] = 0
 
         cuts_dvcs_CDFT_Inb = self.cuts_dvcs_CDFT_Inb 
         cuts_dvcs_CD_Inb = self.cuts_dvcs_CD_Inb 

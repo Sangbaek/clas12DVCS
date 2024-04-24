@@ -527,8 +527,6 @@ class root2pickle():
         # cut_proton = (cut_FD_proton)|(cut_CD_proton)
         cut_proton = 1
 
-        df_dvpi0p.loc[:, "config"] = 0
-
         cuts_dvpi0p_CDFT_Inb = self.cuts_dvpi0p_CDFT_Inb 
         cuts_dvpi0p_CD_Inb = self.cuts_dvpi0p_CD_Inb 
         cuts_dvpi0p_FD_Inb = self.cuts_dvpi0p_FD_Inb
