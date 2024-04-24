@@ -224,10 +224,6 @@ class root2pickle():
             df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
             df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        df_gg = pd.merge(df_gammaRec, df_gammaRec,
-                         how='inner', on='event', suffixes=("", "2"))
-        df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
-        df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
         # Done with the fiducial cuts.
 
@@ -255,12 +251,16 @@ class root2pickle():
             df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
             # #p2
             # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
-            # # #p3
-            # # df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = 1)
-            # #g1
-            # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
-            # # #g2
-            # # df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = 1)
+            # #p3
+            # df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = smearing)
+            # #g2
+            # df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = smearing)
+            df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                             how='inner', on='event', suffixes=("", "2"))
+            df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+            df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
+            #g1
+            df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
 
         if detRes:
             df_protonRec.loc[:, "PDc3theta"] = -100000

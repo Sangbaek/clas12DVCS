@@ -3,9 +3,11 @@ independent script to perform the energy loss corection
 '''
 from utils.const import *
 from utils.physics import *
+from copy import copy
 
 def electronMomentumCorrection(pol, df_electronRec):
     # https://clasweb.jlab.org/wiki/index.php/CLAS12_Momentum_Corrections#tab=Correction_Code
+    df_electronRec = copy(df_electronRec)
     df_electronRec.loc[:, "dp"] = 0
 
     eleCorr = df_electronRec.loc[:, ["Ep", "Ephi", "Esector"]]
@@ -36,6 +38,7 @@ def electronMomentumCorrection(pol, df_electronRec):
 
 def electronMomentumSmearing(df_electronRec):
     #p.49 of inclusive note
+    df_electronRec = copy(df_electronRec)
     sigma_theta = 0.00387 - 0.00019 * df_electronRec.Etheta + 1.3021e-5 * df_electronRec.Etheta * df_electronRec.Etheta
     eleCorr = df_electronRec.loc[:, ["Ep", "Ephi", "Esector"]]
     eleCorr.loc[:, "dp"] = df_electronRec.Ep * sigma_theta * np.random.normal(0, 1, len(df_electronRec))
@@ -51,6 +54,7 @@ def protonEnergyLossCorr(pol, df_protonRec):
     '''
     a simple function for the energy loss correction.
     '''
+    df_protonRec = copy(df_protonRec)
     pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
     df_protonRec.loc[:, "Pp"] = mag(pro)
     df_protonRec.loc[:, "Pe"] = getEnergy(pro, M)
@@ -180,10 +184,22 @@ def protonEnergyLossCorr(pol, df_protonRec):
         df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
         df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
     df_protonRec = pd.concat([df_protonRecFD_1, df_protonRecFD_2, df_protonRecCD, df_protonRecOthers])
+
+    #moduli proton phi
+    df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
+
+    df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+    pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+
+    df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+
     return df_protonRec
 
 
 def protonMomentumCorrection(pol, df_protonRec):
+    df_protonRec = copy(df_protonRec)
     df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
     df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.PthetaOrig<75), :]
     df_protonRecOthers = df_protonRec.loc[ ((df_protonRec.Psector>7) & (df_protonRec.PthetaOrig>=75)) | ((df_protonRec.Psector<7) & (df_protonRec.PpOrig<0.3)), :]
@@ -200,6 +216,17 @@ def protonMomentumCorrection(pol, df_protonRec):
         df_protonRecFD.loc[:, "Ptheta"] = df_protonRecFD.Ptheta + 0.05*(np.abs(df_protonRecFD.Ptheta - 27) + (df_protonRecFD.Ptheta - 27))
 
     df_protonRec = pd.concat([df_protonRecFD, df_protonRecCD, df_protonRecOthers])
+
+    #moduli proton phi
+    df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
+
+    df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+    pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+
+    df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+
     return df_protonRec
 
 def cubic(args, x): #equivalent to poly1d
@@ -221,6 +248,7 @@ def sigmaFDOutb(x):
 
 
 def protonMomentumSmearing(pol, df_protonRec, smearing = 1):
+    df_protonRec = copy(df_protonRec)
     regulator = np.abs(2*(1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]-0.3)/0.01))-0.5))
     sigma1_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<0.85, cubic([0.0926, 0.137, -0.230, 0.139], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.1)
     sigma2_CD = np.where(df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]<1.34, cubic([-2.797, 9.351, -9.488, 3.503], df_protonRec.loc[df_protonRec["Psector"]>7, "Pp"]), 0.85)
@@ -238,9 +266,21 @@ def protonMomentumSmearing(pol, df_protonRec, smearing = 1):
             regulator = (1/(1+np.exp(-(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]-0.6)/0.05)))
             sigmas_FD = sigmaFDOutb(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]) #quartic(df_protonRec.loc[df_protonRec.Psector == sector, "Pp"], sector, pol)
         df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"] = df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]*np.random.normal(1, smearing*regulator*sigmas_FD, len(df_protonRec.loc[df_protonRec["Psector"]==sector, "Pp"]))
+
+    #moduli proton phi
+    df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
+
+    df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+    pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+
+    df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+
     return df_protonRec
 
 def gammaMomentumSmearing(df_gammaRec, smearing = 1):
+    df_gammaRec = copy(df_gammaRec)
     gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
     df_gammaRec.loc[:, 'Gp'] = mag(gam)
     df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
@@ -252,6 +292,8 @@ def gammaMomentumSmearing(df_gammaRec, smearing = 1):
     df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
     df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
     df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
+
+    df_gammaRec.loc[:, "Ge"] = df_gammaRec.loc[:, "Gp"]
     return df_gammaRec
 
 def cubic_without_const(args, x):
@@ -269,8 +311,9 @@ def quartic_without_const(args, x):
     x = np.array(x)
     return a*x**4 + b*x**3 + c*x**2 + d*x**1
 
-def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
+def gammaMomentumCorrection(pol, df_gammaRec):
     print("applying the photon kinematic corrections for " + pol)
+    df_gammaRec = copy(df_gammaRec)
 
     #photon kinematic correction of df_gg
     gam = [df_gg['Gpx'], df_gg['Gpy'], df_gg['Gpz']]
@@ -284,10 +327,10 @@ def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
     df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
 
     #FT - df_gg: perform correction for only one photon
-    FT_phot_corr = (-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
+    FT_phot_corr = 0.02815846*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]#(-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
     df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
     #FT - df_gammaRec: perform every photon
-    FT_phot_corr = (-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
+    FT_phot_corr = 0.02815846*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]#(-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
     df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
 
     #FD
@@ -319,4 +362,17 @@ def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
             cond = df_gammaRec.Gsector == sector
             FD_phot_corr_sector = quartic_without_const(args[sector-1], df_gammaRec.loc[cond, "Gp"])/(1+np.exp(-(df_gammaRec.loc[cond, "Gp"]-2.2)/0.15))
             df_gammaRec.loc[cond, "Gp"] = df_gammaRec.loc[cond, "Gp"] + FD_phot_corr_sector
+    # return df_gg, df_gammaRec
+    df_gg.loc[:, "Gpx"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.cos(np.radians(df_gg.loc[:, "Gphi"]))
+    df_gg.loc[:, "Gpy"] = df_gg.loc[:, "Gp"]*np.sin(np.radians(df_gg.loc[:, "Gtheta"]))*np.sin(np.radians(df_gg.loc[:, "Gphi"]))
+    df_gg.loc[:, "Gpz"] = df_gg.loc[:, "Gp"]*np.cos(np.radians(df_gg.loc[:, "Gtheta"]))
+
+    df_gg.loc[:, "Ge"] = df_gg.loc[:, "Gp"]
+
+
+    df_gammaRec.loc[:, "Gpx"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.cos(np.radians(df_gammaRec.loc[:, "Gphi"]))
+    df_gammaRec.loc[:, "Gpy"] = df_gammaRec.loc[:, "Gp"]*np.sin(np.radians(df_gammaRec.loc[:, "Gtheta"]))*np.sin(np.radians(df_gammaRec.loc[:, "Gphi"]))
+    df_gammaRec.loc[:, "Gpz"] = df_gammaRec.loc[:, "Gp"]*np.cos(np.radians(df_gammaRec.loc[:, "Gtheta"]))
+
+    df_gammaRec.loc[:, "Ge"] = df_gammaRec.loc[:, "Gp"]
     return df_gg, df_gammaRec
