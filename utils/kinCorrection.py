@@ -329,10 +329,12 @@ def gammaMomentumCorrection(pol, df_gg, df_gammaRec):
 
     #FT - df_gg: perform correction for only one photon
     FT_phot_corr = 0.02815846*df_gg.loc[df_gg["Gsector"]>7, "Gp"]#(-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
-    df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
+    df_gg.loc[df_gg["Gsector"]>7, "Gp"] = df_gg.loc[df_gg["Gsector"]>7, "Gp"] + FT_phot_corr
+    FT_phot_corr2 = 0.02815846*df_gg.loc[df_gg["Gsector2"]>7, "Gp2"]#(-0.00467*df_gg.loc[df_gg["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gg.loc[df_gg["Gsector"]>7, "Gp"]  -0.352) + 0.25
+    df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] = df_gg.loc[df_gg["Gsector2"]>7, "Gp2"] + FT_phot_corr2
     #FT - df_gammaRec: perform every photon
     FT_phot_corr = 0.02815846*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]#(-0.00467*df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]**2 + 0.0802 *df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"]  -0.352) + 0.25
-    df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + np.where(FT_phot_corr>0, FT_phot_corr, 0)
+    df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] = df_gammaRec.loc[df_gammaRec["Gsector"]>7, "Gp"] + FT_phot_corr
 
     #FD
     if pol == "inbending":
