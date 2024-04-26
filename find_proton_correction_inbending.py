@@ -60,22 +60,6 @@ df_exp_dvcs_inb = df_exp_dvcs_inb.loc[:, df_exp_dvcs_inb.columns[1:]]
 df_exp_pi0_inb = pd.concat(df_exp_pi0_inb).reset_index()
 df_exp_pi0_inb = df_exp_pi0_inb.loc[:, df_exp_pi0_inb.columns[1:]]
 
-outb_list = np.loadtxt('/work/clas12/sangbaek/outb_run_list_pass1', dtype = int)
-df_exp_dvcs_outb = []
-df_exp_pi0_outb = []
-for run in outb_list:
-    try:
-        df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_1/pkl/{:d}.pkl".format(run))
-        df_exp_dvcs_outb.append(df)
-        df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_1/pkl/{:d}.pkl".format(run))
-        df_exp_pi0_outb.append(df)
-    except:
-        continue
-df_exp_dvcs_outb = pd.concat(df_exp_dvcs_outb).reset_index()
-df_exp_dvcs_outb = df_exp_dvcs_outb.loc[:, df_exp_dvcs_outb.columns[1:]]
-df_exp_pi0_outb = pd.concat(df_exp_pi0_outb).reset_index()
-df_exp_pi0_outb = df_exp_pi0_outb.loc[:, df_exp_pi0_outb.columns[1:]]
-
 df_sim_dvcs_inb = []
 for bin in range(147):
     try:
@@ -101,32 +85,6 @@ for filenum in range(20):
     df_sim_pi0_2gamma_inb.append(df)
 df_sim_pi0_2gamma_inb = pd.concat(df_sim_pi0_2gamma_inb).reset_index()
 df_sim_pi0_2gamma_inb = df_sim_pi0_2gamma_inb.loc[:, df_sim_pi0_2gamma_inb.columns[1:]]
-
-
-df_sim_dvcs_outb = []
-for bin in range(147):
-    try:
-        df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/dvcs_km15/excl_level_1/pkl/{}.pkl".format(bin+1))
-        df.loc[:, "weights"] = df.GenWeight * bin_volume_bulk[bin] * luminosity_outb / (680000*9999/10000)
-        df_sim_dvcs_outb.append(df)
-    except:
-        continue
-df_sim_dvcs_outb = pd.concat(df_sim_dvcs_outb).reset_index()
-df_sim_dvcs_outb = df_sim_dvcs_outb.loc[:, df_sim_dvcs_outb.columns[1:]]
-
-df_sim_pi0_1gamma_outb = []
-for filenum in range(20):
-    df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pi0_1gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
-    df_sim_pi0_1gamma_outb.append(df)
-df_sim_pi0_1gamma_outb = pd.concat(df_sim_pi0_1gamma_outb).reset_index()
-df_sim_pi0_1gamma_outb = df_sim_pi0_1gamma_outb.loc[:, df_sim_pi0_1gamma_outb.columns[1:]]
-
-df_sim_pi0_2gamma_outb = []
-for filenum in range(20):
-    df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pi0_2gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
-    df_sim_pi0_2gamma_outb.append(df)
-df_sim_pi0_2gamma_outb = pd.concat(df_sim_pi0_2gamma_outb).reset_index()
-df_sim_pi0_2gamma_outb = df_sim_pi0_2gamma_outb.loc[:, df_sim_pi0_2gamma_outb.columns[1:]]
 
 df_correction = pd.DataFrame()
 Pbins   = [0.4, 0.6, 0.8, 1, 1.2, 1.4]
@@ -337,4 +295,4 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
     
         df_correction = pd.concat([df_correction, this_row])
 
-df_correction.to_pickle("df_correction_info.pkl")
+df_correction.to_pickle("df_correction_info_inb.pkl")
