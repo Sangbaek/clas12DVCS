@@ -313,8 +313,10 @@ df_exp_dvcs_inb = []
 df_exp_pi0_inb = []
 for run in inb_list:
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_1/pkl/{:d}.pkl".format(run))
+    df = df.loc[:, "MM2_ep", "reconGam", "Pp", "Ptheta", "Psector"]
     df_exp_dvcs_inb.append(df)
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_1/pkl/{:d}.pkl".format(run))
+    df = df.loc[:, "MM2_ep", "reconPi", "Pp", "Ptheta", "Psector"]
     df_exp_pi0_inb.append(df)
 df_exp_dvcs_inb = pd.concat(df_exp_dvcs_inb).reset_index()
 df_exp_dvcs_inb = df_exp_dvcs_inb.loc[:, df_exp_dvcs_inb.columns[1:]]
@@ -325,6 +327,7 @@ df_sim_dvcs_inb = []
 for bin in range(147):
     try:
         df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_km15/excl_level_1/pkl/{}.pkl".format(bin+1))
+        df = df.loc[:, "MM2_ep", "reconGam", "Pp", "Ptheta", "Psector", "weights"]
         df.loc[:, "weights"] = df.GenWeight * bin_volume_bulk[bin] * luminosity_inb / (680000*9999/10000)
         df_sim_dvcs_inb.append(df)
     except:
@@ -335,6 +338,7 @@ df_sim_dvcs_inb = df_sim_dvcs_inb.loc[:, df_sim_dvcs_inb.columns[1:]]
 df_sim_pi0_1gamma_inb = []
 for filenum in range(20):
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/pi0_1gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
+    df = df.loc[:, "MM2_ep", "reconGam", "Pp", "Ptheta", "Psector"]
     df_sim_pi0_1gamma_inb.append(df)
 df_sim_pi0_1gamma_inb = pd.concat(df_sim_pi0_1gamma_inb).reset_index()
 df_sim_pi0_1gamma_inb = df_sim_pi0_1gamma_inb.loc[:, df_sim_pi0_1gamma_inb.columns[1:]]
@@ -343,6 +347,7 @@ df_sim_pi0_1gamma_inb = df_sim_pi0_1gamma_inb.loc[:, df_sim_pi0_1gamma_inb.colum
 df_sim_pi0_2gamma_inb = []
 for filenum in range(20):
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/pi0_2gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
+    df = df.loc[:, "MM2_ep", "reconPi", "Pp", "Ptheta", "Psector"]
     df_sim_pi0_2gamma_inb.append(df)
 df_sim_pi0_2gamma_inb = pd.concat(df_sim_pi0_2gamma_inb).reset_index()
 df_sim_pi0_2gamma_inb = df_sim_pi0_2gamma_inb.loc[:, df_sim_pi0_2gamma_inb.columns[1:]]
