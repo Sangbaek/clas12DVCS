@@ -49,10 +49,13 @@ outb_list = np.loadtxt('/work/clas12/sangbaek/outb_run_list_pass1', dtype = int)
 df_exp_dvcs_outb = []
 df_exp_pi0_outb = []
 for run in outb_list:
-    df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_1/pkl/{:d}.pkl".format(run))
-    df_exp_dvcs_outb.append(df)
-    df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_1/pkl/{:d}.pkl".format(run))
-    df_exp_pi0_outb.append(df)
+    try:
+        df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_1/pkl/{:d}.pkl".format(run))
+        df_exp_dvcs_outb.append(df)
+        df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_1/pkl/{:d}.pkl".format(run))
+        df_exp_pi0_outb.append(df)
+    except:
+        continue
 df_exp_dvcs_outb = pd.concat(df_exp_dvcs_outb).reset_index()
 df_exp_dvcs_outb = df_exp_dvcs_outb.loc[:, df_exp_dvcs_outb.columns[1:]]
 df_exp_pi0_outb = pd.concat(df_exp_pi0_outb).reset_index()
@@ -75,7 +78,6 @@ for filenum in range(20):
     df_sim_pi0_1gamma_outb.append(df)
 df_sim_pi0_1gamma_outb = pd.concat(df_sim_pi0_1gamma_outb).reset_index()
 df_sim_pi0_1gamma_outb = df_sim_pi0_1gamma_outb.loc[:, df_sim_pi0_1gamma_outb.columns[1:]]
-
 
 df_sim_pi0_2gamma_outb = []
 for filenum in range(20):
