@@ -314,10 +314,10 @@ df_exp_pi0_outb = []
 for run in outb_list:
     try:
         df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_1/pkl/{:d}.pkl".format(run))
-        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Psector"]]
+        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Pphi", "Psector"]]
         df_exp_dvcs_outb.append(df)
         df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_1/pkl/{:d}.pkl".format(run))
-        df = df.loc[:, ["MM2_ep", "reconPi", "Pp", "Ptheta", "Psector"]]
+        df = df.loc[:, ["MM2_ep", "reconPi", "Pp", "Ptheta", "Pphi", "Psector"]]
         df_exp_pi0_outb.append(df)
     except:
         continue
@@ -331,7 +331,7 @@ for bin in range(147):
     try:
         df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/dvcs_km15/excl_level_1/pkl/{}.pkl".format(bin+1))
         df.loc[:, "weights"] = df.GenWeight * bin_volume_bulk[bin] * luminosity_outb / (680000*9999/10000)
-        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Psector", "weights"]]
+        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Pphi", "Psector", "weights"]]
         df_sim_dvcs_outb.append(df)
     except:
         continue
@@ -341,7 +341,7 @@ df_sim_dvcs_outb = df_sim_dvcs_outb.loc[:, df_sim_dvcs_outb.columns[1:]]
 df_sim_pi0_1gamma_outb = []
 for filenum in range(20):
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pi0_1gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
-    df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Psector"]]
+    df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Pphi", "Psector"]]
     df_sim_pi0_1gamma_outb.append(df)
 df_sim_pi0_1gamma_outb = pd.concat(df_sim_pi0_1gamma_outb).reset_index()
 df_sim_pi0_1gamma_outb = df_sim_pi0_1gamma_outb.loc[:, df_sim_pi0_1gamma_outb.columns[1:]]
@@ -349,7 +349,7 @@ df_sim_pi0_1gamma_outb = df_sim_pi0_1gamma_outb.loc[:, df_sim_pi0_1gamma_outb.co
 df_sim_pi0_2gamma_outb = []
 for filenum in range(20):
     df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pi0_2gamma/excl_level_1/pkl/1/{}.pkl".format(filenum+1))
-    df = df.loc[:, ["MM2_ep", "reconPi", "Pp", "Ptheta", "Psector"]]
+    df = df.loc[:, ["MM2_ep", "reconPi", "Pp", "Ptheta", "Pphi", "Psector"]]
     df_sim_pi0_2gamma_outb.append(df)
 df_sim_pi0_2gamma_outb = pd.concat(df_sim_pi0_2gamma_outb).reset_index()
 df_sim_pi0_2gamma_outb = df_sim_pi0_2gamma_outb.loc[:, df_sim_pi0_2gamma_outb.columns[1:]]
