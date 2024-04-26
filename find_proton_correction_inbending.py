@@ -327,8 +327,8 @@ df_sim_dvcs_inb = []
 for bin in range(147):
     try:
         df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_km15/excl_level_1/pkl/{}.pkl".format(bin+1))
-        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Psector", "weights"]]
         df.loc[:, "weights"] = df.GenWeight * bin_volume_bulk[bin] * luminosity_inb / (680000*9999/10000)
+        df = df.loc[:, ["MM2_ep", "reconGam", "Pp", "Ptheta", "Psector", "weights"]]
         df_sim_dvcs_inb.append(df)
     except:
         continue
