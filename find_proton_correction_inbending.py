@@ -8,8 +8,6 @@ from utils.physics import *
 from utils.fiducial import *
 from utils.kinCorrection import *
 import itertools
-import matplotlib.pyplot as plt
-import matplotlib
 import os
 import awkward as ak
 from scipy.stats import entropy
