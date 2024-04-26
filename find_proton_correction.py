@@ -135,6 +135,7 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
     for i in range(len(Pbins)-1):
         Pmin = Pbins[i]
         Pmax = Pbins[i+1]
+        print ("{} < p < {}, Sector {}, {} Polarity".format(Pmin, Pmax, Psector, "Inbending"))
         Pcenter = (Pmin + Pmax)/2.
         
         scores  = []
@@ -176,7 +177,7 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
         sim_dist_epg_mm2ep    = (1 - cont)* sim_dist_dvcs_mm2ep    + cont* bkg_dist_dvcs_mm2ep
         sim_dist_epg_reconGam = (1 - cont)* sim_dist_dvcs_reconGam + cont* bkg_dist_dvcs_reconGam
     
-        for trial in range(100):
+        for trial in range(10000):
     
             dp     = np.random.uniform(-0.05, 0.05)
             dtheta = np.random.uniform(-2, 2)
@@ -237,6 +238,7 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
     for i in range(len(Pbins)-1):
         Pmin = Pbins[i]
         Pmax = Pbins[i+1]
+        print ("{} < p < {}, Sector {}, {} Polarity".format(Pmin, Pmax, Psector, "Outbending"))
         Pcenter = (Pmin + Pmax)/2.
         
         scores  = []
@@ -278,7 +280,7 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
         sim_dist_epg_mm2ep    = (1 - cont)* sim_dist_dvcs_mm2ep    + cont* bkg_dist_dvcs_mm2ep
         sim_dist_epg_reconGam = (1 - cont)* sim_dist_dvcs_reconGam + cont* bkg_dist_dvcs_reconGam
     
-        for trial in range(100):
+        for trial in range(10000):
     
             dp     = np.random.uniform(-0.05, 0.05)
             dtheta = np.random.uniform(-2, 2)
