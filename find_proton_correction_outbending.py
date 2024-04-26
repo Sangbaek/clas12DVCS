@@ -12,6 +12,12 @@ import os
 import awkward as ak
 from scipy.stats import entropy
 
+charge_inb, charge_outb = (30046676.501082145, 32024144.64472983)
+target_thickness = 6.022e23 * 0.07151 * 5 / 1.00794#1.079e23 # from inclusive note
+electric_charge = 1.602176634e-19
+luminosity_inb =  charge_inb * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
+luminosity_outb =  charge_outb * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
+
 bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
 fringe_bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/fringe_bin_scheme.csv', delimiter = ',')
 
