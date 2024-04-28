@@ -197,8 +197,69 @@ def protonEnergyLossCorr(pol, df_protonRec):
 
     return df_protonRec
 
+def quadratic(x, *par):
+    a, b, c = par
+    return a*x**2 + b*x + c
 
 def protonMomentumCorrection(pol, df_protonRec):
+    df_protonRec = copy(df_protonRec)
+    if pol == "inbending":
+        dp_sector_1_params =  [4.18310463e-02, -9.75322577e-02, 3.92241528e-02]
+        dtheta_sector_1_params =  [1.12117990e+00, -1.45651738e+00, -3.61966664e-01]
+        dp_sector_2_params =  [9.72618261e-02, -1.47404991e-01, 4.38454459e-02]
+        dtheta_sector_2_params =  [2.23808712e-01, 2.64132351e-01, -1.16260483e+00]
+        dp_sector_3_params =  [1.50782345e-01, -2.43829059e-01, 8.30817121e-02]
+        dtheta_sector_3_params =  [-5.11801825e-01, 1.24494702e+00, -1.37989466e+00]
+        dp_sector_4_params =  [4.24673974e-02, -9.95181630e-02, 3.51056884e-02]
+        dtheta_sector_4_params =  [9.62471223e-01, -1.24613297e+00, -3.94245612e-01]
+        dp_sector_5_params =  [4.51632734e-02, -1.02533879e-01, 3.94177517e-02]
+        dtheta_sector_5_params =  [5.55969390e-01, -6.34977038e-01, -6.31316083e-01]
+        dp_sector_6_params =  [-4.44092504e-02, 5.21339250e-02, -2.32922494e-02]
+        dtheta_sector_6_params =  [-1.98404520e-02, 1.07806469e+00, -1.78427373e+00]
+        dp_sector_CD_params =  [-3.09139398e-02, 4.19387700e-02, 7.96761500e-03]
+        dtheta_sector_CD_params =  [2.38931902e+00, -3.86848852e+00, 7.50606916e-01]
+    if pol == "outbending":
+        dp_sector_1_params =  [7.93399152e-02, -1.63161999e-01, 4.64574242e-02]
+        dtheta_sector_1_params =  [1.06523064e+00, -1.76103124e+00, 7.66716947e-01]
+        dp_sector_2_params =  [3.78073457e-02, -8.69496631e-02, 6.99047328e-03]
+        dtheta_sector_2_params =  [4.38259463e-01, -4.35700753e-01, 1.05241964e-01]
+        dp_sector_3_params =  [-2.90113621e-03, -2.94800083e-03, -3.40115366e-02]
+        dtheta_sector_3_params =  [2.00545395e-01, 2.00951967e-01, -3.18864848e-01]
+        dp_sector_4_params =  [8.73715031e-03, -2.19339609e-02, -2.60223791e-02]
+        dtheta_sector_4_params =  [-4.21325885e-01, 1.44347102e+00, -8.03632979e-01]
+        dp_sector_5_params =  [5.80017470e-02, -1.14948332e-01, 2.05773011e-02]
+        dtheta_sector_5_params =  [-2.39263572e-01, 9.61961521e-01, -5.00992863e-01]
+        dp_sector_6_params =  [2.07106073e-02, -4.59478839e-02, -4.07474515e-03]
+        dtheta_sector_6_params =  [-3.30239417e-03, 3.56104152e-01, -1.85550026e-01]
+        dp_sector_CD_params =  [6.69872161e-02, -1.42457411e-01, 7.15694609e-02]
+        dtheta_sector_CD_params =  [-1.33140658e+00, 3.28530583e+00, -2.08330489e+00]
+
+    df_protonRec.loc[df_protonRec.Psector == 1, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 1, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 1, "Pp"], *dp_sector_1_params)
+    df_protonRec.loc[df_protonRec.Psector == 2, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 2, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 2, "Pp"], *dp_sector_2_params)
+    df_protonRec.loc[df_protonRec.Psector == 3, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 3, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 3, "Pp"], *dp_sector_3_params)
+    df_protonRec.loc[df_protonRec.Psector == 4, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 4, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 4, "Pp"], *dp_sector_4_params)
+    df_protonRec.loc[df_protonRec.Psector == 5, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 5, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 5, "Pp"], *dp_sector_5_params)
+    df_protonRec.loc[df_protonRec.Psector == 6, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 6, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 6, "Pp"], *dp_sector_6_params)
+    df_protonRec.loc[df_protonRec.Psector >4000, "Pp"] = df_protonRec.loc[df_protonRec.Psector >4000, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector >4000, "Pp"], *dp_sector_CD_params)
+    df_protonRec.loc[df_protonRec.Psector == 1, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 1, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 1, "Pp"], *dtheta_sector_1_params)
+    df_protonRec.loc[df_protonRec.Psector == 2, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 2, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 2, "Pp"], *dtheta_sector_2_params)
+    df_protonRec.loc[df_protonRec.Psector == 3, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 3, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 3, "Pp"], *dtheta_sector_3_params)
+    df_protonRec.loc[df_protonRec.Psector == 4, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 4, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 4, "Pp"], *dtheta_sector_4_params)
+    df_protonRec.loc[df_protonRec.Psector == 5, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 5, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 5, "Pp"], *dtheta_sector_5_params)
+    df_protonRec.loc[df_protonRec.Psector == 6, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector == 6, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 6, "Pp"], *dtheta_sector_6_params)
+    df_protonRec.loc[df_protonRec.Psector >4000, "Ptheta"] = df_protonRec.loc[df_protonRec.Psector >4000, "Ptheta"] + quadratic(df_protonRec.loc[df_protonRec.Psector >4000, "Pp"], *dtheta_sector_CD_params)
+    #moduli proton phi
+    df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
+
+    df_protonRec.loc[:, "Ppx"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.cos(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppy"] = df_protonRec.loc[:, "Pp"]*np.sin(np.radians(df_protonRec.loc[:, "Ptheta"]))*np.sin(np.radians(df_protonRec.loc[:, "Pphi"]))
+    df_protonRec.loc[:, "Ppz"] = df_protonRec.loc[:, "Pp"]*np.cos(np.radians(df_protonRec.loc[:, "Ptheta"]))
+    pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+
+    df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+    return df_protonRec
+
+def protonMomentumCorrection_legacy(pol, df_protonRec):
     df_protonRec = copy(df_protonRec)
     df_protonRecFD = df_protonRec.loc[df_protonRec.Psector<7, :]
     df_protonRecCD = df_protonRec.loc[(df_protonRec.Psector>7) & (df_protonRec.PthetaOrig<75), :]
