@@ -252,7 +252,7 @@ class root2pickle():
             #p1
             df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
             # #p2
-            # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
+            df_protonRec = protonMomentumCorrection(pol, df_protonRec)
             # #p3
             # df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = smearing)
             # #g2
