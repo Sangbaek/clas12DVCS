@@ -216,6 +216,8 @@ def protonMomentumCorrection(pol, df_protonRec):
         dtheta_sector_5_params =  [5.55969390e-01, -6.34977038e-01, -6.31316083e-01]
         dp_sector_6_params =  [-4.44092504e-02, 5.21339250e-02, -2.32922494e-02]
         dtheta_sector_6_params =  [-1.98404520e-02, 1.07806469e+00, -1.78427373e+00]
+        dp_sector_CD_params =  [-3.09139398e-02, 4.19387700e-02, 7.96761500e-03]
+        dtheta_sector_CD_params =  [2.38931902e+00, -3.86848852e+00, 7.50606916e-01]
     if pol == "outbending":
         dp_sector_1_params =  [7.93399152e-02, -1.63161999e-01, 4.64574242e-02]
         dtheta_sector_1_params =  [1.06523064e+00, -1.76103124e+00, 7.66716947e-01]
@@ -229,6 +231,8 @@ def protonMomentumCorrection(pol, df_protonRec):
         dtheta_sector_5_params =  [-2.39263572e-01, 9.61961521e-01, -5.00992863e-01]
         dp_sector_6_params =  [2.07106073e-02, -4.59478839e-02, -4.07474515e-03]
         dtheta_sector_6_params =  [-3.30239417e-03, 3.56104152e-01, -1.85550026e-01]
+        dp_sector_CD_params =  [6.69872161e-02, -1.42457411e-01, 7.15694609e-02]
+        dtheta_sector_CD_params =  [-1.33140658e+00, 3.28530583e+00, -2.08330489e+00]
 
     dp_sector_CD_params =  [7.80244462e-02, -1.69195711e-01, 8.67323653e-02]
     dtheta_sector_CD_params =  [7.90127087e-01, -1.03797405e+00, -1.42779248e-01]
