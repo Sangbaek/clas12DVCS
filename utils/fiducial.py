@@ -341,6 +341,10 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25), "EFid"] = 0
 
+	#theta_phi_cut
+	df_electronRec.loc[(df_electronRec.Esector==1) & (np.sqrt(df_electronRec.EcalHx1**2 + df_electronRec.EcalHy1**2) > 97.09055) & ( np.degrees(np.arctan2(df_electronRec.EcalHy1, df_electronRec.EcalHx1)) > -18.614906) & ( np.degrees(np.arctan2(df_electronRec.EcalHy1, df_electronRec.EcalHx1)) < -4.326185), "EFid"] = 0
+	df_electronRec.loc[(df_electronRec.Esector==4) & (np.sqrt(df_electronRec.EcalHx1**2 + df_electronRec.EcalHy1**2) > 94.42841) & ( np.degrees(np.arctan2(df_electronRec.EcalHy1, df_electronRec.EcalHx1)) > 158.912) & ( np.degrees(np.arctan2(df_electronRec.EcalHy1, df_electronRec.EcalHx1)) < 174.14484), "EFid"] = 0
+
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
 
@@ -542,6 +546,10 @@ def gammaFiducial(df_gammaRec):
 	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25), "GFid"] = 0
 
 	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25), "GFid"] = 0
+
+	#theta_phi_cut
+	df_gammaRec.loc[(df_gammaRec.Gsector==1) & (np.sqrt(df_gammaRec.GcalX1**2 + df_gammaRec.EcalHy1**2) > 97.09055) & ( np.degrees(np.arctan2(df_gammaRec.EcalHy1, df_gammaRec.GcalX1)) > -18.614906) & ( np.degrees(np.arctan2(df_gammaRec.EcalHy1, df_gammaRec.GcalX1)) < -4.326185), "EFid"] = 0
+	df_gammaRec.loc[(df_gammaRec.Gsector==4) & (np.sqrt(df_gammaRec.GcalX1**2 + df_gammaRec.EcalHy1**2) > 94.42841) & ( np.degrees(np.arctan2(df_gammaRec.EcalHy1, df_gammaRec.GcalX1)) > 158.912) & ( np.degrees(np.arctan2(df_gammaRec.EcalHy1, df_gammaRec.GcalX1)) < 174.14484), "EFid"] = 0
 
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
