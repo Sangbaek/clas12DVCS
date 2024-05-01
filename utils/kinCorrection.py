@@ -234,8 +234,8 @@ def protonMomentumCorrection(pol, df_protonRec):
         dp_sector_CD_params =  [6.69872161e-02, -1.42457411e-01, 7.15694609e-02]
         dtheta_sector_CD_params =  [-1.33140658e+00, 3.28530583e+00, -2.08330489e+00]
 
-    dp_sector_CD_params =  [7.80244462e-02, -1.69195711e-01, 8.67323653e-02]
-    dtheta_sector_CD_params =  [7.90127087e-01, -1.03797405e+00, -1.42779248e-01]
+    # dp_sector_CD_params =  [7.80244462e-02, -1.69195711e-01, 8.67323653e-02]
+    # dtheta_sector_CD_params =  [7.90127087e-01, -1.03797405e+00, -1.42779248e-01]
 
 
     df_protonRec.loc[df_protonRec.Psector == 1, "Pp"] = df_protonRec.loc[df_protonRec.Psector == 1, "Pp"] + quadratic(df_protonRec.loc[df_protonRec.Psector == 1, "Pp"], *dp_sector_1_params)
