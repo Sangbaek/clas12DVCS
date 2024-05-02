@@ -13,7 +13,7 @@ def assign_efficiency(df_Rec, mc = False):
 			df_Rec.loc[:, "weight"] = df_Rec.weight * df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
 		else:
 			df_Rec.loc[:, "weight"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
-		return df_Rec
+	return df_Rec
 
 def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	df_electronRec = copy(df_electronRec)
