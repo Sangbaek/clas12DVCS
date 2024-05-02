@@ -19,7 +19,7 @@ class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", 
         detRes = False, raw = False, width = "mid", logistics = False, nofid = False, nocorr = False, noeloss = False, nopcorr = False,
-        fidlevel = 'mid', allowsamesector = False, ebeam = 10.604):
+        fidlevel = 'mid', allowsamesector = False, ebeam = 10.604, efficiency = False):
         '''
             clas init.
             Args
@@ -64,7 +64,7 @@ class root2pickle():
         self.saveDVpi0vars()
         if not raw:
             self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
-        self.save(raw = raw, pol = pol)
+        self.save(raw = raw, pol = pol, efficiency = efficiency)
 
     def readBinScheme(self):
         self.bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
@@ -718,7 +718,7 @@ class root2pickle():
             df_dvpi0p = df_dvpi0p.sort_values(by='event')        
         self.df_dvpi0p = df_dvpi0p #done with saving x
 
-    def save(self, raw = False, pol = 'inbending'):
+    def save(self, raw = False, pol = 'inbending', efficiency = False):
         if raw:
             CD_Ptheta_ub = CD_Ptheta_ub_nominal
             CD_Ptheta_lb = CD_Ptheta_lb_nominal
