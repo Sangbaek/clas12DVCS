@@ -341,6 +341,8 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25), "EFid"] = 0
 
+	return df_electronRec.loc[df_electronRec.EFid==1, :]
+
 def electronFiducial_legacy(df_electronRec, pol = "inbending", mc = False, fidlevel = 'mid'):
 	df_electronRec = copy(df_electronRec)
 	df_electronRec.loc[:, "EFid"] = 1
