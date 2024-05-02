@@ -369,9 +369,13 @@ for Psector in [1, 2, 3, 4, 5, 6, "CD"]:
         optimal_dtheta  = np.mean(optimal_dthetas)
         optimal_dp_std     = np.std(optimal_dps)
         optimal_dtheta_std = np.std(optimal_dthetas)
-    
-        this_row = pd.DataFrame.from_dict({"Psector": [Psector], "p": [Pcenter], "dp": [optimal_dp], "dtheta": [optimal_dtheta], "dp_std": [optimal_dp_std], "dtheta_std": [optimal_dtheta_std], "polarity": ["inbending"]})
-    
-        df_correction = pd.concat([df_correction, this_row])
+        print("{:3e}+-{:3e} GeV/c, {:3e}+-{:3e} deg".format(optimal_dp, optimal_dp_std, optimal_dtheta, optimal_dtheta_std))
+        for row in range(len(optimal_dps)):
+          optimal_dp = optimal_dps[row]
+          optimal_dtheta = optimal_dthetas[row]
+          score          = np.sort(scores)[row]
+         # this_row = pd.DataFrame.from_dict({"Psector": [Psector], "p": [Pcenter], "dp": [optimal_dp], "dtheta": [optimal_dtheta], "dp_std": [optimal_dp_std], "dtheta_std": [optimal_dtheta_std], "polarity": ["inbending"]})
+          this_row = pd.DataFrame.from_dict({"Psector": [Psector], "p": [Pcenter], "dp": [optimal_dp], "dtheta": [optimal_dtheta], "score": [score], "polarity": ["inbending"]})
+          df_correction = pd.concat([df_correction, this_row])
 
 df_correction.to_pickle("df_correction_info_inb.pkl")
