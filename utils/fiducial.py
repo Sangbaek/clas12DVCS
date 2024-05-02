@@ -2,23 +2,35 @@ from utils.const import *
 from utils.physics import *
 from copy import copy
 
-def assign_efficiency(df_exp):
-	df_exp = copy(df_exp)
+def assign_efficiency(df_Rec, mc = False):
+	df_Rec = copy(df_Rec)
 	htcc_eff_map = np.loadtxt("/work/clas12/sangbaek/Inclusive/HTCCEfficiencyData.dat").reshape(250,250)
-	EhtccXBin = (df_exp.loc[:, "EhtccX"] + 125 ).astype(int).to_numpy()
-	EhtccYBin = (df_exp.loc[:, "EhtccY"] + 125 ).astype(int).to_numpy()
+	EhtccXBin = (df_Rec.loc[:, "EhtccX"] + 125 ).astype(int).to_numpy()
+	EhtccYBin = (df_Rec.loc[:, "EhtccY"] + 125 ).astype(int).to_numpy()
 	EhtccEfficiency = []
 	for i in range(len(EhtccXBin)):
 		EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 
-	df_exp.loc[:, "EhtccWeight"]  = 1/np.array(EhtccEfficiency)
-	df_exp.loc[:, "EFtof1bWeight"] = 1
-	df_exp.loc[(df_exp.Esector==6) & (df_exp.EFtof1bComponent>=33) & (df_exp.EFtof1bComponent<=48), "EFtof1bWeight"]= 1.013
-	df_exp.loc[:, "PFtof1bWeight"] = 1
-	df_exp.loc[(df_exp.PFtof1bSector==6) & (df_exp.PFtof1bComponent>=33) & (df_exp.PFtof1bComponent<=48), "PFtof1bWeight"]= 1.013
-	df_exp.loc[:, "weight"] = df_exp.EhtccWeight * df_exp.EFtof1bWeight * df_exp.PFtof1bWeight
+	if not mc:
+		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
+		df_Rec_above_95percent = df_Rec.loc[df_Rec.EhtccEfficiency > 0.95, : ]
+		print("HTCC Efficiency map condition passed {} out of {}".format(len(df_Rec_above_95percent), len(df_Rec)))
+		return df_Rec_above_95percent
 
-	return df_exp
+	if mc:
+		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
+		df_Rec.loc[:, "EFtof1bEfficiency"] = 1
+		df_Rec.loc[(df_Rec.Esector==6) & (df_Rec.EFtof1bComponent>=33) & (df_Rec.EFtof1bComponent<=48), "EFtof1bEfficiency"]= 1/1.013
+		df_Rec.loc[:, "PFtof1bEfficiency"] = 1
+		df_Rec.loc[(df_Rec.PFtof1bSector==6) & (df_Rec.PFtof1bComponent>=33) & (df_Rec.PFtof1bComponent<=48), "PFtof1bEfficiency"]= 1/1.013
+		if "weight" in df_Rec.columns:
+			df_Rec.loc[:, "weight"] = df_Rec.weight * df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
+		else:
+			df_Rec.loc[:, "weight"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
+		df_Rec_above_95percent = df_Rec.loc[df_Rec.EhtccEfficiency > 0.95, : ]
+		print("HTCC Efficiency map condition passed {} out of {}".format(len(df_Rec_above_95percent), len(df_Rec)))
+		return df_Rec_above_95percent
+
 
 
 
