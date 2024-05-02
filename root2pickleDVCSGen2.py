@@ -48,7 +48,8 @@ class root2pickle():
         for key in eleKeysGen:
             df_epg[key] = ak.to_dataframe(self.tree[key].array(library="ak"))
 
-        df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1", "beamEnergy": "beamE"})
+        # df_epg = df_epg.rename(columns ={"GenxB": "xB", "GenQ2": "Q2", "Gent": "t1", "Genphi": "phi1", "beamEnergy": "beamE"})
+        df_epg = df_epg.rename(columns ={"beamEnergy": "beamE"})
         df_epg.loc[:, "event"] = df_epg.index
 
         df_epg.loc[:, "integrated_binnum_gen"] = 0
