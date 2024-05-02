@@ -9,7 +9,7 @@ def assign_efficiency(df_exp):
 	EhtccYBin = (df_exp.loc[:, "EhtccY"] + 125 ).astype(int).to_numpy()
 	EhtccEfficiency = []
 	for i in range(len(EhtccXBin)):
-	EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
+		EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 
 	df_exp.loc[:, "EhtccWeight"]  = 1/np.array(EhtccEfficiency)
 	df_exp.loc[:, "EFtof1bWeight"] = 1

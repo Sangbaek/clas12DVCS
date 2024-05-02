@@ -1943,3 +1943,9 @@ xticks_epgg[key, 4] = [-0.5, -0.25, 0, 0.25, 0.5]
 xticks_epgg[key, 5] = [-0.03, 0, 0.03]
 xticks_epgg[key, 6] = [-0.5, 0, 0.5]
 xticks_epgg[key, 7] = [0, 0.05, 0.1, 0.15]
+
+charge_inb, charge_outb = (30046676.501082145, 32024144.64472983)
+target_thickness = 6.022e23 * 0.07151 * 5 / 1.00794#1.079e23 # from inclusive note
+electric_charge = 1.602176634e-19
+luminosity_inb =  charge_inb * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
+luminosity_outb =  charge_outb * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
