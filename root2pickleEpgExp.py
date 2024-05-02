@@ -20,7 +20,7 @@ class root2pickle():
     #class to read root to make epg pairs, inherited from epg
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending",
      detRes = False, raw = False, logistics = False, width = "mid", nofid = False, nocorr = False, noeloss = False, nopcorr = False,
-     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604):
+     fidlevel = 'mid', allowsamesector = False, allowduplicates = False, ebeam = 10.604, efficiency = False):
         '''
             clas init.
             Args
@@ -69,7 +69,7 @@ class root2pickle():
             self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
             self.pi02gSubtraction()
             self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
-        self.save(raw = raw, pol = pol)
+        self.save(raw = raw, pol = pol, efficiency = efficiency)
 
 
     def readBinScheme(self):
@@ -993,7 +993,7 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self, raw = False, pol = 'inbending'):
+    def save(self, raw = False, pol = 'inbending', efficiency = False):
         # df_x = self.df_dvcs
         # df_protonDet = self.df_protonDet
         # df = pd.merge(df_x, df_protonDet, how = 'inner', on ='event')
@@ -1092,7 +1092,8 @@ class root2pickle():
 
         df_Rec = df_Rec.astype({"integrated_binnum": int})
 
-        df_Rec = assign_efficiency(df_Rec)
+        if efficiency:
+            df_Rec = assign_efficiency(df_Rec)
 
         self.df = df_Rec
 
@@ -1131,7 +1132,7 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start,
      entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
      logistics = args.logistics, width = args.width, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss,nopcorr = args.nopcorr,
-     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
+     fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, efficiency = args.efficiency)
     df = converter.df
     if args.binbybin:
         for integrated_binnum in range(len(converter.bin_scheme) + len(converter.fringe_bin_scheme) + 1):
