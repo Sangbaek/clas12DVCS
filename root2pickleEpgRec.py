@@ -883,53 +883,6 @@ class root2pickle():
         for phi1 in phibins:
             df_epg.phibin = df_epg.phibin + (df_epg.phi1>phi1).astype("int").to_numpy(dtype = 'int')
 
-        # # encode unassigned bin as -1
-        # df_epg.loc[:, "Q2bin"] = -1
-        # df_epg.loc[:, "xBbin"] = -1
-        # df_epg.loc[:, "tbin"] = -1
-        # # df_epg.loc[:, "tbin2"] = -1
-        # df_epg.loc[:, "phibin"] = -1
-        # # df_epg.loc[:, "phibin2"] = -1
-        # df_epg.loc[:, "Q2xBbin"] = -1
-        # df_epg.loc[:, "Q2xBtbin"] = -1
-        # # df_epg.loc[:, "Q2xBtbin2"] = -1
-        # df_epg.loc[:, "Q2xBtphibin"] = -1
-        # Q2xBbin = 0
-
-        # # encode all binning
-        # for Q2bin in range(len(Q2bin_i)):
-        #     #square Q2 binning
-        #     df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
-        #     #adaptive xB binning
-        #     for xBbin in range(len(xBbin_i[Q2bin])):
-        #         if Q2bin < len(Q2bin_i) -1:
-        #             if xBbin == 0:
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB) & (df_epg.xB<xBbin_f[Q2bin][xBbin]), "xBbin"] = xBbin #0
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB) & (df_epg.xB<xBbin_f[Q2bin][xBbin]), "Q2xBbin"] = Q2xBbin #0
-        #             elif xBbin < len(xBbin_i[Q2bin])-1:
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epg.xB<xBbin_f[Q2bin][xBbin]), "xBbin"] = xBbin
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epg.xB<xBbin_f[Q2bin][xBbin]), "Q2xBbin"] = Q2xBbin
-        #             else:
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epg.Q2>=(4-M*M)*df_epg.xB/(1-df_epg.xB)), "xBbin"] = xBbin
-        #                 df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epg.Q2>=(4-M*M)*df_epg.xB/(1-df_epg.xB)), "Q2xBbin"] = Q2xBbin
-        #         else:
-        #             df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB)& (df_epg.Q2>=(4-M*M)*df_epg.xB/(1-df_epg.xB)), "xBbin"] = xBbin
-        #             df_epg.loc[(df_epg.Q2>=Q2bin_i[Q2bin]) & (df_epg.Q2<Q2bin_f[Q2bin]) & (df_epg.Q2<=2*M*(10.604-2)*df_epg.xB)& (df_epg.Q2>=(4-M*M)*df_epg.xB/(1-df_epg.xB)), "Q2xBbin"] = Q2xBbin #0
-        #         Q2xBbin = Q2xBbin + 1
-        # for tbin in range(len(tbin_i)):
-        #     #square t binning
-        #     df_epg.loc[(df_epg.t1>=tbin_i[tbin]) & (df_epg.t1<tbin_f[tbin]), "tbin"] = tbin
-        #     # df_epg.loc[(df_epg.t2>=tbin_i[tbin]) & (df_epg.t2<tbin_f[tbin]), "tbin2"] = tbin
-        # for phibin in range(len(phibin_i)):
-        #     #square phi binning
-        #     df_epg.loc[(df_epg.phi1>=phibin_i[phibin]) & (df_epg.phi1<phibin_f[phibin]), "phibin"] = phibin
-        #     # df_epg.loc[(df_epg.phi2>=phibin_i[phibin]) & (df_epg.phi2<phibin_f[phibin]), "phibin2"] = phibin
-
-        # df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtbin"] = len(tbin_i) * df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBbin"] + df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "tbin"]
-        # # df_epg.loc[(df_epg.Q2bin>0)&(df_epg.xBbin>0)&(df_epg.tbin2>0), "Q2xBtbin2"] = df_epg.Q2bin.astype(str) + df_epg.xBbin.astype(str) + df_epg.tbin2.astype(str)
-        # df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtphibin"] = len(phibin_i) * df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "Q2xBtbin"] + df_epg.loc[(df_epg.Q2xBbin>=0)&(df_epg.tbin>=0), "phibin"]
-
-        # df_epg = df_epg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": int, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
 
         self.df_epg = df_epg
 
@@ -1297,69 +1250,68 @@ class root2pickle():
 
         else:
             df_Rec = self.df_dvcs
+
+        df_Rec.loc[:, "integrated_binnum"] = 0
+
+        for binnum, bin in enumerate(self.bin_scheme):
+            xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+            try:
+                assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
+            except:
+                print("This bin overlaps with others. Check the geometry. {}".format(bin))
+            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1
+
+        for binnum, bin in enumerate(self.fringe_bin_scheme):
+            xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+            try:
+                assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
+            except:
+                print("This bin overlaps with others. Check the geometry. {}".format(bin))
+            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1 + len(self.bin_scheme)
+
+        phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
+        for phi_binnum in range(24):
+            phimin = phibins[phi_binnum]
+            phimax = phibins[phi_binnum+1]
+            df_Rec.loc[ (df_Rec.phi1>=phimin) & (df_Rec.phi1<phimax), "phi_binnum"] = phi_binnum
+
+        df_Rec = df_Rec.astype({"integrated_binnum": int, "config": int, "phi_binnum": int})
+
+        if efficiency:
+            df_Rec = assign_efficiency(df_Rec)
+
         df_MC = self.df_MC
-        df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
 
         if gen == "dvcsrad":
 
-            df.loc[:, 'GenxBbin'] = np.zeros(len(df.GenxB), dtype = 'int') - 1
-            df.loc[:, 'GenQ2bin'] = np.zeros(len(df.GenQ2), dtype = 'int') - 1
-            df.loc[:, 'Gentbin'] = np.zeros(len(df.Gent), dtype = 'int') - 1
-            df.loc[:, 'Genphibin'] = np.zeros(len(df.Genphi), dtype = 'int') - 1
-            for xB in newxBbins2:
-                df.GenxBbin = df.GenxBbin + (df.GenxB>xB).astype("int").to_numpy(dtype = 'int')
+            df_MC.loc[:, "integrated_binnum_gen"] = 0
 
-            for Q2 in newQ2bins2:
-                df.GenQ2bin = df.GenQ2bin + (df.GenQ2>Q2).astype("int").to_numpy(dtype = 'int')
+            for binnum, bin in enumerate(self.bin_scheme):
+                xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+                try:
+                    assert np.sum(df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] != 0) == 0        
+                except:
+                    print("This bin overlaps with others. Check the geometry. {}".format(bin))
+                df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] = binnum + 1
 
-            for t1 in newtbins:
-                df.Gentbin = df.Gentbin + (df.Gent>t1).astype("int").to_numpy(dtype = 'int')
+            for binnum, bin in enumerate(self.fringe_bin_scheme):
+                xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+                try:
+                    assert np.sum(df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] != 0) == 0        
+                except:
+                    print("This bin overlaps with others. Check the geometry. {}".format(bin))
+                df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] = binnum + 1 + len(self.bin_scheme)
 
-            for phi1 in phibins:
-                df.Genphibin = df.Genphibin + (df.Genphi>phi1).astype("int").to_numpy(dtype = 'int')
+            phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
+            for phi_binnum in range(24):
+                phimin = phibins[phi_binnum]
+                phimax = phibins[phi_binnum+1]
+                df_MC.loc[ (df_MC.phi1>=phimin) & (df_MC.phi1<phimax), "phi_binnum_gen"] = phi_binnum
 
-            # # encode unassigned bin as -1
-            # df.loc[:, "GenQ2bin"] = -1
-            # df.loc[:, "GenxBbin"] = -1
-            # df.loc[:, "Gentbin"] = -1
-            # df.loc[:, "Genphibin"] = -1
-            # df.loc[:, "GenQ2xBbin"] = -1
-            # df.loc[:, "GenQ2xBtbin"] = -1
-            # df.loc[:, "GenQ2xBtphibin"] = -1
-            # Q2xBbin = 0
+            df_MC = df_MC.astype({"integrated_binnum_gen": int, "phi_binnum_gen": int})
 
-            # # encode all binning
-            # for Q2bin in range(len(Q2bin_i)):
-            #     #square Q2 binning
-            #     df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]), "GenQ2bin"] = Q2bin
-            #     #adaptive xB binning
-            #     for xBbin in range(len(xBbin_i[Q2bin])):
-            #         if Q2bin < len(Q2bin_i) -1:
-            #             if xBbin == 0:
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin #0
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin #0
-            #             elif xBbin < len(xBbin_i[Q2bin])-1:
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenxBbin"] = xBbin
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenxB<xBbin_f[Q2bin][xBbin]), "GenQ2xBbin"] = Q2xBbin
-            #             else:
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
-            #                 df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenxB>=xBbin_i[Q2bin][xBbin]) & (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin
-            #         else:
-            #             df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenxBbin"] = xBbin
-            #             df.loc[(df.GenQ2>=Q2bin_i[Q2bin]) & (df.GenQ2<Q2bin_f[Q2bin]) & (df.GenQ2<=2*M*(10.604-2)*df.GenxB)& (df.GenQ2>=(4-M*M)*df.GenxB/(1-df.GenxB)), "GenQ2xBbin"] = Q2xBbin #0
-            #         Q2xBbin = Q2xBbin + 1
-            # for tbin in range(len(tbin_i)):
-            #     #square t binning
-            #     df.loc[(df.Gent>=tbin_i[tbin]) & (df.Gent<tbin_f[tbin]), "Gentbin"] = tbin
-            # for phibin in range(len(phibin_i)):
-            #     #square phi binning
-            #     df.loc[(df.Genphi>=phibin_i[phibin]) & (df.Genphi<phibin_f[phibin]), "Genphibin"] = phibin
 
-            # df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] = len(tbin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Gentbin"]
-            # df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtphibin"] = len(phibin_i) * df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "GenQ2xBtbin"] + df.loc[(df.GenQ2xBbin>=0)&(df.Gentbin>=0), "Genphibin"]
-
-            # df = df.astype({"GenQ2bin": int, "GenxBbin": int, "Gentbin": int, "Genphibin": int, "GenQ2xBbin": int, "GenQ2xBtbin": int, "GenQ2xBtphibin": int})
-
+        df = pd.merge(df_Rec, df_MC, how = 'inner', on='event')
         self.df = df
 
 
@@ -1385,6 +1337,8 @@ if __name__ == "__main__":
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
+    parser.add_argument("-binbybin","--binbybin", action = "store_true")
+    parser.add_argument("-efficiency","--efficiency", action = "store_true")
 
     args = parser.parse_args()
 
@@ -1398,7 +1352,11 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, 
         pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, 
         width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss, nopcorr = args.nopcorr,
-        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be)
+        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, efficiency = args.efficiency)
     df = converter.df
 
-    df.to_pickle(args.out)
+    if args.binbybin:
+        for integrated_binnum in range(len(converter.bin_scheme) + len(converter.fringe_bin_scheme) + 1):
+            df.loc[ (df.integrated_binnum == integrated_binnum), :].to_pickle("{}.{}.pkl".format(args.out, integrated_binnum))
+    else:
+        df.to_pickle(args.out)
