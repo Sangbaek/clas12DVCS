@@ -57,6 +57,7 @@ class root2pickle():
         self.beam = [0, 0, self.pbeam] # beam vector
  
         self.determineWidth(width = width)
+        self.readBinScheme()
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr =nopcorr,
             fidlevel = fidlevel)
@@ -64,6 +65,10 @@ class root2pickle():
         if not raw:
             self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
         self.save(raw = raw, pol = pol)
+
+    def readBinScheme(self):
+        self.bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
+        self.fringe_bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/fringe_bin_scheme.csv', delimiter = ',')
 
     def readFile(self):
         '''read root using uproot'''
@@ -428,71 +433,6 @@ class root2pickle():
         df_epgg.loc[:, "closeness"] = np.abs(df_epgg.loc[:, "Mpi0"] - .1349766)
         df_epgg.loc[:, "closeness2"] = np.abs(df_epgg.loc[:, "MM2_ep"] - .1349766**2)
 
-        df_epgg.loc[:, 'xBbin'] = np.zeros(len(df_epgg.xB), dtype = 'int') - 1
-        df_epgg.loc[:, 'Q2bin'] = np.zeros(len(df_epgg.Q2), dtype = 'int') - 1
-        df_epgg.loc[:, 'tbin'] = np.zeros(len(df_epgg.t1), dtype = 'int') - 1
-        df_epgg.loc[:, 'phibin'] = np.zeros(len(df_epgg.phi1), dtype = 'int') - 1
-        for xB in newxBbins2:
-            df_epgg.xBbin = df_epgg.xBbin + (df_epgg.xB>xB).astype("int").to_numpy(dtype = 'int')
-
-        for Q2 in newQ2bins2:
-            df_epgg.Q2bin = df_epgg.Q2bin + (df_epgg.Q2>Q2).astype("int").to_numpy(dtype = 'int')
-
-        for t1 in newtbins:
-            df_epgg.tbin = df_epgg.tbin + (df_epgg.t1>t1).astype("int").to_numpy(dtype = 'int')
-
-        for phi1 in phibins:
-            df_epgg.phibin = df_epgg.phibin + (df_epgg.phi1>phi1).astype("int").to_numpy(dtype = 'int')
-
-        # # encode unassigned bin as -1
-        # df_epgg.loc[:, "Q2bin"] = -1
-        # df_epgg.loc[:, "xBbin"] = -1
-        # df_epgg.loc[:, "tbin"] = -1
-        # # df_epgg.loc[:, "tbin2"] = -1
-        # df_epgg.loc[:, "phibin"] = -1
-        # # df_epgg.loc[:, "phibin2"] = -1
-        # df_epgg.loc[:, "Q2xBbin"] = -1
-        # df_epgg.loc[:, "Q2xBtbin"] = -1
-        # # df_epgg.loc[:, "Q2xBtbin2"] = -1
-        # df_epgg.loc[:, "Q2xBtphibin"] = -1
-        # Q2xBbin = 0
-
-        # # encode all binning
-        # for Q2bin in range(len(Q2bin_i)):
-        #     #square Q2 binning
-        #     df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]), "Q2bin"] = Q2bin
-        #     #adaptive xB binning
-        #     for xBbin in range(len(xBbin_i[Q2bin])):
-        #         if Q2bin < len(Q2bin_i) -1:
-        #             if xBbin == 0:
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB) & (df_epgg.xB<xBbin_f[Q2bin][xBbin]), "xBbin"] = xBbin #0
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB) & (df_epgg.xB<xBbin_f[Q2bin][xBbin]), "Q2xBbin"] = Q2xBbin #0
-        #             elif xBbin < len(xBbin_i[Q2bin])-1:
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epgg.xB<xBbin_f[Q2bin][xBbin]), "xBbin"] = xBbin
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epgg.xB<xBbin_f[Q2bin][xBbin]), "Q2xBbin"] = Q2xBbin
-        #             else:
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epgg.Q2>=(4-M*M)*df_epgg.xB/(1-df_epgg.xB)), "xBbin"] = xBbin
-        #                 df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.xB>=xBbin_i[Q2bin][xBbin]) & (df_epgg.Q2>=(4-M*M)*df_epgg.xB/(1-df_epgg.xB)), "Q2xBbin"] = Q2xBbin
-        #         else:
-        #             df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB)& (df_epgg.Q2>=(4-M*M)*df_epgg.xB/(1-df_epgg.xB)), "xBbin"] = xBbin
-        #             df_epgg.loc[(df_epgg.Q2>=Q2bin_i[Q2bin]) & (df_epgg.Q2<Q2bin_f[Q2bin]) & (df_epgg.Q2<=2*M*(10.604-2)*df_epgg.xB)& (df_epgg.Q2>=(4-M*M)*df_epgg.xB/(1-df_epgg.xB)), "Q2xBbin"] = Q2xBbin #0
-
-        #         Q2xBbin = Q2xBbin + 1
-        # for tbin in range(len(tbin_i)):
-        #     #square t binning
-        #     df_epgg.loc[(df_epgg.t1>=tbin_i[tbin]) & (df_epgg.t1<tbin_f[tbin]), "tbin"] = tbin
-        #     # df_epgg.loc[(df_epgg.t2>=tbin_i[tbin]) & (df_epgg.t2<tbin_f[tbin]), "tbin2"] = tbin
-        # for phibin in range(len(phibin_i)):
-        #     #square phi binning
-        #     df_epgg.loc[(df_epgg.phi1>=phibin_i[phibin]) & (df_epgg.phi1<phibin_f[phibin]), "phibin"] = phibin
-        #     # df_epgg.loc[(df_epgg.phi2>=phibin_i[phibin]) & (df_epgg.phi2<phibin_f[phibin]), "phibin2"] = phibin
-
-        # df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtbin"] = len(tbin_i) * df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBbin"] + df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "tbin"]
-        # # df_epgg.loc[(df_epgg.Q2bin>0)&(df_epgg.xBbin>0)&(df_epgg.tbin2>0), "Q2xBtbin2"] = df_epgg.Q2bin.astype(str) + df_epgg.xBbin.astype(str) + df_epgg.tbin2.astype(str)
-        # df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtphibin"] = len(phibin_i) * df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "Q2xBtbin"] + df_epgg.loc[(df_epgg.Q2xBbin>=0)&(df_epgg.tbin>=0), "phibin"]
-
-        # df_epgg = df_epgg.astype({"Q2bin": int, "xBbin": int, "tbin": int, "phibin": int, "Q2xBbin": int, "Q2xBtbin": int, "Q2xBtphibin": int})
-
         self.df_epgg = df_epgg
 
     def makeDVpi0P(self, pol = "inbending", nofid = False, allowsamesector = False):
@@ -787,74 +727,105 @@ class root2pickle():
             FD_Ptheta_lb = FD_Ptheta_lb_nominal
 
             print("saving raw with common cuts")
-            df_x = self.df_epgg
+            df_Rec = self.df_epgg
             #common cuts
-            cut_xBupper = df_x.loc[:, "xB"] < 1  # xB
-            cut_xBlower = df_x.loc[:, "xB"] > 0  # xB
-            cut_Q2 = df_x.loc[:, "Q2"] > 1  # Q2
-            cut_W = df_x.loc[:, "W"] > 2  # W
-            cut_Ee = df_x["Ee"] > 2  # Ee
-            cut_Ge2 = df_x["Ge2"] > self.Ge2Threshold  # Ge cut. Ge>3 for DVCS module.
-            cut_Esector = (df_x["Esector"]!=df_x["Gsector"]) & (df_x["Esector"]!=df_x["Gsector2"]) 
-            cut_Psector = ~( ((df_x["Pstat"]//10)%10>0) & (df_x["Psector"]==df_x["Gsector"]) ) & ~( ((df_x["Pstat"]//10)%10>0) & (df_x["Psector"]==df_x["Gsector2"]) )
-            cut_Ppmax = df_x.Pp < 1.6  # Pp
-            cut_Pthetamin = df_x.Ptheta > 0  # Ptheta
+            cut_xBupper = df_Rec.loc[:, "xB"] < 1  # xB
+            cut_xBlower = df_Rec.loc[:, "xB"] > 0  # xB
+            cut_Q2 = df_Rec.loc[:, "Q2"] > 1  # Q2
+            cut_W = df_Rec.loc[:, "W"] > 2  # W
+            cut_Ee = df_Rec["Ee"] > 2  # Ee
+            cut_Ge2 = df_Rec["Ge2"] > self.Ge2Threshold  # Ge cut. Ge>3 for DVCS module.
+            cut_Esector = (df_Rec["Esector"]!=df_Rec["Gsector"]) & (df_Rec["Esector"]!=df_Rec["Gsector2"]) 
+            cut_Psector = ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector"]) ) & ~( ((df_Rec["Pstat"]//10)%10>0) & (df_Rec["Psector"]==df_Rec["Gsector2"]) )
+            cut_Ppmax = df_Rec.Pp < 1.6  # Pp
+            cut_Pthetamin = df_Rec.Ptheta > 0  # Ptheta
             # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
             cut_common = cut_xBupper & cut_xBlower & cut_Q2 & cut_W & cut_Ee & cut_Ge2 & cut_Esector & cut_Psector & cut_Ppmax & cut_Pthetamin
-            df_x = df_x[cut_common]
+            df_Rec = df_Rec[cut_common]
 
             #CDFT
-            cut_Pp1_CDFT = df_x.Pp > 0.3  # Pp
-            cut_Psector_CDFT = df_x.Psector>7
-            cut_Ptheta1_CDFT = df_x.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CDFT = df_x.Ptheta>CD_Ptheta_lb
-            cut_Gsector_CDFT = df_x.Gsector>7
-            cut_Gsector2_CDFT = df_x.Gsector2>7
-            cut_GFid_CDFT = df_x.GFid==1
-            cut_GFid2_CDFT = df_x.GFid2==1
-            cut_PFid_CDFT = df_x.PFid==1
+            cut_Pp1_CDFT = df_Rec.Pp > 0.3  # Pp
+            cut_Psector_CDFT = df_Rec.Psector>7
+            cut_Ptheta1_CDFT = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CDFT = df_Rec.Ptheta>CD_Ptheta_lb
+            cut_Gsector_CDFT = df_Rec.Gsector>7
+            cut_Gsector2_CDFT = df_Rec.Gsector2>7
+            cut_GFid_CDFT = df_Rec.GFid==1
+            cut_GFid2_CDFT = df_Rec.GFid2==1
+            cut_PFid_CDFT = df_Rec.PFid==1
             #CD
-            cut_Pp1_CD = df_x.Pp > 0.3  # Pp
-            cut_Psector_CD = df_x.Psector>7
-            cut_Ptheta1_CD = df_x.Ptheta<CD_Ptheta_ub
-            cut_Ptheta2_CD = df_x.Ptheta>CD_Ptheta_lb
-            cut_Gsector_CD = (df_x.Gsector<7) & (df_x.Gsector>0)
-            cut_Gsector2_CD = (df_x.Gsector2<7) & (df_x.Gsector2>0)
-            cut_GFid_CD = df_x.GFid==1
-            cut_GFid2_CD = df_x.GFid2==1
-            cut_PFid_CD = df_x.PFid==1
+            cut_Pp1_CD = df_Rec.Pp > 0.3  # Pp
+            cut_Psector_CD = df_Rec.Psector>7
+            cut_Ptheta1_CD = df_Rec.Ptheta<CD_Ptheta_ub
+            cut_Ptheta2_CD = df_Rec.Ptheta>CD_Ptheta_lb
+            cut_Gsector_CD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
+            cut_Gsector2_CD = (df_Rec.Gsector2<7) & (df_Rec.Gsector2>0)
+            cut_GFid_CD = df_Rec.GFid==1
+            cut_GFid2_CD = df_Rec.GFid2==1
+            cut_PFid_CD = df_Rec.PFid==1
             #FD
             if pol == "inbending":
-                cut_Pp1_FD = df_x.Pp > 0.42  # Pp
-                cut_Ptheta1_FD = df_x.Ptheta<FD_Ptheta_inb_ub
+                cut_Pp1_FD = df_Rec.Pp > 0.42  # Pp
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_inb_ub
             elif pol == "outbending":
-                cut_Pp1_FD = df_x.Pp > 0.5  # Pp
-                cut_Ptheta1_FD = df_x.Ptheta<FD_Ptheta_outb_ub
-            cut_Psector_FD = df_x.Psector<7
-            cut_Ptheta2_FD = df_x.Ptheta>FD_Ptheta_lb
-            cut_Gsector_FD = (df_x.Gsector<7) & (df_x.Gsector>0)
-            cut_Gsector2_FD = (df_x.Gsector2<7) & (df_x.Gsector2>0)
-            cut_GFid_FD = df_x.GFid==1
-            cut_GFid2_FD = df_x.GFid2==1
-            cut_PFid_FD = df_x.PFid==1
+                cut_Pp1_FD = df_Rec.Pp > 0.5  # Pp
+                cut_Ptheta1_FD = df_Rec.Ptheta<FD_Ptheta_outb_ub
+            cut_Psector_FD = df_Rec.Psector<7
+            cut_Ptheta2_FD = df_Rec.Ptheta>FD_Ptheta_lb
+            cut_Gsector_FD = (df_Rec.Gsector<7) & (df_Rec.Gsector>0)
+            cut_Gsector2_FD = (df_Rec.Gsector2<7) & (df_Rec.Gsector2>0)
+            cut_GFid_FD = df_Rec.GFid==1
+            cut_GFid2_FD = df_Rec.GFid2==1
+            cut_PFid_FD = df_Rec.PFid==1
 
             cut_CDFT = (cut_Pp1_CDFT & cut_Psector_CDFT & cut_Ptheta1_CDFT & cut_Ptheta2_CDFT & cut_Gsector_CDFT & cut_Gsector2_CDFT & cut_GFid_CDFT & cut_GFid2_CDFT & cut_PFid_CDFT)
             cut_CD = (cut_Pp1_CD & cut_Psector_CD & cut_Ptheta1_CD & cut_Ptheta2_CD & cut_Gsector_CD & cut_Gsector2_CD & cut_GFid_CD & cut_GFid2_CD & cut_PFid_CD)
             cut_FD = (cut_Pp1_FD & cut_Psector_FD & cut_Ptheta1_FD & cut_Ptheta2_FD & cut_Gsector_FD & cut_Gsector2_FD & cut_GFid_FD & cut_GFid2_FD & cut_PFid_FD)
 
-            df_x.loc[cut_CDFT, "config"] = 3
-            df_x.loc[cut_CD, "config"] = 2
-            df_x.loc[cut_FD, "config"] = 1
+            df_Rec.loc[cut_CDFT, "config"] = 3
+            df_Rec.loc[cut_CD, "config"] = 2
+            df_Rec.loc[cut_FD, "config"] = 1
 
-            df_x = df_x[df_x.config>0]
+            df_Rec = df_Rec[df_Rec.config>0]
 
-            df_x = df_x.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
-            df_x = df_x.loc[~df_x.event.duplicated(), :]
-            df_x = df_x.sort_values(by='event')
+            df_Rec = df_Rec.sort_values(by=['closeness', 'closeness2'], ascending = [True, True])
+            df_Rec = df_Rec.loc[~df_Rec.event.duplicated(), :]
+            df_Rec = df_Rec.sort_values(by='event')
 
         else:
-            df_x = self.df_dvpi0p
-        self.df = df_x
+            df_Rec = self.df_dvpi0p
+
+
+        df_Rec.loc[:, "integrated_binnum"] = 0
+
+        for binnum, bin in enumerate(self.bin_scheme):
+            xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+            try:
+                assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
+            except:
+                print("This bin overlaps with others. Check the geometry. {}".format(bin))
+            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1
+
+        for binnum, bin in enumerate(self.fringe_bin_scheme):
+            xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
+            try:
+                assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
+            except:
+                print("This bin overlaps with others. Check the geometry. {}".format(bin))
+            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1 + len(self.bin_scheme)
+
+        phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
+        for phi_binnum in range(24):
+            phimin = phibins[phi_binnum]
+            phimax = phibins[phi_binnum+1]
+            df_Rec.loc[ (df_Rec.phi1>=phimin) & (df_Rec.phi1<phimax), "phi_binnum"] = phi_binnum
+
+        df_Rec = df_Rec.astype({"integrated_binnum": int, "config": int, "phi_binnum": int})
+
+        if efficiency:
+            df_Rec = assign_efficiency(df_Rec)
+
+        self.df = df_Rec
 
 
 if __name__ == "__main__":
@@ -877,6 +848,8 @@ if __name__ == "__main__":
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
+    parser.add_argument("-binbybin","--binbybin", action = "store_true")
+    parser.add_argument("-efficiency","--efficiency", action = "store_true")
 
     args = parser.parse_args()
 
@@ -889,7 +862,11 @@ if __name__ == "__main__":
     converter = root2pickle(args.fname, entry_start = args.entry_start, 
         entry_stop = args.entry_stop, pol = args.polarity, detRes = args.detRes, raw = args.raw,
         width = args.width, logistics = args.logistics, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss, nopcorr = args.nopcorr,
-        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, ebeam = be)
+        fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, ebeam = be, efficiency = args.efficiency)
     df = converter.df
 
-    df.to_pickle(args.out)
+    if args.binbybin:
+        for integrated_binnum in range(len(converter.bin_scheme) + len(converter.fringe_bin_scheme) + 1):
+            df.loc[ (df.integrated_binnum == integrated_binnum), :].to_pickle("{}.{}.pkl".format(args.out, integrated_binnum))
+    else:
+        df.to_pickle(args.out)
