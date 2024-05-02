@@ -58,6 +58,7 @@ class root2pickle():
         self.beam = [0, 0, self.pbeam] # beam vector
 
         self.determineWidth(width = width)
+        self.readBinScheme()
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, 
             pol = pol, gen = gen, detRes = detRes, smearing = smearing, 
             nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr, fidlevel = fidlevel)
@@ -65,6 +66,10 @@ class root2pickle():
         if not raw:
             self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
         self.save(raw = raw, dvcs = dvcs, pol = pol, efficiency = efficiency)
+
+    def readBinScheme(self):
+        self.bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
+        self.fringe_bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/fringe_bin_scheme.csv', delimiter = ',')
 
     def readFile(self):
         '''read root using uproot'''
