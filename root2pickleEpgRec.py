@@ -20,7 +20,7 @@ class root2pickle():
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", 
         gen = "dvcs", raw = False, detRes = False, width = "mid", 
         smearing = 1, nofid = False, nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid', 
-        allowsamesector = False, allowduplicates = False, ebeam = 10.604):
+        allowsamesector = False, allowduplicates = False, ebeam = 10.604, efficiency = False):
         '''
             clas init.
             Args
