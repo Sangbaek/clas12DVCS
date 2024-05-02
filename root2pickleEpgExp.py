@@ -1092,6 +1092,7 @@ class root2pickle():
 
         df_Rec = df_Rec.astype({"integrated_binnum": int})
 
+        df_Rec = assign_efficiency(df_Rec)
 
         self.df = df_Rec
 
@@ -1117,6 +1118,7 @@ if __name__ == "__main__":
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
     parser.add_argument("-be","--beam", help="beam energy", default = "10.604")
     parser.add_argument("-binbybin","--binbybin", action = "store_true")
+    parser.add_argument("-efficiency","--efficiency", action = "store_true")
 
     args = parser.parse_args()
 

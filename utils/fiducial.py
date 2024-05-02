@@ -3,6 +3,7 @@ from utils.physics import *
 from copy import copy
 
 def assign_efficiency(df_exp):
+	df_exp = copy(df_exp)
 	htcc_eff_map = np.loadtxt("/work/clas12/sangbaek/Inclusive/HTCCEfficiencyData.dat").reshape(250,250)
 	EhtccXBin = (df_exp.loc[:, "EhtccX"] + 125 ).astype(int).to_numpy()
 	EhtccYBin = (df_exp.loc[:, "EhtccY"] + 125 ).astype(int).to_numpy()
