@@ -1085,10 +1085,10 @@ class root2pickle():
             df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1 + len(self.bin_scheme)
 
         phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
-        for phibinnum in range(24):
-            phimin = phibins[phibinnum]
-            phimax = phibins[phibinnum+1]
-            df_Rec.loc[ (df_Rec.phi1>=phimin) & (df_Rec.phi1<phimax), "phibinnum"] = phibinnum
+        for phi_binnum in range(24):
+            phimin = phibins[phi_binnum]
+            phimax = phibins[phi_binnum+1]
+            df_Rec.loc[ (df_Rec.phi1>=phimin) & (df_Rec.phi1<phimax), "phi_binnum"] = phi_binnum
 
         df_Rec = df_Rec.astype({"integrated_binnum": int})
 
