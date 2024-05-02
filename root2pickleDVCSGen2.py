@@ -68,7 +68,7 @@ class root2pickle():
                 assert np.sum(df_epg.loc[ (df_epg.GenxB>=xBmin) & (df_epg.GenxB<xBmax) & (df_epg.GenQ2>=Q2min) & (df_epg.GenQ2<Q2max)  & (df_epg.Gent>=tmin) & (df_epg.Gent<tmax), "integrated_binnum_gen"] != 0) == 0        
             except:
                 print("This bin overlaps with others. Check the geometry. {}".format(bin))
-            df_epg.loc[ (df_epg.GenxB>=xBmin) & (df_epg.GenxB<xBmax) & (df_epg.GenQ2>=Q2min) & (df_epg.GenQ2<Q2max)  & (df_epg.Gent>=tmin) & (df_epg.Gent<tmax), "integrated_binnum_gen"] = binnum + 1 + len(bin_scheme)
+            df_epg.loc[ (df_epg.GenxB>=xBmin) & (df_epg.GenxB<xBmax) & (df_epg.GenQ2>=Q2min) & (df_epg.GenQ2<Q2max)  & (df_epg.Gent>=tmin) & (df_epg.Gent<tmax), "integrated_binnum_gen"] = binnum + 1 + len(self.bin_scheme)
 
         phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
         for phi_binnum in range(24):
