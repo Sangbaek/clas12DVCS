@@ -59,6 +59,7 @@ class root2pickle():
         self.beam = [0, 0, self.pbeam] # beam vector
 
         self.determineWidth(width = width)
+        self.readBinScheme()
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr,
             fidlevel = fidlevel)
@@ -70,6 +71,10 @@ class root2pickle():
             self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
         self.save(raw = raw, pol = pol)
 
+
+    def readBinScheme(self):
+        self.bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
+        self.fringe_bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/fringe_bin_scheme.csv', delimiter = ',')
 
     def readFile(self):
         '''read root using uproot'''
@@ -1063,7 +1068,7 @@ class root2pickle():
 
         df_Rec.loc[:, "integrated_binnum"] = 0
 
-        for binnum, bin in enumerate(bin_scheme):
+        for binnum, bin in enumerate(self.bin_scheme):
             xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
             try:
                 assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
@@ -1071,13 +1076,13 @@ class root2pickle():
                 print("This bin overlaps with others. Check the geometry. {}".format(bin))
             df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1
 
-        for binnum, bin in enumerate(fringe_bin_scheme):
+        for binnum, bin in enumerate(self.fringe_bin_scheme):
             xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
             try:
                 assert np.sum(df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] != 0) == 0        
             except:
                 print("This bin overlaps with others. Check the geometry. {}".format(bin))
-            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1 + len(bin_scheme)
+            df_Rec.loc[ (df_Rec.xB>=xBmin) & (df_Rec.xB<xBmax) & (df_Rec.Q2>=Q2min) & (df_Rec.Q2<Q2max)  & (df_Rec.t1>=tmin) & (df_Rec.t1<tmax), "integrated_binnum"] = binnum + 1 + len(self.bin_scheme)
 
         phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
         for phibinnum in range(24):
