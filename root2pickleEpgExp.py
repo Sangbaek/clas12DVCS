@@ -1090,7 +1090,7 @@ class root2pickle():
             phimax = phibins[phi_binnum+1]
             df_Rec.loc[ (df_Rec.phi1>=phimin) & (df_Rec.phi1<phimax), "phi_binnum"] = phi_binnum
 
-        df_Rec = df_Rec.astype({"integrated_binnum": int})
+        df_Rec = df_Rec.astype({"integrated_binnum": int, "config": int, "phi_binnum": int})
 
         if efficiency:
             df_Rec = assign_efficiency(df_Rec)
