@@ -1133,6 +1133,6 @@ if __name__ == "__main__":
     df = converter.df
     if args.binbybin:
         for integrated_binnum in range(len(converter.bin_scheme) + len(converter.fringe_bin_scheme) + 1):
-            df.loc[ (df.integrated_binnum == integrated_binnum) & (df.phi_binnum == phi_binnum), :].to_pickle("{}.{}.pkl".format(args.out, integrated_binnum))
+            df.loc[ (df.integrated_binnum == integrated_binnum), :].to_pickle("{}.{}.pkl".format(args.out, integrated_binnum))
     else:
         df.to_pickle(args.out)
