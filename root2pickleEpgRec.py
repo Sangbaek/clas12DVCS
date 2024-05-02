@@ -69,7 +69,7 @@ class root2pickle():
             self.makeDVpi0P_DVCS(pol = pol, nofid = nofid)
             self.pi02gSubtraction()
             self.makeDVCS(pol = pol, nofid = nofid, allowsamesector = allowsamesector, allowduplicates = allowduplicates)
-        self.save(raw = raw, pol = pol, gen = gen)
+        self.save(raw = raw, pol = pol, gen = gen, efficiency = efficiency)
 
     def readBinScheme(self):
         self.bin_scheme = np.loadtxt('/work/clas12/sangbaek/km15gen/bin_scheme.csv', delimiter = ',')
@@ -1185,7 +1185,7 @@ class root2pickle():
         df_epg = df_epg[~pi0to2gammas]
         self.df_epg = df_epg
 
-    def save(self, raw = False, pol = "inbending", gen = 'dvcsnorad'):
+    def save(self, raw = False, pol = "inbending", gen = 'dvcsnorad', efficiency = False):
         if raw:
             CD_Ptheta_ub = CD_Ptheta_ub_nominal
             CD_Ptheta_lb = CD_Ptheta_lb_nominal
