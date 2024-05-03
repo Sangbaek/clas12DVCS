@@ -86,3 +86,5 @@ for bin in range(1, 159+1):
 			"weight_sum": weight_sum, "weight_mean": weight_mean, "xB_mean": xB_mean,
 			"Q2_mean": Q2_mean, "t_mean": t_mean, "phi_mean": phi_mean}])
 		df_summary   = pd.concat([df_summary, this_row])
+
+df_summary.to_pickle("/volatile/clas12/sangbaek/clas12DVCS/summary_table.pkl")
