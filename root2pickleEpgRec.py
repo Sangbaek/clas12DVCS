@@ -1296,18 +1296,18 @@ class root2pickle():
             for binnum, bin in enumerate(self.bin_scheme):
                 xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
                 try:
-                    assert np.sum(df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] != 0) == 0        
+                    assert np.sum(df_MC.loc[ (df_MC.GenxB>=xBmin) & (df_MC.GenxB<xBmax) & (df_MC.GenQ2>=Q2min) & (df_MC.GenQ2<Q2max)  & (df_MC.Gent>=tmin) & (df_MC.Gent<tmax), "integrated_binnum_gen"] != 0) == 0        
                 except:
                     print("This bin overlaps with others. Check the geometry. {}".format(bin))
-                df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] = binnum + 1
+                df_MC.loc[ (df_MC.GenxB>=xBmin) & (df_MC.GenxB<xBmax) & (df_MC.GenQ2>=Q2min) & (df_MC.GenQ2<Q2max)  & (df_MC.Gent>=tmin) & (df_MC.Gent<tmax), "integrated_binnum_gen"] = binnum + 1
 
             for binnum, bin in enumerate(self.fringe_bin_scheme):
                 xBmin, xBmax, Q2min, Q2max, tmin, tmax = bin
                 try:
-                    assert np.sum(df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] != 0) == 0        
+                    assert np.sum(df_MC.loc[ (df_MC.GenxB>=xBmin) & (df_MC.GenxB<xBmax) & (df_MC.GenQ2>=Q2min) & (df_MC.GenQ2<Q2max)  & (df_MC.Gent>=tmin) & (df_MC.Gent<tmax), "integrated_binnum_gen"] != 0) == 0        
                 except:
                     print("This bin overlaps with others. Check the geometry. {}".format(bin))
-                df_MC.loc[ (df_MC.xB>=xBmin) & (df_MC.xB<xBmax) & (df_MC.Q2>=Q2min) & (df_MC.Q2<Q2max)  & (df_MC.t1>=tmin) & (df_MC.t1<tmax), "integrated_binnum_gen"] = binnum + 1 + len(self.bin_scheme)
+                df_MC.loc[ (df_MC.GenxB>=xBmin) & (df_MC.GenxB<xBmax) & (df_MC.GenQ2>=Q2min) & (df_MC.GenQ2<Q2max)  & (df_MC.Gent>=tmin) & (df_MC.Gent<tmax), "integrated_binnum_gen"] = binnum + 1 + len(self.bin_scheme)
 
             phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
             for phi_binnum in range(24):
