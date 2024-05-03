@@ -362,7 +362,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	for i in range(len(EhtccXBin)):
 		EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 	df_electronRec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
-	df_electronRec.loc[df_electronRec.EhtccEfficiency > 0.95, "EFid"] = 1
+	df_electronRec.loc[df_electronRec.EhtccEfficiency < 0.95, "EFid"] = 0
 
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
