@@ -3,8 +3,8 @@ from utils.physics import *
 from copy import copy
 
 def assign_efficiency(df_Rec, mc = False):
-	df_Rec = copy(df_Rec)
 	if mc:
+		df_Rec = copy(df_Rec)
 		df_Rec.loc[:, "EFtof1bEfficiency"] = 1
 		df_Rec.loc[(df_Rec.Esector==6) & (df_Rec.EFtof1bComponent>=33) & (df_Rec.EFtof1bComponent<=48), "EFtof1bEfficiency"]= 1/1.013
 		df_Rec.loc[:, "PFtof1bEfficiency"] = 1

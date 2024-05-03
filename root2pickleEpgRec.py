@@ -1313,7 +1313,7 @@ class root2pickle():
             for phi_binnum in range(24):
                 phimin = phibins[phi_binnum]
                 phimax = phibins[phi_binnum+1]
-                df_MC.loc[ (df_MC.phi1>=phimin) & (df_MC.phi1<phimax), "phi_binnum_gen"] = phi_binnum
+                df_MC.loc[ (df_MC.Genphi>=phimin) & (df_MC.Genphi<phimax), "phi_binnum_gen"] = phi_binnum
 
             df_MC = df_MC.astype({"integrated_binnum_gen": int, "phi_binnum_gen": int})
 
