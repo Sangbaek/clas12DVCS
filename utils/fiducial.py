@@ -3,7 +3,17 @@ from utils.physics import *
 from copy import copy
 
 def assign_efficiency(df_Rec, mc = False):
-	if mc:
+	if not mc:
+		# HTCC efficiency map
+		htcc_eff_map = np.loadtxt("/work/clas12/sangbaek/Inclusive/HTCCEfficiencyData.dat").reshape(250,250)
+		EhtccXBin = (df_Rec.loc[:, "EhtcctrajX"] + 125 ).astype(int).to_numpy()
+		EhtccYBin = (df_Rec.loc[:, "EhtcctrajY"] + 125 ).astype(int).to_numpy()
+		EhtccEfficiency = []
+		for i in range(len(EhtccXBin)):
+			EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
+		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
+		# df_Rec.loc[df_Rec.EhtccEfficiency < 0.95, "EFid"] = 0
+
 		df_Rec = copy(df_Rec)
 		df_Rec.loc[:, "EFtof1bEfficiency"] = 1
 		df_Rec.loc[(df_Rec.Esector==6) & (df_Rec.EFtof1bComponent>=33) & (df_Rec.EFtof1bComponent<=48), "EFtof1bEfficiency"]= 1/1.013
@@ -353,16 +363,6 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -193.3    + 0.25) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -195.5        - 0.25), "EFid"] = 0
 
 	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25), "EFid"] = 0
-
-	# HTCC efficiency map
-	htcc_eff_map = np.loadtxt("/work/clas12/sangbaek/Inclusive/HTCCEfficiencyData.dat").reshape(250,250)
-	EhtccXBin = (df_electronRec.loc[:, "EhtccX"] + 125 ).astype(int).to_numpy()
-	EhtccYBin = (df_electronRec.loc[:, "EhtccY"] + 125 ).astype(int).to_numpy()
-	EhtccEfficiency = []
-	for i in range(len(EhtccXBin)):
-		EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
-	df_electronRec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
-	# df_electronRec.loc[df_electronRec.EhtccEfficiency < 0.95, "EFid"] = 0
 
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
