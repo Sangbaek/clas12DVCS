@@ -60,7 +60,7 @@ class root2pickle():
         self.readBinScheme()
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             detRes = detRes, logistics = logistics, nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr =nopcorr,
-            fidlevel = fidlevel)
+            fidlevel = fidlevel, efficiency = efficiency)
         self.saveDVpi0vars()
         if not raw:
             self.makeDVpi0P(pol = pol, nofid = nofid, allowsamesector = allowsamesector)
@@ -118,7 +118,7 @@ class root2pickle():
 
     def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", 
         detRes = False, logistics = False, nofid = False, 
-        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid'):
+        nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid', efficiency = False):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -134,6 +134,8 @@ class root2pickle():
         eleKeysRec.extend(["EDc1Hitx", "EDc1Hity", "EDc1Hitz", "EDc2Hitx", "EDc2Hity", "EDc2Hitz", "EDc3Hitx", "EDc3Hity", "EDc3Hitz"])
         eleKeysRec.extend(["EFtof1bSector", "EFtof1bComponent"])
         eleKeysRec.extend(["Enphe", "EhtccX", "EhtccY"])
+        if efficiency:
+            eleKeysRec.extend(["EhtcctrajX", "EhtcctrajY"])
         proKeysRec = ["Ppx", "Ppy", "Ppz", "Pvz", "Pstat", "Psector", "Pchi2pid"]
         proKeysRec.extend(["PDc1Hitx", "PDc1Hity", "PDc1Hitz", "PCvt12Hitx", "PCvt12Hity", "PCvt12Hitz"])
         proKeysRec.extend(["PDc2Hitx", "PDc2Hity", "PDc2Hitz", "PDc3Hitx", "PDc3Hity", "PDc3Hitz"])
