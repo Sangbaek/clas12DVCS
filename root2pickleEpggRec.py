@@ -377,7 +377,7 @@ class root2pickle():
             # #e1
             # df_electronRec = electronMomentumCorrection(pol, df_electronRec)
             #e2
-            df_electronRec = electronMomentumSmearing(df_electronRec)
+            df_electronRec = electronMomentumSmearing(df_electronRec, smearing = smearing)
             #p1
             df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
             # # #p2

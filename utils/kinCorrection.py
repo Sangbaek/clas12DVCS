@@ -36,17 +36,17 @@ def electronMomentumCorrection(pol, df_electronRec):
     df_electronRec.loc[:, "Ee"]  = np.sqrt(df_electronRec.Ep**2 + me**2)
     return df_electronRec
 
-def electronMomentumSmearing(df_electronRec):
+def electronMomentumSmearing(df_electronRec, smearing = 1):
     #p.49 of inclusive note
     df_electronRec = copy(df_electronRec)
     sigma_theta = 0.00387 - 0.00019 * df_electronRec.Etheta + 1.3021e-5 * df_electronRec.Etheta * df_electronRec.Etheta
     eleCorr = df_electronRec.loc[:, ["Ep", "Ephi", "Esector"]]
     eleCorr.loc[:, "dp"] = df_electronRec.Ep * sigma_theta * np.random.normal(0, 1, len(df_electronRec))
 
-    df_electronRec.loc[:, "Epx"] = (1 + eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epx"]
-    df_electronRec.loc[:, "Epy"] = (1 + eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epy"]
-    df_electronRec.loc[:, "Epz"] = (1 + eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epz"]
-    df_electronRec.loc[:, "Ep"]  = df_electronRec.Ep + eleCorr.dp
+    df_electronRec.loc[:, "Epx"] = (1 + smearing * eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epx"]
+    df_electronRec.loc[:, "Epy"] = (1 + smearing * eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epy"]
+    df_electronRec.loc[:, "Epz"] = (1 + smearing * eleCorr.dp/eleCorr.Ep) * df_electronRec.loc[:, "Epz"]
+    df_electronRec.loc[:, "Ep"]  = df_electronRec.Ep + smearing * eleCorr.dp
     df_electronRec.loc[:, "Ee"]  = np.sqrt(df_electronRec.Ep**2 + me**2)
     return df_electronRec
 
