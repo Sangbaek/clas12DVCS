@@ -329,6 +329,13 @@ class root2pickle():
         df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "Psector"] = determineSector(df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "PFtof1bHitx"], df_protonRec.loc[(df_protonRec.PFtof1bHitx > -1000) & (df_protonRec.Psector==-1000), "PFtof1bHity"])
         df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "Psector"]  = determineSector(df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "PFtof2Hitx"], df_protonRec.loc[(df_protonRec.PFtof2Hitx > -1000)  & (df_protonRec.Psector==-1000), "PFtof2Hity"])
 
+        #proton momentum preparation for the fiducial cut
+        pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+        df_protonRec.loc[:, 'Pp'] = mag(pro)
+        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+        df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
+        df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
+
         #create df_gg for pi0 exclusion
         gam = [df_gammaRec['Gpx'], df_gammaRec['Gpy'], df_gammaRec['Gpz']]
         df_gammaRec.loc[:, 'Gp'] = mag(gam)
@@ -347,8 +354,8 @@ class root2pickle():
         else:
             # perform the fiducial cuts
             df_electronRec = electronFiducial(df_electronRec, mc = True, fidlevel = fidlevel)
-            df_protonRec = protonFiducial(df_protonRec, pol = pol)
-            df_gammaRec = gammaFiducial(df_gammaRec)
+            df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
+            df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
             coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
             df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]

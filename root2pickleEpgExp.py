@@ -201,6 +201,13 @@ class root2pickle():
         df_electronRec.loc[:, 'Ephi'] = getPhi(ele)
         df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
+        #proton momentum preparation for the fiducial cut
+        pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
+        df_protonRec.loc[:, 'Pp'] = mag(pro)
+        df_protonRec.loc[:, 'Pe'] = getEnergy(pro, M)
+        df_protonRec.loc[:, 'Ptheta'] = getTheta(pro)
+        df_protonRec.loc[:, 'Pphi'] = getPhi(pro)
+
         #set up a dummy index for merging
         df_electronRec.loc[:,'event'] = df_electronRec.index.get_level_values('entry')
         df_protonRec.loc[:,'event'] = df_protonRec.index.get_level_values('entry')
@@ -225,8 +232,8 @@ class root2pickle():
         else:
             # perform the fiducial cuts
             df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
-            df_protonRec = protonFiducial(df_protonRec, pol = pol)
-            df_gammaRec = gammaFiducial(df_gammaRec)
+            df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
+            df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
             coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
             df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]

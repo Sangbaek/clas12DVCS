@@ -33,35 +33,77 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	df_electronRec.loc[df_electronRec.Enphe <= min_nphe, "EFid"] = 0
 
 	# E. vz cut
-	df_electronRec.loc[df_electronRec.Evz < -8, "EFid"] = 0
-	df_electronRec.loc[df_electronRec.Evz >  2, "EFid"] = 0
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.Evz < -8, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.Evz >  2, "EFid"] = 0
+	elif fidlevel == 'loose':
+		df_electronRec.loc[df_electronRec.Evz < -8.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.Evz >  2.5, "EFid"] = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.Evz < -7.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.Evz >  1.5, "EFid"] = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
 	# F. Minimum PCAL energy Threshold cut
-	df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
+	elif fidlevel == 'loose':
+		df_electronRec.loc[df_electronRec.Eedep1 < 0.06, "EFid"] = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.Eedep1 < 0.08, "EFid"] = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
 	# G. DC Fiducial Cuts
+	if fidlevel == 'mid':
+		adjustment_layer1 = 0
+		adjustment_layer2 = 0
+		adjustment_layer3 = 0
+	elif fidlevel == 'loose':
+		adjustment_layer1 = 0.6*1
+		adjustment_layer2 = 0.6*2
+		adjustment_layer3 = 0.6*3
+	elif fidlevel == 'tight':
+		adjustment_layer1 = -0.6*1
+		adjustment_layer2 = -0.6*2
+		adjustment_layer3 = -0.6*3
+	else:
+		print("check fidlevel {}".format(fidlevel))
+
 	dcsec_l1 = determineSector(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity)
 	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity, dcsec_l1)
-	calc_min_l1 = -0.50 * (x_rot_l1 + 72)
-	calc_max_l1 =  0.50 * (x_rot_l1 + 72)
+	calc_min_l1 = -0.50 * (x_rot_l1 + 72 + adjustment_layer1)
+	calc_max_l1 =  0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	df_electronRec.loc[y_rot_l1 < calc_min_l1, "EFid"] = 0
 	df_electronRec.loc[y_rot_l1 > calc_max_l1, "EFid"] = 0
 
 	dcsec_l2 = determineSector(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity)
 	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity, dcsec_l2)
-	calc_min_l2 = -0.505 * (x_rot_l2 + 114)
-	calc_max_l2 =  0.505 * (x_rot_l2 + 114)
+	calc_min_l2 = -0.505 * (x_rot_l2 + 114 + adjustment_layer2)
+	calc_max_l2 =  0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	df_electronRec.loc[y_rot_l2 < calc_min_l2, "EFid"] = 0
 	df_electronRec.loc[y_rot_l2 > calc_max_l2, "EFid"] = 0
 
 	dcsec_l3 = determineSector(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity)
 	x_rot_l3, y_rot_l3 = rotateDCHitPosition(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity, dcsec_l3)
-	calc_min_l3 = -0.505 * (x_rot_l3 + 114)
-	calc_max_l3 =  0.505 * (x_rot_l3 + 114)
+	calc_min_l3 = -0.495 * (x_rot_l3 + 180 + adjustment_layer3)
+	calc_max_l3 =  0.495 * (x_rot_l3 + 180 + adjustment_layer3)
 	df_electronRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
 	df_electronRec.loc[y_rot_l3 > calc_max_l3, "EFid"] = 0
 	# # H. PCAL Fid Cuts
-	df_electronRec.loc[df_electronRec.EcalV1<19, "EFid"] = 0
-	df_electronRec.loc[df_electronRec.EcalW1<19, "EFid"] = 0
-	df_electronRec.loc[df_electronRec.EcalU1>395, "EFid"] = 0
+	if fidlevel == 'mid':
+		df_electronRec.loc[df_electronRec.EcalV1<19, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1<19, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalU1>395, "EFid"] = 0
+	elif fidlevel == 'loose':
+		df_electronRec.loc[df_electronRec.EcalV1<19+2.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1<19+2.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalU1>395-2.5, "EFid"] = 0
+	elif fidlevel == 'tight':
+		df_electronRec.loc[df_electronRec.EcalV1<19-2.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalW1<19-2.5, "EFid"] = 0
+		df_electronRec.loc[df_electronRec.EcalU1>395+2.5, "EFid"] = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
 	# I. ECAL SF Cut
 	A = [0.286, 0.280, 0.275, 0.273, 0.271, 0.276]
 	B = [-0.040, -0.038, -0.034, -0.033, -0.032, -0.034]
@@ -97,9 +139,14 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	if fidlevel == 'mid':
 		df_electronRec.loc[df_electronRec.ESamplFrac < mean - 3.5*sigma, "EFid"]  = 0
 		df_electronRec.loc[df_electronRec.ESamplFrac > mean + 3.5*sigma, "EFid"]  = 0
+	elif fidlevel == 'loose':
+		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (3.5+0.5)*sigma, "EFid"]  = 0
+		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5+0.5)*sigma, "EFid"]  = 0
 	elif fidlevel == 'tight':
 		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (3.5-0.5)*sigma, "EFid"]  = 0
 		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5-0.5)*sigma, "EFid"]  = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
 	#J. Pion Separtaion Cut
 	eleFidCut = df_electronRec.loc[:, ["Ep", "Esector", "Eedep1", "Eedep2"]]
 	eleFidCut.loc[:, "a"] = 0
@@ -345,24 +392,43 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 7) &  8 , "b"] = -1.1564
 		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 8) &  9 , "b"] = -1.15527
 		eleFidCut.loc[ (eleFidCut.Esector == 6) & (eleFidCut.Ep >= 9)      , "b"] = -1.19943
+
+	if fidlevel == 'mid':
+		pass
+	elif fidlevel == 'loose':
+		eleFidCut.loc[:, "a"] = eleFidCut.loc[:, "a"] - 0.005
+	elif fidlevel == 'tight':
+		eleFidCut.loc[:, "a"] = eleFidCut.loc[:, "a"] + 0.005
+	else:
+		print("check fidlevel {}".format(fidlevel))
+
 	df_electronRec.loc[eleFidCut.Eedep1/eleFidCut.Ep <= eleFidCut.a + eleFidCut.b * (eleFidCut.Eedep2/eleFidCut.Ep), "EFid"] = 0
 
 	#Table XII.
-	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -92        + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -94.4         - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -101.1     + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -103.5        - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -219       + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -221.4        - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -227       + 0.25) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -229.4        - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 0.5897   * df_electronRec.EcalHx1 +120.7937  + 0.25) & (df_electronRec.EcalHy1 >= 0.5913  * df_electronRec.EcalHx1 +114.3872     - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 107.2766 * df_electronRec.EcalHx1 -10602.9779+ 0.25) & (df_electronRec.EcalHy1 >= 98.9667 * df_electronRec.EcalHx1 -10262.0167   - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 3) & (df_electronRec.EcalHx1 <= -302.38) & (df_electronRec.EcalHx1 >= -313.71), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHx1 <= -122.5 ) & (df_electronRec.EcalHx1 >= -127.5 ), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHy1 <= -0.568   * df_electronRec.EcalHx1 -232.8     + 0.25) & (df_electronRec.EcalHy1 >= -0.568  * df_electronRec.EcalHx1 -236.3        - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy1 <= 98.0644  * df_electronRec.EcalHx1 +5825.4023 + 0.25) & (df_electronRec.EcalHy1 >= 99.9337 * df_electronRec.EcalHx1 +5098.3456    - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.4547   * df_electronRec.EcalHx1 -275.9317  + 0.25) & (df_electronRec.EcalHy1 >= 0.4547  * df_electronRec.EcalHx1 -285.9317     - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -185      + 0.25) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -187          - 0.25), "EFid"] = 0
-	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -193.3    + 0.25) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -195.5        - 0.25), "EFid"] = 0
+	if fidlevel == 'mid':
+		adjustment = 0
+	elif fidlevel == 'loose':
+		adjustment = 0.5
+	elif fidlevel == 'tight':
+		adjustment = -0.5
+	else:
+		print("check fidlevel {}".format(fidlevel))
 
-	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -92        + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -94.4         - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -101.1     + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -103.5        - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -219       + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -221.4        - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 1) & (df_electronRec.EcalHy1 <= 0.56575  * df_electronRec.EcalHx1 -227       + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.56575 * df_electronRec.EcalHx1 -229.4        - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 0.5897   * df_electronRec.EcalHx1 +120.7937  + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.5913  * df_electronRec.EcalHx1 +114.3872     - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 2) & (df_electronRec.EcalHy1 <= 107.2766 * df_electronRec.EcalHx1 -10602.9779+ 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 98.9667 * df_electronRec.EcalHx1 -10262.0167   - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 3) & (df_electronRec.EcalHx1 <= -302.38 + adjustment) & (df_electronRec.EcalHx1 >= -313.71 - adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHx1 <= -122.5  + adjustment) & (df_electronRec.EcalHx1 >= -127.5  - adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 4) & (df_electronRec.EcalHy1 <= -0.568   * df_electronRec.EcalHx1 -232.8     + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= -0.568  * df_electronRec.EcalHx1 -236.3        - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy1 <= 98.0644  * df_electronRec.EcalHx1 +5825.4023 + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 99.9337 * df_electronRec.EcalHx1 +5098.3456    - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.4547   * df_electronRec.EcalHx1 -275.9317  + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.4547  * df_electronRec.EcalHx1 -285.9317     - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -185      + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -187          - 0.25 -adjustment), "EFid"] = 0
+	df_electronRec.loc[ (df_electronRec.Esector == 6) & (df_electronRec.EcalHy1 <= 0.591377  * df_electronRec.EcalHx1 -193.3    + 0.25 + adjustment) & (df_electronRec.EcalHy1 >= 0.591377* df_electronRec.EcalHx1 -195.5        - 0.25 -adjustment), "EFid"] = 0
+
+	df_electronRec.loc[ (df_electronRec.Esector == 5) & (df_electronRec.EcalHy3 <= -0.5841  * df_electronRec.EcalHx3 -252.11    + 0.25 + adjustment) & (df_electronRec.EcalHy3 >= -0.5775 * df_electronRec.EcalHx3 -263.2072    - 0.25 -adjustment), "EFid"] = 0
 
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
@@ -474,19 +540,31 @@ def electronFiducial_legacy(df_electronRec, pol = "inbending", mc = False, fidle
 	df_electronRec.loc[(df_electronRec.Ep>4.5)&(-df_electronRec.Eedep1/df_electronRec.Ep + anti_pion_threshold > df_electronRec.Eedep2/df_electronRec.Ep), "EFid"] = 0
 	return df_electronRec.loc[df_electronRec.EFid==1, :]
 
-def gammaFiducial(df_gammaRec):
+def gammaFiducial(df_gammaRec, fidlevel = 'mid'):
 	df_gammaRec = copy(df_gammaRec)
 	df_gammaRec.loc[:, "GFid"] = 1
-	#passGammaPCALFiducialCut
-	df_gammaRec.loc[(df_gammaRec.GcalV1 <= g_min_v) & (df_gammaRec.Gsector<7), "GFid"] = 0
-	df_gammaRec.loc[(df_gammaRec.GcalW1 <= g_min_w) & (df_gammaRec.Gsector<7), "GFid"] = 0
+	# H. PCAL Fid Cuts
+	if fidlevel == 'mid':
+		df_gammaRec.loc[df_gammaRec.GcalV1<19, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395, "EFid"] = 0
+	elif fidlevel == 'loose':
+		df_gammaRec.loc[df_gammaRec.GcalV1<19+2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19+2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395-2.5, "EFid"] = 0
+	elif fidlevel == 'tight':
+		df_gammaRec.loc[df_gammaRec.GcalV1<19-2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19-2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395+2.5, "EFid"] = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
 	#passGammaBetaCut
 	df_gammaRec.loc[df_gammaRec.Gbeta <= min_Gbeta, "GFid"] = 0
 	df_gammaRec.loc[df_gammaRec.Gbeta >= max_Gbeta, "GFid"] = 0
 
 	df_gammaRec.loc[df_gammaRec.Gsector<7, "GFid"] = 0
 
-	#apply photon fiducial cuts
+	#apply additional photon fiducial cuts
 	sector_cond = [df_gammaRec.Gsector ==1, df_gammaRec.Gsector ==2, df_gammaRec.Gsector ==3, df_gammaRec.Gsector ==4, df_gammaRec.Gsector ==5, df_gammaRec.Gsector ==6]
 	psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
 	tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
@@ -549,21 +627,30 @@ def gammaFiducial(df_gammaRec):
 	df_gammaRec.loc[(df_gammaRec.Gsector > 7) & circle4, "GFid"] = 0
 
 	#Table XII.
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -92        + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -94.4         - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -101.1     + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -103.5        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -219       + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -221.4        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -227       + 0.25) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -229.4        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 0.5897   * df_gammaRec.GcalX1 +120.7937  + 0.25) & (df_gammaRec.GcalY1 >= 0.5913  * df_gammaRec.GcalX1 +114.3872     - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 107.2766 * df_gammaRec.GcalX1 -10602.9779+ 0.25) & (df_gammaRec.GcalY1 >= 98.9667 * df_gammaRec.GcalX1 -10262.0167   - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalX1 <= -302.38) & (df_gammaRec.GcalX1 >= -313.71), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalX1 <= -122.5 ) & (df_gammaRec.GcalX1 >= -127.5 ), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalY1 <= -0.568   * df_gammaRec.GcalX1 -232.8     + 0.25) & (df_gammaRec.GcalY1 >= -0.568  * df_gammaRec.GcalX1 -236.3        - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY1 <= 98.0644  * df_gammaRec.GcalX1 +5825.4023 + 0.25) & (df_gammaRec.GcalY1 >= 99.9337 * df_gammaRec.GcalX1 +5098.3456    - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.4547   * df_gammaRec.GcalX1 -275.9317  + 0.25) & (df_gammaRec.GcalY1 >= 0.4547  * df_gammaRec.GcalX1 -285.9317     - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -185      + 0.25) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -187          - 0.25), "GFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25), "GFid"] = 0
+	if fidlevel == 'mid':
+		adjustment = 0
+	elif fidlevel == 'loose':
+		adjustment = 0.5
+	elif fidlevel == 'tight':
+		adjustment = -0.5
+	else:
+		print("check fidlevel {}".format(fidlevel))
 
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -92        + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -94.4         - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -101.1     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -103.5        - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -219       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -221.4        - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -227       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -229.4        - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 0.5897   * df_gammaRec.GcalX1 +120.7937  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.5913  * df_gammaRec.GcalX1 +114.3872     - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 107.2766 * df_gammaRec.GcalX1 -10602.9779+ 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 98.9667 * df_gammaRec.GcalX1 -10262.0167   - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalX1 <= -302.38 + adjustment) & (df_gammaRec.GcalX1 >= -313.71 - adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalX1 <= -122.5  + adjustment) & (df_gammaRec.GcalX1 >= -127.5  - adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalY1 <= -0.568   * df_gammaRec.GcalX1 -232.8     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= -0.568  * df_gammaRec.GcalX1 -236.3        - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY1 <= 98.0644  * df_gammaRec.GcalX1 +5825.4023 + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 99.9337 * df_gammaRec.GcalX1 +5098.3456    - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.4547   * df_gammaRec.GcalX1 -275.9317  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.4547  * df_gammaRec.GcalX1 -285.9317     - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -185      + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -187          - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25 -adjustment), "EFid"] = 0
+
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25 + adjustment) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25 -adjustment), "EFid"] = 0
 
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
@@ -665,53 +752,85 @@ def gammaFiducialLegacy(df_gammaRec):
 
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
-def protonFiducial(df_protonRec, pol = 'inbending', fidlevel = 'mid'):
+def protonFiducial(df_protonRec, fidlevel = 'mid'):
 	df_protonRec = copy(df_protonRec)
 	df_protonRec.loc[:, "PFid"] = 1
 
-	dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
-	if pol == 'inbending':
-		minparams = p_dc_minparams_in
-		maxparams = p_dc_maxparams_in
+	#proton DC fiducial cut
+	if fidlevel == 'mid':
+		adjustment_layer1 = 0
+		adjustment_layer2 = 0
+		adjustment_layer3 = 0
+	elif fidlevel == 'loose':
+		adjustment_layer1 = 0.6*1
+		adjustment_layer2 = 0.6*2
+		adjustment_layer3 = 0.6*3
+	elif fidlevel == 'tight':
+		adjustment_layer1 = -0.6*1
+		adjustment_layer2 = -0.6*2
+		adjustment_layer3 = -0.6*3
+	else:
+		print("check fidlevel {}".format(fidlevel))
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, df_protonRec.PDc1Hitz)
-		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 0, minparams, maxparams)
-		df_protonRec.loc[(phi_DC<=phi_DC_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(phi_DC>=phi_DC_max) & (df_protonRec.Psector<7), "PFid"] = 0
+	dcsec_l1 = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
+	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, dcsec_l1)
+	calc_min_l1 = -0.50 * (x_rot_l1 + 72 + adjustment_layer1)
+	calc_max_l1 =  0.50 * (x_rot_l1 + 72 + adjustment_layer1)
+	df_protonRec.loc[y_rot_l1 < calc_min_l1, "EFid"] = 0
+	df_protonRec.loc[y_rot_l1 > calc_max_l1, "EFid"] = 0
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, df_protonRec.PDc2Hitz)
-		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 1, minparams, maxparams)
-		df_protonRec.loc[(phi_DC<=phi_DC_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(phi_DC>=phi_DC_max) & (df_protonRec.Psector<7), "PFid"] = 0
+	dcsec_l2 = determineSector(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
+	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, dcsec_l2)
+	calc_min_l2 = -0.505 * (x_rot_l2 + 114 + adjustment_layer2)
+	calc_max_l2 =  0.505 * (x_rot_l2 + 114 + adjustment_layer2)
+	df_protonRec.loc[y_rot_l2 < calc_min_l2, "EFid"] = 0
+	df_protonRec.loc[y_rot_l2 > calc_max_l2, "EFid"] = 0
 
-		theta_DC, phi_DC = thetaphifromhit(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, df_protonRec.PDc3Hitz)
-		phi_DC_min, phi_DC_max = p_DC_fiducial_cut_thetaphi(theta_DC, dcsec, 2, minparams, maxparams)
-		df_protonRec.loc[(phi_DC<=phi_DC_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(phi_DC>=phi_DC_max) & (df_protonRec.Psector<7), "PFid"] = 0
+	dcsec_l3 = determineSector(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
+	x_rot_l3, y_rot_l3 = rotateDCHitPosition(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, dcsec_l3)
+	calc_min_l3 = -0.495 * (x_rot_l3 + 180 + adjustment_layer3)
+	calc_max_l3 =  0.495 * (x_rot_l3 + 180 + adjustment_layer3)
+	df_protonRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
+	df_protonRec.loc[y_rot_l3 > calc_max_l3, "EFid"] = 0
 
-	if pol == 'outbending':
-		minparams = p_dc_minparams_out
-		maxparams = p_dc_maxparams_out
+	#proton CVT fiducial cut
+	df_protonRec.loc[:, "PCvt12theta"] = -100000
+	df_protonRec.loc[:, "PCvt12phi"] = -100000
 
-		dcsec = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
-		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, dcsec)
-		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 0, minparams, maxparams)
-		df_protonRec.loc[(y_rot<=calc_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(y_rot>=calc_max) & (df_protonRec.Psector<7), "PFid"] = 0
-		#passElectronDCR2
-		dcsec = determineSector(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
-		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, dcsec)
-		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 1, minparams, maxparams)
-		df_protonRec.loc[(y_rot<=calc_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(y_rot>=calc_max) & (df_protonRec.Psector<7), "PFid"] = 0
+	cut_CD = df_protonRec.Psector > 7
 
-		#passElectronDCR3
-		dcsec = determineSector(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
-		x_rot, y_rot = rotateDCHitPosition(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, dcsec)
-		calc_min, calc_max = p_DC_fiducial_cut_XY(x_rot, dcsec, 2, minparams, maxparams)
-		df_protonRec.loc[(y_rot<=calc_min) & (df_protonRec.Psector<7), "PFid"] = 0
-		df_protonRec.loc[(y_rot>=calc_max) & (df_protonRec.Psector<7), "PFid"] = 0
+	df_protonRec.loc[cut_CD, "PCvt12theta"] = getTheta([df_protonRec.loc[cut_CD].PCvt12Hitx, df_protonRec.loc[cut_CD].PCvt12Hity, df_protonRec.loc[cut_CD].PCvt12Hitz])
+	df_protonRec.loc[cut_CD, "PCvt12phi"] = getPhi([df_protonRec.loc[cut_CD].PCvt12Hitx, df_protonRec.loc[cut_CD].PCvt12Hity, df_protonRec.loc[cut_CD].PCvt12Hitz])
 
+	df_protonRec.loc[cut_CD, "PFid"] = 0 #CD fid reset
+	if fidlevel == 'mid':
+		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5)
+		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta)
+		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta)
+	elif fidlevel == 'loose':
+		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 + 2.5)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  - 2.5)
+		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta + 2.5)
+		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta - 2.5)
+	elif fidlevel == 'tight':
+		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 - 2.5)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  + 2.5)
+		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta - 2.5)
+		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta + 2.5)
+	else:
+		print("check fidlevel {}".format(fidlevel))
+
+
+	cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
+
+	cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
+	cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
+	cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
+	cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
+	cut_total = cut_gaps & cut_trapezoid
+
+	df_protonRec.loc[cut_total, "PFid"] = 1 #CD fid
 
 	return df_protonRec.loc[df_protonRec.PFid==1, :]
 

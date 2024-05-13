@@ -29,8 +29,7 @@ if args.filename:
   filename = args.filename
 file       = pd.read_pickle(filename)
 
-for i in range(339):
-  filenum    = 5*i
+for filenum in np.linspace(0, 346*5, 346+1, dtype = int):
   qadb       = qaTree.loc[qaTree.index == run, filenum]
   if not isinstance(qadb.values[0], dict):
     break    
