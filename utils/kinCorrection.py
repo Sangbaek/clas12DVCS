@@ -110,20 +110,20 @@ def protonEnergyLossCorr(pol, df_protonRec):
         CorrectedPphi_FD_2 = const_FD + coeff_FD*np.exp(coeff2_FD*df_protonRecFD_2.loc[:, "Pp"]) + df_protonRecFD_2.loc[:, "Pphi"]
 
         #CD part
-        const_CD = 1.93686914 - 0.116288824*np.minimum(df_protonRecCD.Ptheta, 60) + 0.00223685833*np.minimum(df_protonRecCD.Ptheta, 60)**2 - 1.40771969 * 10**(-5)*np.minimum(df_protonRecCD.Ptheta, 60)**3
-        coeff_CD = -0.738047800 + 0.0443343685*np.minimum(df_protonRecCD.Ptheta, 60) - 8.50985972*10**(-4)*np.minimum(df_protonRecCD.Ptheta, 60)*np.minimum(df_protonRecCD.Ptheta, 60) + 5.36810280 * 10**(-6) * np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = 1.93686914 - 0.116288824*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 0.00223685833*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 1.40771969 * 10**(-5)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
+        coeff_CD = -0.738047800 + 0.0443343685*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 8.50985972*10**(-4)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 5.36810280 * 10**(-6) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
 
         CorrectedPp_CD = const_CD + coeff_CD/df_protonRecCD.loc[:, "Pp"] + df_protonRecCD.loc[:, "Pp"]
 
-        const_CD = -1.09849291*100 + 8.86664014 * np.minimum(df_protonRecCD.Ptheta, 60) - 0.26643881 * np.minimum(df_protonRecCD.Ptheta, 60)**2 + 3.53814210 * 10**(-3) * np.minimum(df_protonRecCD.Ptheta, 60)**3 - 1.75297107 * 10**(-5) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff_CD = 9.52034523*100 -5.74808292 * 10 * np.minimum(df_protonRecCD.Ptheta, 60) + 1.15386949 * np.minimum(df_protonRecCD.Ptheta, 60)**2 - 7.57970373 * 0.001 * np.minimum(df_protonRecCD.Ptheta, 60)**3
-        coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * np.minimum(df_protonRecCD.Ptheta, 60) - 2.37730217*0.1 * np.minimum(df_protonRecCD.Ptheta, 60)**2 + 1.55153003*0.001*np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = -1.09849291*100 + 8.86664014 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 0.26643881 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 + 3.53814210 * 10**(-3) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 - 1.75297107 * 10**(-5) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff_CD = 9.52034523*100 -5.74808292 * 10 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 1.15386949 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 7.57970373 * 0.001 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
+        coeff2_CD = -2.00387313*100 + 1.18979079 * 10 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 2.37730217*0.1 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 + 1.55153003*0.001*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
 
         CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Ptheta"]
 
-        const_CD = 4.94546178 -3.26662886*0.1 * np.minimum(df_protonRecCD.Ptheta, 60) +  7.39069603 * 0.001 * np.minimum(df_protonRecCD.Ptheta, 60)**2 -6.83599356*10**(-5) * np.minimum(df_protonRecCD.Ptheta, 60)**3 + 2.12303103*10**(-7) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * np.minimum(df_protonRecCD.Ptheta, 60) + 4.00923146*10**(2) * np.minimum(df_protonRecCD.Ptheta, 60)**2 - 5.12792347 * np.minimum(df_protonRecCD.Ptheta, 60)**3 + 2.41793167*10**(-2) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff2_CD =  1.20477219*10**(2) -5.86630228 * np.minimum(df_protonRecCD.Ptheta, 60) + 7.44007875*10**(-2) * np.minimum(df_protonRecCD.Ptheta, 60)**2 -2.42652473*10**(-4) * np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = 4.94546178 -3.26662886*0.1 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) +  7.39069603 * 0.001 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 -6.83599356*10**(-5) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 + 2.12303103*10**(-7) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff_CD = 1.72181613*10**(5) -1.36827111*10**(4) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 4.00923146*10**(2) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 5.12792347 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 + 2.41793167*10**(-2) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff2_CD =  1.20477219*10**(2) -5.86630228 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 7.44007875*10**(-2) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 -2.42652473*10**(-4) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
         CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
     #outbending proton energy loss correction
@@ -153,20 +153,20 @@ def protonEnergyLossCorr(pol, df_protonRec):
         coeff_FD = -1.68588219 + 1.05609627*0.1*df_protonRecFD_2.Ptheta -1.50452832*0.001*df_protonRecFD_2.Ptheta*df_protonRecFD_2.Ptheta
         CorrectedPphi_FD_2 = const_FD + coeff_FD/df_protonRecFD_2.loc[:, "Pp"]/df_protonRecFD_2.loc[:, "Pp"] + df_protonRecFD_2.loc[:, "Pphi"]
         #CD part
-        const_CD = 1.92657376 - 0.113836734*np.minimum(df_protonRecCD.Ptheta, 60) + 0.00215038526*np.minimum(df_protonRecCD.Ptheta, 60)**2 - 1.32525053 * 10**(-5)*np.minimum(df_protonRecCD.Ptheta, 60)**3
-        coeff_CD = -0.755650043 + 0.0445538936*np.minimum(df_protonRecCD.Ptheta, 60) - 8.38241864*10**(-4)*np.minimum(df_protonRecCD.Ptheta, 60)*np.minimum(df_protonRecCD.Ptheta, 60) + 5.16887255 * 10**(-6) * np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = 1.92657376 - 0.113836734*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 0.00215038526*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 1.32525053 * 10**(-5)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
+        coeff_CD = -0.755650043 + 0.0445538936*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 8.38241864*10**(-4)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 5.16887255 * 10**(-6) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
 
         CorrectedPp_CD = const_CD + coeff_CD/df_protonRecCD.loc[:, "Pp"] + df_protonRecCD.loc[:, "Pp"]
 
-        const_CD = -5.79024055*10 + 4.67197531 * np.minimum(df_protonRecCD.Ptheta, 60) - 0.140156897 * np.minimum(df_protonRecCD.Ptheta, 60)**2 + 1.85853057 * 10**(-3) * np.minimum(df_protonRecCD.Ptheta, 60)**3 - 9.19989908 * 10**(-6) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * np.minimum(df_protonRecCD.Ptheta, 60) + 5.84757503 * np.minimum(df_protonRecCD.Ptheta, 60)**2 - 6.80409195 * 0.01 * np.minimum(df_protonRecCD.Ptheta, 60)**3 + 2.89244618 * 0.0001 * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * np.minimum(df_protonRecCD.Ptheta, 60) - 2.24699931*0.1 * np.minimum(df_protonRecCD.Ptheta, 60)**2 + 1.49390960*0.001*np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = -5.79024055*10 + 4.67197531 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 0.140156897 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 + 1.85853057 * 10**(-3) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 - 9.19989908 * 10**(-6) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff_CD = 2.99700765*1000 - 2.18027982 * 10**2 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 5.84757503 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 6.80409195 * 0.01 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 + 2.89244618 * 0.0001 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff2_CD = -1.82237904*100 + 1.10153549 * 10 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) - 2.24699931*0.1 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 + 1.49390960*0.001*np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
 
         CorrectedPtheta_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Ptheta"]
 
-        const_CD = 7.58761670 - 5.28224578*0.1 * np.minimum(df_protonRecCD.Ptheta, 60) +  1.31580117 * 0.01 * np.minimum(df_protonRecCD.Ptheta, 60)**2 -1.41738951*10**(-4) * np.minimum(df_protonRecCD.Ptheta, 60)**3 + 5.62884363*10**(-7) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * np.minimum(df_protonRecCD.Ptheta, 60) + 2.57187193*10**(2) * np.minimum(df_protonRecCD.Ptheta, 60)**2 - 3.31379317 * np.minimum(df_protonRecCD.Ptheta, 60)**3 + 1.56896621*10**(-2) * np.minimum(df_protonRecCD.Ptheta, 60)**4
-        coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * np.minimum(df_protonRecCD.Ptheta, 60) + 1.56575252*10**(-1) * np.minimum(df_protonRecCD.Ptheta, 60)**2 -7.71489734*10**(-4) * np.minimum(df_protonRecCD.Ptheta, 60)**3
+        const_CD = 7.58761670 - 5.28224578*0.1 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) +  1.31580117 * 0.01 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 -1.41738951*10**(-4) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 + 5.62884363*10**(-7) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff_CD = 1.07644097*10**(5) - 8.67994639*10**(3) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 2.57187193*10**(2) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 - 3.31379317 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3 + 1.56896621*10**(-2) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**4
+        coeff2_CD =  1.92263184*10**(2) -1.00870704 * 10 * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40) + 1.56575252*10**(-1) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**2 -7.71489734*10**(-4) * np.maximum(np.minimum(df_protonRecCD.Ptheta, 60), 40)**3
         CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
     if len(df_protonRecFD_1):

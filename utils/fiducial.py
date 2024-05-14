@@ -805,7 +805,7 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 	df_protonRec.loc[cut_CD, "PFid"] = 0 #CD fid reset
 	if fidlevel == 'mid':
 		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23)
-		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 46.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta)
 
@@ -815,7 +815,7 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 
 	elif fidlevel == 'loose':
 		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 + 2.5)
-		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  - 2.5)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 46.5  - 2.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta + 2.5)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta - 2.5)
 
@@ -825,7 +825,7 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 
 	elif fidlevel == 'tight':
 		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 - 2.5)
-		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  + 2.5)
+		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 46.5  + 2.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta - 2.5)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta + 2.5)
 
