@@ -229,6 +229,10 @@ class root2pickle():
             df_electronRec.loc[:, "EFid"] = 1
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
+            df_protonRec.loc[:, "PCvt12theta"] = -100000
+            df_protonRec.loc[:, "PCvt12phi"] = -100000
+            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12theta"] = getTheta([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
+            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12phi"] = getPhi([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
         else:
             # perform the fiducial cuts
             df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
