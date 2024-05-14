@@ -545,17 +545,17 @@ def gammaFiducial(df_gammaRec, fidlevel = 'mid'):
 	df_gammaRec.loc[:, "GFid"] = 1
 	# H. PCAL Fid Cuts
 	if fidlevel == 'mid':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalV1<19, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395, "GFid"] = 0
 	elif fidlevel == 'loose':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19+2.5, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19+2.5, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395-2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalV1<19+2.5, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19+2.5, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395-2.5, "GFid"] = 0
 	elif fidlevel == 'tight':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19-2.5, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19-2.5, "EFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395+2.5, "EFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalV1<19-2.5, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalW1<19-2.5, "GFid"] = 0
+		df_gammaRec.loc[df_gammaRec.GcalU1>395+2.5, "GFid"] = 0
 	else:
 		print("check fidlevel {}".format(fidlevel))
 	#passGammaBetaCut
@@ -636,21 +636,21 @@ def gammaFiducial(df_gammaRec, fidlevel = 'mid'):
 	else:
 		print("check fidlevel {}".format(fidlevel))
 
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -92        + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -94.4         - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -101.1     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -103.5        - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -219       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -221.4        - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -227       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -229.4        - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 0.5897   * df_gammaRec.GcalX1 +120.7937  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.5913  * df_gammaRec.GcalX1 +114.3872     - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 107.2766 * df_gammaRec.GcalX1 -10602.9779+ 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 98.9667 * df_gammaRec.GcalX1 -10262.0167   - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalX1 <= -302.38 + adjustment) & (df_gammaRec.GcalX1 >= -313.71 - adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalX1 <= -122.5  + adjustment) & (df_gammaRec.GcalX1 >= -127.5  - adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalY1 <= -0.568   * df_gammaRec.GcalX1 -232.8     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= -0.568  * df_gammaRec.GcalX1 -236.3        - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY1 <= 98.0644  * df_gammaRec.GcalX1 +5825.4023 + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 99.9337 * df_gammaRec.GcalX1 +5098.3456    - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.4547   * df_gammaRec.GcalX1 -275.9317  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.4547  * df_gammaRec.GcalX1 -285.9317     - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -185      + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -187          - 0.25 -adjustment), "EFid"] = 0
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -92        + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -94.4         - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -101.1     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -103.5        - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -219       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -221.4        - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 1) & (df_gammaRec.GcalY1 <= 0.56575  * df_gammaRec.GcalX1 -227       + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.56575 * df_gammaRec.GcalX1 -229.4        - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 0.5897   * df_gammaRec.GcalX1 +120.7937  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.5913  * df_gammaRec.GcalX1 +114.3872     - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 2) & (df_gammaRec.GcalY1 <= 107.2766 * df_gammaRec.GcalX1 -10602.9779+ 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 98.9667 * df_gammaRec.GcalX1 -10262.0167   - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 3) & (df_gammaRec.GcalX1 <= -302.38 + adjustment) & (df_gammaRec.GcalX1 >= -313.71 - adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalX1 <= -122.5  + adjustment) & (df_gammaRec.GcalX1 >= -127.5  - adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 4) & (df_gammaRec.GcalY1 <= -0.568   * df_gammaRec.GcalX1 -232.8     + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= -0.568  * df_gammaRec.GcalX1 -236.3        - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY1 <= 98.0644  * df_gammaRec.GcalX1 +5825.4023 + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 99.9337 * df_gammaRec.GcalX1 +5098.3456    - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.4547   * df_gammaRec.GcalX1 -275.9317  + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.4547  * df_gammaRec.GcalX1 -285.9317     - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -185      + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -187          - 0.25 -adjustment), "GFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 6) & (df_gammaRec.GcalY1 <= 0.591377  * df_gammaRec.GcalX1 -193.3    + 0.25 + adjustment) & (df_gammaRec.GcalY1 >= 0.591377* df_gammaRec.GcalX1 -195.5        - 0.25 -adjustment), "GFid"] = 0
 
-	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25 + adjustment) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25 -adjustment), "EFid"] = 0
+	df_gammaRec.loc[ (df_gammaRec.Gsector == 5) & (df_gammaRec.GcalY3 <= -0.5841  * df_gammaRec.GcalX3 -252.11    + 0.25 + adjustment) & (df_gammaRec.GcalY3 >= -0.5775 * df_gammaRec.GcalX3 -263.2072    - 0.25 -adjustment), "GFid"] = 0
 
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
@@ -776,22 +776,22 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, dcsec_l1)
 	calc_min_l1 = -0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	calc_max_l1 =  0.50 * (x_rot_l1 + 72 + adjustment_layer1)
-	df_protonRec.loc[y_rot_l1 < calc_min_l1, "EFid"] = 0
-	df_protonRec.loc[y_rot_l1 > calc_max_l1, "EFid"] = 0
+	df_protonRec.loc[y_rot_l1 < calc_min_l1, "PFid"] = 0
+	df_protonRec.loc[y_rot_l1 > calc_max_l1, "PFid"] = 0
 
 	dcsec_l2 = determineSector(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
 	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, dcsec_l2)
 	calc_min_l2 = -0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	calc_max_l2 =  0.505 * (x_rot_l2 + 114 + adjustment_layer2)
-	df_protonRec.loc[y_rot_l2 < calc_min_l2, "EFid"] = 0
-	df_protonRec.loc[y_rot_l2 > calc_max_l2, "EFid"] = 0
+	df_protonRec.loc[y_rot_l2 < calc_min_l2, "PFid"] = 0
+	df_protonRec.loc[y_rot_l2 > calc_max_l2, "PFid"] = 0
 
 	dcsec_l3 = determineSector(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity)
 	x_rot_l3, y_rot_l3 = rotateDCHitPosition(df_protonRec.PDc3Hitx, df_protonRec.PDc3Hity, dcsec_l3)
 	calc_min_l3 = -0.495 * (x_rot_l3 + 180 + adjustment_layer3)
 	calc_max_l3 =  0.495 * (x_rot_l3 + 180 + adjustment_layer3)
-	df_protonRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
-	df_protonRec.loc[y_rot_l3 > calc_max_l3, "EFid"] = 0
+	df_protonRec.loc[y_rot_l3 < calc_min_l3, "PFid"] = 0
+	df_protonRec.loc[y_rot_l3 > calc_max_l3, "PFid"] = 0
 
 	#proton CVT fiducial cut
 	df_protonRec.loc[:, "PCvt12theta"] = -100000
@@ -808,25 +808,35 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta)
+
+		cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
+		cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
+		cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
+
 	elif fidlevel == 'loose':
 		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 + 2.5)
 		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  - 2.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta + 2.5)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta - 2.5)
+
+		cut_gaps1 = ~((df_protonRec.PCvt12phi>-95 +2.5) & (df_protonRec.PCvt12phi<-80-2.5))
+		cut_gaps2 = ~((df_protonRec.PCvt12phi>25 +2.5) & (df_protonRec.PCvt12phi<40-2.5))
+		cut_gaps3 = ~((df_protonRec.PCvt12phi>143 +2.5) & (df_protonRec.PCvt12phi<158-2.5))
+
 	elif fidlevel == 'tight':
 		cut_right = cut_CD  & (df_protonRec.Ptheta      < 64.23 - 2.5)
 		cut_bottom = cut_CD & (df_protonRec.PCvt12theta > 44.5  + 2.5)
 		cut_sidel = cut_CD  & (df_protonRec.PCvt12theta < -2.942 + 1.274*df_protonRec.Ptheta - 2.5)
 		cut_sider = cut_CD  & (df_protonRec.PCvt12theta > -3.523 + 1.046*df_protonRec.Ptheta + 2.5)
+
+		cut_gaps1 = ~((df_protonRec.PCvt12phi>-95-2.5) & (df_protonRec.PCvt12phi<-80+2.5))
+		cut_gaps2 = ~((df_protonRec.PCvt12phi>25-2.5) & (df_protonRec.PCvt12phi<40+2.5))
+		cut_gaps3 = ~((df_protonRec.PCvt12phi>143-2.5) & (df_protonRec.PCvt12phi<158+2.5))
 	else:
 		print("check fidlevel {}".format(fidlevel))
 
 
 	cut_trapezoid = cut_CD & cut_right & cut_bottom & cut_sidel & cut_sider
-
-	cut_gaps1 = ~((df_protonRec.PCvt12phi>-95) & (df_protonRec.PCvt12phi<-80))
-	cut_gaps2 = ~((df_protonRec.PCvt12phi>25) & (df_protonRec.PCvt12phi<40))
-	cut_gaps3 = ~((df_protonRec.PCvt12phi>143) & (df_protonRec.PCvt12phi<158))
 	cut_gaps = cut_CD & cut_gaps1 & cut_gaps2 & cut_gaps3
 	cut_total = cut_gaps & cut_trapezoid
 
