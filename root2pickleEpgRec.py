@@ -430,6 +430,11 @@ class root2pickle():
                 df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
                 # #g1
                 # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
+            else:
+                df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                                 how='inner', on='event', suffixes=("", "2"))
+                df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+                df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
 
         if detRes:
             df_protonRec.loc[:, "PDc3theta"] = -100000
