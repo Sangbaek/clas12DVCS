@@ -19,7 +19,7 @@ class root2pickle():
     '''class to read root to make epg pairs'''
     def __init__(self, fname, entry_start = None, entry_stop = None, pol = "inbending", 
         gen = "dvcs", raw = False, detRes = False, width = "mid", 
-        smearing = 1, nofid = False, nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid', 
+        smearing = 1, nofid = False, nocorr = False, noeloss = False, nopcorr = False, nogcorr =False, fidlevel = 'mid', 
         allowsamesector = False, allowduplicates = False, ebeam = 10.604, efficiency = False):
         '''
             clas init.
@@ -62,7 +62,7 @@ class root2pickle():
         self.readBinScheme()
         self.readEPGG(entry_start = entry_start, entry_stop = entry_stop, pol = pol, 
             gen = gen, detRes = detRes, smearing = smearing, 
-            nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr, fidlevel = fidlevel)
+            nofid = nofid, nocorr = nocorr, noeloss = noeloss, nopcorr = nopcorr, nogcorr = nogcorr, fidlevel = fidlevel)
         self.saveDVCSvars()
         self.saveDVpi0vars()
         if not raw:
@@ -119,7 +119,7 @@ class root2pickle():
 
     def readEPGG(self, entry_start = None, entry_stop = None, pol = "inbending", 
         gen = "dvcsnorad", detRes = False, smearing = 1, 
-        nofid = False, nocorr = False, noeloss = False, nopcorr = False, fidlevel = 'mid'):
+        nofid = False, nocorr = False, noeloss = False, nopcorr = False, nogcorr = False, fidlevel = 'mid'):
         '''save data into df_epg, df_epgg for parent class epg'''
         self.readFile()
 
@@ -413,21 +413,23 @@ class root2pickle():
             # df_electronRec = electronMomentumCorrection(pol, df_electronRec)
             #e2
             df_electronRec = electronMomentumSmearing(df_electronRec, smearing = smearing)
-            #p1
-            if not args.noeloss:
+            if not noeloss:
+                #p1
                 df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
-            # # #p2
-            # # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
-            #p3
-            df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = smearing)
-            # #g2
-            df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = smearing)
-            df_gg = pd.merge(df_gammaRec, df_gammaRec,
-                             how='inner', on='event', suffixes=("", "2"))
-            df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
-            df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
-            # # #g1
-            # # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
+            if not nopcorr:
+                # #p2
+                # df_protonRec = protonMomentumCorrection(pol, df_protonRec)
+                #p3
+                df_protonRec = protonMomentumSmearing(pol, df_protonRec, smearing = smearing)
+            if not nogcorr:
+                #g2
+                df_gammaRec  = gammaMomentumSmearing(df_gammaRec, smearing = smearing)
+                df_gg = pd.merge(df_gammaRec, df_gammaRec,
+                                 how='inner', on='event', suffixes=("", "2"))
+                df_gg = df_gg[df_gg["GIndex"] < df_gg["GIndex2"]]
+                df_gg = df_gg.drop(['GIndex', 'GIndex2'], axis = 1)
+                # #g1
+                # df_gg, df_gammaRec  = gammaMomentumCorrection(pol, df_gg, df_gammaRec)
 
         if detRes:
             df_protonRec.loc[:, "PDc3theta"] = -100000
@@ -1356,6 +1358,7 @@ if __name__ == "__main__":
     parser.add_argument("-nc","--nocorr", help="no momentum correction", action = "store_true")
     parser.add_argument("-ne","--noeloss", help="no energy loss correction", action = "store_true")
     parser.add_argument("-np","--nopcorr", help="no proton correction at all", action = "store_true")
+    parser.add_argument("-ng","--nogcorr", help="no gamma correction at all", action = "store_true")
     parser.add_argument("-fl","--fidlevel", help="fiducial cut level", default = 'mid')
     parser.add_argument("-as","--allowsamesector", help="allow same sector conditions", action = "store_true")
     parser.add_argument("-ad","--allowduplicates", help="allow duplicates", action = "store_true")
@@ -1374,7 +1377,7 @@ if __name__ == "__main__":
     be = float(args.beam)
     converter = root2pickle(args.fname, entry_start = args.entry_start, entry_stop = args.entry_stop, 
         pol = args.polarity, gen = args.generator, raw = args.raw, detRes = args.detRes, 
-        width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss, nopcorr = args.nopcorr,
+        width = args.width, smearing = smearingFactor, nofid = args.nofid, nocorr = args.nocorr, noeloss = args.noeloss, nopcorr = args.nopcorr,nogcorr = args.nogcorr,
         fidlevel = args.fidlevel, allowsamesector = args.allowsamesector, allowduplicates = args.allowduplicates, ebeam = be, efficiency = args.efficiency)
     df = converter.df
 
