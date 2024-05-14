@@ -264,7 +264,8 @@ class root2pickle():
             # #e2
             # df_electronRec = electronMomentumSmearing(df_electronRec)
             #p1
-            df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
+            if not args.noeloss:
+                df_protonRec = protonEnergyLossCorr(pol, df_protonRec)
             # #p2
             df_protonRec = protonMomentumCorrection(pol, df_protonRec)
             # #p3
