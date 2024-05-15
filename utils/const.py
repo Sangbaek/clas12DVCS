@@ -1973,3 +1973,5 @@ luminosity_outb  =  charge_outb * 10**(-9) * target_thickness / electric_charge 
 luminosity_outb_5nA  =  charge_outb_5nA * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
 luminosity_outb_40nA  =  charge_outb_40nA * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
 luminosity_outb_50nA  =  charge_outb_50nA * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
+
+schema_suffices = ["1_nocorr_nofid", "2_nocorr", "3_electron_corr_only", "4_electron_corr_proton_eloss", "5_nopcorr", "6_all_corr", "7_nominal", "8_2sigma", "9_4sigma", "10_smearing110", "11_smearing90", "12_loosefid", "13_tightfid", "14_bkgmerging"]
