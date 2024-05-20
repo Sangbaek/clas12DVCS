@@ -545,22 +545,24 @@ def gammaFiducial(df_gammaRec, fidlevel = 'mid'):
 	df_gammaRec.loc[:, "GFid"] = 1
 	# H. PCAL Fid Cuts
 	if fidlevel == 'mid':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395, "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalV1<19) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalW1<19) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalU1>395) & (df_gammaRec.Gsector<7), "GFid"] = 0
 	elif fidlevel == 'loose':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19+2.5, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19+2.5, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395-2.5, "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalV1<19+2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalW1<19+2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalU1>395-2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
 	elif fidlevel == 'tight':
-		df_gammaRec.loc[df_gammaRec.GcalV1<19-2.5, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalW1<19-2.5, "GFid"] = 0
-		df_gammaRec.loc[df_gammaRec.GcalU1>395+2.5, "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalV1<19-2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalW1<19-2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
+		df_gammaRec.loc[(df_gammaRec.GcalU1>395+2.5) & (df_gammaRec.Gsector<7), "GFid"] = 0
 	else:
 		print("check fidlevel {}".format(fidlevel))
 	#passGammaBetaCut
 	df_gammaRec.loc[df_gammaRec.Gbeta <= min_Gbeta, "GFid"] = 0
 	df_gammaRec.loc[df_gammaRec.Gbeta >= max_Gbeta, "GFid"] = 0
+
+	df_gammaRec = copy(df_gammaRec.loc[df_gammaRec.GFid==1, :])
 
 	df_gammaRec.loc[df_gammaRec.Gsector<7, "GFid"] = 0
 
