@@ -252,7 +252,7 @@ def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False):
     my_env = os.environ.copy()
     path = "/home/sangbaek/printDVCSBH/"
     if local:
-        path = "/Users/sangbaek/CLAS12/dvcs/print/"
+        path = "/Users/sangbaek.lee/CLAS12/dvcs/print/"
     my_env["PATH"] = "{}:".format(path) + my_env["PATH"]
     my_env["CLASDVCS_PDF"] = "{}".format(path)
     if globalfit:
@@ -287,7 +287,7 @@ def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
 def printBHonly(xB, Q2, t, phi, globalfit = True, local = False):
     path = "/home/sangbaek/printDVCSBH/"
     if local:
-        path = "/Users/sangbaek/CLAS12/dvcs/print/"
+        path = "/Users/sangbaek.lee/CLAS12/dvcs/print/"
     if globalfit:
         dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit'])
     else:

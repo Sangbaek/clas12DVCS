@@ -71,6 +71,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	dcsec_l1 = determineSector(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity)
 	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_electronRec.EDc1Hitx, df_electronRec.EDc1Hity, dcsec_l1)
+	x_rot_l1 = x_rot_l1 - 100
 	calc_min_l1 = -0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	calc_max_l1 =  0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	df_electronRec.loc[y_rot_l1 < calc_min_l1, "EFid"] = 0
@@ -78,6 +79,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	dcsec_l2 = determineSector(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity)
 	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_electronRec.EDc2Hitx, df_electronRec.EDc2Hity, dcsec_l2)
+	x_rot_l2 = x_rot_l2 - 160
 	calc_min_l2 = -0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	calc_max_l2 =  0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	df_electronRec.loc[y_rot_l2 < calc_min_l2, "EFid"] = 0
@@ -85,6 +87,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	dcsec_l3 = determineSector(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity)
 	x_rot_l3, y_rot_l3 = rotateDCHitPosition(df_electronRec.EDc3Hitx, df_electronRec.EDc3Hity, dcsec_l3)
+	x_rot_l3 = x_rot_l3 - 230
 	calc_min_l3 = -0.495 * (x_rot_l3 + 180 + adjustment_layer3)
 	calc_max_l3 =  0.495 * (x_rot_l3 + 180 + adjustment_layer3)
 	df_electronRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
@@ -776,6 +779,7 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 
 	dcsec_l1 = determineSector(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity)
 	x_rot_l1, y_rot_l1 = rotateDCHitPosition(df_protonRec.PDc1Hitx, df_protonRec.PDc1Hity, dcsec_l1)
+	x_rot_l1 = x_rot_l1 - 100
 	calc_min_l1 = -0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	calc_max_l1 =  0.50 * (x_rot_l1 + 72 + adjustment_layer1)
 	df_protonRec.loc[y_rot_l1 < calc_min_l1, "PFid"] = 0
@@ -783,6 +787,7 @@ def protonFiducial(df_protonRec, fidlevel = 'mid'):
 
 	dcsec_l2 = determineSector(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity)
 	x_rot_l2, y_rot_l2 = rotateDCHitPosition(df_protonRec.PDc2Hitx, df_protonRec.PDc2Hity, dcsec_l2)
+	x_rot_l2 = x_rot_l2 - 160
 	calc_min_l2 = -0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	calc_max_l2 =  0.505 * (x_rot_l2 + 114 + adjustment_layer2)
 	df_protonRec.loc[y_rot_l2 < calc_min_l2, "PFid"] = 0
