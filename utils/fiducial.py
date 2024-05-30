@@ -44,16 +44,16 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 		df_electronRec.loc[df_electronRec.Evz >  1.5, "EFid"] = 0
 	else:
 		print("check fidlevel {}".format(fidlevel))
-	# F. Minimum PCAL energy Threshold cut
-	if fidlevel == 'mid':
-		df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
-	elif fidlevel == 'loose':
-		df_electronRec.loc[df_electronRec.Eedep1 < 0.06, "EFid"] = 0
-	elif fidlevel == 'tight':
-		df_electronRec.loc[df_electronRec.Eedep1 < 0.08, "EFid"] = 0
-	else:
-		print("check fidlevel {}".format(fidlevel))
-	# G. DC Fiducial Cuts
+	# # F. Minimum PCAL energy Threshold cut # removed at the latest inclusive analysis
+	# if fidlevel == 'mid':
+	# 	df_electronRec.loc[df_electronRec.Eedep1 < 0.07, "EFid"] = 0
+	# elif fidlevel == 'loose':
+	# 	df_electronRec.loc[df_electronRec.Eedep1 < 0.06, "EFid"] = 0
+	# elif fidlevel == 'tight':
+	# 	df_electronRec.loc[df_electronRec.Eedep1 < 0.08, "EFid"] = 0
+	# else:
+	# 	print("check fidlevel {}".format(fidlevel))
+	# F. DC Fiducial Cuts
 	if fidlevel == 'mid':
 		adjustment_layer1 = 0
 		adjustment_layer2 = 0
@@ -89,7 +89,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 	calc_max_l3 =  0.495 * (x_rot_l3 + 180 + adjustment_layer3)
 	df_electronRec.loc[y_rot_l3 < calc_min_l3, "EFid"] = 0
 	df_electronRec.loc[y_rot_l3 > calc_max_l3, "EFid"] = 0
-	# # H. PCAL Fid Cuts
+	# G. PCAL Fid Cuts
 	if fidlevel == 'mid':
 		df_electronRec.loc[df_electronRec.EcalV1<19, "EFid"] = 0
 		df_electronRec.loc[df_electronRec.EcalW1<19, "EFid"] = 0
@@ -104,7 +104,7 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 		df_electronRec.loc[df_electronRec.EcalU1>395+2.5, "EFid"] = 0
 	else:
 		print("check fidlevel {}".format(fidlevel))
-	# I. ECAL SF Cut
+	# H. ECAL SF Cut
 	A = [0.286, 0.280, 0.275, 0.273, 0.271, 0.276]
 	B = [-0.040, -0.038, -0.034, -0.033, -0.032, -0.034]
 	C = [-0.0030, -0.0012, -0.0014, -0.0007, 0.0005, -0.0014]
@@ -138,16 +138,16 @@ def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
 
 	if fidlevel == 'mid':
 		df_electronRec.loc[df_electronRec.ESamplFrac < mean - 3.5*sigma, "EFid"]  = 0
-		df_electronRec.loc[df_electronRec.ESamplFrac > mean + 3.5*sigma, "EFid"]  = 0
+		# df_electronRec.loc[df_electronRec.ESamplFrac > mean + 3.5*sigma, "EFid"]  = 0
 	elif fidlevel == 'loose':
 		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (3.5+0.5)*sigma, "EFid"]  = 0
-		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5+0.5)*sigma, "EFid"]  = 0
+		# df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5+0.5)*sigma, "EFid"]  = 0
 	elif fidlevel == 'tight':
 		df_electronRec.loc[df_electronRec.ESamplFrac < mean - (3.5-0.5)*sigma, "EFid"]  = 0
-		df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5-0.5)*sigma, "EFid"]  = 0
+		# df_electronRec.loc[df_electronRec.ESamplFrac > mean + (3.5-0.5)*sigma, "EFid"]  = 0
 	else:
 		print("check fidlevel {}".format(fidlevel))
-	#J. Pion Separtaion Cut
+	# I. Pion Separtaion Cut
 	eleFidCut = df_electronRec.loc[:, ["Ep", "Esector", "Eedep1", "Eedep2"]]
 	eleFidCut.loc[:, "a"] = 0
 	eleFidCut.loc[:, "b"] = 0
