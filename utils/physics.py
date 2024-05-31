@@ -70,6 +70,14 @@ def rotateDCHitPosition(x, y, sec):
     y1_rot = y * np.cos(ang) - x * np.sin(ang)
     return x1_rot, y1_rot
 
+def rotateDCHitPosition_alongY(xx, zz):
+    s = np.sin(-25/57.2958);
+    c = np.cos(-25/57.2958);
+    fX, fZ = copy(xx), copy(zz)
+    fZ = c*zz - s*fX;
+    fX = s*zz + c*fX;
+    return fX, fZ
+
 def determineSector(x, y):
     phi = getPhi([x, y])
     sector_cond = [(phi < 30) & (phi >= -30), (phi < 90) & (phi >= 30), (phi < 150) & (phi >= 90), (phi >= 150) | (phi < -150), (phi < -90) & (phi >= -150), (phi < -30) & (phi >= -90)]
