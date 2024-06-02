@@ -13,14 +13,13 @@ warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning
 
 def main(mode):
 
-	suffix = suffices[mode]
+	suffix = schema_suffices[mode]
 
-	if not os.path.exists("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_km15/excl_level_1/pkl_{}".format(suffix)):
+	if not os.path.exists("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/pkl_{}".format(suffix)):
 		return
 
 	print(suffix)
 
-	df_summary = pd.DataFrame()
 	binnum, bin_volume = np.loadtxt('volume_list.csv', skiprows = 1, delimiter = ',').T
 	bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
 
@@ -31,7 +30,7 @@ def main(mode):
 	df_merged = []
 	for runnum in runlist_inb:
 		print(runnum)
-		df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/pkl{}/{}".format(suffix, runnum))
+		df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/pkl_{}/{}".format(suffix, runnum))
 		for i in range(339):
 			filenum    = 5*i
 			qadb       = qaTree.loc[qaTree.index == runnum, filenum]
@@ -54,17 +53,17 @@ def main(mode):
 	df_merged = pd.concat(df_merged)
 	df_merged = df_merged.reset_index()
 	df_merged = df_merged.loc[:, df_merged.columns[1:]]
-	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/pkl{}/fall2018_inb.pkl'.format(suffix))
+	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/pkl_{}/fall2018_inb.pkl'.format(suffix))
 
-	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/restructured{}/fall2018_inb.pkl'.format(suffix))
+	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/restructured_{}'.format(suffix), exist_ok=True)
 	for integrated_binnum in range(1, 147+1):
-		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/restructured{}/{}.pkl'.format(suffix, integrated_binnum))
+		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/dvcs/excl_level_2/restructured_{}/{}.pkl'.format(suffix, integrated_binnum))
 
 	#Exp - fall 2018 inbending ep->epgg
 	df_merged = []
 	for runnum in runlist_inb:
 		print(runnum)
-		df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/pkl{}/{}".format(suffix, runnum))
+		df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/pkl_{}/{}".format(suffix, runnum))
 		for i in range(339):
 			filenum    = 5*i
 			qadb       = qaTree.loc[qaTree.index == runnum, filenum]
@@ -87,11 +86,11 @@ def main(mode):
 	df_merged = pd.concat(df_merged)
 	df_merged = df_merged.reset_index()
 	df_merged = df_merged.loc[:, df_merged.columns[1:]]
-	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/pkl{}/fall2018_inb.pkl'.format(suffix))
+	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/pkl_{}/fall2018_inb.pkl'.format(suffix))
 
-	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/restructured{}/fall2018_inb.pkl'.format(suffix))
+	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/restructured_{}'.format(suffix), exist_ok=True)
 	for integrated_binnum in range(1, 147+1):
-		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/restructured{}/{}.pkl'.format(suffix, integrated_binnum))
+		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_inb/pi0/excl_level_2/restructured_{}/{}.pkl'.format(suffix, integrated_binnum))
 
 	#Exp - fall 2018 outbending ep->epg
 	polarity = "outb"
@@ -101,7 +100,7 @@ def main(mode):
 	for runnum in runlist_outb:
 		print(runnum)
 		try:
-			df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/pkl{}/{}".format(suffix, runnum))
+			df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/pkl_{}/{}".format(suffix, runnum))
 		except:
 			continue
 		for i in range(346):
@@ -126,18 +125,18 @@ def main(mode):
 	df_merged = pd.concat(df_merged)
 	df_merged = df_merged.reset_index()
 	df_merged = df_merged.loc[:, df_merged.columns[1:]]
-	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/pkl{}/fall2018_outb.pkl'.format(suffix))
+	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/pkl_{}/fall2018_outb.pkl'.format(suffix))
 
-	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/restructured{}/fall2018_outb.pkl'.format(suffix))
+	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/restructured_{}'.format(suffix), exist_ok=True)
 	for integrated_binnum in range(1, 147+1):
-		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/restructured{}/{}.pkl'.format(suffix, integrated_binnum))
+		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/dvcs/excl_level_2/restructured_{}/{}.pkl'.format(suffix, integrated_binnum))
 
 	#Exp - fall 2018 outbending ep->epgg
 	df_merged = []
 	for runnum in runlist_outb:
 		print(runnum)
 		try:
-			df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/pkl{}/{}".format(suffix, runnum))
+			df = pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/pkl_{}/{}".format(suffix, runnum))
 		except:
 			continue
 		if not len(df):
@@ -164,11 +163,11 @@ def main(mode):
 	df_merged = pd.concat(df_merged)
 	df_merged = df_merged.reset_index()
 	df_merged = df_merged.loc[:, df_merged.columns[1:]]
-	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/pkl{}/fall2018_outb.pkl'.format(suffix))
+	df_merged.to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/pkl_{}/fall2018_outb.pkl'.format(suffix))
 
-	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/restructured{}/fall2018_outb.pkl'.format(suffix))
+	os.makedirs('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/restructured_{}'.format(suffix), exist_ok=True)
 	for integrated_binnum in range(1, 147+1):
-		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/restructured{}/{}.pkl'.format(suffix, integrated_binnum))
+		df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle('/volatile/clas12/sangbaek/dvcs_related/exp_fall2018_outb/pi0/excl_level_2/restructured_{}/{}.pkl'.format(suffix, integrated_binnum))
 
 
 	return
@@ -176,7 +175,7 @@ def main(mode):
 
 if __name__ == "__main__":
 
-	for mode in range(14):
+	for mode in range(1, 14):
 		main(mode)
 
 
