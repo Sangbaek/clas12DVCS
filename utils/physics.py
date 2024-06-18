@@ -264,9 +264,9 @@ def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False):
     my_env["PATH"] = "{}:".format(path) + my_env["PATH"]
     my_env["CLASDVCS_PDF"] = "{}".format(path)
     if globalfit:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--globalfit'], env = my_env)
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--ycol', '0.0001' '--globalfit'], env = my_env)
     else:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'], env = my_env)
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101'] '--ycol', '0.0001', env = my_env)
     try:
         if pol == 0:
             i = 0
