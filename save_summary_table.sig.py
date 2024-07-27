@@ -45,12 +45,25 @@ def main(mode, model, polarity):
 				n_entry = 0
 				n_entry_corrected = 0
 				n_entry_corrected_err = 0
+				n_entry_CDFT = 0
+				n_entry_corrected_CDFT = 0
+				n_entry_corrected_err_CDFT = 0
+				n_entry_CD = 0
+				n_entry_corrected_CD = 0
+				n_entry_corrected_err_CD = 0
+				n_entry_FD = 0
+				n_entry_corrected_FD = 0
+				n_entry_corrected_err_FD = 0
 				xB_avg = 0
 				Q2_avg = 0
 				t_avg  = 0
 				phi_avg = 0
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry,
-					"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err, "xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
+					"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err,
+					"n_entry_CDFT": n_entry_CDFT, "n_entry_corrected_CDFT": n_entry_corrected_CDFT, "n_entry_corrected_err_CDFT": n_entry_corrected_err_CDFT,
+					"n_entry_CD": n_entry_CD, "n_entry_corrected_CD": n_entry_corrected_CD, "n_entry_corrected_err_CD": n_entry_corrected_err_CD,
+					"n_entry_FD": n_entry_FD, "n_entry_corrected_FD": n_entry_corrected_FD, "n_entry_corrected_err_FD": n_entry_corrected_err_FD,
+					 "xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 				df_summary   = pd.concat([df_summary, this_row])
 			continue
 		for phi_binnum in range(24):
@@ -60,6 +73,15 @@ def main(mode, model, polarity):
 				n_entry = 0
 				n_entry_corrected = 0
 				n_entry_corrected_err = 0
+				n_entry_CDFT = 0
+				n_entry_corrected_CDFT = 0
+				n_entry_corrected_err_CDFT = 0
+				n_entry_CD = 0
+				n_entry_corrected_CD = 0
+				n_entry_corrected_err_CD = 0
+				n_entry_FD = 0
+				n_entry_corrected_FD = 0
+				n_entry_corrected_err_FD = 0
 				xB_avg  = 0
 				Q2_avg  = 0
 				t_avg   = 0
@@ -68,12 +90,25 @@ def main(mode, model, polarity):
 				n_entry      = len(df_this_bin)
 				n_entry_corrected = np.sum(df_this_bin.weights)
 				n_entry_corrected_err = np.sqrt(np.sum(df_this_bin.weights**2))
+				n_entry_CDFT               = len(df_this_bin.loc[df_this_bin.config==3])
+				n_entry_corrected_CDFT     = np.sum(df_this_bin.loc[df_this_bin.config==3].weights)
+				n_entry_corrected_err_CDFT = np.sqrt(np.sum(df_this_bin.loc[df_this_bin.config==3].weights**2))
+				n_entry_CD                 = len(df_this_bin.loc[df_this_bin.config==2])
+				n_entry_corrected_CD       = np.sum(df_this_bin.loc[df_this_bin.config==2].weights)
+				n_entry_corrected_err_CD   = np.sqrt(np.sum(df_this_bin.loc[df_this_bin.config==2].weights**2))
+				n_entry_FD                 = len(df_this_bin.loc[df_this_bin.config==1])
+				n_entry_corrected_FD       = np.sum(df_this_bin.loc[df_this_bin.config==1].weights)
+				n_entry_corrected_err_FD   = np.sqrt(np.sum(df_this_bin.loc[df_this_bin.config==1].weights**2))
 				xB_avg      = np.sum(df_this_bin.weights * df_this_bin.xB)/n_entry_corrected
 				Q2_avg      = np.sum(df_this_bin.weights * df_this_bin.Q2)/n_entry_corrected
 				t_avg       = np.sum(df_this_bin.weights * df_this_bin.t1)/n_entry_corrected
 				phi_avg     = np.sum(df_this_bin.weights * df_this_bin.phi1)/n_entry_corrected
 			this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry,
-				"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err, "xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
+				"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err,
+				"n_entry_CDFT": n_entry_CDFT, "n_entry_corrected_CDFT": n_entry_corrected_CDFT, "n_entry_corrected_err_CDFT": n_entry_corrected_err_CDFT,
+				"n_entry_CD": n_entry_CD, "n_entry_corrected_CD": n_entry_corrected_CD, "n_entry_corrected_err_CD": n_entry_corrected_err_CD,
+				"n_entry_FD": n_entry_FD, "n_entry_corrected_FD": n_entry_corrected_FD, "n_entry_corrected_err_FD": n_entry_corrected_err_FD,
+				 "xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 
 			df_summary   = pd.concat([df_summary, this_row])
 

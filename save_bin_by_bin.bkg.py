@@ -74,7 +74,7 @@ def main(mode, pi0_directory):
 
 if __name__ == "__main__":
 
-	for mode in range(1, 14):
+	for mode in [11, 12]:#range(1, 14):
 		main(mode, "sim_rad_rec_fall2018_inb/pi0_1gamma")
 		main(mode, "sim_rad_rec_fall2018_inb/pi0_2gamma")
 		main(mode, "sim_rad_rec_fall2018_outb/pi0_1gamma")

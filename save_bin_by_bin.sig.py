@@ -174,7 +174,7 @@ def main(mode, sig_directory, gen_directory):
 
 if __name__ == "__main__":
 
-	for mode in range(1, 14):
+	for mode in [11, 12]:#range(11, 12+1):
 		main(mode, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3")
 		main(mode, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3")
 		main(mode, "sim_rad_rec_fall2018_inb/dvcs_vgg", "dvcs_vgg/fall2018_inb")

@@ -29,11 +29,15 @@ def main(mode):
 				for phi_binnum in range(24):
 					directory    = "sim_rad_rec_fall2018_inb/pi0_1gamma/{}".format(chunk)
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 					this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+					"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 					df_summary   = pd.concat([df_summary, this_row])
 				continue
@@ -42,17 +46,24 @@ def main(mode):
 				directory    = "sim_rad_rec_fall2018_inb/pi0_1gamma/{}".format(chunk)
 				if not len(df_this_bin):
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 				else:
 					n_entry      = len(df_this_bin)
+					n_entry_CDFT = len(df_this_bin.loc[df_this_bin.config == 3, :])
+					n_entry_CD   = len(df_this_bin.loc[df_this_bin.config == 2, :])
+					n_entry_FD   = len(df_this_bin.loc[df_this_bin.config == 1, :])
 					xB_avg      = np.mean(df_this_bin.xB)
 					Q2_avg      = np.mean(df_this_bin.Q2)
 					t_avg       = np.mean(df_this_bin.t1)
 					phi_avg     = np.mean(df_this_bin.phi1)
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+				"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 				df_summary   = pd.concat([df_summary, this_row])
 
@@ -65,11 +76,15 @@ def main(mode):
 				for phi_binnum in range(24):
 					directory    = "sim_rad_rec_fall2018_inb/pi0_2gamma/{}".format(chunk)
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 					this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+					"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 					df_summary   = pd.concat([df_summary, this_row])
 				continue
@@ -78,17 +93,24 @@ def main(mode):
 				directory    = "sim_rad_rec_fall2018_inb/pi0_2gamma/{}".format(chunk)
 				if not len(df_this_bin):
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 				else:
 					n_entry      = len(df_this_bin)
+					n_entry_CDFT = len(df_this_bin.loc[df_this_bin.config == 3, :])
+					n_entry_CD   = len(df_this_bin.loc[df_this_bin.config == 2, :])
+					n_entry_FD   = len(df_this_bin.loc[df_this_bin.config == 1, :])
 					xB_avg      = np.mean(df_this_bin.xB)
 					Q2_avg      = np.mean(df_this_bin.Q2)
 					t_avg       = np.mean(df_this_bin.t1)
 					phi_avg     = np.mean(df_this_bin.phi1)
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+				"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 				df_summary   = pd.concat([df_summary, this_row])
 
@@ -102,11 +124,15 @@ def main(mode):
 				for phi_binnum in range(24):
 					directory    = "sim_rad_rec_fall2018_outb/pi0_1gamma/{}".format(chunk)
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 					this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+					"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 					df_summary   = pd.concat([df_summary, this_row])
 				continue
@@ -115,17 +141,24 @@ def main(mode):
 				directory    = "sim_rad_rec_fall2018_outb/pi0_1gamma/{}".format(chunk)
 				if not len(df_this_bin):
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 				else:
 					n_entry      = len(df_this_bin)
+					n_entry_CDFT = len(df_this_bin.loc[df_this_bin.config == 3, :])
+					n_entry_CD   = len(df_this_bin.loc[df_this_bin.config == 2, :])
+					n_entry_FD   = len(df_this_bin.loc[df_this_bin.config == 1, :])
 					xB_avg      = np.mean(df_this_bin.xB)
 					Q2_avg      = np.mean(df_this_bin.Q2)
 					t_avg       = np.mean(df_this_bin.t1)
 					phi_avg     = np.mean(df_this_bin.phi1)
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+				"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 				df_summary   = pd.concat([df_summary, this_row])
 
@@ -138,11 +171,15 @@ def main(mode):
 				for phi_binnum in range(24):
 					directory    = "sim_rad_rec_fall2018_outb/pi0_2gamma/{}".format(chunk)
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 					this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+					"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 					df_summary   = pd.concat([df_summary, this_row])
 				continue
@@ -151,17 +188,24 @@ def main(mode):
 				directory    = "sim_rad_rec_fall2018_outb/pi0_2gamma/{}".format(chunk)
 				if not len(df_this_bin):
 					n_entry = 0
+					n_entry_CDFT = 0
+					n_entry_CD   = 0
+					n_entry_FD   = 0
 					xB_avg  = 0
 					Q2_avg  = 0
 					t_avg   = 0
 					phi_avg = 0
 				else:
 					n_entry      = len(df_this_bin)
+					n_entry_CDFT = len(df_this_bin.loc[df_this_bin.config == 3, :])
+					n_entry_CD   = len(df_this_bin.loc[df_this_bin.config == 2, :])
+					n_entry_FD   = len(df_this_bin.loc[df_this_bin.config == 1, :])
 					xB_avg      = np.mean(df_this_bin.xB)
 					Q2_avg      = np.mean(df_this_bin.Q2)
 					t_avg       = np.mean(df_this_bin.t1)
 					phi_avg     = np.mean(df_this_bin.phi1)
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry, 
+				"n_entry_CDFT": n_entry_CDFT, "n_entry_CD": n_entry_CD, "n_entry_FD": n_entry_FD,
 					"xB_avg": xB_avg, "Q2_avg": Q2_avg, "t_avg": t_avg, "phi_avg": phi_avg}])
 				df_summary   = pd.concat([df_summary, this_row])
 

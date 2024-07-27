@@ -21,7 +21,8 @@ def pureBH_dvcsgen_rad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -30,7 +31,7 @@ def pureBH_dvcsgen_rad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "dvcsgen/pureBH/rad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -38,9 +39,10 @@ def pureBH_dvcsgen_rad():
 				t_avg      = 0
 				phi_avg    = 0				
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -74,7 +76,8 @@ def pureBH_dvcsgen_norad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -83,7 +86,7 @@ def pureBH_dvcsgen_norad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "dvcsgen/pureBH/norad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -91,9 +94,10 @@ def pureBH_dvcsgen_norad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -126,7 +130,8 @@ def dvcs_vgg_dvcsgen_rad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -135,7 +140,7 @@ def dvcs_vgg_dvcsgen_rad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "dvcsgen/dvcs_vgg/rad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -143,9 +148,10 @@ def dvcs_vgg_dvcsgen_rad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -179,7 +185,8 @@ def dvcs_vgg_dvcsgen_norad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -188,7 +195,7 @@ def dvcs_vgg_dvcsgen_norad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "dvcsgen/dvcs_vgg/norad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -196,9 +203,10 @@ def dvcs_vgg_dvcsgen_norad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -237,7 +245,8 @@ def dvcs_km15_rad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -246,7 +255,7 @@ def dvcs_km15_rad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "km15gen/dvcs_km15/rad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -254,9 +263,10 @@ def dvcs_km15_rad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -295,7 +305,8 @@ def dvcs_km15_norad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -304,7 +315,7 @@ def dvcs_km15_norad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "km15gen/dvcs_km15/norad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -312,9 +323,10 @@ def dvcs_km15_norad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -352,7 +364,8 @@ def pureBH_km15_rad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -361,7 +374,7 @@ def pureBH_km15_rad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "km15gen/pureBH_km15/rad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -369,9 +382,10 @@ def pureBH_km15_rad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -410,7 +424,8 @@ def pureBH_km15_norad():
 		for phi_binnum in range(24):
 			phimin = phibins[phi_binnum]
 			phimax = phibins[phi_binnum+1]
-			df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
+			if len(df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), :]):
+				df.loc[ (df.phi1>=phimin) & (df.phi1<phimax), "phi_binnum"] = phi_binnum
 
 		xB_avg_this_integrated_bin = np.sum(df.GenWeight * df.xB)/np.sum(df.GenWeight)
 		Q2_avg_this_integrated_bin = np.sum(df.GenWeight * df.Q2)/np.sum(df.GenWeight)
@@ -419,7 +434,7 @@ def pureBH_km15_norad():
 		for phi_binnum in range(24):
 			df_this_bin  = df.loc[(df.phi_binnum == phi_binnum)]
 			directory    = "km15gen/pureBH_km15/norad"
-			if not len(df_this_bin):
+			if len(df_this_bin) <= 100:
 				n_entry    = 0
 				weight_avg = 0
 				xB_avg     = 0
@@ -427,9 +442,10 @@ def pureBH_km15_norad():
 				t_avg      = 0
 				phi_avg    = 0
 			else:
+				df_this_bin  = df_this_bin.loc[df_this_bin.GenWeight.isin(df_this_bin.GenWeight.sort_values().to_numpy()[:-100]), :]
 				n_entry      = len(df_this_bin)
 				weight_mean  = np.mean(df_this_bin.GenWeight)
-				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))
+				weight_mean_err = np.sqrt(np.sum(df_this_bin.GenWeight**2))/n_entry
 				xB_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.xB)/np.sum(df_this_bin.GenWeight)
 				Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.Q2)/np.sum(df_this_bin.GenWeight)
 				t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.t1)/np.sum(df_this_bin.GenWeight)
@@ -454,55 +470,53 @@ def pureBH_km15_norad():
 
 if __name__ == "__main__":
 	dfs = []
-	# result =  pureBH_dvcsgen_rad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	# result =  pureBH_dvcsgen_norad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	# result =  dvcs_vgg_dvcsgen_rad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	# result =  dvcs_vgg_dvcsgen_norad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	# dfs.append(df_existing)
-	# result =  dvcs_km15_rad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	# result =  dvcs_km15_norad()
-	# dfs.append(result)
-	# df = pd.concat(dfs)
-	# df = df.reset_index()
-	# df = df.loc[:, df.columns[1:]]
-	# df.to_pickle("summary_table.rad.pkl")
-	df_existing = pd.read_pickle("summary_table.rad.pkl")
-	df_existing.loc[df_existing.directory == "dvcsgen/dvcs_km15/rad", "directory"]   = "km15gen/dvcs_km15/rad"
-	df_existing.loc[df_existing.directory == "dvcsgen/dvcs_km15/norad", "directory"] = "km15gen/dvcs_km15/rad"
+	result =  pureBH_dvcsgen_rad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
+	result =  pureBH_dvcsgen_norad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
+	result =  dvcs_vgg_dvcsgen_rad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
+	result =  dvcs_vgg_dvcsgen_norad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
+	# # df_existing = pd.read_pickle("summary_table.rad.pkl")
+	# # dfs.append(df_existing)
+	result =  dvcs_km15_rad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
+	result =  dvcs_km15_norad()
+	dfs.append(result)
+	df = pd.concat(dfs)
+	df = df.reset_index()
+	df = df.loc[:, df.columns[1:]]
+	df.to_pickle("summary_table.rad.suppressed.pkl")
 	result =  pureBH_km15_rad()
 	dfs.append(result)
 	df = pd.concat(dfs)
 	df = df.reset_index()
 	df = df.loc[:, df.columns[1:]]
-	df.to_pickle("summary_table.rad.pkl")
+	df.to_pickle("summary_table.rad.suppressed.pkl")
 	result =  pureBH_km15_norad()
 	dfs.append(result)
 	df = pd.concat(dfs)
 	df = df.reset_index()
 	df = df.loc[:, df.columns[1:]]
-	df.to_pickle("summary_table.rad.pkl")
+	df.to_pickle("summary_table.rad.suppressed.pkl")
