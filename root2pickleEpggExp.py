@@ -197,7 +197,6 @@ class root2pickle():
         df_electronRec.loc[:, 'Ee'] = getEnergy(ele, me)
         df_electronRec.loc[:, 'Etheta'] = getTheta(ele)
         df_electronRec.loc[:, 'Ephi'] = getPhi(ele)
-        df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
 
         #proton momentum preparation for the fiducial cut
         pro = [df_protonRec['Ppx'], df_protonRec['Ppy'], df_protonRec['Ppz']]
@@ -219,31 +218,6 @@ class root2pickle():
         df_gammaRec.loc[:, 'Gtheta'] = getTheta(gam)
         df_gammaRec.loc[:, 'Gphi'] = getPhi(gam)
         df_gammaRec.loc[:,'GSamplFrac'] = df_gammaRec.Gedep/ df_gammaRec.Gp
-
-        #apply fiducial cuts
-        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-        if nofid:
-            # skip the fiducial cuts
-            df_electronRec.loc[:, "EFid"] = 1
-            df_protonRec.loc[:, "PFid"] = 1
-            df_gammaRec.loc[:, "GFid"] = 1
-            df_protonRec.loc[:, "PCvt12theta"] = -100000
-            df_protonRec.loc[:, "PCvt12phi"] = -100000
-            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12theta"] = getTheta([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
-            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12phi"] = getPhi([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
-        else:
-            # perform the fiducial cuts
-            df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
-            df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
-            df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
-            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-            coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
-            df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
-            df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
-            df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
-            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
-
-        # Done with the fiducial cuts.
 
         # Post-processing
         # e1: Electron correction  - exp only
@@ -331,6 +305,31 @@ class root2pickle():
             df_protonRec.loc[cutCD, "PCvt12theta"] = getTheta([df_protonRec.loc[cutCD].PCvt12Hitx, df_protonRec.loc[cutCD].PCvt12Hity, df_protonRec.loc[cutCD].PCvt12Hitz])
             df_protonRec.loc[cutCD, "PCvt12phi"] = getPhi([df_protonRec.loc[cutCD].PCvt12Hitx, df_protonRec.loc[cutCD].PCvt12Hity, df_protonRec.loc[cutCD].PCvt12Hitz])
 
+        #apply fiducial cuts
+        df_electronRec.loc[:,'ESamplFrac'] = df_electronRec.Eedep/ df_electronRec.Ep
+        print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+        if nofid:
+            # skip the fiducial cuts
+            df_electronRec.loc[:, "EFid"] = 1
+            df_protonRec.loc[:, "PFid"] = 1
+            df_gammaRec.loc[:, "GFid"] = 1
+            df_protonRec.loc[:, "PCvt12theta"] = -100000
+            df_protonRec.loc[:, "PCvt12phi"] = -100000
+            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12theta"] = getTheta([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
+            df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12phi"] = getPhi([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
+        else:
+            # perform the fiducial cuts
+            df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
+            df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
+            df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
+            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+            coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
+            df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
+            df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
+            df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
+            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+
+        # Done with the fiducial cuts.
 
         #moduli proton phi
         df_protonRec.loc[:, "Pphi"] = np.where(df_protonRec.loc[:, "Pphi"]%360<180, df_protonRec.loc[:, "Pphi"]%360, df_protonRec.loc[:, "Pphi"]%360-360)
