@@ -660,6 +660,123 @@ def gammaFiducial(df_gammaRec, fidlevel = 'mid'):
 	return df_gammaRec.loc[df_gammaRec.GFid==1, :]
 
 
+def gammaFiducial2(df_gg, fidlevel = 'mid'):
+	df_gg = copy(df_gg)
+	df_gg.loc[:, "GFid2"] = 1
+	# H. PCAL Fid Cuts
+	if fidlevel == 'mid':
+		df_gg.loc[(df_gg.GcalV12<19) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalW12<19) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalU12>395) & (df_gg.Gsector2<7), "GFid2"] = 0
+	elif fidlevel == 'loose':
+		df_gg.loc[(df_gg.GcalV12<19-2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalW12<19-2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalU12>395+2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+	elif fidlevel == 'tight':
+		df_gg.loc[(df_gg.GcalV12<19+2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalW12<19+2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+		df_gg.loc[(df_gg.GcalU12>395-2.5) & (df_gg.Gsector2<7), "GFid2"] = 0
+	else:
+		print("check fidlevel {}".format(fidlevel))
+	#passGammaBetaCut
+	df_gg.loc[df_gg.Gbeta2 <= min_Gbeta, "GFid2"] = 0
+	df_gg.loc[df_gg.Gbeta2 >= max_Gbeta, "GFid2"] = 0
+
+	df_gg = copy(df_gg.loc[df_gg.GFid2==1, :])
+
+	df_gg.loc[df_gg.Gsector2<7, "GFid2"] = 0
+
+	#apply additional photon fiducial cuts
+	sector_cond = [df_gg.Gsector2 ==1, df_gg.Gsector2 ==2, df_gg.Gsector2 ==3, df_gg.Gsector2 ==4, df_gg.Gsector2 ==5, df_gg.Gsector2 ==6]
+	psplit = np.select(sector_cond, [87, 82, 85, 77, 78, 82])
+	tleft = np.select(sector_cond, [58.7356, 62.8204, 62.2296, 53.7756, 58.2888, 54.5822])
+	tright = np.select(sector_cond, [58.7477, 51.2589, 59.2357, 56.2415, 60.8219, 49.8914])
+	sleft = np.select(sector_cond, [0.582053, 0.544976, 0.549788, 0.56899, 0.56414, 0.57343])
+	sright = np.select(sector_cond, [-0.591876, -0.562926, -0.562246, -0.563726, -0.568902, -0.550729])
+	rleft = np.select(sector_cond, [64.9348, 64.7541, 67.832, 55.9324, 55.9225, 60.0997])
+	rright = np.select(sector_cond, [65.424, 54.6992, 63.6628, 57.8931, 56.5367, 56.4641])
+	qleft = np.select(sector_cond, [0.745578, 0.606081, 0.729202, 0.627239, 0.503674, 0.717899])
+	qright = np.select(sector_cond, [-0.775022, -0.633863, -0.678901, -0.612458, -0.455319, -0.692481])
+	#first condition
+	ang = np.radians((df_gg.loc[df_gg.Gsector2<7, "Gsector2"]-1) * 60)
+	GcX2_rot = df_gg.loc[df_gg.Gsector2<7, "GcY2"] * np.sin(ang) + df_gg.loc[df_gg.Gsector2<7, "GcX2"] * np.cos(ang)
+	GcY2_rot = df_gg.loc[df_gg.Gsector2<7, "GcY2"] * np.cos(ang) - df_gg.loc[df_gg.Gsector2<7, "GcX2"] * np.sin(ang)
+
+	df_gg.loc[df_gg.Gsector2<7, "GcX2"] = GcX2_rot
+	df_gg.loc[df_gg.Gsector2<7, "GcY2"] = GcY2_rot
+
+	cond1_1 = df_gg.GcX2 >= psplit
+	cond1_2 = df_gg.GcY2 < sleft * (df_gg.GcX2 - tleft)
+	cond1_3 = df_gg.GcY2 > sright * (df_gg.GcX2 - tright)
+	cond1_4 = df_gg.Gsector2 < 7
+	cond1 = cond1_1 & cond1_2 & cond1_3 & cond1_4
+	df_gg.loc[cond1, "GFid2"] = 1
+	#second condition else if the first
+	# cond2_0 = df_gg.GFid2 == 0 # not necessary, because cond2_1 rules out the first (S. Lee)
+	cond2_1 = df_gg.GcX2 < psplit
+	cond2_2 = df_gg.GcY2 < qleft * (df_gg.GcX2 - rleft)
+	cond2_3 = df_gg.GcY2 > qright * (df_gg.GcX2 - rright)
+	cond2_4 = df_gg.Gsector2 < 7
+	cond2 = cond2_1 & cond2_2 & cond2_3 & cond2_4
+	df_gg.loc[cond2, "GFid2"] = 1
+    #photon FD fiducial cuts by F.X. Girod
+
+	#FT fiducial cuts
+	circleCenterX1 = -8.419
+	circleCenterY1 = 9.889
+	circleRadius1 = 1.6
+
+	circleCenterX2 = -9.89
+	circleCenterY2 = -5.327
+	circleRadius2 = 1.6
+
+	circleCenterX3 = -6.15
+	circleCenterY3 = -13
+	circleRadius3 = 2.3
+
+	circleCenterX4 = 3.7
+	circleCenterY4 = -6.5
+	circleRadius4 = 2
+
+	circle1 = (df_gg.GcX2 - circleCenterX1)**2 + (df_gg.GcY2 - circleCenterY1)**2 < circleRadius1**2
+	circle2 = (df_gg.GcX2 - circleCenterX2)**2 + (df_gg.GcY2 - circleCenterY2)**2 < circleRadius2**2
+	circle3 = (df_gg.GcX2 - circleCenterX3)**2 + (df_gg.GcY2 - circleCenterY3)**2 < circleRadius3**2
+	circle4 = (df_gg.GcX2 - circleCenterX4)**2 + (df_gg.GcY2 - circleCenterY4)**2 < circleRadius4**2
+
+	df_gg.loc[(df_gg.Gsector2 > 7) & circle1, "GFid2"] = 0
+	df_gg.loc[(df_gg.Gsector2 > 7) & circle2, "GFid2"] = 0
+	df_gg.loc[(df_gg.Gsector2 > 7) & circle3, "GFid2"] = 0
+	df_gg.loc[(df_gg.Gsector2 > 7) & circle4, "GFid2"] = 0
+
+	#Table XII.
+	if fidlevel == 'mid':
+		adjustment = 0
+	elif fidlevel == 'loose':
+		adjustment = -0.5
+	elif fidlevel == 'tight':
+		adjustment = +0.5
+	else:
+		print("check fidlevel {}".format(fidlevel))
+
+	df_gg.loc[ (df_gg.Gsector2 == 1) & (df_gg.GcalY12 <= 0.56575  * df_gg.GcalX12 -92        + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.56575 * df_gg.GcalX12 -94.4         - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 1) & (df_gg.GcalY12 <= 0.56575  * df_gg.GcalX12 -101.1     + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.56575 * df_gg.GcalX12 -103.5        - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 1) & (df_gg.GcalY12 <= 0.56575  * df_gg.GcalX12 -219       + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.56575 * df_gg.GcalX12 -221.4        - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 1) & (df_gg.GcalY12 <= 0.56575  * df_gg.GcalX12 -227       + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.56575 * df_gg.GcalX12 -229.4        - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 2) & (df_gg.GcalY12 <= 0.5897   * df_gg.GcalX12 +120.7937  + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.5913  * df_gg.GcalX12 +114.3872     - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 2) & (df_gg.GcalY12 <= 107.2766 * df_gg.GcalX12 -10602.9779+ 0.25 + adjustment) & (df_gg.GcalY12 >= 98.9667 * df_gg.GcalX12 -10262.0167   - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 3) & (df_gg.GcalX12 <= -302.38 + adjustment) & (df_gg.GcalX12 >= -313.71 - adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 4) & (df_gg.GcalX12 <= -122.5  + adjustment) & (df_gg.GcalX12 >= -127.5  - adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 4) & (df_gg.GcalY12 <= -0.568   * df_gg.GcalX12 -232.8     + 0.25 + adjustment) & (df_gg.GcalY12 >= -0.568  * df_gg.GcalX12 -236.3        - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 5) & (df_gg.GcalY12 <= 98.0644  * df_gg.GcalX12 +5825.4023 + 0.25 + adjustment) & (df_gg.GcalY12 >= 99.9337 * df_gg.GcalX12 +5098.3456    - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 6) & (df_gg.GcalY12 <= 0.4547   * df_gg.GcalX12 -275.9317  + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.4547  * df_gg.GcalX12 -285.9317     - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 6) & (df_gg.GcalY12 <= 0.591377  * df_gg.GcalX12 -185      + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.591377* df_gg.GcalX12 -187          - 0.25 -adjustment), "GFid2"] = 0
+	df_gg.loc[ (df_gg.Gsector2 == 6) & (df_gg.GcalY12 <= 0.591377  * df_gg.GcalX12 -193.3    + 0.25 + adjustment) & (df_gg.GcalY12 >= 0.591377* df_gg.GcalX12 -195.5        - 0.25 -adjustment), "GFid2"] = 0
+
+	df_gg.loc[ (df_gg.Gsector2 == 5) & (df_gg.GcalY32 <= -0.5841  * df_gg.GcalX32 -252.11    + 0.25 + adjustment) & (df_gg.GcalY32 >= -0.5775 * df_gg.GcalX32 -263.2072    - 0.25 -adjustment), "GFid2"] = 0
+
+	return df_gg.loc[df_gg.GFid2==1, :]
+
+
 
 def gammaFiducialLegacy(df_gammaRec):
 	df_gammaRec = copy(df_gammaRec)

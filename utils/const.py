@@ -253,8 +253,8 @@ goodBins = ['000', '001', '002', '003', '010', '011', '012', '013', '014', '020'
 degree = r"${}^{\circ}$"
 GeV = "GeV"
 GeV2 = "GeV"+r"${}^{2}$"
-GeVc = "GeV/c"
-GeVc2 = "(GeV/c)"+r"${}^{2}$"
+GeVc = "GeV/" + r"$c$"
+GeVc2 = "GeV" +r"$^2$" + "/" + r"$c^2$"
 
 point = r'$.$'
 zero = r'$0$'

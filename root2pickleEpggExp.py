@@ -313,6 +313,8 @@ class root2pickle():
             df_electronRec.loc[:, "EFid"] = 1
             df_protonRec.loc[:, "PFid"] = 1
             df_gammaRec.loc[:, "GFid"] = 1
+            df_gg.loc[:, "GFid"] = 1
+            df_gg.loc[:, "GFid2"] = 1
             df_protonRec.loc[:, "PCvt12theta"] = -100000
             df_protonRec.loc[:, "PCvt12phi"] = -100000
             df_protonRec.loc[df_protonRec.Psector > 7, "PCvt12theta"] = getTheta([df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitx, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hity, df_protonRec.loc[df_protonRec.Psector > 7].PCvt12Hitz])
@@ -322,7 +324,8 @@ class root2pickle():
             df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
             df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
-            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+            df_gg = gammaFiducial2(df_gg, fidlevel = fidlevel)
+            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec), len(df_gg))
             coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
             df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
             df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
