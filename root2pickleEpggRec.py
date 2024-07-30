@@ -451,11 +451,11 @@ class root2pickle():
             df_gg = gammaFiducial(df_gg, fidlevel = fidlevel)
             df_gg = gammaFiducial2(df_gg, fidlevel = fidlevel)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec), len(df_gg))
-            coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gammaRec.event))
+            coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gg.event))
             df_electronRec = df_electronRec.loc[df_electronRec.event.isin(coincidence), :]
             df_protonRec = df_protonRec.loc[df_protonRec.event.isin(coincidence), :]
-            df_gammaRec = df_gammaRec.loc[df_gammaRec.event.isin(coincidence), :]
-            print(len(df_electronRec), len(df_protonRec), len(df_gammaRec))
+            df_gg = df_gg.loc[df_gg.event.isin(coincidence), :]
+            print(len(df_electronRec), len(df_protonRec), len(df_gg))
 
         # Done with the fiducial cuts.
 
