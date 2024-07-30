@@ -324,6 +324,7 @@ class root2pickle():
             df_electronRec = electronFiducial(df_electronRec, mc = False, fidlevel = fidlevel)
             df_protonRec = protonFiducial(df_protonRec, fidlevel = fidlevel)
             df_gammaRec = gammaFiducial(df_gammaRec, fidlevel = fidlevel)
+            df_gg = gammaFiducial(df_gg, fidlevel = fidlevel)
             df_gg = gammaFiducial2(df_gg, fidlevel = fidlevel)
             print(len(df_electronRec), len(df_protonRec), len(df_gammaRec), len(df_gg))
             coincidence = reduce(np.intersect1d, (df_electronRec.event, df_protonRec.event, df_gg.event))
