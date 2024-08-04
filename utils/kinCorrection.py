@@ -170,19 +170,19 @@ def protonEnergyLossCorr(pol, df_protonRec):
         CorrectedPphi_CD = const_CD + coeff_CD*np.exp(coeff2_CD*df_protonRecCD.loc[:, "Pp"]) + df_protonRecCD.loc[:, "Pphi"]
 
     if len(df_protonRecFD_1):
-        df_protonRecFD_1.loc[:, "Pp"] = CorrectedPp_FD_1
+        df_protonRecFD_1.loc[:, "Pp"]     = np.maximum(CorrectedPp_FD_1, df_protonRecFD_1.loc[:, "Pp"])
         df_protonRecFD_1.loc[:, "Ptheta"] = CorrectedPtheta_FD_1
-        df_protonRecFD_1.loc[:, "Pphi"] = CorrectedPphi_FD_1
+        df_protonRecFD_1.loc[:, "Pphi"]   = CorrectedPphi_FD_1
 
     if len(df_protonRecFD_2):
-        df_protonRecFD_2.loc[:, "Pp"] = CorrectedPp_FD_2
+        df_protonRecFD_2.loc[:, "Pp"]     = np.maximum(CorrectedPp_FD_2, df_protonRecFD_2.loc[:, "Pp"])
         df_protonRecFD_2.loc[:, "Ptheta"] = CorrectedPtheta_FD_2
-        df_protonRecFD_2.loc[:, "Pphi"] = CorrectedPphi_FD_2
+        df_protonRecFD_2.loc[:, "Pphi"]   = CorrectedPphi_FD_2
     
     if len(df_protonRecCD):
-        df_protonRecCD.loc[:, "Pp"] = CorrectedPp_CD
+        df_protonRecCD.loc[:, "Pp"]     = np.maximum(CorrectedPp_CD, df_protonRecCD.loc[:, "Pp"])
         df_protonRecCD.loc[:, "Ptheta"] = CorrectedPtheta_CD
-        df_protonRecCD.loc[:, "Pphi"] = CorrectedPphi_CD
+        df_protonRecCD.loc[:, "Pphi"]   = CorrectedPphi_CD
     df_protonRec = pd.concat([df_protonRecFD_1, df_protonRecFD_2, df_protonRecCD, df_protonRecOthers])
 
     #moduli proton phi
