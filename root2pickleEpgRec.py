@@ -936,7 +936,7 @@ class root2pickle():
             cut_Psector = 1
         else:
             cut_Esector = (df_dvcs["Esector"]!=df_dvcs["Gsector"])
-            cut_Psector = ~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"]))
+            cut_Psector = (~( ((df_dvcs["Pstat"]//10)%10>0) & (df_dvcs["Psector"]==df_dvcs["Gsector"])))  & (df_dvcs["Pstat"]//100%10>0)
         cut_Ppmax = df_dvcs.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvcs.Ptheta > 0 #Ptheta
         # cut_Vz = np.abs(df_dvcs["Evz"] - df_dvcs["Pvz"]) < 2.5 + 2.5 / mag([df_dvcs["Ppx"], df_dvcs["Ppy"], df_dvcs["Ppz"]])
