@@ -480,7 +480,7 @@ class root2pickle():
             cut_Psector = 1
         else:
             cut_Esector = (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector"]) & (df_dvpi0p["Esector"]!=df_dvpi0p["Gsector2"])
-            cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) )
+            cut_Psector = ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector"]) ) & ~( ((df_dvpi0p["Pstat"]//10)%10>0) & (df_dvpi0p["Psector"]==df_dvpi0p["Gsector2"]) ) & (df_dvpi0p["Pstat"]//100%10>0)
         cut_Ppmax = df_dvpi0p.Pp < 1.6  # Pp
         cut_Pthetamin = df_dvpi0p.Ptheta > 0  # Ptheta
         cut_Trigger = ((df_dvpi0p.TriggerBit & 1 << 1) > 0) | ((df_dvpi0p.TriggerBit & 1 << 2) > 0) | ((df_dvpi0p.TriggerBit & 1 << 3) > 0) | ((df_dvpi0p.TriggerBit & 1 << 4) > 0) | ((df_dvpi0p.TriggerBit & 1 << 5) > 0) | ((df_dvpi0p.TriggerBit & 1 << 6) > 0)
