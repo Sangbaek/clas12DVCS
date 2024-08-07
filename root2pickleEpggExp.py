@@ -852,7 +852,7 @@ class root2pickle():
         df_Rec = df_Rec.astype({"integrated_binnum": int, "config": int, "phi_binnum": int})
 
         if efficiency:
-            df_Rec = assign_efficiency(df_Rec)
+            df_Rec = assign_efficiency(df_Rec, mc = False, pol = pol)
 
         self.df = df_Rec
 
