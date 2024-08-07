@@ -1,9 +1,17 @@
 from utils.const import *
 from utils.physics import *
+from utils.kinCorrection import *
 from copy import copy
 
-def assign_efficiency(df_Rec, mc = False):
-	if not mc:
+def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
+	df_Rec = copy(df_Rec)
+	df_Rec.loc[:, "EFtof1bEfficiency"] = 1
+	df_Rec.loc[(df_Rec.Esector==6) & (df_Rec.EFtof1bComponent>=33) & (df_Rec.EFtof1bComponent<=48), "EFtof1bEfficiency"]= 1/1.013
+	df_Rec.loc[:, "PFtof1bEfficiency"] = 1
+	df_Rec.loc[(df_Rec.PFtof1bSector==6) & (df_Rec.PFtof1bComponent>=33) & (df_Rec.PFtof1bComponent<=48), "PFtof1bEfficiency"]= 1/1.013
+
+	df_Rec.loc[:, "EhtccEfficiency"]  = 1
+	if "EhtcctrajX" in df_Rec.columns:
 		# HTCC efficiency map
 		htcc_eff_map = np.loadtxt("/work/clas12/sangbaek/Inclusive/HTCCEfficiencyData.dat").reshape(250,250)
 		EhtccXBin = (df_Rec.loc[:, "EhtcctrajX"] + 125 ).astype(int).to_numpy()
@@ -12,17 +20,30 @@ def assign_efficiency(df_Rec, mc = False):
 		for i in range(len(EhtccXBin)):
 			EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
-		# df_Rec.loc[df_Rec.EhtccEfficiency < 0.95, "EFid"] = 0
-
-		df_Rec = copy(df_Rec)
-		df_Rec.loc[:, "EFtof1bEfficiency"] = 1
-		df_Rec.loc[(df_Rec.Esector==6) & (df_Rec.EFtof1bComponent>=33) & (df_Rec.EFtof1bComponent<=48), "EFtof1bEfficiency"]= 1/1.013
-		df_Rec.loc[:, "PFtof1bEfficiency"] = 1
-		df_Rec.loc[(df_Rec.PFtof1bSector==6) & (df_Rec.PFtof1bComponent>=33) & (df_Rec.PFtof1bComponent<=48), "PFtof1bEfficiency"]= 1/1.013
-		if "weight" in df_Rec.columns:
-			df_Rec.loc[:, "weight"] = df_Rec.weight * df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
-		else:
-			df_Rec.loc[:, "weight"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
+		df_Rec.loc[df_Rec.EhtccEfficiency < 0.7, "EFid"] = 0
+    df_Rec.loc[:, "Pefficiency"] = 1
+    if pol == "inbending":
+        df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[0]))
+        df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[2]))
+        df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[4]))
+        df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[6]))
+        df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[8]))
+        df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[10]))
+        df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[12]))
+    if pol == "outbending":
+        df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[1]))
+        df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[3]))
+        df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[5]))
+        df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[7]))
+        df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[9]))
+        df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[11]))
+        df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[13]))
+	if not mc:
+		df_Rec.loc[:, "efficiency"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
+		return df_Rec
+	else:
+		df_Rec.loc[:, "efficiency"] = df_Rec.Pefficiency
+		return df_Rec
 	return df_Rec
 
 def electronFiducial(df_electronRec, mc = False, fidlevel = 'mid'):
