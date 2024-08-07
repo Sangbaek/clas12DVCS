@@ -1977,3 +1977,20 @@ luminosity_outb_40nA  =  charge_outb_40nA * 10**(-9) * target_thickness / electr
 luminosity_outb_50nA  =  charge_outb_50nA * 10**(-9) * target_thickness / electric_charge * 10**(-24) * 10**(-9)
 
 schema_suffices = ["1_nocorr_nofid", "2_nocorr", "3_electron_corr_only", "4_electron_corr_proton_eloss", "5_nopcorr", "6_all_corr", "7_nominal", "8_2sigma", "9_4sigma", "10_smearing110", "11_smearing90", "12_loosefid", "13_tightfid", "14_bkgmerging"]
+
+popt_efficiency = [
+    np.array([-2.7838e-05,  1.9979e-03, -5.0861e-02,  9.1043e-01]),
+    np.array([-6.3707e-06, -6.6091e-05,  4.5331e-03,  7.4242e-01]),
+    np.array([ 1.5642e-05, -1.7900e-03,  5.1866e-02,  2.8785e-02]),
+    np.array([-3.9244e-04,  3.2725e-02, -8.9523e-01,  8.6521e+00]),
+    np.array([ 6.8933e-06, -5.1919e-04,  3.4544e-03,  5.4289e-01]),
+    np.array([ 2.9269e-04, -3.0207e-02,  9.8428e-01, -9.4925e+00]),
+    np.array([-2.2005e-05,  1.2991e-03, -3.8108e-02,  9.2570e-01]),
+    np.array([ 1.9562e-04, -2.1600e-02,  7.3697e-01, -7.2494e+00]),
+    np.array([-8.0598e-05,  5.5145e-03, -1.1986e-01,  1.2748e+00]),
+    np.array([-4.8247e-04,  4.1081e-02, -1.1503e+00,  1.1215e+01]),
+    np.array([ 4.0299e-05, -4.3597e-03,  1.2744e-01, -6.1245e-01]),
+    np.array([-1.6101e-04,  1.3780e-02, -4.1472e-01,  5.0036e+00]),
+    np.array([-2.2724e-04,  3.7606e-02, -2.0500e+00,  3.7466e+01]),
+    np.array([-1.4882e-04,  2.4729e-02, -1.3645e+00,  2.5664e+01])
+]
