@@ -21,23 +21,23 @@ def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 			EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
 		df_Rec.loc[df_Rec.EhtccEfficiency < 0.7, "EFid"] = 0
-    df_Rec.loc[:, "Pefficiency"] = 1
-    if pol == "inbending":
-        df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[0]))
-        df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[2]))
-        df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[4]))
-        df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[6]))
-        df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[8]))
-        df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[10]))
-        df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[12]))
-    if pol == "outbending":
-        df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[1]))
-        df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[3]))
-        df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[5]))
-        df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[7]))
-        df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[9]))
-        df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[11]))
-        df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[13]))
+	df_Rec.loc[:, "Pefficiency"] = 1
+	if pol == "inbending":
+		df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], popt_efficiency[0]))
+		df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], popt_efficiency[2]))
+		df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], popt_efficiency[4]))
+		df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], popt_efficiency[6]))
+		df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], popt_efficiency[8]))
+		df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], popt_efficiency[10]))
+		df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], popt_efficiency[12]))
+	if pol == "outbending":
+		df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], popt_efficiency[1]))
+		df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], popt_efficiency[3]))
+		df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], popt_efficiency[5]))
+		df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], popt_efficiency[7]))
+		df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], popt_efficiency[9]))
+		df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], popt_efficiency[11]))
+		df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.maximum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], popt_efficiency[13]))
 	if not mc:
 		df_Rec.loc[:, "efficiency"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
 		return df_Rec
