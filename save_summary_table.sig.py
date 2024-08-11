@@ -45,6 +45,8 @@ def main(mode, model, polarity):
 				n_entry = 0
 				n_entry_corrected = 0
 				n_entry_corrected_err = 0
+				n_entry_eff_corrected = 0
+				n_entry_eff_corrected_err = 0
 				n_entry_CDFT = 0
 				n_entry_corrected_CDFT = 0
 				n_entry_corrected_err_CDFT = 0
@@ -60,6 +62,7 @@ def main(mode, model, polarity):
 				phi_avg = 0
 				this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry,
 					"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err,
+					"n_entry_eff_corrected": n_entry_eff_corrected, "n_entry_eff_corrected_err": n_entry_eff_corrected_err,
 					"n_entry_CDFT": n_entry_CDFT, "n_entry_corrected_CDFT": n_entry_corrected_CDFT, "n_entry_corrected_err_CDFT": n_entry_corrected_err_CDFT,
 					"n_entry_CD": n_entry_CD, "n_entry_corrected_CD": n_entry_corrected_CD, "n_entry_corrected_err_CD": n_entry_corrected_err_CD,
 					"n_entry_FD": n_entry_FD, "n_entry_corrected_FD": n_entry_corrected_FD, "n_entry_corrected_err_FD": n_entry_corrected_err_FD,
@@ -73,6 +76,8 @@ def main(mode, model, polarity):
 				n_entry = 0
 				n_entry_corrected = 0
 				n_entry_corrected_err = 0
+				n_entry_eff_corrected = 0
+				n_entry_eff_corrected_err = 0
 				n_entry_CDFT = 0
 				n_entry_corrected_CDFT = 0
 				n_entry_corrected_err_CDFT = 0
@@ -90,6 +95,8 @@ def main(mode, model, polarity):
 				n_entry      = len(df_this_bin)
 				n_entry_corrected = np.sum(df_this_bin.weights)
 				n_entry_corrected_err = np.sqrt(np.sum(df_this_bin.weights**2))
+				n_entry_eff_corrected = np.sum(df_this_bin.weights*df_this_bin.efficiency)
+				n_entry_eff_corrected_err = np.sqrt(np.sum(df_this_bin.efficiency**2 * df_this_bin.weights**2))
 				n_entry_CDFT               = len(df_this_bin.loc[df_this_bin.config==3])
 				n_entry_corrected_CDFT     = np.sum(df_this_bin.loc[df_this_bin.config==3].weights)
 				n_entry_corrected_err_CDFT = np.sqrt(np.sum(df_this_bin.loc[df_this_bin.config==3].weights**2))
@@ -99,10 +106,10 @@ def main(mode, model, polarity):
 				n_entry_FD                 = len(df_this_bin.loc[df_this_bin.config==1])
 				n_entry_corrected_FD       = np.sum(df_this_bin.loc[df_this_bin.config==1].weights)
 				n_entry_corrected_err_FD   = np.sqrt(np.sum(df_this_bin.loc[df_this_bin.config==1].weights**2))
-				xB_avg      = np.sum(df_this_bin.weights * df_this_bin.xB)/n_entry_corrected
-				Q2_avg      = np.sum(df_this_bin.weights * df_this_bin.Q2)/n_entry_corrected
-				t_avg       = np.sum(df_this_bin.weights * df_this_bin.t1)/n_entry_corrected
-				phi_avg     = np.sum(df_this_bin.weights * df_this_bin.phi1)/n_entry_corrected
+				xB_avg      = np.sum(df_this_bin.efficiency * df_this_bin.weights * df_this_bin.xB)/n_entry_corrected
+				Q2_avg      = np.sum(df_this_bin.efficiency * df_this_bin.weights * df_this_bin.Q2)/n_entry_corrected
+				t_avg       = np.sum(df_this_bin.efficiency * df_this_bin.weights * df_this_bin.t1)/n_entry_corrected
+				phi_avg     = np.sum(df_this_bin.efficiency * df_this_bin.weights * df_this_bin.phi1)/n_entry_corrected
 			this_row     = pd.DataFrame([{"integrated_binnum": integrated_binnum, "phi_binnum": phi_binnum, "directory": directory, "variation": suffix, "n_entry": n_entry,
 				"n_entry_corrected": n_entry_corrected, "n_entry_corrected_err": n_entry_corrected_err,
 				"n_entry_CDFT": n_entry_CDFT, "n_entry_corrected_CDFT": n_entry_corrected_CDFT, "n_entry_corrected_err_CDFT": n_entry_corrected_err_CDFT,
@@ -121,7 +128,7 @@ if __name__ == "__main__":
 	dfs = []
 	for model in ["dvcs_km15", "dvcs_vgg", "pureBH"]:
 		for polarity in ["inb", "outb"]:
-			for mode in range(14):
+			for mode in range(6, 14):
 				result =  main(mode, model, polarity)
 				if result is not None:
 					dfs.append(result)
