@@ -121,7 +121,7 @@ def main(mode):
 
 if __name__ == "__main__":
 
-	for mode in range(14):
+	for mode in range(6, 14):
 		main(mode)
 
 
