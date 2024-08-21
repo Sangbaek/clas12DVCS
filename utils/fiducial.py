@@ -6,6 +6,10 @@ def cubic_efficiency(x, *par):
     a, b, c, d = par
     return a*x**3 + b*x**2 + c*x + d
 
+def quartic_efficiency(x, *par):
+    a, b, c, d, e = par
+    return a*x**4 + b*x**3 + c*x**2 + d*x + e
+
 def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 	df_Rec = copy(df_Rec)
 	df_Rec.loc[:, "EFtof1bEfficiency"] = 1
@@ -23,29 +27,76 @@ def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 		for i in range(len(EhtccXBin)):
 			EhtccEfficiency.append(htcc_eff_map[EhtccXBin[i], EhtccYBin[i]])
 		df_Rec.loc[:, "EhtccEfficiency"]  = EhtccEfficiency
-		df_Rec.loc[df_Rec.EhtccEfficiency < 0.7, "EFid"] = 0
-	df_Rec.loc[:, "Pefficiency"] = 1
+		# df_Rec.loc[df_Rec.EhtccEfficiency < 0.7, "EFid"] = 0
+		df_Rec.loc[df_Rec.EhtccEfficiency < 0.7, "EhtccEfficiency"] = 0.7
+	df_Rec.loc[:, "Pthetaefficiency"] = 1
 	if pol == "inbending":
-		df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[0]))
-		df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[2]))
-		df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[4]))
-		df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[6]))
-		df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[8]))
-		df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[10]))
-		df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[12]))
+		df_Rec.loc[(df_Rec.Psector == 1), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_Pthetaefficiency[0])
+		df_Rec.loc[(df_Rec.Psector == 2), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_Pthetaefficiency[2])
+		df_Rec.loc[(df_Rec.Psector == 3), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_Pthetaefficiency[4])
+		df_Rec.loc[(df_Rec.Psector == 4), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_Pthetaefficiency[6])
+		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency[8])
+		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency[10])
+		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency[12])
 	if pol == "outbending":
-		df_Rec.loc[(df_Rec.Psector == 1), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_efficiency[1]))
-		df_Rec.loc[(df_Rec.Psector == 2), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_efficiency[3]))
-		df_Rec.loc[(df_Rec.Psector == 3), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_efficiency[5]))
-		df_Rec.loc[(df_Rec.Psector == 4), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_efficiency[7]))
-		df_Rec.loc[(df_Rec.Psector == 5), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_efficiency[9]))
-		df_Rec.loc[(df_Rec.Psector == 6), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_efficiency[11]))
-		df_Rec.loc[(df_Rec.Psector >  7), "Pefficiency"] = np.minimum(np.ones_like(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"]), cubic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_efficiency[13]))
+		df_Rec.loc[(df_Rec.Psector == 1), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_Pthetaefficiency[1])
+		df_Rec.loc[(df_Rec.Psector == 2), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_Pthetaefficiency[3])
+		df_Rec.loc[(df_Rec.Psector == 3), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_Pthetaefficiency[5])
+		df_Rec.loc[(df_Rec.Psector == 4), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_Pthetaefficiency[7])
+		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency[9])
+		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency[11])
+		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency[13])
+
+	df_Rec.loc[:, "Ppefficiency"] = 1
+	if pol == "inbending":
+		df_Rec.loc[(df_Rec.Psector == 1), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Pp"], *popt_Ppefficiency[0])
+		df_Rec.loc[(df_Rec.Psector == 2), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Pp"], *popt_Ppefficiency[2])
+		df_Rec.loc[(df_Rec.Psector == 3), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Pp"], *popt_Ppefficiency[4])
+		df_Rec.loc[(df_Rec.Psector == 4), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Pp"], *popt_Ppefficiency[6])
+		df_Rec.loc[(df_Rec.Psector == 5), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Pp"], *popt_Ppefficiency[8])
+		df_Rec.loc[(df_Rec.Psector == 6), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Pp"], *popt_Ppefficiency[10])
+		df_Rec.loc[(df_Rec.Psector >  7), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Pp"], *popt_Ppefficiency[12])
+	if pol == "outbending":
+		df_Rec.loc[(df_Rec.Psector == 1), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Pp"], *popt_Ppefficiency[1])
+		df_Rec.loc[(df_Rec.Psector == 2), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Pp"], *popt_Ppefficiency[3])
+		df_Rec.loc[(df_Rec.Psector == 3), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Pp"], *popt_Ppefficiency[5])
+		df_Rec.loc[(df_Rec.Psector == 4), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Pp"], *popt_Ppefficiency[7])
+		df_Rec.loc[(df_Rec.Psector == 5), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Pp"], *popt_Ppefficiency[9])
+		df_Rec.loc[(df_Rec.Psector == 6), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Pp"], *popt_Ppefficiency[11])
+		df_Rec.loc[(df_Rec.Psector >  7), "Ppefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Pp"], *popt_Ppefficiency[13])
+
+	df_Rec.loc[:, "Pphiefficiency"] = 1
+	if pol == "inbending":
+		for i in range(len(pphi_bins)-1):
+			df_Rec.loc[(df_Rec.Psector == 1) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_1[i]
+			df_Rec.loc[(df_Rec.Psector == 2) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_2[i]
+			df_Rec.loc[(df_Rec.Psector == 3) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_3[i]
+			df_Rec.loc[(df_Rec.Psector == 4) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_4[i]
+			df_Rec.loc[(df_Rec.Psector == 5) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_5[i]
+			df_Rec.loc[(df_Rec.Psector == 6) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_fd_sector_6[i]
+			df_Rec.loc[(df_Rec.Psector >  7) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_inb_cd[i]
+	if pol == "outbending":
+		for i in range(len(pphi_bins)-1):
+			df_Rec.loc[(df_Rec.Psector == 1) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_1[i]
+			df_Rec.loc[(df_Rec.Psector == 2) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_2[i]
+			df_Rec.loc[(df_Rec.Psector == 3) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_3[i]
+			df_Rec.loc[(df_Rec.Psector == 4) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_4[i]
+			df_Rec.loc[(df_Rec.Psector == 5) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_5[i]
+			df_Rec.loc[(df_Rec.Psector == 6) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_fd_sector_6[i]
+			df_Rec.loc[(df_Rec.Psector >  7) & (df_Rec.Pphi>pphi_bins[i]) & (df_Rec.Pphi<pphi_bins[i+1]), "Pphiefficiency"] = Pphi_efficiency_outb_cd[i]
+	# df_Rec.loc[df_Rec.Pphiefficiency<0.5, "PFid"] = 0
+	# df_Rec.loc[df_Rec.Pphiefficiency>1.5, "PFid"] = 0
+	df_Rec.loc[df_Rec.Pthetaefficiency<0.1, "Pthetaefficiency"] = 0.1
+	df_Rec.loc[df_Rec.Pthetaefficiency>1.5, "Pthetaefficiency"] = 1.5
+	df_Rec.loc[df_Rec.Ppefficiency<0.5, "Ppefficiency"] = 0.5
+	df_Rec.loc[df_Rec.Ppefficiency>1.5, "Ppefficiency"] = 1.5
+	df_Rec.loc[df_Rec.Pphiefficiency<0.5, "Pphiefficiency"] = 0.5
+	df_Rec.loc[df_Rec.Pphiefficiency>1.5, "Pphiefficiency"] = 1.5
 	if not mc:
 		df_Rec.loc[:, "efficiency"] = df_Rec.EhtccEfficiency * df_Rec.EFtof1bEfficiency * df_Rec.PFtof1bEfficiency
 		return df_Rec
 	else:
-		df_Rec.loc[:, "efficiency"] = df_Rec.Pefficiency
+		df_Rec.loc[:, "efficiency"] = df_Rec.Pthetaefficiency * df_Rec.Ppefficiency * df_Rec.Pphiefficiency
 		return df_Rec
 	return df_Rec
 
