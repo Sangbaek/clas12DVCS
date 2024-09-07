@@ -46,6 +46,13 @@ def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency_bh[8])
 		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency_bh[10])
 		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency_bh[12])
+		df_Rec.loc[(df_Rec.Psector == 1), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_Pthetaefficiency_vgg[0])
+		df_Rec.loc[(df_Rec.Psector == 2), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_Pthetaefficiency_vgg[2])
+		df_Rec.loc[(df_Rec.Psector == 3), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_Pthetaefficiency_vgg[4])
+		df_Rec.loc[(df_Rec.Psector == 4), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_Pthetaefficiency_vgg[6])
+		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency_vgg[8])
+		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency_vgg[10])
+		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency_vgg[12])
 	if pol == "outbending":
 		df_Rec.loc[(df_Rec.Psector == 1), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_Pthetaefficiency[1])
 		df_Rec.loc[(df_Rec.Psector == 2), "Pthetaefficiency"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_Pthetaefficiency[3])
@@ -61,6 +68,13 @@ def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency_bh[9])
 		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency_bh[11])
 		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency_bh"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency_bh[13])
+		df_Rec.loc[(df_Rec.Psector == 1), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 1), "Ptheta"], *popt_Pthetaefficiency_vgg[1])
+		df_Rec.loc[(df_Rec.Psector == 2), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 2), "Ptheta"], *popt_Pthetaefficiency_vgg[3])
+		df_Rec.loc[(df_Rec.Psector == 3), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 3), "Ptheta"], *popt_Pthetaefficiency_vgg[5])
+		df_Rec.loc[(df_Rec.Psector == 4), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 4), "Ptheta"], *popt_Pthetaefficiency_vgg[7])
+		df_Rec.loc[(df_Rec.Psector == 5), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 5), "Ptheta"], *popt_Pthetaefficiency_vgg[9])
+		df_Rec.loc[(df_Rec.Psector == 6), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector == 6), "Ptheta"], *popt_Pthetaefficiency_vgg[11])
+		df_Rec.loc[(df_Rec.Psector >  7), "Pthetaefficiency_vgg"] = quartic_efficiency(df_Rec.loc[(df_Rec.Psector >  7), "Ptheta"], *popt_Pthetaefficiency_vgg[13])
 
 	df_Rec.loc[:, "Ppefficiency"] = 1
 	df_Rec.loc[:, "Ppefficiency_bh"] = 1
