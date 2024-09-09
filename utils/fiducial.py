@@ -163,6 +163,7 @@ def assign_efficiency(df_Rec, mc = False, pol = "inbending"):
 	else:
 		df_Rec.loc[:, "efficiency"] = df_Rec.Pthetaefficiency * df_Rec.Ppefficiency * df_Rec.Pphiefficiency
 		df_Rec.loc[:, "efficiency_bh"] = df_Rec.Pthetaefficiency_bh * df_Rec.Ppefficiency_bh * df_Rec.Pphiefficiency_bh
+		df_Rec.loc[:, "efficiency_vgg"] = df_Rec.Pthetaefficiency_vgg * df_Rec.Ppefficiency_vgg * df_Rec.Pphiefficiency_vgg
 		return df_Rec
 	return df_Rec
 
