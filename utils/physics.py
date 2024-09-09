@@ -183,6 +183,14 @@ def P1(xB, Q2, t, phi):
 def P2(xB, Q2, t, phi):
     return 1 + del2q2(xB, Q2, t, phi) - P1(xB, Q2, t, phi)
 
+def anintP1P2(xB, Q2, t, phi):# from gepard
+    brace = ((1 - y(xB, Q2, t, phi) - (1+eps2(xB, Q2, t, phi)/2.) * y(xB, Q2, t, phi)**2 * eps2(xB, Q2, t, phi)/2.) * (1. - t/Q2)**2 +
+             2.*Kfac(xB, Q2, t, phi)**2 - (1.-xB)*(2.-y(xB, Q2, t, phi))**2 * (1. + xB* (-t)/Q2) * (-t)/Q2)
+    return -2. * np.pi * brace / (1+eps2(xB, Q2, t, phi))**2 / y(xB, Q2, t, phi)**2
+
+def weight_BH(xB, Q2, t, phi):#from gepard
+    return 2.*np.pi*P1(xB, Q2, t, phi) * P2(xB, Q2, t, phi) /anintP1P2(xB, Q2, t, phi)
+
 def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
     if isinstance(xBarray, pd.core.series.Series):
