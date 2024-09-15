@@ -120,76 +120,76 @@ def p_DC_fiducial_cut_thetaphi(theta_DC, sec, region, minparams, maxparams):
 def nu(xB, Q2, t, phi):
     return Q2/(2*M*xB)
 
-def y(xB, Q2, t, phi):
-    return nu(xB, Q2, t, phi)/10.604
+def y(xB, Q2, t, phi, E = 10.604):
+    return nu(xB, Q2, t, phi)/E
 
-def xi(xB, Q2, t, phi):
+def xi(xB, Q2, t, phi, E = 10.604):
     return xB*(1-t/2/Q2)/(2-xB+xB*(-t/Q2))
 
-def del2(xB, Q2, t, phi):
+def del2(xB, Q2, t, phi, E = 10.604):
     return -t
 
-def del2q2(xB, Q2, t, phi):
-    return del2(xB, Q2, t, phi)/Q2
+def del2q2(xB, Q2, t, phi, E = 10.604):
+    return del2(xB, Q2, t, phi, E = E)/Q2
 
-def eps(xB, Q2, t, phi):
+def eps(xB, Q2, t, phi, E = 10.604):
     return 2*xB*M/np.sqrt(Q2)
 
-def eps2(xB, Q2, t, phi):
-    return eps(xB, Q2, t, phi)**2
+def eps2(xB, Q2, t, phi, E = 10.604):
+    return eps(xB, Q2, t, phi, E = E)**2
 
-def qeps2(xB, Q2, t, phi):
-    return 1+eps2(xB, Q2, t, phi)
+def qeps2(xB, Q2, t, phi, E = 10.604):
+    return 1+eps2(xB, Q2, t, phi, E = E)
 
-def sqeps2(xB, Q2, t, phi):
-    return np.sqrt(qeps2(xB, Q2, t, phi))
+def sqeps2(xB, Q2, t, phi, E = 10.604):
+    return np.sqrt(qeps2(xB, Q2, t, phi, E = E))
 
-def y1eps(xB, Q2, t, phi):
-    return 1 - y(xB, Q2, t, phi) - y(xB, Q2, t, phi)*y(xB, Q2, t, phi)*eps2(xB, Q2, t, phi)/4
+def y1eps(xB, Q2, t, phi, E = 10.604):
+    return 1 - y(xB, Q2, t, phi, E = E) - y(xB, Q2, t, phi, E = E)*y(xB, Q2, t, phi, E = E)*eps2(xB, Q2, t, phi, E = E)/4
 
-def tmin(xB, Q2, t, phi):
-    return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi))
+def tmin(xB, Q2, t, phi, E = 10.604):
+    return -Q2*(2*(1-xB)*(1-sqeps2(xB, Q2, t, phi, E = E))+eps2(xB, Q2, t, phi, E = E))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi, E = E))
 
-def tmax(xB, Q2, t, phi):
-    return -Q2*(2*(1-xB)*(1+sqeps2(xB, Q2, t, phi))+eps2(xB, Q2, t, phi))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi))
+def tmax(xB, Q2, t, phi, E = 10.604):
+    return -Q2*(2*(1-xB)*(1+sqeps2(xB, Q2, t, phi, E = E))+eps2(xB, Q2, t, phi, E = E))/(4*xB*(1-xB)+eps2(xB, Q2, t, phi, E = E))
 
-def W2(xB, Q2, t, phi):
-    return M*M+2.0*M*nu(xB, Q2, t, phi)-Q2
+def W2(xB, Q2, t, phi, E = 10.604):
+    return M*M+2.0*M*nu(xB, Q2, t, phi, E = E)-Q2
 
-def W(xB, Q2, t, phi):
-    return np.sqrt(W2(xB, Q2, t, phi))
+def W(xB, Q2, t, phi, E = 10.604):
+    return np.sqrt(W2(xB, Q2, t, phi, E = E))
 
-def tmin2(xB, Q2, t, phi):
-    return -0.5*((Q2/xB-Q2)*(Q2/xB-np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi)
+def tmin2(xB, Q2, t, phi, E = 10.604):
+    return -0.5*((Q2/xB-Q2)*(Q2/xB-np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi, E = E)
 
-def tmax2(xB, Q2, t, phi):
-    return -0.5*((Q2/xB-Q2)*(Q2/xB+np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi)
+def tmax2(xB, Q2, t, phi, E = 10.604):
+    return -0.5*((Q2/xB-Q2)*(Q2/xB+np.sqrt((Q2/xB)**2+4*M*M*Q2))+2*M*M*Q2)/W2(xB, Q2, t, phi, E = E)
 
 def tcol(xB, Q2, t, phi, ebeam = 10.604):
     return Q2*(Q2-2*xB*M*ebeam)/xB/(Q2-2*M*ebeam)
 
-def Kfac2(xB, Q2, t, phi):
-    return (-del2q2(xB, Q2, t, phi))*(1 - xB)*y1eps(xB, Q2, t, phi)*(1 - np.abs(tmin(xB, Q2, t, phi))/t)*(np.sqrt(1 + eps2(xB, Q2, t, phi)) + 
-            ((4*xB*(1 - xB) + eps2(xB, Q2, t, phi))/(4*(1 - xB)))*(-(t - np.abs(tmin(xB, Q2, t, phi)))/Q2))
-def Kfac(xB, Q2, t, phi):
-    return np.sqrt(Kfac2(xB, Q2, t, phi))
+def Kfac2(xB, Q2, t, phi, E = 10.604):
+    return (-del2q2(xB, Q2, t, phi, E = E))*(1 - xB)*y1eps(xB, Q2, t, phi, E = E)*(1 - np.abs(tmin(xB, Q2, t, phi, E = E))/t)*(np.sqrt(1 + eps2(xB, Q2, t, phi, E = E)) + 
+            ((4*xB*(1 - xB) + eps2(xB, Q2, t, phi, E = E))/(4*(1 - xB)))*(-(t - np.abs(tmin(xB, Q2, t, phi, E = E)))/Q2))
+def Kfac(xB, Q2, t, phi, E = 10.604):
+    return np.sqrt(Kfac2(xB, Q2, t, phi, E = E))
 
-def Jfac(xB, Q2, t, phi):
-    return (1 - y(xB, Q2, t, phi) - y(xB, Q2, t, phi)*eps2(xB, Q2, t, phi)/2)*(1 + del2q2(xB, Q2, t, phi)) - (1 - xB)*(2 - y(xB, Q2, t, phi))*del2q2(xB, Q2, t, phi)
+def Jfac(xB, Q2, t, phi, E = 10.604):
+    return (1 - y(xB, Q2, t, phi, E = E) - y(xB, Q2, t, phi, E = E)*eps2(xB, Q2, t, phi, E = E)/2)*(1 + del2q2(xB, Q2, t, phi, E = E)) - (1 - xB)*(2 - y(xB, Q2, t, phi, E = E))*del2q2(xB, Q2, t, phi, E = E)
 
-def P1(xB, Q2, t, phi):    
-    return -(Jfac(xB, Q2, t, phi) + 2*Kfac(xB, Q2, t, phi)*np.cos(np.pi-np.radians(phi)))/(y(xB, Q2, t, phi)*(1 + eps2(xB, Q2, t, phi)))
+def P1(xB, Q2, t, phi, E = 10.604):    
+    return -(Jfac(xB, Q2, t, phi, E = E) + 2*Kfac(xB, Q2, t, phi, E = E)*np.cos(np.pi-np.radians(phi)))/(y(xB, Q2, t, phi, E = E)*(1 + eps2(xB, Q2, t, phi, E = E)))
 
-def P2(xB, Q2, t, phi):
-    return 1 + del2q2(xB, Q2, t, phi) - P1(xB, Q2, t, phi)
+def P2(xB, Q2, t, phi, E = 10.604):
+    return 1 + del2q2(xB, Q2, t, phi, E = E) - P1(xB, Q2, t, phi, E = E)
 
-def anintP1P2(xB, Q2, t, phi):# from gepard
-    brace = ((1 - y(xB, Q2, t, phi) - (1+eps2(xB, Q2, t, phi)/2.) * y(xB, Q2, t, phi)**2 * eps2(xB, Q2, t, phi)/2.) * (1. - t/Q2)**2 +
-             2.*Kfac(xB, Q2, t, phi)**2 - (1.-xB)*(2.-y(xB, Q2, t, phi))**2 * (1. + xB* (-t)/Q2) * (-t)/Q2)
-    return -2. * np.pi * brace / (1+eps2(xB, Q2, t, phi))**2 / y(xB, Q2, t, phi)**2
+def anintP1P2(xB, Q2, t, phi, E = 10.604):# from gepard
+    brace = ((1 - y(xB, Q2, t, phi, E = E) - (1+eps2(xB, Q2, t, phi, E = E)/2.) * y(xB, Q2, t, phi, E = E)**2 * eps2(xB, Q2, t, phi, E = E)/2.) * (1. - t/Q2)**2 +
+             2.*Kfac(xB, Q2, t, phi, E = E)**2 - (1.-xB)*(2.-y(xB, Q2, t, phi, E = E))**2 * (1. + xB* (-t)/Q2) * (-t)/Q2)
+    return -2. * np.pi * brace / (1+eps2(xB, Q2, t, phi, E = E))**2 / y(xB, Q2, t, phi, E = E)**2
 
-def weight_BH(xB, Q2, t, phi):#from gepard
-    return 2.*np.pi*P1(xB, Q2, t, phi) * P2(xB, Q2, t, phi) /anintP1P2(xB, Q2, t, phi)
+def weight_BH(xB, Q2, t, phi, E = 10.604):#from gepard
+    return 2.*np.pi*P1(xB, Q2, t, phi, E = E) * P2(xB, Q2, t, phi, E = E) /anintP1P2(xB, Q2, t, phi, E = E)
 
 def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
     BHarray = []
