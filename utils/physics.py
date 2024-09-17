@@ -117,7 +117,7 @@ def p_DC_fiducial_cut_thetaphi(theta_DC, sec, region, minparams, maxparams):
     calc_phi_max = np.array(maxparams)[1, sec-1, region, 0] + np.array(maxparams)[1, sec-1, region, 1] * np.log(theta_DC) + np.array(maxparams)[1, sec-1, region, 2] * theta_DC + np.array(maxparams)[1, sec-1, region, 3] * theta_DC * theta_DC;
     return calc_phi_min, calc_phi_max
 
-def nu(xB, Q2, t, phi):
+def nu(xB, Q2, t, phi, E = 10.604):
     return Q2/(2*M*xB)
 
 def y(xB, Q2, t, phi, E = 10.604):
