@@ -68,8 +68,13 @@ def main_fast(mode, pi0_directory, chunks):
 		print("Saving /volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}/{}".format(pi0_directory, suffix, chunk))
 		for integrated_binnum in range(1, 147+1):
 			print("Integrated bin number {}".format(integrated_binnum))
-			df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}/{}/{}.pkl".format(pi0_directory, suffix, chunk, integrated_binnum))
-
+			try:
+				df_merged_this_bin = df_merged.loc[df_merged.integrated_binnum == integrated_binnum]
+				assert(len(df_merged_this_bin)>0)
+				df_merged.loc[df_merged.integrated_binnum == integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}/{}/{}.pkl".format(pi0_directory, suffix, chunk, integrated_binnum))
+			except Exception as e:
+				print(integrated_binnum, e)
+				
 
 	return
 

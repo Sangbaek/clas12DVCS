@@ -19,9 +19,9 @@ bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
 
 
 df_gen = pd.read_pickle("summary_table.gen.pkl")
-selected_columns = ["integrated_binnum", "phi_binnum", "xB", "Q2", "t1", "phi1", "Esector", "Ep", "Etheta", "Ephi", "Psector", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi", "MM2_epg", "efficiency", "weights", "config", "EFtof1bComponent", "PFtof1bComponent", "PFtof1bSector"]
+selected_columns = ["integrated_binnum", "phi_binnum", "PDc1Hitx", "PDc1Hity", "PDc1Hitz", "xB", "Q2", "t1", "phi1", "Esector", "Ep", "Etheta", "Ephi", "Psector", "Pe", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi", "MM2_epg", "efficiency", "efficiency_bh", "efficiency_vgg", "weights", "config", "EFtof1bComponent", "PFtof1bComponent", "PFtof1bSector"]
 
-def main_memory_efficient(mode, sig_directory, gen_directory):
+def main_memory_efficient(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
 
@@ -69,12 +69,14 @@ def main_memory_efficient(mode, sig_directory, gen_directory):
 
 	return
 
-def main_fast(mode, sig_directory, gen_directory):
+def main_fast(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
 
 	bulk_directory = "/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_{}".format(sig_directory, suffix)
 	fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_{}".format(sig_directory, suffix)
+	# polarity = sig_directory.split("_")[-2].split("/")[0]
+	pol = "{}ending".format(polarity)
 
 	if not os.path.exists(bulk_directory):
 		return
@@ -107,37 +109,40 @@ def main_fast(mode, sig_directory, gen_directory):
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "weights"] = df.loc[df.phi_binnum_gen == phi_binnum_gen].GenWeight \
 				* df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] * luminosity_inb / df.loc[df.phi_binnum_gen == phi_binnum_gen].n_gen
+		df = assign_efficiency(df, mc = True, pol = pol)
 		df_merged_entire.append(df.loc[:, selected_columns])
 		for integrated_binnum in range(1,147+1):
 			df_this_bin  = df.loc[(df.integrated_binnum == integrated_binnum), :]
-			df_merged[integrated_binnum].append(df_this_bin)
+			if len(df_this_bin):
+				df_merged[integrated_binnum].append(df_this_bin)
 	print("Saving /volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}".format(sig_directory, suffix ))
 	df_merged_entire = pd.concat(df_merged_entire)
 	print("concatenated")
 	df_merged_entire = df_merged_entire.reset_index()
 	print("index reset")
 	df_merged_entire = df_merged_entire.loc[:, df_merged_entire.columns[1:]]
-	polarity = sig_directory.split("_")[-2].split("/")[0]
-	pol = "{}ending".format(polarity)
-	df_merged_entire = assign_efficiency(df_merged_entire, mc = True, pol = pol)
-	print("efficiency assigned")
-	df_merged_entire.to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_{}/fall2018_{}.pkl".format(sig_directory, suffix, polarity))
+	df_merged_entire.loc[df_merged_entire.weights<1000, :].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_{}/fall2018_{}.pkl".format(sig_directory, suffix, polarity))
 	print("saved")
 
 	for integrated_binnum in range(1, 147+1):
 		print("Integrated bin number {}".format(integrated_binnum))
-		df_merged[integrated_binnum] = pd.concat(df_merged[integrated_binnum])
-		df_merged[integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}/{}.pkl".format(sig_directory, suffix, integrated_binnum))
+		try:
+			df_merged[integrated_binnum] = pd.concat(df_merged[integrated_binnum])
+			df_merged[integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_{}/{}.pkl".format(sig_directory, suffix, integrated_binnum))
+		except Exception as e:
+			print(integrated_binnum, e)
 		df_merged[integrated_binnum] = 0
 	return
 
-def main_fast_3(mode, sig_directory, gen_directory):
+def main_fast_3(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
 
 	bulk_directory = "/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_3_{}".format(sig_directory, suffix)
 	# fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_3_{}".format(sig_directory, suffix)
 	fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_{}".format(sig_directory, suffix)
+	# polarity = sig_directory.split("_")[-1].split("/")[0]
+	pol = "{}ending".format(polarity)
 
 	if not os.path.exists(bulk_directory):
 		return
@@ -171,45 +176,47 @@ def main_fast_3(mode, sig_directory, gen_directory):
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "weights"] = df.loc[df.phi_binnum_gen == phi_binnum_gen].GenWeight \
 				* df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] * luminosity_inb / df.loc[df.phi_binnum_gen == phi_binnum_gen].n_gen
+		df = assign_efficiency(df, mc = True, pol = pol)
 		df_merged_entire.append(df.loc[:, selected_columns])
 		for integrated_binnum in range(1,147+1):
 			df_this_bin  = df.loc[(df.integrated_binnum == integrated_binnum), :]
-			df_merged[integrated_binnum].append(df_this_bin)
+			if len(df_this_bin):
+				df_merged[integrated_binnum].append(df_this_bin)
 	print("Saving /volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_3_{}".format(sig_directory, suffix ))
 	df_merged_entire = pd.concat(df_merged_entire)
 	df_merged_entire = df_merged_entire.reset_index()
 	df_merged_entire = df_merged_entire.loc[:, df_merged_entire.columns[1:]]
 	# polarity = sig_directory.split("_")[-2].split("/")[0]
-	polarity = sig_directory.split("_")[-1].split("/")[0]
-	pol = "{}ending".format(polarity)
-	df_merged_entire = assign_efficiency(df_merged_entire, mc = True, pol = pol)
-	df_merged_entire.to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_3_{}/fall2018_{}.pkl".format(sig_directory, suffix, polarity))
+	df_merged_entire.loc[df_merged_entire.weights<1000, :].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_3_{}/fall2018_{}.pkl".format(sig_directory, suffix, polarity))
 	for integrated_binnum in range(1, 147+1):
 		print("Integrated bin number {}".format(integrated_binnum))
-		df_merged[integrated_binnum] = pd.concat(df_merged[integrated_binnum])
-		df_merged[integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_3_{}/{}.pkl".format(sig_directory, suffix, integrated_binnum))
+		try:
+			df_merged[integrated_binnum] = pd.concat(df_merged[integrated_binnum])
+			df_merged[integrated_binnum].to_pickle("/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/restructured_3_{}/{}.pkl".format(sig_directory, suffix, integrated_binnum))
+		except Exception as e:
+			print(integrated_binnum, e)
 		df_merged[integrated_binnum] = 0
 	return
 
-def main(mode, sig_directory, gen_directory):
+def main(mode, sig_directory, gen_directory, polarity):
 	# if mode == 0:
 	# 	main_memory_efficient(mode, sig_directory, gen_directory)
 	# else:
-	main_fast(mode, sig_directory, gen_directory)
+	main_fast(mode, sig_directory, gen_directory, polarity)
 
 
 if __name__ == "__main__":
 
-	for mode in range(6, 13):#range(11, 12+1):
-		main(mode, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3")
-		main(mode, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3")
-		main(mode, "sim_rad_rec_fall2018_inb/dvcs_vgg", "dvcs_vgg/fall2018_inb")
-		main(mode, "sim_rad_rec_fall2018_outb/dvcs_vgg", "dvcs_vgg/fall2018_outb")
-		# main(mode, "sim_rad_rec_fall2018_inb/pureBH", "pureBH/fall2018_inb")
-		main_fast_3(mode, "sim_rad_rec_fall2018_inb/pureBH", "pureBH/fall2018_inb3")
-		main(mode, "sim_rad_rec_fall2018_outb/pureBH", "pureBH/fall2018_outb")
+	for mode in [6, 13]:#range(6, 13):#range(11, 12+1):
+		main(mode, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3", "inb")
+		main(mode, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3", "outb")
+		main(mode, "sim_rad_rec_fall2018_inb/dvcs_vgg", "dvcs_vgg/fall2018_inb", "inb")
+		main(mode, "sim_rad_rec_fall2018_outb/dvcs_vgg", "dvcs_vgg/fall2018_outb", "outb")
+		# main(mode, "sim_rad_rec_fall2018_inb/pureBH", "pureBH/fall2018_inb", "inb")
+		main_fast_3(mode, "sim_rad_rec_fall2018_inb/pureBH", "pureBH/fall2018_inb3", "inb")
+		main(mode, "sim_rad_rec_fall2018_outb/pureBH", "pureBH/fall2018_outb", "outb")
 		# break
 
-	main(13, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3_45nA")
-	main(13, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3_50nA")
+	main(13, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3_45nA", "inb")
+	main(13, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3_50nA", "outb")
 

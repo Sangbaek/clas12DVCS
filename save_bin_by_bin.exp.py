@@ -25,7 +25,8 @@ def main(mode):
 	bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
 
 	#Exp - fall 2018 inbending ep->epg
-	for directory in ["dvcs", "pi0"]:
+	#for directory in ["dvcs", "pi0"]:
+	for directory in [ "pi0"]:
 		for polarity in ["inb", "outb"]:
 			if polarity == "inb":
 				qadb_range = 339
@@ -76,6 +77,7 @@ def main(mode):
 
 if __name__ == "__main__":
 
+	#for mode in range(6, 13):#range(1, 14):
 	for mode in range(6, 13):#range(1, 14):
 		main(mode)
 

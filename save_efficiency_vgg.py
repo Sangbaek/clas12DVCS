@@ -97,6 +97,7 @@ pphi_efficiency_inb_sector_4 = np.ones(36)
 pphi_efficiency_inb_sector_5 = np.ones(36)
 pphi_efficiency_inb_sector_6 = np.ones(36)
 pphi_efficiency_inb_cd       = np.ones(36)
+# ptheta_efficiency_inb_cd      , pp_efficiency_inb_cd      , pphi_efficiency_inb_cd       =  [1.249, 0.881, 0.769, 0.743, 0.764, 0.758, 0.753, 0.753, 0.758, 0.786],[1.049, 1.137, 1.137, 1.149, 1.155, 1.168, 1.214, 1.228, 1.164, 1.151],[0.941, 0.943, 0.982, 1.029, 0.931, 0.888, 0.714, 0.668, 0.701, 0.732, 0.811, 0.900, 0.932, 0.905, 0.870, 0.983, 0.876, 0.755, 0.681, 0.825, 0.820, 0.863, 0.882, 0.914, 0.848, 0.918, 0.909, 0.862, 0.867, 0.807, 0.623, 0.923, 0.850, 0.903, 0.911, 0.954]
 
 effective_current_inb = (40*charge_inb_40nA + 45* charge_inb_45nA + 50*charge_inb_50nA + 55*charge_inb_55nA)/charge_inb
 chunk_inb             = [1, 2, 3]
@@ -106,7 +107,7 @@ for inbending_trial in range(1):
 
         df_exp_epg_inbs        = []
         df_sim_dvcs_inbs       = []
-        df_sim_bh_inbs         = []
+        df_sim_vgg_inbs         = []
         print(ptheta_trial, "ptheta_trial", "inb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_1])
         print(ptheta_trial, "ptheta_trial", "inb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_2])
         print(ptheta_trial, "ptheta_trial", "inb sector 3", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_3])
@@ -166,13 +167,13 @@ for inbending_trial in range(1):
             except:
                 df_sim_bkgmerging_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/pureBH/excl_level_1/restructured_3_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_inb   = assign_Pthetaefficiency(df_sim_bh_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
-                df_sim_bh_inb   = assign_Ppefficiency(df_sim_bh_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
-                df_sim_bh_inb   = assign_Pphiefficiency(df_sim_bh_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
+                df_sim_vgg_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_inb   = assign_Pthetaefficiency(df_sim_vgg_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Ppefficiency(df_sim_vgg_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Pphiefficiency(df_sim_vgg_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
             except:
-                df_sim_bh_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
-            # df_sim_bh_inb.loc[:, "efficiency"] = 0
+                df_sim_vgg_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+            # df_sim_vgg_inb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb.weights * df_sim_bkgmerging_inb.Pthetaefficiency * df_sim_bkgmerging_inb.Ppefficiency * df_sim_bkgmerging_inb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb.weights * df_sim_nobkgmerging_inb.Pthetaefficiency * df_sim_nobkgmerging_inb.Ppefficiency * df_sim_nobkgmerging_inb.Pphiefficiency)
             # eff_bkg_merging = ( 1 + effective_current_inb/45 * ( -1 + bkg_to_nobkg))
@@ -202,7 +203,7 @@ for inbending_trial in range(1):
                     df_sim_pi0_1gamma_inb_this_bin = df_sim_pi0_1gamma_inb.loc[(df_sim_pi0_1gamma_inb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_inb_this_bin = df_sim_nobkgmerging_inb.loc[(df_sim_nobkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_inb_this_bin = df_sim_bkgmerging_inb.loc[(df_sim_bkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_inb_this_bin = df_sim_bh_inb.loc[(df_sim_bh_inb.integrated_binnum == integrated_binnum) & (df_sim_bh_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_inb_this_bin = df_sim_vgg_inb.loc[(df_sim_vgg_inb.integrated_binnum == integrated_binnum) & (df_sim_vgg_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb_this_bin.weights * df_sim_bkgmerging_inb_this_bin.Pthetaefficiency * df_sim_bkgmerging_inb_this_bin.Ppefficiency * df_sim_bkgmerging_inb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_inb/45 * ( -1 + bkg_to_nobkg))
@@ -232,60 +233,60 @@ for inbending_trial in range(1):
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_inb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_inb_this_bin.contamination)/df_exp_epg_inb_this_bin.efficiency
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.efficiency * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency
-                    df_sim_bh_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_inb_this_bin.weights * df_sim_bh_inb_this_bin.efficiency * df_sim_bh_inb_this_bin.Pthetaefficiency  * df_sim_bh_inb_this_bin.Ppefficiency * df_sim_bh_inb_this_bin.Pphiefficiency
+                    df_sim_vgg_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_inb_this_bin.weights * df_sim_vgg_inb_this_bin.efficiency * df_sim_vgg_inb_this_bin.Pthetaefficiency  * df_sim_vgg_inb_this_bin.Ppefficiency * df_sim_vgg_inb_this_bin.Pphiefficiency
 
                     df_exp_epg_inbs.append(df_exp_epg_inb_this_bin)
                     df_sim_dvcs_inbs.append(df_sim_nobkgmerging_inb_this_bin)
-                    df_sim_bh_inbs.append(df_sim_bh_inb_this_bin)
+                    df_sim_vgg_inbs.append(df_sim_vgg_inb_this_bin)
             
         df_exp_epg_inbs  = pd.concat(df_exp_epg_inbs)
         df_sim_dvcs_inbs = pd.concat(df_sim_dvcs_inbs)
-        df_sim_bh_inbs = pd.concat(df_sim_bh_inbs)
+        df_sim_vgg_inbs = pd.concat(df_sim_vgg_inbs)
 
         # FD sector 1
         ptheta_exp_sector_1, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_1, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_1, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_1 = ptheta_efficiency_inb_sector_1*divideHist(ptheta_exp_sector_1, ptheta_sim_sector_1)
 
         # FD sector 2
         ptheta_exp_sector_2, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_2, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_2, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_2 = ptheta_efficiency_inb_sector_2*divideHist(ptheta_exp_sector_2, ptheta_sim_sector_2)
 
         # FD sector 3
         ptheta_exp_sector_3, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_3, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_3, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_3 = ptheta_efficiency_inb_sector_3*divideHist(ptheta_exp_sector_3, ptheta_sim_sector_3)
 
         # FD sector 4
         ptheta_exp_sector_4, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_4, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_4, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_4 = ptheta_efficiency_inb_sector_4*divideHist(ptheta_exp_sector_4, ptheta_sim_sector_4)
 
         # FD sector 5
         ptheta_exp_sector_5, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_5, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_5, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_5 = ptheta_efficiency_inb_sector_5*divideHist(ptheta_exp_sector_5, ptheta_sim_sector_5)
 
         # FD sector 6
         ptheta_exp_sector_6, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "signal"], bins = ptheta_bins_inb_fd)
-        ptheta_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = ptheta_bins_inb_fd)
-        # ptheta_sim_sector_6, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "signal"], bins = ptheta_bins_inb_fd)
+        # ptheta_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = ptheta_bins_inb_fd)
+        ptheta_sim_sector_6, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "signal"], bins = ptheta_bins_inb_fd)
         ptheta_efficiency_inb_sector_6 = ptheta_efficiency_inb_sector_6*divideHist(ptheta_exp_sector_6, ptheta_sim_sector_6)
 
         # CD
         ptheta_exp_cd, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "Ptheta"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "signal"], bins = ptheta_bins_inb_cd)
-        ptheta_sim_cd, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "signal"], bins = ptheta_bins_inb_cd)
-        # ptheta_sim_cd, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "Ptheta"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "signal"], bins = ptheta_bins_inb_cd)
+        # ptheta_sim_cd, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "Ptheta"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "signal"], bins = ptheta_bins_inb_cd)
+        ptheta_sim_cd, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "Ptheta"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "signal"], bins = ptheta_bins_inb_cd)
         ptheta_efficiency_inb_cd = ptheta_efficiency_inb_cd*divideHist(ptheta_exp_cd, ptheta_sim_cd)
 
         ptheta_efficiency_inb_sector_1[ptheta_efficiency_inb_sector_1<0.1] = 0.1
@@ -307,7 +308,7 @@ for inbending_trial in range(1):
     for pp_trial in range(3):
         df_exp_epg_inbs        = []
         df_sim_dvcs_inbs       = []
-        df_sim_bh_inbs         = []
+        df_sim_vgg_inbs         = []
         print(pp_trial, "pp_trial", "inb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_1])
         print(pp_trial, "pp_trial", "inb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_2])
         print(pp_trial, "pp_trial", "inb sector 3", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_3])
@@ -367,12 +368,12 @@ for inbending_trial in range(1):
             except:
                 df_sim_bkgmerging_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/pureBH/excl_level_1/restructured_3_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_inb   = assign_Pthetaefficiency(df_sim_bh_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
-                df_sim_bh_inb   = assign_Ppefficiency(df_sim_bh_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
-                df_sim_bh_inb   = assign_Pphiefficiency(df_sim_bh_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
+                df_sim_vgg_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_inb   = assign_Pthetaefficiency(df_sim_vgg_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Ppefficiency(df_sim_vgg_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Pphiefficiency(df_sim_vgg_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
             except:
-                df_sim_bh_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+                df_sim_vgg_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             # df_sim_nobkgmerging_inb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb.weights * df_sim_bkgmerging_inb.Pthetaefficiency * df_sim_bkgmerging_inb.Ppefficiency * df_sim_bkgmerging_inb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb.weights * df_sim_nobkgmerging_inb.Pthetaefficiency * df_sim_nobkgmerging_inb.Ppefficiency * df_sim_nobkgmerging_inb.Pphiefficiency)
@@ -403,7 +404,7 @@ for inbending_trial in range(1):
                     df_sim_pi0_1gamma_inb_this_bin = df_sim_pi0_1gamma_inb.loc[(df_sim_pi0_1gamma_inb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_inb_this_bin = df_sim_nobkgmerging_inb.loc[(df_sim_nobkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_inb_this_bin = df_sim_bkgmerging_inb.loc[(df_sim_bkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_inb_this_bin = df_sim_bh_inb.loc[(df_sim_bh_inb.integrated_binnum == integrated_binnum) & (df_sim_bh_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_inb_this_bin = df_sim_vgg_inb.loc[(df_sim_vgg_inb.integrated_binnum == integrated_binnum) & (df_sim_vgg_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb_this_bin.weights * df_sim_bkgmerging_inb_this_bin.Pthetaefficiency * df_sim_bkgmerging_inb_this_bin.Ppefficiency * df_sim_bkgmerging_inb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_inb/45 * ( -1 + bkg_to_nobkg))
@@ -433,60 +434,60 @@ for inbending_trial in range(1):
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_inb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_inb_this_bin.contamination)/df_exp_epg_inb_this_bin.efficiency
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.efficiency * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency
-                    df_sim_bh_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_inb_this_bin.weights * df_sim_bh_inb_this_bin.efficiency * df_sim_bh_inb_this_bin.Pthetaefficiency  * df_sim_bh_inb_this_bin.Ppefficiency * df_sim_bh_inb_this_bin.Pphiefficiency
+                    df_sim_vgg_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_inb_this_bin.weights * df_sim_vgg_inb_this_bin.efficiency * df_sim_vgg_inb_this_bin.Pthetaefficiency  * df_sim_vgg_inb_this_bin.Ppefficiency * df_sim_vgg_inb_this_bin.Pphiefficiency
 
                     df_exp_epg_inbs.append(df_exp_epg_inb_this_bin)
                     df_sim_dvcs_inbs.append(df_sim_nobkgmerging_inb_this_bin)
-                    df_sim_bh_inbs.append(df_sim_bh_inb_this_bin)
+                    df_sim_vgg_inbs.append(df_sim_vgg_inb_this_bin)
 
         df_exp_epg_inbs  = pd.concat(df_exp_epg_inbs)
         df_sim_dvcs_inbs = pd.concat(df_sim_dvcs_inbs)
-        df_sim_bh_inbs = pd.concat(df_sim_bh_inbs)
+        df_sim_vgg_inbs = pd.concat(df_sim_vgg_inbs)
 
         # FD sector 1
         pp_exp_sector_1, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_1, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_1, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_1 = pp_efficiency_inb_sector_1*divideHist(pp_exp_sector_1, pp_sim_sector_1)
 
         # FD sector 2
         pp_exp_sector_2, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_2, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_2, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_2 = pp_efficiency_inb_sector_2*divideHist(pp_exp_sector_2, pp_sim_sector_2)
 
         # FD sector 3
         pp_exp_sector_3, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_3, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_3, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_3 = pp_efficiency_inb_sector_3*divideHist(pp_exp_sector_3, pp_sim_sector_3)
 
         # FD sector 4
         pp_exp_sector_4, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_4, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_4, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_4 = pp_efficiency_inb_sector_4*divideHist(pp_exp_sector_4, pp_sim_sector_4)
 
         # FD sector 5
         pp_exp_sector_5, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_5, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_5, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_5 = pp_efficiency_inb_sector_5*divideHist(pp_exp_sector_5, pp_sim_sector_5)
 
         # FD sector 6
         pp_exp_sector_6, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "signal"], bins = pp_bins_inb_fd)
-        pp_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = pp_bins_inb_fd)
-        # pp_sim_sector_6, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "signal"], bins = pp_bins_inb_fd)
+        # pp_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = pp_bins_inb_fd)
+        pp_sim_sector_6, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "signal"], bins = pp_bins_inb_fd)
         pp_efficiency_inb_sector_6 = pp_efficiency_inb_sector_6*divideHist(pp_exp_sector_6, pp_sim_sector_6)
 
         # CD
         pp_exp_cd, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "Pp"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "signal"], bins = pp_bins_inb_cd)
         # pp_sim_cd, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "Pp"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "signal"], bins = pp_bins_inb_cd)
-        pp_sim_cd, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "Pp"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "signal"], bins = pp_bins_inb_cd)
+        pp_sim_cd, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "Pp"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "signal"], bins = pp_bins_inb_cd)
         pp_efficiency_inb_cd = pp_efficiency_inb_cd*divideHist(pp_exp_cd, pp_sim_cd)
 
         pp_efficiency_inb_sector_1[pp_efficiency_inb_sector_1<0.5] = 0.5
@@ -508,7 +509,7 @@ for inbending_trial in range(1):
     for pphi_trial in range(3):
         df_exp_epg_inbs        = []
         df_sim_dvcs_inbs       = []
-        df_sim_bh_inbs         = []
+        df_sim_vgg_inbs         = []
         print(pphi_trial, "pphi_trial", "inb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_1])
         print(pphi_trial, "pphi_trial", "inb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_2])
         print(pphi_trial, "pphi_trial", "inb sector 3", ["{:.3f}".format(i) for i in ptheta_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pp_efficiency_inb_sector_3], ["{:.3f}".format(i) for i in pphi_efficiency_inb_sector_3])
@@ -568,12 +569,12 @@ for inbending_trial in range(1):
             except:
                 df_sim_bkgmerging_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/pureBH/excl_level_1/restructured_3_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_inb   = assign_Pthetaefficiency(df_sim_bh_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
-                df_sim_bh_inb   = assign_Ppefficiency(df_sim_bh_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
-                df_sim_bh_inb   = assign_Pphiefficiency(df_sim_bh_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
+                df_sim_vgg_inb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_inb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_inb   = assign_Pthetaefficiency(df_sim_vgg_inb, ptheta_efficiency_inb_sector_1, ptheta_efficiency_inb_sector_2, ptheta_efficiency_inb_sector_3, ptheta_efficiency_inb_sector_4, ptheta_efficiency_inb_sector_5, ptheta_efficiency_inb_sector_6, ptheta_efficiency_inb_cd, ptheta_bins_inb_fd, ptheta_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Ppefficiency(df_sim_vgg_inb, pp_efficiency_inb_sector_1, pp_efficiency_inb_sector_2, pp_efficiency_inb_sector_3, pp_efficiency_inb_sector_4, pp_efficiency_inb_sector_5, pp_efficiency_inb_sector_6, pp_efficiency_inb_cd, pp_bins_inb_fd, pp_bins_inb_cd)
+                df_sim_vgg_inb   = assign_Pphiefficiency(df_sim_vgg_inb, pphi_efficiency_inb_sector_1, pphi_efficiency_inb_sector_2, pphi_efficiency_inb_sector_3, pphi_efficiency_inb_sector_4, pphi_efficiency_inb_sector_5, pphi_efficiency_inb_sector_6, pphi_efficiency_inb_cd, pphi_bins_inb_fd, pphi_bins_inb_cd)
             except:
-                df_sim_bh_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+                df_sim_vgg_inb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             # df_sim_nobkgmerging_inb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb.weights * df_sim_bkgmerging_inb.Pthetaefficiency * df_sim_bkgmerging_inb.Ppefficiency * df_sim_bkgmerging_inb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb.weights * df_sim_nobkgmerging_inb.Pthetaefficiency * df_sim_nobkgmerging_inb.Ppefficiency * df_sim_nobkgmerging_inb.Pphiefficiency)
@@ -604,7 +605,7 @@ for inbending_trial in range(1):
                     df_sim_pi0_1gamma_inb_this_bin = df_sim_pi0_1gamma_inb.loc[(df_sim_pi0_1gamma_inb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_inb_this_bin = df_sim_nobkgmerging_inb.loc[(df_sim_nobkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_inb_this_bin = df_sim_bkgmerging_inb.loc[(df_sim_bkgmerging_inb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_inb_this_bin = df_sim_bh_inb.loc[(df_sim_bh_inb.integrated_binnum == integrated_binnum) & (df_sim_bh_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_inb_this_bin = df_sim_vgg_inb.loc[(df_sim_vgg_inb.integrated_binnum == integrated_binnum) & (df_sim_vgg_inb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_inb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_inb_this_bin.weights * df_sim_bkgmerging_inb_this_bin.Pthetaefficiency * df_sim_bkgmerging_inb_this_bin.Ppefficiency * df_sim_bkgmerging_inb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_inb/45 * ( -1 + bkg_to_nobkg))
@@ -634,60 +635,60 @@ for inbending_trial in range(1):
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_inb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_inb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_inb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_inb_this_bin.contamination)/df_exp_epg_inb_this_bin.efficiency
                     df_sim_nobkgmerging_inb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_inb_this_bin.weights * df_sim_nobkgmerging_inb_this_bin.efficiency * df_sim_nobkgmerging_inb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_inb_this_bin.Ppefficiency * df_sim_nobkgmerging_inb_this_bin.Pphiefficiency
-                    df_sim_bh_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_inb_this_bin.weights * df_sim_bh_inb_this_bin.efficiency * df_sim_bh_inb_this_bin.Pthetaefficiency  * df_sim_bh_inb_this_bin.Ppefficiency * df_sim_bh_inb_this_bin.Pphiefficiency
+                    df_sim_vgg_inb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_inb_this_bin.weights * df_sim_vgg_inb_this_bin.efficiency * df_sim_vgg_inb_this_bin.Pthetaefficiency  * df_sim_vgg_inb_this_bin.Ppefficiency * df_sim_vgg_inb_this_bin.Pphiefficiency
 
                     df_exp_epg_inbs.append(df_exp_epg_inb_this_bin)
                     df_sim_dvcs_inbs.append(df_sim_nobkgmerging_inb_this_bin)
-                    df_sim_bh_inbs.append(df_sim_bh_inb_this_bin)
+                    df_sim_vgg_inbs.append(df_sim_vgg_inb_this_bin)
 
         df_exp_epg_inbs  = pd.concat(df_exp_epg_inbs)
         df_sim_dvcs_inbs = pd.concat(df_sim_dvcs_inbs)
-        df_sim_bh_inbs = pd.concat(df_sim_bh_inbs)
+        df_sim_vgg_inbs = pd.concat(df_sim_vgg_inbs)
 
         # FD sector 1
         pphi_exp_sector_1, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 1, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_1, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 1, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_1, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 1, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_1, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 1, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_1 = pphi_efficiency_inb_sector_1*divideHist(pphi_exp_sector_1, pphi_sim_sector_1)
 
         # FD sector 2
         pphi_exp_sector_2, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 2, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_2, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 2, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_2, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 2, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_2, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 2, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_2 = pphi_efficiency_inb_sector_2*divideHist(pphi_exp_sector_2, pphi_sim_sector_2)
 
         # FD sector 3
         pphi_exp_sector_3, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 3, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_3, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 3, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_3, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 3, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_3, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 3, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_3 = pphi_efficiency_inb_sector_3*divideHist(pphi_exp_sector_3, pphi_sim_sector_3)
 
         # FD sector 4
         pphi_exp_sector_4, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 4, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_4, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 4, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_4, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 4, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_4, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 4, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_4 = pphi_efficiency_inb_sector_4*divideHist(pphi_exp_sector_4, pphi_sim_sector_4)
 
         # FD sector 5
         pphi_exp_sector_5, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 5, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_5, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 5, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_5, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 5, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_5, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 5, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_5 = pphi_efficiency_inb_sector_5*divideHist(pphi_exp_sector_5, pphi_sim_sector_5)
 
         # FD sector 6
         pphi_exp_sector_6, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector == 6, "signal"], bins = pphi_bins_inb_fd)
-        pphi_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = pphi_bins_inb_fd)
-        # pphi_sim_sector_6, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector == 6, "signal"], bins = pphi_bins_inb_fd)
+        # pphi_sim_sector_6, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector == 6, "signal"], bins = pphi_bins_inb_fd)
+        pphi_sim_sector_6, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector == 6, "signal"], bins = pphi_bins_inb_fd)
         pphi_efficiency_inb_sector_6 = pphi_efficiency_inb_sector_6*divideHist(pphi_exp_sector_6, pphi_sim_sector_6)
 
         # CD
         pphi_exp_cd, _ = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "Pphi"], weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector > 7, "signal"], bins = pphi_bins_inb_cd)
         pphi_sim_cd, _ = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "Pphi"], weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector > 7, "signal"], bins = pphi_bins_inb_cd)
-        # pphi_sim_cd, _ = np.histogram(df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "Pphi"], weights = df_sim_bh_inbs.loc[df_sim_bh_inbs.Psector > 7, "signal"], bins = pphi_bins_inb_cd)
+        # pphi_sim_cd, _ = np.histogram(df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "Pphi"], weights = df_sim_vgg_inbs.loc[df_sim_vgg_inbs.Psector > 7, "signal"], bins = pphi_bins_inb_cd)
         pphi_efficiency_inb_cd = pphi_efficiency_inb_cd*divideHist(pphi_exp_cd, pphi_sim_cd)
 
         pphi_efficiency_inb_sector_1[pphi_efficiency_inb_sector_1<0.5] = 0.5
@@ -750,6 +751,7 @@ pphi_efficiency_outb_sector_4 = np.ones(36)
 pphi_efficiency_outb_sector_5 = np.ones(36)
 pphi_efficiency_outb_sector_6 = np.ones(36)
 pphi_efficiency_outb_cd       = np.ones(36)
+# ptheta_efficiency_outb_cd         , pp_efficiency_outb_cd         , pphi_efficiency_outb_cd          = [1.197, 0.869, 0.749, 0.707, 0.724, 0.691, 0.694, 0.720, 0.743, 0.794],[0.910, 1.157, 1.098, 1.039, 0.963, 0.913, 0.881, 0.803, 0.738, 0.685],[1.038, 1.023, 1.098, 1.103, 1.060, 1.141, 0.941, 0.984, 0.759, 0.846, 0.951, 1.036, 1.031, 1.014, 1.025, 1.192, 1.065, 0.842, 0.861, 1.080, 0.925, 0.994, 1.094, 1.164, 1.111, 1.133, 1.081, 1.013, 0.957, 0.849, 0.634, 0.885, 0.842, 0.888, 0.892, 0.912]
 
 
 
@@ -761,7 +763,7 @@ for outbending_trial in range(1):
 
         df_exp_epg_outbs        = []
         df_sim_dvcs_outbs       = []
-        df_sim_bh_outbs         = []
+        df_sim_vgg_outbs         = []
         print(ptheta_trial, "ptheta_trial", "outb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_1])
         print(ptheta_trial, "ptheta_trial", "outb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_2])
         print(ptheta_trial, "ptheta_trial", "outb sector 3", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_3], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_3], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_3])
@@ -821,12 +823,12 @@ for outbending_trial in range(1):
             except:
                 df_sim_bkgmerging_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pureBH/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_outb   = assign_Pthetaefficiency(df_sim_bh_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
-                df_sim_bh_outb   = assign_Ppefficiency(df_sim_bh_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
-                df_sim_bh_outb   = assign_Pphiefficiency(df_sim_bh_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
+                df_sim_vgg_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_outb   = assign_Pthetaefficiency(df_sim_vgg_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Ppefficiency(df_sim_vgg_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Pphiefficiency(df_sim_vgg_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
             except:
-                df_sim_bh_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+                df_sim_vgg_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             # df_sim_nobkgmerging_outb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb.weights * df_sim_bkgmerging_outb.Pthetaefficiency * df_sim_bkgmerging_outb.Ppefficiency * df_sim_bkgmerging_outb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb.weights * df_sim_nobkgmerging_outb.Pthetaefficiency * df_sim_nobkgmerging_outb.Ppefficiency * df_sim_nobkgmerging_outb.Pphiefficiency)
@@ -857,7 +859,7 @@ for outbending_trial in range(1):
                     df_sim_pi0_1gamma_outb_this_bin = df_sim_pi0_1gamma_outb.loc[(df_sim_pi0_1gamma_outb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_outb_this_bin = df_sim_nobkgmerging_outb.loc[(df_sim_nobkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_outb_this_bin = df_sim_bkgmerging_outb.loc[(df_sim_bkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_outb_this_bin = df_sim_bh_outb.loc[(df_sim_bh_outb.integrated_binnum == integrated_binnum) & (df_sim_bh_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_outb_this_bin = df_sim_vgg_outb.loc[(df_sim_vgg_outb.integrated_binnum == integrated_binnum) & (df_sim_vgg_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb_this_bin.weights * df_sim_bkgmerging_outb_this_bin.Pthetaefficiency * df_sim_bkgmerging_outb_this_bin.Ppefficiency * df_sim_bkgmerging_outb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_outb/50 * ( -1 + bkg_to_nobkg))
@@ -887,60 +889,60 @@ for outbending_trial in range(1):
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_outb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_outb_this_bin.contamination)/df_exp_epg_outb_this_bin.efficiency
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.efficiency * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency
-                    df_sim_bh_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_outb_this_bin.weights * df_sim_bh_outb_this_bin.efficiency * df_sim_bh_outb_this_bin.Pthetaefficiency  * df_sim_bh_outb_this_bin.Ppefficiency * df_sim_bh_outb_this_bin.Pphiefficiency
+                    df_sim_vgg_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_outb_this_bin.weights * df_sim_vgg_outb_this_bin.efficiency * df_sim_vgg_outb_this_bin.Pthetaefficiency  * df_sim_vgg_outb_this_bin.Ppefficiency * df_sim_vgg_outb_this_bin.Pphiefficiency
 
                     df_exp_epg_outbs.append(df_exp_epg_outb_this_bin)
                     df_sim_dvcs_outbs.append(df_sim_nobkgmerging_outb_this_bin)
-                    df_sim_bh_outbs.append(df_sim_bh_outb_this_bin)
+                    df_sim_vgg_outbs.append(df_sim_vgg_outb_this_bin)
             
         df_exp_epg_outbs  = pd.concat(df_exp_epg_outbs)
         df_sim_dvcs_outbs = pd.concat(df_sim_dvcs_outbs)
-        df_sim_bh_outbs = pd.concat(df_sim_bh_outbs)
+        df_sim_vgg_outbs = pd.concat(df_sim_vgg_outbs)
 
         # FD sector 1
         ptheta_exp_sector_1, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_1, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_1, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_1 = ptheta_efficiency_outb_sector_1*divideHist(ptheta_exp_sector_1, ptheta_sim_sector_1)
 
         # FD sector 2
         ptheta_exp_sector_2, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_2, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_2, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_2 = ptheta_efficiency_outb_sector_2*divideHist(ptheta_exp_sector_2, ptheta_sim_sector_2)
 
         # FD sector 3
         ptheta_exp_sector_3, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_3, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_3, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_3 = ptheta_efficiency_outb_sector_3*divideHist(ptheta_exp_sector_3, ptheta_sim_sector_3)
 
         # FD sector 4
         ptheta_exp_sector_4, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_4, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_4, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_4 = ptheta_efficiency_outb_sector_4*divideHist(ptheta_exp_sector_4, ptheta_sim_sector_4)
 
         # FD sector 5
         ptheta_exp_sector_5, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_5, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_5, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_5 = ptheta_efficiency_outb_sector_5*divideHist(ptheta_exp_sector_5, ptheta_sim_sector_5)
 
         # FD sector 6
         ptheta_exp_sector_6, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "signal"], bins = ptheta_bins_outb_fd)
-        ptheta_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = ptheta_bins_outb_fd)
-        # ptheta_sim_sector_6, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "signal"], bins = ptheta_bins_outb_fd)
+        # ptheta_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = ptheta_bins_outb_fd)
+        ptheta_sim_sector_6, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "signal"], bins = ptheta_bins_outb_fd)
         ptheta_efficiency_outb_sector_6 = ptheta_efficiency_outb_sector_6*divideHist(ptheta_exp_sector_6, ptheta_sim_sector_6)
 
         # CD
         ptheta_exp_cd, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "Ptheta"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "signal"], bins = ptheta_bins_outb_cd)
-        ptheta_sim_cd, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "signal"], bins = ptheta_bins_outb_cd)
-        # ptheta_sim_cd, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "Ptheta"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "signal"], bins = ptheta_bins_outb_cd)
+        # ptheta_sim_cd, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "Ptheta"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "signal"], bins = ptheta_bins_outb_cd)
+        ptheta_sim_cd, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "Ptheta"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "signal"], bins = ptheta_bins_outb_cd)
         ptheta_efficiency_outb_cd = ptheta_efficiency_outb_cd*divideHist(ptheta_exp_cd, ptheta_sim_cd)
 
         ptheta_efficiency_outb_sector_1[ptheta_efficiency_outb_sector_1<0.1] = 0.1
@@ -963,7 +965,7 @@ for outbending_trial in range(1):
 
         df_exp_epg_outbs        = []
         df_sim_dvcs_outbs       = []
-        df_sim_bh_outbs         = []
+        df_sim_vgg_outbs         = []
         print(pp_trial, "pp_trial", "outb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_1])
         print(pp_trial, "pp_trial", "outb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_2])
         print(pp_trial, "pp_trial", "outb sector 3", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_3], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_3], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_3])
@@ -1023,12 +1025,12 @@ for outbending_trial in range(1):
             except:
                 df_sim_bkgmerging_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pureBH/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_outb   = assign_Pthetaefficiency(df_sim_bh_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
-                df_sim_bh_outb   = assign_Ppefficiency(df_sim_bh_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
-                df_sim_bh_outb   = assign_Pphiefficiency(df_sim_bh_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
+                df_sim_vgg_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_outb   = assign_Pthetaefficiency(df_sim_vgg_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Ppefficiency(df_sim_vgg_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Pphiefficiency(df_sim_vgg_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
             except:
-                df_sim_bh_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+                df_sim_vgg_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             # df_sim_nobkgmerging_outb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb.weights * df_sim_bkgmerging_outb.Pthetaefficiency * df_sim_bkgmerging_outb.Ppefficiency * df_sim_bkgmerging_outb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb.weights * df_sim_nobkgmerging_outb.Pthetaefficiency * df_sim_nobkgmerging_outb.Ppefficiency * df_sim_nobkgmerging_outb.Pphiefficiency)
@@ -1059,7 +1061,7 @@ for outbending_trial in range(1):
                     df_sim_pi0_1gamma_outb_this_bin = df_sim_pi0_1gamma_outb.loc[(df_sim_pi0_1gamma_outb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_outb_this_bin = df_sim_nobkgmerging_outb.loc[(df_sim_nobkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_outb_this_bin = df_sim_bkgmerging_outb.loc[(df_sim_bkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_outb_this_bin = df_sim_bh_outb.loc[(df_sim_bh_outb.integrated_binnum == integrated_binnum) & (df_sim_bh_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_outb_this_bin = df_sim_vgg_outb.loc[(df_sim_vgg_outb.integrated_binnum == integrated_binnum) & (df_sim_vgg_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb_this_bin.weights * df_sim_bkgmerging_outb_this_bin.Pthetaefficiency * df_sim_bkgmerging_outb_this_bin.Ppefficiency * df_sim_bkgmerging_outb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_outb/50 * ( -1 + bkg_to_nobkg))
@@ -1089,60 +1091,60 @@ for outbending_trial in range(1):
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_outb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_outb_this_bin.contamination)/df_exp_epg_outb_this_bin.efficiency
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.efficiency * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency
-                    df_sim_bh_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_outb_this_bin.weights * df_sim_bh_outb_this_bin.efficiency * df_sim_bh_outb_this_bin.Pthetaefficiency  * df_sim_bh_outb_this_bin.Ppefficiency * df_sim_bh_outb_this_bin.Pphiefficiency
+                    df_sim_vgg_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_outb_this_bin.weights * df_sim_vgg_outb_this_bin.efficiency * df_sim_vgg_outb_this_bin.Pthetaefficiency  * df_sim_vgg_outb_this_bin.Ppefficiency * df_sim_vgg_outb_this_bin.Pphiefficiency
 
                     df_exp_epg_outbs.append(df_exp_epg_outb_this_bin)
                     df_sim_dvcs_outbs.append(df_sim_nobkgmerging_outb_this_bin)
-                    df_sim_bh_outbs.append(df_sim_bh_outb_this_bin)
+                    df_sim_vgg_outbs.append(df_sim_vgg_outb_this_bin)
 
         df_exp_epg_outbs  = pd.concat(df_exp_epg_outbs)
         df_sim_dvcs_outbs = pd.concat(df_sim_dvcs_outbs)
-        df_sim_bh_outbs = pd.concat(df_sim_bh_outbs)
+        df_sim_vgg_outbs = pd.concat(df_sim_vgg_outbs)
 
         # FD sector 1
         pp_exp_sector_1, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_1, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_1, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_1 = pp_efficiency_outb_sector_1*divideHist(pp_exp_sector_1, pp_sim_sector_1)
 
         # FD sector 2
         pp_exp_sector_2, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_2, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_2, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_2 = pp_efficiency_outb_sector_2*divideHist(pp_exp_sector_2, pp_sim_sector_2)
 
         # FD sector 3
         pp_exp_sector_3, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_3, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_3, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_3 = pp_efficiency_outb_sector_3*divideHist(pp_exp_sector_3, pp_sim_sector_3)
 
         # FD sector 4
         pp_exp_sector_4, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_4, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_4, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_4 = pp_efficiency_outb_sector_4*divideHist(pp_exp_sector_4, pp_sim_sector_4)
 
         # FD sector 5
         pp_exp_sector_5, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_5, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_5, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_5 = pp_efficiency_outb_sector_5*divideHist(pp_exp_sector_5, pp_sim_sector_5)
 
         # FD sector 6
         pp_exp_sector_6, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "signal"], bins = pp_bins_outb_fd)
-        pp_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = pp_bins_outb_fd)
-        # pp_sim_sector_6, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "signal"], bins = pp_bins_outb_fd)
+        # pp_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = pp_bins_outb_fd)
+        pp_sim_sector_6, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "signal"], bins = pp_bins_outb_fd)
         pp_efficiency_outb_sector_6 = pp_efficiency_outb_sector_6*divideHist(pp_exp_sector_6, pp_sim_sector_6)
 
         # CD
         pp_exp_cd, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "Pp"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "signal"], bins = pp_bins_outb_cd)
         pp_sim_cd, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "Pp"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "signal"], bins = pp_bins_outb_cd)
-        # pp_sim_cd, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "Pp"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "signal"], bins = pp_bins_outb_cd)
+        # pp_sim_cd, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "Pp"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "signal"], bins = pp_bins_outb_cd)
         pp_efficiency_outb_cd = pp_efficiency_outb_cd*divideHist(pp_exp_cd, pp_sim_cd)
 
         pp_efficiency_outb_sector_1[pp_efficiency_outb_sector_1<0.5] = 0.5
@@ -1165,7 +1167,7 @@ for outbending_trial in range(1):
 
         df_exp_epg_outbs        = []
         df_sim_dvcs_outbs       = []
-        df_sim_bh_outbs         = []
+        df_sim_vgg_outbs         = []
 
         print(pphi_trial, "pphi_trial", "outb sector 1", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_1], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_1])
         print(pphi_trial, "pphi_trial", "outb sector 2", ["{:.3f}".format(i) for i in ptheta_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pp_efficiency_outb_sector_2], ["{:.3f}".format(i) for i in pphi_efficiency_outb_sector_2])
@@ -1226,12 +1228,12 @@ for outbending_trial in range(1):
             except:
                 df_sim_bkgmerging_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             try:
-                df_sim_bh_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/pureBH/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
-                df_sim_bh_outb   = assign_Pthetaefficiency(df_sim_bh_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
-                df_sim_bh_outb   = assign_Ppefficiency(df_sim_bh_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
-                df_sim_bh_outb   = assign_Pphiefficiency(df_sim_bh_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
+                df_sim_vgg_outb   =  pd.read_pickle("/volatile/clas12/sangbaek/dvcs_related/sim_rad_rec_fall2018_outb/dvcs_vgg/excl_level_1/restructured_7_nominal/{}.pkl".format(integrated_binnum))
+                df_sim_vgg_outb   = assign_Pthetaefficiency(df_sim_vgg_outb, ptheta_efficiency_outb_sector_1, ptheta_efficiency_outb_sector_2, ptheta_efficiency_outb_sector_3, ptheta_efficiency_outb_sector_4, ptheta_efficiency_outb_sector_5, ptheta_efficiency_outb_sector_6, ptheta_efficiency_outb_cd, ptheta_bins_outb_fd, ptheta_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Ppefficiency(df_sim_vgg_outb, pp_efficiency_outb_sector_1, pp_efficiency_outb_sector_2, pp_efficiency_outb_sector_3, pp_efficiency_outb_sector_4, pp_efficiency_outb_sector_5, pp_efficiency_outb_sector_6, pp_efficiency_outb_cd, pp_bins_outb_fd, pp_bins_outb_cd)
+                df_sim_vgg_outb   = assign_Pphiefficiency(df_sim_vgg_outb, pphi_efficiency_outb_sector_1, pphi_efficiency_outb_sector_2, pphi_efficiency_outb_sector_3, pphi_efficiency_outb_sector_4, pphi_efficiency_outb_sector_5, pphi_efficiency_outb_sector_6, pphi_efficiency_outb_cd, pphi_bins_outb_fd, pphi_bins_outb_cd)
             except:
-                df_sim_bh_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
+                df_sim_vgg_outb      = pd.DataFrame({var: [] for var in ['integrated_binnum', 'phi_binnum', 'Pp', 'Ptheta', 'Pphi', 'efficiency']})
             # df_sim_nobkgmerging_outb.loc[:, "efficiency"] = 0
 
             # bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb.weights * df_sim_bkgmerging_outb.Pthetaefficiency * df_sim_bkgmerging_outb.Ppefficiency * df_sim_bkgmerging_outb.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb.weights * df_sim_nobkgmerging_outb.Pthetaefficiency * df_sim_nobkgmerging_outb.Ppefficiency * df_sim_nobkgmerging_outb.Pphiefficiency)
@@ -1262,7 +1264,7 @@ for outbending_trial in range(1):
                     df_sim_pi0_1gamma_outb_this_bin = df_sim_pi0_1gamma_outb.loc[(df_sim_pi0_1gamma_outb.integrated_binnum == integrated_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_pi0_1gamma_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_nobkgmerging_outb_this_bin = df_sim_nobkgmerging_outb.loc[(df_sim_nobkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_nobkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_nobkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
                     df_sim_bkgmerging_outb_this_bin = df_sim_bkgmerging_outb.loc[(df_sim_bkgmerging_outb.integrated_binnum == integrated_binnum) & (df_sim_bkgmerging_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bkgmerging_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
-                    df_sim_bh_outb_this_bin = df_sim_bh_outb.loc[(df_sim_bh_outb.integrated_binnum == integrated_binnum) & (df_sim_bh_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_bh_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
+                    df_sim_vgg_outb_this_bin = df_sim_vgg_outb.loc[(df_sim_vgg_outb.integrated_binnum == integrated_binnum) & (df_sim_vgg_outb.phi_binnum >= this_rebinned_phi_binnum) & (df_sim_vgg_outb.phi_binnum < this_rebinned_phi_binnum + this_rebinned_phi_widths[i]), :]
 
                     bkg_to_nobkg    = np.sum(df_sim_bkgmerging_outb_this_bin.weights * df_sim_bkgmerging_outb_this_bin.Pthetaefficiency * df_sim_bkgmerging_outb_this_bin.Ppefficiency * df_sim_bkgmerging_outb_this_bin.Pphiefficiency)/np.sum(df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency)
                     eff_bkg_merging = ( 1 + effective_current_outb/50 * ( -1 + bkg_to_nobkg))
@@ -1292,60 +1294,60 @@ for outbending_trial in range(1):
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinnum"]    = this_rebinned_phi_binnum
                     df_exp_epg_outb_this_bin.loc[:, "phi_rebinwidth"]  = this_rebinned_phi_widths[i]
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
-                    df_sim_bh_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
+                    df_sim_vgg_outb_this_bin.loc[:, "efficiency"] = eff_bkg_merging
 
                     df_exp_epg_outb_this_bin.loc[:, "signal"]          = (1 - df_exp_epg_outb_this_bin.contamination)/df_exp_epg_outb_this_bin.efficiency
                     df_sim_nobkgmerging_outb_this_bin.loc[:, "signal"] = df_sim_nobkgmerging_outb_this_bin.weights * df_sim_nobkgmerging_outb_this_bin.efficiency * df_sim_nobkgmerging_outb_this_bin.Pthetaefficiency  * df_sim_nobkgmerging_outb_this_bin.Ppefficiency * df_sim_nobkgmerging_outb_this_bin.Pphiefficiency
-                    df_sim_bh_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_bh_outb_this_bin.weights * df_sim_bh_outb_this_bin.efficiency * df_sim_bh_outb_this_bin.Pthetaefficiency  * df_sim_bh_outb_this_bin.Ppefficiency * df_sim_bh_outb_this_bin.Pphiefficiency
+                    df_sim_vgg_outb_this_bin.loc[:, "signal"] = 2*np.pi*0.001*df_sim_vgg_outb_this_bin.weights * df_sim_vgg_outb_this_bin.efficiency * df_sim_vgg_outb_this_bin.Pthetaefficiency  * df_sim_vgg_outb_this_bin.Ppefficiency * df_sim_vgg_outb_this_bin.Pphiefficiency
 
                     df_exp_epg_outbs.append(df_exp_epg_outb_this_bin)
                     df_sim_dvcs_outbs.append(df_sim_nobkgmerging_outb_this_bin)
-                    df_sim_bh_outbs.append(df_sim_bh_outb_this_bin)
+                    df_sim_vgg_outbs.append(df_sim_vgg_outb_this_bin)
 
         df_exp_epg_outbs  = pd.concat(df_exp_epg_outbs)
         df_sim_dvcs_outbs = pd.concat(df_sim_dvcs_outbs)
-        df_sim_bh_outbs = pd.concat(df_sim_bh_outbs)
+        df_sim_vgg_outbs = pd.concat(df_sim_vgg_outbs)
 
         # FD sector 1
         pphi_exp_sector_1, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 1, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_1, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 1, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_1, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 1, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_1, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 1, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_1 = pphi_efficiency_outb_sector_1*divideHist(pphi_exp_sector_1, pphi_sim_sector_1)
 
         # FD sector 2
         pphi_exp_sector_2, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 2, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_2, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 2, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_2, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 2, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_2, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 2, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_2 = pphi_efficiency_outb_sector_2*divideHist(pphi_exp_sector_2, pphi_sim_sector_2)
 
         # FD sector 3
         pphi_exp_sector_3, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 3, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_3, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 3, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_3, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 3, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_3, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 3, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_3 = pphi_efficiency_outb_sector_3*divideHist(pphi_exp_sector_3, pphi_sim_sector_3)
 
         # FD sector 4
         pphi_exp_sector_4, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 4, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_4, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 4, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_4, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 4, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_4, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 4, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_4 = pphi_efficiency_outb_sector_4*divideHist(pphi_exp_sector_4, pphi_sim_sector_4)
 
         # FD sector 5
         pphi_exp_sector_5, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 5, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_5, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 5, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_5, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 5, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_5, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 5, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_5 = pphi_efficiency_outb_sector_5*divideHist(pphi_exp_sector_5, pphi_sim_sector_5)
 
         # FD sector 6
         pphi_exp_sector_6, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector == 6, "signal"], bins = pphi_bins_outb_fd)
-        pphi_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = pphi_bins_outb_fd)
-        # pphi_sim_sector_6, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector == 6, "signal"], bins = pphi_bins_outb_fd)
+        # pphi_sim_sector_6, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector == 6, "signal"], bins = pphi_bins_outb_fd)
+        pphi_sim_sector_6, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector == 6, "signal"], bins = pphi_bins_outb_fd)
         pphi_efficiency_outb_sector_6 = pphi_efficiency_outb_sector_6*divideHist(pphi_exp_sector_6, pphi_sim_sector_6)
 
         # CD
         pphi_exp_cd, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "Pphi"], weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector > 7, "signal"], bins = pphi_bins_outb_cd)
         pphi_sim_cd, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "Pphi"], weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector > 7, "signal"], bins = pphi_bins_outb_cd)
-        # pphi_sim_cd, _ = np.histogram(df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "Pphi"], weights = df_sim_bh_outbs.loc[df_sim_bh_outbs.Psector > 7, "signal"], bins = pphi_bins_outb_cd)
+        # pphi_sim_cd, _ = np.histogram(df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "Pphi"], weights = df_sim_vgg_outbs.loc[df_sim_vgg_outbs.Psector > 7, "signal"], bins = pphi_bins_outb_cd)
         pphi_efficiency_outb_cd = pphi_efficiency_outb_cd*divideHist(pphi_exp_cd, pphi_sim_cd)
 
         pphi_efficiency_outb_sector_1[pphi_efficiency_outb_sector_1<0.5] = 0.5
