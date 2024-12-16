@@ -203,11 +203,11 @@ def printKMarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         BHarray.append(printKM(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 5):
+def printKM(xB, Q2, t, phi, frame = 'trento', pol = 0, mode = 5, E = 10.604):
     phi = np.pi - phi
     pt1 = g.DataPoint(xB=xB, t=-t, Q2=Q2, phi=phi,
     				process='ep2epgamma', exptype='fixed target', frame =frame,
-    				in1energy=10.604, in1charge=-1, in1polarization=pol)
+    				in1energy=E, in1charge=-1, in1polarization=pol)
     pt1.prepare()
     if mode == 0:
         try:
@@ -264,7 +264,7 @@ def printVGGarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         VGGarray.append(printVGG(xB, Q2, t, phi, **kwargs))
     return np.array(VGGarray)
 
-def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False):
+def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False, E = 10.604):
     my_env = os.environ.copy()
     path = "/home/sangbaek/printDVCSBH/"
     if local:
@@ -272,9 +272,9 @@ def printVGG(xB, Q2, t, phi, globalfit = True, pol = 0, local = False):
     my_env["PATH"] = "{}:".format(path) + my_env["PATH"]
     my_env["CLASDVCS_PDF"] = "{}".format(path)
     if globalfit:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--ycol', '0.0001' '--globalfit'], env = my_env)
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '{:.3f}'.format(E), '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101', '--ycol', '0.0001' '--globalfit'], env = my_env)
     else:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101' '--ycol', '0.0001'], env = my_env)
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '{:.3f}'.format(E), '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '3', '--phi', str(phi), '--gpd', '101' '--ycol', '0.0001'], env = my_env)
     try:
         if pol == 0:
             i = 0
@@ -300,14 +300,14 @@ def printBHarray(xBarray, Q2array, tarray, phiarray, **kwargs):
         BHarray.append(printBHonly(xB, Q2, t, phi, **kwargs))
     return np.array(BHarray)
 
-def printBHonly(xB, Q2, t, phi, globalfit = True, local = False):
+def printBHonly(xB, Q2, t, phi, globalfit = True, local = False, E = 10.604):
     path = "/home/sangbaek/printDVCSBH/"
     if local:
         path = "/Users/sangbaek.lee/CLAS12/dvcs/print/"
     if globalfit:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit', '--ycol', '0.0001'])
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '{:.3f}'.format(E), '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--globalfit', '--ycol', '0.0001'])
     else:
-        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '10.604', '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--ycol', '0.0001'])
+        dstot = subprocess.check_output(['{}/dvcsgen'.format(path), '--beam', '{:.3f}'.format(E), '--x', str(xB), str(xB), '--q2', str(Q2), str(Q2),'--t', str(t), str(t), '--bh', '1', '--phi', str(phi), '--ycol', '0.0001'])
     try:
         dstot = float(dstot.splitlines()[-1].decode("utf-8"))
         return dstot
