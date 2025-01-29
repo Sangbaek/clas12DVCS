@@ -10,7 +10,7 @@ warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning)
 
 
-binnum, bin_volume = np.loadtxt('volume_list.csv', skiprows = 1, delimiter = ',').T
+binnum, bin_volume = np.loadtxt('volume_list.csv', skiprows = 1, delimiter = ',').T # bin_volume is deprecated
 bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
 phibins = [-1] + list(np.linspace(0, 360, 24+1)[1:-1]) + [361]
 df_summary_table_rebinned = pd.read_csv("df_summary_table_rebinned.csv")
