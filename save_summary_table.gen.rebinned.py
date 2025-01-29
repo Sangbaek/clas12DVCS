@@ -41,8 +41,8 @@ def main():
 					Q2_avg      = np.sum(df_this_bin.GenWeight * df_this_bin.GenQ2)/weight_sum
 					t_avg       = np.sum(df_this_bin.GenWeight * df_this_bin.Gent)/weight_sum
 					phi_avg     = np.sum(df_this_bin.GenWeight * df_this_bin.Genphi)/weight_sum
-					df_this_bin.loc[:, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
-					df_this_bin.loc[:, "weights"] = df_this_bin.GenWeight * df_this_bin.loc[:, "bin_volume_gen"] * luminosity_inb / len(df_this_bin)
+					df_this_bin.loc[:, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24. #bin_volume is deprecated
+					df_this_bin.loc[:, "weights"] = df_this_bin.GenWeight * df_this_bin.loc[:, "bin_volume_gen"] * luminosity_inb / len(df_this_bin) #weights are deprecated
 					n_entry_corrected = np.sum(df_this_bin.weights)
 					n_entry_corrected_err = np.sqrt(np.sum(df_this_bin.weights**2))
 				else:
