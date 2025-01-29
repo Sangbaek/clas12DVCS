@@ -14,16 +14,21 @@ warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning
 # df_volume = pd.read_csv("volume_list.csv")
 # bin_volume_bulk = df_volume.loc[df_volume.integrated_bin <=147, :].to_numpy()[:, 1]
 # bin_volume_fringe = df_volume.loc[df_volume.integrated_bin > 147, :].to_numpy()[:, 1]
-binnum, bin_volume = np.loadtxt('volume_list.csv', skiprows = 1, delimiter = ',').T
-bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
+#binnum, bin_volume = np.loadtxt('volume_list.csv', skiprows = 1, delimiter = ',').T
+#bin_volume = {int(binnum[i]): bin_volume[i] for i in range(len(binnum))}
+volume_table = pd.read_csv("/work/clas12/sangbaek/km15gen/volume_list.csv")
 
 
 df_gen = pd.read_pickle("summary_table.gen.pkl")
-selected_columns = ["integrated_binnum", "phi_binnum", "PDc1Hitx", "PDc1Hity", "PDc1Hitz", "xB", "Q2", "t1", "phi1", "Esector", "Ep", "Etheta", "Ephi", "Psector", "Pe", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi", "MM2_epg", "efficiency", "efficiency_bh", "efficiency_vgg", "weights", "config", "EFtof1bComponent", "PFtof1bComponent", "PFtof1bSector"]
+selected_columns = ["integrated_binnum", "phi_binnum", "PDc1Hitx", "PDc1Hity", "PDc1Hitz", "xB", "Q2", "t1", "phi1", "Esector", "Ep", "Etheta", "Ephi", "Psector", "Pe", "Pp", "Ptheta", "Pphi", "Gp", "Gtheta", "Gphi", "MM2_epg", "efficiency", "efficiency_bh", "efficiency_vgg", "efficiency_pi0", "weights", "config", "EFtof1bComponent", "PFtof1bComponent", "PFtof1bSector"]
 
 def main_memory_efficient(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
+	if "km15" in sig_directory:
+		volume_suffix = "km15gen"
+	else:
+		volume_suffix = "dvcsgen"
 
 	bulk_directory = "/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_{}".format(sig_directory, suffix)
 	fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_{}".format(sig_directory, suffix)
@@ -55,7 +60,7 @@ def main_memory_efficient(mode, sig_directory, gen_directory, polarity):
 			df.loc[:, "integrated_binnum_gen"] = integrated_binnum_gen
 			for phi_binnum_gen in range(24):
 				df.loc[df.phi_binnum_gen == phi_binnum_gen, "n_gen"] = df_gen.loc[(df_gen.directory == gen_directory) & (df_gen.integrated_binnum_gen == integrated_binnum_gen) & (df_gen.phi_binnum_gen == phi_binnum_gen)].n_entry.to_numpy()[0]
-				df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
+				df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = float(volume_table.loc[(volume_table.integrated_binnum == integrated_binnum_gen) & (volume_table.phi_binnum == phi_binnum_gen), "bin_volume_{}".format(volume_suffix)])
 				df.loc[df.phi_binnum_gen == phi_binnum_gen, "weights"] = df.loc[df.phi_binnum_gen == phi_binnum_gen].GenWeight \
 					* df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] * luminosity_inb / df.loc[df.phi_binnum_gen == phi_binnum_gen].n_gen
 
@@ -72,6 +77,10 @@ def main_memory_efficient(mode, sig_directory, gen_directory, polarity):
 def main_fast(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
+	if "km15" in sig_directory:
+		volume_suffix = "km15gen"
+	else:
+		volume_suffix = "dvcsgen"
 
 	bulk_directory = "/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_{}".format(sig_directory, suffix)
 	fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_{}".format(sig_directory, suffix)
@@ -106,7 +115,7 @@ def main_fast(mode, sig_directory, gen_directory, polarity):
 		df.loc[:, "integrated_binnum_gen"] = integrated_binnum_gen
 		for phi_binnum_gen in range(24):
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "n_gen"] = df_gen.loc[(df_gen.directory == gen_directory) & (df_gen.integrated_binnum_gen == integrated_binnum_gen) & (df_gen.phi_binnum_gen == phi_binnum_gen)].n_entry.to_numpy()[0]
-			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
+			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = float(volume_table.loc[(volume_table.integrated_binnum == integrated_binnum_gen) & (volume_table.phi_binnum == phi_binnum_gen), "bin_volume_{}".format(volume_suffix)])
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "weights"] = df.loc[df.phi_binnum_gen == phi_binnum_gen].GenWeight \
 				* df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] * luminosity_inb / df.loc[df.phi_binnum_gen == phi_binnum_gen].n_gen
 		df = assign_efficiency(df, mc = True, pol = pol)
@@ -137,6 +146,10 @@ def main_fast(mode, sig_directory, gen_directory, polarity):
 def main_fast_3(mode, sig_directory, gen_directory, polarity):
 
 	suffix = schema_suffices[mode]
+	if "km15" in sig_directory:
+		volume_suffix = "km15gen"
+	else:
+		volume_suffix = "dvcsgen"
 
 	bulk_directory = "/volatile/clas12/sangbaek/dvcs_related/{}/excl_level_1/pkl_3_{}".format(sig_directory, suffix)
 	# fringe_directory = "/volatile/clas12/sangbaek/dvcs_related/{}_fringe/excl_level_1/pkl_3_{}".format(sig_directory, suffix)
@@ -173,7 +186,7 @@ def main_fast_3(mode, sig_directory, gen_directory, polarity):
 		df.loc[:, "integrated_binnum_gen"] = integrated_binnum_gen
 		for phi_binnum_gen in range(24):
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "n_gen"] = df_gen.loc[(df_gen.directory == gen_directory) & (df_gen.integrated_binnum_gen == integrated_binnum_gen) & (df_gen.phi_binnum_gen == phi_binnum_gen)].n_entry.to_numpy()[0]
-			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = bin_volume[integrated_binnum_gen]/24.
+			df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] = float(volume_table.loc[(volume_table.integrated_binnum == integrated_binnum_gen) & (volume_table.phi_binnum == phi_binnum_gen), "bin_volume_{}".format(volume_suffix)])
 			df.loc[df.phi_binnum_gen == phi_binnum_gen, "weights"] = df.loc[df.phi_binnum_gen == phi_binnum_gen].GenWeight \
 				* df.loc[df.phi_binnum_gen == phi_binnum_gen, "bin_volume_gen"] * luminosity_inb / df.loc[df.phi_binnum_gen == phi_binnum_gen].n_gen
 		df = assign_efficiency(df, mc = True, pol = pol)
@@ -207,7 +220,7 @@ def main(mode, sig_directory, gen_directory, polarity):
 
 if __name__ == "__main__":
 
-	for mode in [6, 13]:#range(6, 13):#range(11, 12+1):
+	for mode in range(6, 13):#range(11, 12+1):
 		main(mode, "sim_rad_rec_fall2018_inb/dvcs_km15", "dvcs_km15/fall2018_inb3", "inb")
 		main(mode, "sim_rad_rec_fall2018_outb/dvcs_km15", "dvcs_km15/fall2018_outb3", "outb")
 		main(mode, "sim_rad_rec_fall2018_inb/dvcs_vgg", "dvcs_vgg/fall2018_inb", "inb")
