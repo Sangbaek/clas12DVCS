@@ -207,6 +207,423 @@ survival_rate_inb    = 10430/83265 #100000/804311
 pi0_sigma_outb_in_nb = 5.9541707415266248 
 survival_rate_outb   = 9505.0/94878.0 #100000/985416
 
+df_exp_epg_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/dvcs/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
+df_exp_pi0_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/pi0/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
+
+df_sim_bkg_inbs   = pd.concat([pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_inb/pi0_1gamma/excl_level_1/pkl_7_nominal/{}/fall2018_inb.pkl".format(i)) for i in chunks_inb])
+df_sim_pi0_inbs   = pd.concat([pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_inb/pi0_2gamma/excl_level_1/pkl_7_nominal/{}/fall2018_inb.pkl".format(i)) for i in chunks_inb])
+df_sim_dvcs_inbs  = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_inb/dvcs_km15/excl_level_1/pkl_7_nominal/fall2018_inb.pkl")
+df_sim_dvcs_inbs_bkgmerging  = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_inb/dvcs_km15/excl_level_1/pkl_14_bkgmerging/fall2018_inb.pkl")
+
+df_exp_epg_outbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_outb/dvcs/excl_level_2/pkl_7_nominal/fall2018_outb.pkl")
+df_exp_pi0_outbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_outb/pi0/excl_level_2/pkl_7_nominal/fall2018_outb.pkl")
+
+df_sim_bkg_outbs   = pd.concat([pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_outb/pi0_1gamma/excl_level_1/pkl_7_nominal/{}/fall2018_outb.pkl".format(i)) for i in chunks_outb])
+df_sim_pi0_outbs   = pd.concat([pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_outb/pi0_2gamma/excl_level_1/pkl_7_nominal/{}/fall2018_outb.pkl".format(i)) for i in chunks_outb])
+df_sim_dvcs_outbs  = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_outb/dvcs_km15/excl_level_1/pkl_7_nominal/fall2018_outb.pkl")
+df_sim_dvcs_outbs_bkgmerging  = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/sim_rad_rec_fall2018_outb/dvcs_km15/excl_level_1/pkl_14_bkgmerging/fall2018_outb.pkl")
+
+exp_weights_inb   = []
+sig_weights_inb   = []
+sig_weights_bh_inb   = []
+sig_weights_vgg_inb   = []
+bkg_weights_inb   = []
+exp_weights_stat_err_inb   = []
+sig_weights_stat_err_inb   = []
+bkg_weights_stat_err_inb   = []
+
+# sig_weights_syst_err_inb   = []
+sig_weights_syst_err_inb_up     = []
+sig_weights_syst_err_inb_down   = []
+bkg_weights_syst_err_inb   = []
+
+MM2_epg_exp_inb    = []
+MM2_epg_sig_inb    = []
+MM2_epg_bkg_inb    = []
+
+# for integrated_binnum, phi_binnum, phi_width in zip(*df_summary_table_rebinned.loc[:, ["integrated_binnum", "phi_binnum", "phi_width"]].to_numpy().T):
+for i in range(len(df_summary_table_rebinned)):
+    this_bin = df_summary_table_rebinned.iloc[i]
+    integrated_binnum = this_bin.integrated_binnum
+    phi_binnum = this_bin.phi_binnum
+    phi_width  = this_bin.phi_width
+    contamination_inb = this_bin.contamination_inb
+    eff_bkg_merging       = this_bin.eff_bkg_merging_inb
+    active_bin_inb        = this_bin.active_bin_inb
+    if active_bin_inb == 0:
+        continue
+    c_stat_ratio = this_bin.pi0_inb_exp_to_sim_stat_err_ratio
+    c_syst_ratio = this_bin.pi0_inb_exp_to_sim_syst_err_ratio
+    sig_syst_ratio_up   = np.sqrt(0.3**2 + 0.0457**2)#this_bin.dvcs_inb_sim_syst_err_up_ratio
+    sig_syst_ratio_down = np.sqrt(0.3**2 + 0.0457**2)#this_bin.dvcs_inb_sim_syst_err_down_ratio
+
+    df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), "contamination"]   = contamination_inb
+    df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), "phi_rebinnum"]    = phi_binnum
+    df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), "phi_rebinwidth"]  = phi_width
+    df_dvcs_exp = df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), :]
+    MM2_epg_exp_inb.extend(df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), "MM2_epg"].to_numpy())
+    weight_exp = inverseHist(df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width)].efficiency.to_numpy())
+    exp_weights_inb.extend(weight_exp)
+    exp_weights_stat_err_inb.extend(weight_exp)
+
+    MM2_epg_bkg_inb.extend(df_sim_bkg_inbs.loc[(df_sim_bkg_inbs.integrated_binnum == integrated_binnum) & (df_sim_bkg_inbs.phi_binnum >= phi_binnum) & (df_sim_bkg_inbs.phi_binnum < phi_binnum + phi_width), "MM2_epg"].to_numpy())
+    # weight_bkg = np.array([c*np.sum(weight_exp)/len(df_bkg_sim)]*len(df_bkg_sim))
+    df_bkg_inb_efficiency = df_sim_bkg_inbs.loc[(df_sim_bkg_inbs.integrated_binnum == integrated_binnum) & (df_sim_bkg_inbs.phi_binnum >= phi_binnum) & (df_sim_bkg_inbs.phi_binnum < phi_binnum + phi_width), "efficiency"]
+    weight_bkg = np.array(contamination_inb*np.sum(weight_exp)*df_bkg_inb_efficiency/np.sum(df_bkg_inb_efficiency))
+    bkg_weights_inb.extend(weight_bkg)
+    bkg_weights_syst_err_inb.extend(weight_bkg*c_syst_ratio)
+    try:
+        pi0_1gamma_stat_err_squared = 1/len(df_bkg_inb_efficiency)
+    except:
+        pi0_1gamma_stat_err_squared = 0
+    bkg_weights_stat_err_inb.extend(weight_bkg*np.sqrt(c_stat_ratio**2 + 1/len(df_exp_epg_inbs.loc[(df_exp_epg_inbs.integrated_binnum == integrated_binnum) & (df_exp_epg_inbs.phi_binnum >= phi_binnum) & (df_exp_epg_inbs.phi_binnum < phi_binnum + phi_width), :]) + pi0_1gamma_stat_err_squared ) )
+
+    df_dvcs_sim = df_sim_dvcs_inbs.loc[(df_sim_dvcs_inbs.integrated_binnum == integrated_binnum) & (df_sim_dvcs_inbs.phi_binnum >= phi_binnum) & (df_sim_dvcs_inbs.phi_binnum < phi_binnum + phi_width), :]
+    MM2_epg_sig_inb.extend(df_dvcs_sim.MM2_epg.to_numpy())
+    # weight_sig = ((1-contamination_inb)*df_dvcs_sim.weights/np.sum(df_dvcs_sim.weights)*np.sum(weight_exp)).to_numpy()
+    weight_sig = ((1-contamination_inb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency)*np.sum(weight_exp)).to_numpy()
+    weight_sig_bh = ((1-contamination_inb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency_bh/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency_bh)*np.sum(weight_exp)).to_numpy()
+    weight_sig_vgg = ((1-contamination_inb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency_vgg/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency_vgg)*np.sum(weight_exp)).to_numpy()
+    # weight_sig = eff_bkg_merging*df_dvcs_sim.weights*df_dvcs_sim.efficiency
+    if contamination_inb <1 :
+        sig_weights_inb.extend(weight_sig)
+        sig_weights_bh_inb.extend(weight_sig_bh)
+        sig_weights_vgg_inb.extend(weight_sig_vgg)
+        # sig_weights_syst_err_inb.extend(weight_sig*c_syst_ratio)
+        sig_weights_syst_err_inb_up.extend(weight_sig*np.sqrt(c_syst_ratio**2 + sig_syst_ratio_up**2))
+        sig_weights_syst_err_inb_down.extend(weight_sig*np.sqrt(c_syst_ratio**2 + sig_syst_ratio_down**2))
+        if len(df_bkg_inb_efficiency):   
+            sig_weights_stat_err_inb.extend(weight_sig**2 * (c_stat_ratio**2/(1-contamination_inb)**2 + 1/len(df_dvcs_exp) + 1/len(df_bkg_inb_efficiency) + np.sum(df_dvcs_sim.weights**2)/np.sum(df_dvcs_sim.weights)**2) )
+        else:
+            sig_weights_stat_err_inb.extend(weight_sig**2 * (c_stat_ratio**2/(1-contamination_inb)**2 + 1/len(df_dvcs_exp) + np.sum(df_dvcs_sim.weights**2)/np.sum(df_dvcs_sim.weights)**2) )
+    else:
+        sig_weights_inb.extend([0]*len(weight_sig))
+        sig_weights_bh_inb.extend([0]*len(weight_sig_bh))
+        sig_weights_vgg_inb.extend([0]*len(weight_sig_vgg))
+        sig_weights_syst_err_inb.extend([0]*len(weight_sig))
+        sig_weights_stat_err_inb.extend([0]*len(weight_sig))
+
+
+exp_weights_outb   = []
+sig_weights_outb   = []
+sig_weights_bh_outb   = []
+sig_weights_vgg_outb   = []
+bkg_weights_outb   = []
+exp_weights_stat_err_outb   = []
+sig_weights_stat_err_outb   = []
+bkg_weights_stat_err_outb   = []
+
+# sig_weights_syst_err_outb   = []
+sig_weights_syst_err_outb_up     = []
+sig_weights_syst_err_outb_down   = []
+bkg_weights_syst_err_outb   = []
+bkg_weights_syst_err_outb   = []
+
+MM2_epg_exp_outb    = []
+MM2_epg_sig_outb    = []
+MM2_epg_bkg_outb    = []
+
+# for integrated_binnum, phi_binnum, phi_width in zip(*df_summary_table_rebinned.loc[:, ["integrated_binnum", "phi_binnum", "phi_width"]].to_numpy().T):
+for i in range(len(df_summary_table_rebinned)):
+    this_bin = df_summary_table_rebinned.iloc[i]
+    integrated_binnum = this_bin.integrated_binnum
+    phi_binnum = this_bin.phi_binnum
+    phi_width  = this_bin.phi_width
+    contamination_outb = this_bin.contamination_outb
+    eff_bkg_merging       = this_bin.eff_bkg_merging_outb
+    active_bin_outb        = this_bin.active_bin_outb
+    if active_bin_outb == 0:
+        continue
+    c_stat_ratio = this_bin.pi0_outb_exp_to_sim_stat_err_ratio
+    c_syst_ratio = this_bin.pi0_outb_exp_to_sim_syst_err_ratio
+    sig_syst_ratio_up   = np.sqrt(0.3**2 + 0.0457**2)#this_bin.dvcs_outb_sim_syst_err_up_ratio
+    sig_syst_ratio_down = np.sqrt(0.3**2 + 0.0457**2)#this_bin.dvcs_outb_sim_syst_err_down_ratio
+
+    df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), "contamination"]   = contamination_outb
+    df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), "phi_rebinnum"]    = phi_binnum
+    df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), "phi_rebinwidth"]  = phi_width
+    df_dvcs_exp = df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), :]
+    MM2_epg_exp_outb.extend(df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), "MM2_epg"].to_numpy())
+    weight_exp = inverseHist(df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width)].efficiency.to_numpy())
+    exp_weights_outb.extend(weight_exp)
+    exp_weights_stat_err_outb.extend(weight_exp)
+
+    MM2_epg_bkg_outb.extend(df_sim_bkg_outbs.loc[(df_sim_bkg_outbs.integrated_binnum == integrated_binnum) & (df_sim_bkg_outbs.phi_binnum >= phi_binnum) & (df_sim_bkg_outbs.phi_binnum < phi_binnum + phi_width), "MM2_epg"].to_numpy())
+    # weight_bkg = np.array([c*np.sum(weight_exp)/len(df_bkg_sim)]*len(df_bkg_sim))
+    df_bkg_outb_efficiency = df_sim_bkg_outbs.loc[(df_sim_bkg_outbs.integrated_binnum == integrated_binnum) & (df_sim_bkg_outbs.phi_binnum >= phi_binnum) & (df_sim_bkg_outbs.phi_binnum < phi_binnum + phi_width), "efficiency"]
+    weight_bkg = np.array(contamination_outb*np.sum(weight_exp)*df_bkg_outb_efficiency/np.sum(df_bkg_outb_efficiency))
+    bkg_weights_outb.extend(weight_bkg)
+    bkg_weights_syst_err_outb.extend(weight_bkg*c_syst_ratio)
+    try:
+        pi0_1gamma_stat_err_squared = 1/len(df_bkg_outb_efficiency)
+    except:
+        pi0_1gamma_stat_err_squared = 0
+    bkg_weights_stat_err_outb.extend(weight_bkg*np.sqrt(c_stat_ratio**2 + 1/len(df_exp_epg_outbs.loc[(df_exp_epg_outbs.integrated_binnum == integrated_binnum) & (df_exp_epg_outbs.phi_binnum >= phi_binnum) & (df_exp_epg_outbs.phi_binnum < phi_binnum + phi_width), :]) + pi0_1gamma_stat_err_squared ) )
+
+    df_dvcs_sim = df_sim_dvcs_outbs.loc[(df_sim_dvcs_outbs.integrated_binnum == integrated_binnum) & (df_sim_dvcs_outbs.phi_binnum >= phi_binnum) & (df_sim_dvcs_outbs.phi_binnum < phi_binnum + phi_width), :]
+    MM2_epg_sig_outb.extend(df_dvcs_sim.MM2_epg.to_numpy())
+    # weight_sig = ((1-contamination_outb)*df_dvcs_sim.weights/np.sum(df_dvcs_sim.weights)*np.sum(weight_exp)).to_numpy()
+    weight_sig = ((1-contamination_outb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency)*np.sum(weight_exp)).to_numpy()
+    weight_sig_bh = ((1-contamination_outb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency_bh/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency_bh)*np.sum(weight_exp)).to_numpy()
+    weight_sig_vgg = ((1-contamination_outb)*df_dvcs_sim.weights*df_dvcs_sim.efficiency_vgg/np.sum(df_dvcs_sim.weights*df_dvcs_sim.efficiency_vgg)*np.sum(weight_exp)).to_numpy()
+    # weight_sig = eff_bkg_merging*df_dvcs_sim.weights*df_dvcs_sim.efficiency
+    if contamination_outb <1 :
+        sig_weights_outb.extend(weight_sig)
+        sig_weights_bh_outb.extend(weight_sig_bh)
+        sig_weights_vgg_outb.extend(weight_sig_vgg)
+        # sig_weights_syst_err_outb.extend(weight_sig*c_syst_ratio)
+        sig_weights_syst_err_outb_up.extend(weight_sig*np.sqrt(c_syst_ratio**2 + sig_syst_ratio_up**2))
+        sig_weights_syst_err_outb_down.extend(weight_sig*np.sqrt(c_syst_ratio**2 + sig_syst_ratio_down**2))
+        if len(df_bkg_outb_efficiency):
+            sig_weights_stat_err_outb.extend(weight_sig**2 * (c_stat_ratio**2/(1-contamination_outb)**2 + 1/len(df_dvcs_exp) + 1/len(df_bkg_outb_efficiency) + np.sum(df_dvcs_sim.weights**2)/np.sum(df_dvcs_sim.weights)**2) )
+        else:
+            sig_weights_stat_err_outb.extend(weight_sig**2 * (c_stat_ratio**2/(1-contamination_outb)**2 + 1/len(df_dvcs_exp) + np.sum(df_dvcs_sim.weights**2)/np.sum(df_dvcs_sim.weights)**2) )
+    else:
+        sig_weights_outb.extend([0]*len(weight_sig))
+        sig_weights_bh_outb.extend([0]*len(weight_sig_bh))
+        sig_weights_vgg_outb.extend([0]*len(weight_sig_vgg))
+        sig_weights_syst_err_outb.extend([0]*len(weight_sig))
+        sig_weights_stat_err_outb.extend([0]*len(weight_sig))
+
+fig, axs = plt.subplots(2, 1, figsize = (8, 8), height_ratios=[2, 1])
+MM2_epg_exp_inb_hist, bins = np.histogram(np.array(MM2_epg_exp_inb).flatten(), weights = exp_weights_inb, bins = np.linspace(-0.02, 0.02, 81))
+MM2_epg_bkg_inb_hist, _ = np.histogram(np.array(MM2_epg_bkg_inb).flatten(), weights = bkg_weights_inb, bins = bins)
+MM2_epg_sig_inb_hist, _ = np.histogram(np.array(MM2_epg_sig_inb).flatten(), weights = sig_weights_inb, bins = bins)
+MM2_epg_sim_inb_hist  = MM2_epg_bkg_inb_hist + MM2_epg_sig_inb_hist
+MM2_epg_exp_outb_hist, _ = np.histogram(np.array(MM2_epg_exp_outb).flatten(), weights = exp_weights_outb, bins = bins)
+MM2_epg_bkg_outb_hist, _ = np.histogram(np.array(MM2_epg_bkg_outb).flatten(), weights = bkg_weights_outb, bins = bins)
+MM2_epg_sig_outb_hist, _ = np.histogram(np.array(MM2_epg_sig_outb).flatten(), weights = sig_weights_outb, bins = bins)
+MM2_epg_sim_outb_hist  = MM2_epg_bkg_outb_hist + MM2_epg_sig_outb_hist
+
+MM2_epg_exp_inb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_exp_inb).flatten(), weights = exp_weights_stat_err_inb, bins = bins)
+MM2_epg_bkg_inb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_bkg_inb).flatten(), weights = bkg_weights_stat_err_inb, bins = bins)
+MM2_epg_sig_inb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_sig_inb).flatten(), weights = sig_weights_stat_err_inb, bins = bins)
+MM2_epg_exp_outb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_exp_outb).flatten(), weights = exp_weights_stat_err_outb, bins = bins)
+MM2_epg_bkg_outb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_bkg_outb).flatten(), weights = bkg_weights_stat_err_outb, bins = bins)
+MM2_epg_sig_outb_hist_stat_err, _ = np.histogram(np.array(MM2_epg_sig_outb).flatten(), weights = sig_weights_stat_err_outb, bins = bins)
+
+MM2_epg_exp_inb_hist_stat_err  = np.sqrt(MM2_epg_exp_inb_hist_stat_err)
+MM2_epg_bkg_inb_hist_stat_err  = np.sqrt(MM2_epg_bkg_inb_hist_stat_err)
+MM2_epg_sig_inb_hist_stat_err  = np.sqrt(MM2_epg_sig_inb_hist_stat_err)
+MM2_epg_exp_outb_hist_stat_err = np.sqrt(MM2_epg_exp_outb_hist_stat_err)
+MM2_epg_bkg_outb_hist_stat_err = np.sqrt(MM2_epg_bkg_outb_hist_stat_err)
+MM2_epg_sig_outb_hist_stat_err = np.sqrt(MM2_epg_sig_outb_hist_stat_err)
+
+MM2_epg_bkg_inb_hist_syst_err, _ = np.histogram(np.array(MM2_epg_bkg_inb).flatten(), weights = bkg_weights_syst_err_inb, bins = bins)
+MM2_epg_sig_inb_hist_syst_err_up, _ = np.histogram(np.array(MM2_epg_sig_inb).flatten(), weights = sig_weights_syst_err_inb_up, bins = bins)
+MM2_epg_sig_inb_hist_syst_err_down, _ = np.histogram(np.array(MM2_epg_sig_inb).flatten(), weights = sig_weights_syst_err_inb_down, bins = bins)
+MM2_epg_bkg_outb_hist_syst_err, _ = np.histogram(np.array(MM2_epg_bkg_outb).flatten(), weights = bkg_weights_syst_err_outb, bins = bins)
+MM2_epg_sig_outb_hist_syst_err_up, _ = np.histogram(np.array(MM2_epg_sig_outb).flatten(), weights = sig_weights_syst_err_outb_up, bins = bins)
+MM2_epg_sig_outb_hist_syst_err_down, _ = np.histogram(np.array(MM2_epg_sig_outb).flatten(), weights = sig_weights_syst_err_outb_down, bins = bins)
+
+MM2_epg_exp_hist         = MM2_epg_exp_inb_hist + MM2_epg_exp_outb_hist
+MM2_epg_bkg_hist         = MM2_epg_bkg_inb_hist + MM2_epg_bkg_outb_hist
+MM2_epg_sig_hist         = MM2_epg_sig_inb_hist + MM2_epg_sig_outb_hist
+MM2_epg_sim_hist         = MM2_epg_bkg_hist     + MM2_epg_sig_hist
+
+MM2_epg_exp_hist_stat_err     = np.sqrt(MM2_epg_exp_inb_hist_stat_err**2 + MM2_epg_exp_outb_hist_stat_err**2)
+MM2_epg_bkg_hist_stat_err     = np.sqrt(MM2_epg_bkg_inb_hist_stat_err**2 + MM2_epg_bkg_outb_hist_stat_err**2)
+MM2_epg_sig_hist_stat_err     = np.sqrt(MM2_epg_sig_inb_hist_stat_err**2 + MM2_epg_sig_outb_hist_stat_err**2)
+
+MM2_epg_bkg_hist_syst_err        = np.sqrt(MM2_epg_bkg_inb_hist_syst_err**2 + MM2_epg_bkg_outb_hist_syst_err**2)
+MM2_epg_sig_hist_syst_err_up     = np.sqrt(MM2_epg_sig_inb_hist_syst_err_up**2 + MM2_epg_sig_outb_hist_syst_err_up**2)
+MM2_epg_sig_hist_syst_err_down   = np.sqrt(MM2_epg_sig_inb_hist_syst_err_down**2 + MM2_epg_sig_outb_hist_syst_err_down**2)
+
+MM2_epg_sim_hist_stat_err        = np.sqrt(MM2_epg_bkg_hist_stat_err**2 + MM2_epg_sig_hist_stat_err**2)
+MM2_epg_sim_hist_syst_err_up     = np.sqrt(MM2_epg_bkg_hist_syst_err**2 + MM2_epg_sig_hist_syst_err_up**2)
+MM2_epg_sim_hist_syst_err_down   = np.sqrt(MM2_epg_bkg_hist_syst_err**2 + MM2_epg_sig_hist_syst_err_down**2)
+MM2_epg_sim_hist_syst_err        = (MM2_epg_sim_hist_syst_err_up + MM2_epg_sim_hist_syst_err_down)/2.
+
+MM2_epg_exp_hist_stat_err_ratio      = divideHist(MM2_epg_exp_hist_stat_err, MM2_epg_exp_hist)
+MM2_epg_sim_hist_stat_err_ratio      = divideHist(MM2_epg_sim_hist_stat_err, MM2_epg_sim_hist)
+MM2_epg_sim_hist_syst_err_ratio      = divideHist(MM2_epg_sim_hist_syst_err, MM2_epg_sim_hist)
+MM2_epg_sim_hist_syst_err_ratio_up   = divideHist(MM2_epg_sim_hist_syst_err_up, MM2_epg_sim_hist)
+MM2_epg_sim_hist_syst_err_ratio_down = divideHist(MM2_epg_sim_hist_syst_err_down, MM2_epg_sim_hist)
+
+MM2_epg_sim_hist_down    = MM2_epg_sim_hist - MM2_epg_sim_hist_syst_err
+MM2_epg_sim_hist_up      = MM2_epg_sim_hist + MM2_epg_sim_hist_syst_err
+
+bincenters = (bins[1:] + bins[:-1])/2.
+
+axs[0].hist(bins[:-1], bins = bins, weights = MM2_epg_exp_hist, histtype = 'step', color = 'k', label = "$\mathrm{Data}$")
+axs[0].hist(bins[:-1], bins = bins, weights = MM2_epg_sim_hist, histtype = 'step', color = 'tab:blue', label = '$S+B~\mathrm{(Sim.)}$')
+
+bin_fill_between = []
+MM2_epg_sim_hist_down_fill_between      = []
+MM2_epg_sim_hist_up_fill_between      = []
+for i in range(len(bins)):
+    if (i > 0):
+        bin_fill_between.append(bins[i])
+        MM2_epg_sim_hist_down_fill_between.append(MM2_epg_sim_hist_down[i-1])
+        MM2_epg_sim_hist_up_fill_between.append(MM2_epg_sim_hist_up[i-1])
+    if (i<len(bins)-1):
+        bin_fill_between.append(bins[i])
+        MM2_epg_sim_hist_down_fill_between.append(MM2_epg_sim_hist_down[i])
+        MM2_epg_sim_hist_up_fill_between.append(MM2_epg_sim_hist_up[i])
+
+# axs[0].fill_between(bin_fill_between, MM2_epg_sim_hist_down_fill_between, MM2_epg_sim_hist_up_fill_between, color = 'tab:blue', alpha = 0.5)
+
+axs[0].hist(bins[:-1], bins = bins, weights = 5*(MM2_epg_bkg_inb_hist + MM2_epg_bkg_outb_hist), histtype = 'step', color = 'tab:orange', label = "$5 \\times B~\mathrm{(Sim.)}$", zorder = -1)
+
+axs[1].errorbar(bincenters[8:-8], divideHist(MM2_epg_exp_hist, MM2_epg_sim_hist)[8:-8], yerr = (divideHist(MM2_epg_exp_hist, MM2_epg_sim_hist) * np.sqrt(MM2_epg_exp_hist_stat_err_ratio**2 + MM2_epg_sim_hist_stat_err_ratio**2))[8:-8]
+               , color = 'k', marker = 'o', ls = '')
+# axs[1].fill_between(bincenters, divideHist(MM2_epg_exp_hist, MM2_epg_sim_hist) * (1 -  MM2_epg_sim_hist_syst_err_ratio), divideHist(MM2_epg_exp_hist, MM2_epg_sim_hist)  * (1 +  MM2_epg_sim_hist_syst_err_ratio), color = 'r', alpha = 0.3)
+axs[1].fill_between(bincenters[8:-8], (1 -  MM2_epg_sim_hist_syst_err_ratio)[8:-8], (1 + MM2_epg_sim_hist_syst_err_ratio)[8:-8], color = 'k', alpha = 0.3)
+
+# axs[1].errorbar(bincenters, divideHist(MM2_epg_exp_inb_hist, MM2_epg_sim_inb_hist), color = 'k', marker = 'o', ls = '')
+# axs[1].errorbar(bincenters, divideHist(MM2_epg_exp_outb_hist, MM2_epg_sim_outb_hist), color = 'r', marker = 'o', ls = '')
+
+# axs[1].errorbar(bincenters, MM2_epg_exp_inb_hist/MM2_epg_sim_inb_hist#, yerr = (MM2_epg_exp_inb_hist/MM2_epg_sim_inb_hist) * np.sqrt(MM2_epg_exp_inb_hist_stat_err_ratio**2 + MM2_epg_sim_inb_hist_stat_err_ratio**2)
+#                , color = 'k', marker = 'o', ls = '')
+# axs[1].errorbar(bincenters, MM2_epg_exp_outb_hist/MM2_epg_sim_outb_hist#, yerr = (MM2_epg_exp_inb_hist/MM2_epg_sim_inb_hist) * np.sqrt(MM2_epg_exp_inb_hist_stat_err_ratio**2 + MM2_epg_sim_inb_hist_stat_err_ratio**2)
+#                , color = 'r', marker = 'o', ls = '')
+
+
+hist_pi0_inb, _ = np.histogram(df_exp_pi0_inbs.Mpi0**2, bins = bins)
+hist_pi0_outb, _ = np.histogram(df_exp_pi0_outbs.Mpi0**2, bins = bins)
+
+axs[0].axvline(.1349766**2, color = 'k', ls = '--', label = r"$m_{\pi^0}^2$")
+
+axs[0].set_xlim([-.02, 0.02])
+# axs[0].set_ylim([0, 3500])
+axs[0].set_xticks([-0.02, -0.01, 0.000, 0.01, 0.02])
+axs[0].set_xticklabels(['']*5)
+axs[0].set_xticks(np.linspace(-0.02, 0.02, 40+1), minor = True)
+
+axs[0].set_yticks([0, 10000, 20000, 30000], ['', '$1$', '$2$', '$3$'])
+# axs[0].set_yticklabels(['', r'$5\times 10^3$', r'$10^4$', r'$3000$'])
+axs[0].set_yticks(np.linspace(0, 30000, 31), minor = True)
+axs[0].set_ylabel(r"$\mathrm{Events}/(5\times 10^{-4}~\mathrm{GeV}^2)$")
+
+axs[0].annotate(xy = (-0.02, 1.03), xytext = (-0.02, 1.03), text = r'$\times 10^4$', xycoords = 'axes fraction', fontsize = 20)
+
+axs[1].set_xlim([-.02, 0.02])
+axs[1].set_ylim([0.5, 1.5])
+axs[1].set_xticks([-0.02, -0.01, 0, 0.01, 0.02])
+axs[1].set_xticklabels([r'${:.3f}$'.format(i) for i in [-0.02, -0.01, 0, 0.01, 0.02]])
+axs[1].set_xticks(np.linspace(-0.02, 0.02, 40+1), minor = True)
+axs[1].set_yticks(np.linspace(0.5, 1.5, 11), minor = True)
+
+axs[0].tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'major', length = 10)
+axs[0].tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'minor', length = 5)
+axs[1].tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'major', length = 10)
+axs[1].tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'minor', length = 5)
+axs[1].set_ylabel("$\mathrm{Data/Sim.}$", labelpad = 17)
+
+axs[0].legend(title = '', loc = 'upper right', bbox_to_anchor = (0.95, 0.95),  prop={'size': 15})
+
+axs[1].axhline(1, ls = '--', color = 'k')
+axs[1].axvline(.1349766**2, color = 'k', ls = '--', label = r"$m_{\pi^0}^2$")
+
+axs[1].set_xlabel(r"$\mathrm{M}^2_{X}~(\mathrm{GeV}^2)$")
+
+# axs[1].set_ylim([0.9, 1.1])
+
+# hist_exp_inb, bins = np.histogram(df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector>9].MM2_epg, weights = df_exp_epg_inbs.loc[df_exp_epg_inbs.Psector>9].signal, bins = np.linspace(-0.005, 0.005, 101))
+# hist_sim_inb, _    = np.histogram(df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector>9].MM2_epg, weights = df_sim_dvcs_inbs.loc[df_sim_dvcs_inbs.Psector>9].signal, bins = bins)
+
+# hist_exp_outb, _ = np.histogram(df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector>9].MM2_epg,  weights = df_exp_epg_outbs.loc[df_exp_epg_outbs.Psector>9].signal, bins = bins)
+# hist_sim_outb, _ = np.histogram(df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector>9].MM2_epg, weights = df_sim_dvcs_outbs.loc[df_sim_dvcs_outbs.Psector>9].signal, bins = bins)
+
+# hist_exp = hist_exp_inb + hist_exp_outb
+# hist_sim = hist_sim_inb + hist_sim_outb
+
+# plt.hist(bins[:-1], bins, weights =  hist_exp_inb, histtype = 'step')
+# plt.hist(bins[:-1], bins, weights =  hist_sim_inb, histtype = 'step')
+# plt.hist(bins[:-1], bins, weights =  hist_exp_outb, histtype = 'step')
+# plt.hist(bins[:-1], bins, weights =  hist_sim_outb, histtype = 'step')
+# plt.hist(bins[:-1], bins, weights =  (hist_exp_inb ) / (hist_sim_inb), histtype = 'step')
+# plt.hist(bins[:-1], bins, weights =  (hist_exp_outb ) / (hist_sim_outb), histtype = 'step')
+# axs[1].hist(bins[:-1], bins, weights =  (hist_exp_inb + hist_exp_outb) / (hist_sim_inb + hist_sim_outb), histtype = 'stepfilled')
+
+plt.subplots_adjust(hspace=0.05)
+# plt.savefig("MM2_epg_distribution.pdf", bbox_inches = 'tight')
+plt.savefig("addendum_v3/M2_X_distribution.new.2.pdf", bbox_inches = 'tight')
+plt.close()
+
+'''
+
+df_fall2018 = pd.concat([df_exp_epg_inbs, df_exp_epg_outbs])
+
+fig, ax = plt.subplots(1, 1, figsize = (10, 6))
+h = ax.hist2d(df_fall2018.xB, df_fall2018.Q2, norm = LogNorm(vmin = 0.9, vmax = 5000), cmap = parula_map, bins = [np.linspace(0.05, 0.65, 61), np.linspace(0, 6.5, 66)], rasterized = True)
+
+cbar = plt.colorbar(h[3])
+cbar.ax.set_yticks([1, 10, 100, 1000])
+cbar.ax.set_yticklabels(['$1$', '$10$', '$10^2$', '$10^3$'])
+cbar.set_label(r"$\mathrm{Events}/(0.01)/(0.1~\mathrm{GeV}^2/c^2)$")
+
+x1 = 1/2/M/8.604
+x2 = 1/(5-M**2)
+x3 = (10.604/8.604-1)/M*10.604* (1-np.cos(np.radians(35)))
+x4 = (1-(4-M**2)/2/10.604/M)/(1+(4-M**2)/2/10.604**2/(1-np.cos(np.radians(35))))
+x5 = 1/ (2*10.604*M - M/10.604/(1-np.cos(np.radians(7.74))))
+x6 = (2*10.604*M/(4-M**2) -1 )  / (2*10.604*M/(4-M**2) + M/10.604/(1-np.cos(np.radians(8))))
+
+print(x1, x2, x3, x4, x5, x6)
+
+l1 = np.linspace(x1, x3, 101)
+plt.plot(l1, l1*2*M*(10.604-2), color = 'k', linewidth = 4, solid_capstyle='round')
+l2 = np.linspace(x1, x5, 101)
+plt.plot(l2, 1+l2*0, color = 'k', linewidth = 4, solid_capstyle='round')
+
+l3 = np.linspace(x3, x4, 101)
+plt.plot(l3, 2*10.604*M*l3/(1+M*l3/10.604/(1-np.cos(np.radians(35)))), color = 'k', linewidth = 4, solid_capstyle='round')
+l4 = np.linspace(x6, x4, 101)
+plt.plot(l4, (4 - M*M)*l4/(1 - l4), color = 'k', linewidth = 4, solid_capstyle='round')
+
+l5 = np.linspace(x5, x6, 101)
+plt.plot(l5, 2*10.604*M*l5/(1+M*l5/10.604/(1-np.cos(np.radians(7.74)))), color = 'k', linewidth = 4, solid_capstyle='round', rasterized = True)
+
+
+for integrated_binnum in df_summary_table_rebinned.loc[df_summary_table_rebinned.active_bin==1, "integrated_binnum"].unique():
+    xBmin, xBmax, Q2min, Q2max = np.unique(df_summary_table_rebinned.loc[df_summary_table_rebinned.integrated_binnum == integrated_binnum, ["xBmin", "xBmax", "Q2min", "Q2max"]].to_numpy())
+    draw_box(xBmin, xBmax, Q2min, Q2max, ax)
+
+# ax.set_xlim([0, 0.6])
+ax.set_xticks([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
+ax.set_xticklabels(['${}$'.format(i) for i in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6]])
+ax.set_xticks(np.linspace(0, 0.65, 66), minor = True)
+ax.set_yticks([0, 1, 2, 3, 4, 5, 6])
+ax.set_yticklabels(['${}$'.format(i) for i in [0, 1, 2, 3, 4, 5, 6]])
+ax.set_yticks(np.linspace(0, 6.5, 66), minor = True)
+
+ax.set_xlabel(r"$x_B$")
+ax.set_ylabel(r"$Q^2\quad(\mathrm{GeV}^2/c^2)$")
+
+ax.tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'major', length = 10)
+ax.tick_params( top = True, left = True, bottom = True, right = True, direction = 'in', pad = 10, which = 'minor', length = 5)
+# ax.annotate(xy = (0.3, 1), xytext = (0.3, 1), text = "CLAS12 (This work)")
+
+#
+
+x1 = np.linspace(1/2/0.9382721/(5.75-0.8),0.285, 101)
+ax.plot(x1, x1*2*0.9382721*(5.75-0.8), color = 'tab:red', linewidth = 4, solid_capstyle='round')#, label = 'CLAS6 Phase Space')
+
+x2 = np.linspace(1/2/0.9382721/(5.75-0.8),0.118, 101)
+ax.plot(x2, 1+x2*0, color = 'tab:red', linewidth = 4, solid_capstyle='round')
+
+x3 = np.linspace(0.12, 0.415, 101)
+ax.plot(x3, 2*5.75*0.9382721*x3/(1+0.9382721*x3/5.75/(1-0.93358)), color = 'tab:red', linewidth = 4, solid_capstyle='round')
+
+x4 = np.linspace(0.285, 0.614, 101)
+ax.plot(x4, 2*5.75*0.9382721*x4/(1+0.9382721*x4/5.75/(1-0.707107)), color = 'tab:red', linewidth = 4, solid_capstyle='round')
+
+x5 = np.linspace(0.415, 0.611, 101)
+ax.plot(x5, (4 - 0.9382721*0.9382721)*x5/(1 - x5), color = 'tab:red', linewidth = 4, solid_capstyle='round')
+# ax.annotate(xy = (0.45, 2), xytext = (0.45, 2), text = "CLAS", color = 'b')
+
+
+# clas6_cond_1 = (df_rga_taken_data.Q2 < df_rga_taken_data.xB*2*0.9382721*(5.75-0.8))
+# clas6_cond_2 = (df_rga_taken_data.Q2 > 1)
+# clas6_cond_3 = (df_rga_taken_data.Q2 > 2*5.75*0.9382721*df_rga_taken_data.xB/(1+0.9382721*df_rga_taken_data.xB/5.75/(1-0.93358)))
+# clas6_cond_4 = (df_rga_taken_data.Q2 < 2*5.75*0.9382721*df_rga_taken_data.xB/(1+0.9382721*df_rga_taken_data.xB/5.75/(1-0.707107)))
+
+
+plt.savefig("addendum_v3/phasespace.new.pdf", bbox_inches = 'tight')
+
+
+
 exp_pi0_fall2018_inb = pd.read_pickle("impact_study_dec2024/{}.pkl".format("exp_pi0_fall2018_inb"))
 sim_pi0_fall2018_inb_1 = pd.read_pickle("impact_study_dec2024/{}.pkl".format("sim_pi0_fall2018_inb_1"))
 sim_pi0_fall2018_inb_2 = pd.read_pickle("impact_study_dec2024/{}.pkl".format("sim_pi0_fall2018_inb_2"))
@@ -6309,3 +6726,23 @@ axs[2, 1].set_yticks(np.linspace(-0.00, 0.04, 5), minor = True)
 axs[0, 0].set_title("$\langle Q^2 \\rangle = {:.3f}~\mathrm{{GeV}}/c^2$".format(np.mean([*Q2_avgs_panel00, *Q2_avgs_panel10, *Q2_avgs_panel20])))
 axs[0, 1].set_title("$\langle |t| \\rangle = {:.3f}~\mathrm{{GeV}}^2$".format(np.mean([*t_avgs_panel01, *t_avgs_panel11, *t_avgs_panel21])))
 plt.savefig("addendum_v3/modified_xsec_entire.from_script.pdf", bbox_inches = 'tight')
+
+
+df_summary_table_rebinned.to_pickle("addendum_v3/df_summary_table_rebinned_approved.pkl")
+'''
+
+# #To Melany
+
+# df_summary_table_report = df_summary_table.loc[df_summary_table.active_bin_nominal == 1, :]
+
+# xB_report            = df_summary_table_report.xB_avg_this_point
+# Q2_report            = df_summary_table_report.Q2_avg_this_point
+# t_report             = df_summary_table_report.t_avg_this_point
+# phi_report           = df_summary_table_report.phi_avg_this_point
+# xsec_report          = df_summary_table_report.xsec_exp_pi0_eff_corrected_bkg_merging
+# xsec_stat_err_ratio_report = xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_ratio
+# xsec_syst_err_ratio_report = xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_ratio
+
+# header_string = "xB, Q2, -t, phi, XUU, stat, sysm, sysp\n , GeV2/c2, GeV2, deg, %, %, %"
+# data_for_Melany = np.array([xB_report, Q2_report, t_report, phi_report, xsec_report, xsec_stat_err_report, xsec_syst_err_report, xsec_syst_err_report]).T
+# np.savetxt("addendum_v3/data_for_Melany.csv", data_for_Melany, delimiter=",", header=header_string, fmt = '%.3f, %.3f, %.3f, %.3f, %.3e, %.3f, %.3f, %.3f')
