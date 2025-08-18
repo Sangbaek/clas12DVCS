@@ -30,6 +30,11 @@ from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.gridspec import GridSpec
 from scipy.signal import savgol_filter
 from scipy.interpolate import UnivariateSpline
+import argparse
+parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+parser.add_argument("--integrated_binnum", type = int)
+args = parser.parse_args()
 
 cm_data = [[0.2081, 0.1663, 0.5292], [0.2116238095, 0.1897809524, 0.5776761905], 
  [0.212252381, 0.2137714286, 0.6269714286], [0.2081, 0.2386, 0.6770857143], 
@@ -184,6 +189,161 @@ def log_ticker(ticks):
         ticklabels.append(ticklabel)
     return ticklabels
 
+def cosine_1_fitting_one_bin_th(df_display_this_bin, p0 = (1, 0)):
+
+  popt_1_th_km15, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
+  cosine_1_th_km15 =  -popt_1_th_km15[1]
+  cosine_1_th_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_1_th_vgg, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
+  cosine_1_th_vgg =  -popt_1_th_vgg[1]
+  cosine_1_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
+  
+  popt_1_th_bh, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
+  cosine_1_th_bh =  -popt_1_th_bh[1]
+  cosine_1_th_bh_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_1_th_bh_km15, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_KM15_display_w, p0 = p0)
+  cosine_1_th_bh_km15 =  -popt_1_th_bh_km15[1]
+  cosine_1_th_bh_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  return cosine_1_th_km15, cosine_1_th_km15_err, cosine_1_th_vgg, cosine_1_th_vgg_err, cosine_1_th_bh, cosine_1_th_bh_err, cosine_1_th_bh_km15, cosine_1_th_bh_km15_err, popt_1_th_km15, popt_1_th_vgg, popt_1_th_bh, popt_1_th_bh_km15
+
+def cosine_2_fitting_one_bin_th(df_display_this_bin, p0 = (1, 0, 0)):
+
+  popt_2_th_km15, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
+  cosine_2_th_km15 =  -popt_2_th_km15[1]
+  cosine_2_th_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_2_th_vgg, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
+  cosine_2_th_vgg =  -popt_2_th_vgg[1]
+  cosine_2_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
+  
+  popt_2_th_bh, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
+  cosine_2_th_bh =  -popt_2_th_bh[1]
+  cosine_2_th_bh_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_2_th_bh_km15, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_KM15_display_w, p0 = p0)
+  cosine_2_th_bh_km15 =  -popt_2_th_bh_km15[1]
+  cosine_2_th_bh_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  return cosine_2_th_km15, cosine_2_th_km15_err, cosine_2_th_vgg, cosine_2_th_vgg_err, cosine_2_th_bh, cosine_2_th_bh_err, cosine_2_th_bh_km15, cosine_2_th_bh_km15_err, popt_2_th_km15, popt_2_th_vgg, popt_2_th_bh, popt_2_th_bh_km15
+
+def cosine_3_fitting_one_bin_th(df_display_this_bin, p0 = (1, 0, 0, 0)):
+    
+  popt_3_th_km15, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
+  cosine_3_th_km15 =  -popt_3_th_km15[1]
+  cosine_3_th_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_3_th_vgg, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
+  cosine_3_th_vgg =  -popt_3_th_vgg[1]
+  cosine_3_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
+  
+  popt_3_th_bh, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
+  cosine_3_th_bh =  -popt_3_th_bh[1]
+  cosine_3_th_bh_err =  np.sqrt(np.diag(pcov))[1]
+
+  popt_3_th_bh_km15, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_KM15_display_w, p0 = p0)
+  cosine_3_th_bh_km15 =  -popt_3_th_bh_km15[1]
+  cosine_3_th_bh_km15_err =  np.sqrt(np.diag(pcov))[1]
+
+  return cosine_3_th_km15, cosine_3_th_km15_err, cosine_3_th_vgg, cosine_3_th_vgg_err, cosine_3_th_bh, cosine_3_th_bh_err, cosine_3_th_bh_km15, cosine_3_th_bh_km15_err, popt_3_th_km15, popt_3_th_vgg, popt_3_th_bh, popt_3_th_bh_km15
+
+def cosine_1_fitting_one_bin_exp(df_this_bin, p0 = (1, 0)):
+
+  xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
+  Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
+  t_avg = df_this_bin.t_avg_this_point.unique()[0]
+
+  popt_1_pi0, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_1_exp_pi0 =  -popt_1_pi0[1]
+  cosine_1_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
+  popt_1_pi0s = []
+
+  popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_1_pi0s.append(popt)
+  popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_1_pi0s.append(popt)
+  popt_1_pi0s = np.array(popt_1_pi0s)
+  cosine_1_exp_pi0s = -popt_1_pi0s[:, 1]
+
+  popt_1_pi0s = np.array(popt_1_pi0s)
+  cosine_1_exp_pi0s = -popt_1_pi0s[:, 1]
+
+  popt_1_pi0_min             = popt_1_pi0s[np.argmax(cosine_1_exp_pi0s)]
+  popt_1_pi0_max             = popt_1_pi0s[np.argmin(cosine_1_exp_pi0s)]
+
+  cosine_1_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0) + np.abs(np.min(cosine_1_exp_pi0s) - cosine_1_exp_pi0))
+
+  popt_1_bkgmerging_only, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_1_exp_bkgmerging_only =  -popt_1_bkgmerging_only[1]
+
+  cosine_1_exp_pi0_norm_err_up  = np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0
+  cosine_1_exp_pi0_norm_err_down=-np.min(cosine_1_exp_pi0s) + cosine_1_exp_pi0
+
+  return xB_avg, Q2_avg, t_avg, cosine_1_exp_pi0, cosine_1_exp_pi0_stat_err, cosine_1_exp_pi0_syst_err, cosine_1_exp_pi0_norm_err_up, cosine_1_exp_pi0_norm_err_down, cosine_1_exp_bkgmerging_only, popt_1_pi0, popt_1_pi0_min, popt_1_pi0_max, popt_1_bkgmerging_only
+
+def cosine_2_fitting_one_bin_exp(df_this_bin, p0 = (1, 0, 0)):
+
+  xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
+  Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
+  t_avg = df_this_bin.t_avg_this_point.unique()[0]
+
+  popt_2_pi0, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_2_exp_pi0 =  -popt_2_pi0[1]
+  cosine_2_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
+  popt_2_pi0s = []
+
+  popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_2_pi0s.append(popt)
+  popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_2_pi0s.append(popt)
+  popt_2_pi0s = np.array(popt_2_pi0s)
+  cosine_2_exp_pi0s = -popt_2_pi0s[:, 1]
+
+  popt_2_pi0_min             = popt_2_pi0s[np.argmax(cosine_2_exp_pi0s)]
+  popt_2_pi0_max             = popt_2_pi0s[np.argmin(cosine_2_exp_pi0s)]
+
+  cosine_2_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0) + np.abs(np.min(cosine_2_exp_pi0s) - cosine_2_exp_pi0))
+
+  popt_2_bkgmerging_only, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_2_exp_bkgmerging_only =  -popt_2_bkgmerging_only[1]
+
+  cosine_2_exp_pi0_norm_err_up  = np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0
+  cosine_2_exp_pi0_norm_err_down=-np.min(cosine_2_exp_pi0s) + cosine_2_exp_pi0
+
+  return xB_avg, Q2_avg, t_avg, cosine_2_exp_pi0, cosine_2_exp_pi0_stat_err, cosine_2_exp_pi0_syst_err, cosine_2_exp_pi0_norm_err_up, cosine_2_exp_pi0_norm_err_down, cosine_2_exp_bkgmerging_only, popt_2_pi0, popt_2_pi0_min, popt_2_pi0_max, popt_2_bkgmerging_only
+
+def cosine_3_fitting_one_bin_exp(df_this_bin, p0 = (1, 0, 0, 0)):
+
+  xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
+  Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
+  t_avg = df_this_bin.t_avg_this_point.unique()[0]
+
+  popt_3_pi0, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_3_exp_pi0 =  -popt_3_pi0[1]
+  cosine_3_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
+  popt_3_pi0s = []
+
+  popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_3_pi0s.append(popt)
+  popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
+  popt_3_pi0s.append(popt)
+  popt_3_pi0s = np.array(popt_3_pi0s)
+  cosine_3_exp_pi0s = -popt_3_pi0s[:, 1]
+
+  popt_3_pi0_min             = popt_3_pi0s[np.argmax(cosine_3_exp_pi0s)]
+  popt_3_pi0_max             = popt_3_pi0s[np.argmin(cosine_3_exp_pi0s)]
+
+  cosine_3_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0) + np.abs(np.min(cosine_3_exp_pi0s) - cosine_3_exp_pi0))
+
+  popt_3_bkgmerging_only, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
+  cosine_3_exp_bkgmerging_only =  -popt_3_bkgmerging_only[1]
+
+  cosine_3_exp_pi0_norm_err_up  = np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0
+  cosine_3_exp_pi0_norm_err_down=-np.min(cosine_3_exp_pi0s) + cosine_3_exp_pi0
+
+  return xB_avg, Q2_avg, t_avg, cosine_3_exp_pi0, cosine_3_exp_pi0_stat_err, cosine_3_exp_pi0_syst_err, cosine_3_exp_pi0_norm_err_up, cosine_3_exp_pi0_norm_err_down, cosine_3_exp_bkgmerging_only, popt_3_pi0, popt_3_pi0_min, popt_3_pi0_max, popt_3_bkgmerging_only
 
 exp_to_BH_inb_mean_mean      = 0.765
 exp_to_BH_inb_mean_stat_err  = 0.149
@@ -195,17 +355,17 @@ exp_to_BH_inb_mean2_stat_err  = 0.100
 exp_to_BH_outb_mean2_mean     = 0.775
 exp_to_BH_outb_mean2_stat_err = 0.100
 
-df_summary_table_rebinned_sig = pd.read_pickle("impact_study_dec2024/summary_table.sig.rebinned.pkl")
-df_summary_table_rebinned_bkg = pd.read_pickle("impact_study_dec2024/summary_table.bkg.rebinned.pkl")
-df_summary_table_rebinned_exp = pd.read_pickle("impact_study_dec2024/summary_table.exp.rebinned.pkl")
-df_summary_table_rebinned_gen = pd.read_pickle("summary_table.gen.rebinned.pkl")
-df_summary_table_rebinned     = pd.read_pickle("df_summary_table_rebinned.backup.pkl")
+# df_summary_table_rebinned_sig = pd.read_pickle("impact_study_dec2024/summary_table.sig.rebinned.pkl")
+# df_summary_table_rebinned_bkg = pd.read_pickle("impact_study_dec2024/summary_table.bkg.rebinned.pkl")
+# df_summary_table_rebinned_exp = pd.read_pickle("impact_study_dec2024/summary_table.exp.rebinned.pkl")
+# df_summary_table_rebinned_gen = pd.read_pickle("summary_table.gen.rebinned.pkl")
+# df_summary_table_rebinned     = pd.read_pickle("df_summary_table_rebinned.backup.pkl")
 
 
-pi0_sigma_inb_in_nb  = 2.7706591819052937
-survival_rate_inb    = 10430/83265 #100000/804311
-pi0_sigma_outb_in_nb = 5.9541707415266248 
-survival_rate_outb   = 9505.0/94878.0 #100000/985416
+# pi0_sigma_inb_in_nb  = 2.7706591819052937
+# survival_rate_inb    = 10430/83265 #100000/804311
+# pi0_sigma_outb_in_nb = 5.9541707415266248 
+# survival_rate_outb   = 9505.0/94878.0 #100000/985416
 
 # df_exp_epg_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/dvcs/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
 # df_exp_pi0_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/pi0/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
@@ -619,6 +779,7 @@ survival_rate_outb   = 9505.0/94878.0 #100000/985416
 
 
 '''
+old figures for draft
 df_exp_epg_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/dvcs/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
 df_exp_pi0_inbs   = pd.read_pickle("/Users/sangbaek.lee/CLAS12/clas12DVCS/review_meeting/data/exp_fall2018_inb/pi0/excl_level_2/pkl_7_nominal/fall2018_inb.pkl")
 
@@ -1033,8 +1194,9 @@ ax.plot(x5, (4 - 0.9382721*0.9382721)*x5/(1 - x5), color = 'tab:red', linewidth 
 plt.savefig("addendum_v3/phasespace.new.pdf", bbox_inches = 'tight')
 '''
 
+'''
 
-
+#final analysis
 nominal_suffix        = schema_suffices[6]
 narrow_cut_suffix     = schema_suffices[7]
 wide_cut_suffix       = schema_suffices[8]
@@ -2344,81 +2506,294 @@ print("Total", "{:.2f}".format(100*df_summary_table_rebinned.loc[(df_summary_tab
 
 print(df_summary_table_rebinned.active_bin_nominal.sum())
 
+df_summary_table_rebinned.to_pickle("addendum_v3/df_summary_table_rebinned.final_analysis.pkl")
+# analysis done
+'''
 
+df_display                = pd.read_pickle("summary_table_display.pkl")
+df_summary_table_rebinned = pd.read_pickle("addendum_v3/df_summary_table_rebinned.final_analysis.pkl")
 
-# just 5 plots
-xB_panes = 8
-Q2_panes = 7
-models = ["pi0"]
-label_scheme = ["$\mathrm{Data}$"]
-color_scheme = ['k']
+# # just 5 plots
+# xB_panes = 8
+# Q2_panes = 7
+# models = ["pi0"]
+# label_scheme = ["$\mathrm{Data}$"]
+# color_scheme = ['k']
 
-xB_binnum = 3
-Q2_binnum = 3
+# xB_binnum = 3
+# Q2_binnum = 3
 
-Q2_avg = []
-xB_avgs = []
-fig, axs = plt.subplots(5, 1, figsize = (10, 20))
-for t_binnum in range(1, 6):
+# Q2_avg = []
+# xB_avgs = []
+# fig, axs = plt.subplots(5, 1, figsize = (10, 20))
+# for t_binnum in range(1, 6):
 
-  df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xB_binnum) & (df_summary_table_rebinned.Q2bin == Q2_binnum) & (df_summary_table_rebinned.tbin == t_binnum), :]
-  Q2_avg.append(df_this_bin.t_avg_this_point.unique()[0])
-  xB_avgs.append(df_this_bin.xB_avg_this_point.unique()[0])
-  integrated_binnum = df_this_bin.integrated_binnum.unique()[0]
-  axs[t_binnum-1].annotate("{}.~".format(t_binnum)+r"$\langle |t| \rangle = {:.2f}~\mathrm{{GeV}}^2$".format(df_this_bin.t_avg_this_point.unique()[0]), xy = (0.5, 0.83), xytext = (0.5, 0.83), xycoords = 'axes fraction', fontsize = 40, ha = 'center' )
-  axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_KM15_display, color = 'cyan', lw=3, label = r"$\mathrm{KM15}$")
-  axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].phi_display), df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].xsec_VGG_display, color = 'tab:orange', lw=3, label = r"$\mathrm{VGG}$")
-  axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_BH_KM15_display, color = 'tab:red', lw=3, label = r"$\mathrm{BH}$")
+#   df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xB_binnum) & (df_summary_table_rebinned.Q2bin == Q2_binnum) & (df_summary_table_rebinned.tbin == t_binnum), :]
+#   Q2_avg.append(df_this_bin.t_avg_this_point.unique()[0])
+#   xB_avgs.append(df_this_bin.xB_avg_this_point.unique()[0])
+#   integrated_binnum = df_this_bin.integrated_binnum.unique()[0]
+#   axs[t_binnum-1].annotate("{}.~".format(t_binnum)+r"$\langle |t| \rangle = {:.2f}~\mathrm{{GeV}}^2$".format(df_this_bin.t_avg_this_point.unique()[0]), xy = (0.5, 0.83), xytext = (0.5, 0.83), xycoords = 'axes fraction', fontsize = 40, ha = 'center' )
+#   axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_KM15_display, color = 'cyan', lw=3, label = r"$\mathrm{KM15}$")
+#   axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].phi_display), df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].xsec_VGG_display, color = 'tab:orange', lw=3, label = r"$\mathrm{VGG}$")
+#   axs[t_binnum-1].plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_BH_KM15_display, color = 'tab:red', lw=3, label = r"$\mathrm{BH}$")
 
-  df_summary_table_rebinned_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.integrated_binnum == integrated_binnum) & (df_summary_table_rebinned.loc[:, "active_bin_nominal"] == 1), :]
-  weights               = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging
-  weights_stat_err      = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err
-  weights               = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging
-  weights_syst_err   = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err
+#   df_summary_table_rebinned_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.integrated_binnum == integrated_binnum) & (df_summary_table_rebinned.loc[:, "active_bin_nominal"] == 1), :]
+#   weights               = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging
+#   weights_stat_err      = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err
+#   weights               = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging
+#   weights_syst_err   = df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err
 
-  for i, model in enumerate(models):
-      if i == 0:
-          dots = axs[t_binnum-1].scatter(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], color = color_scheme[i], zorder = 10)
-          axs[t_binnum-1].errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], yerr =df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
-          axs[t_binnum-1].fill_between(df_summary_table_rebinned_this_bin.phi_avg_this_point, weights+weights_syst_err, weights-weights_syst_err, color = 'k', alpha = 0.3)#, label = r'$\mathrm{Syst.~Uncertainty}$')
-      else:
-          axs[t_binnum-1].errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
-          pass
-      print(df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)].max())
-  axs[t_binnum-1].set_yscale('log')
+#   for i, model in enumerate(models):
+#       if i == 0:
+#           dots = axs[t_binnum-1].scatter(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], color = color_scheme[i], zorder = 10)
+#           axs[t_binnum-1].errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], yerr =df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
+#           axs[t_binnum-1].fill_between(df_summary_table_rebinned_this_bin.phi_avg_this_point, weights+weights_syst_err, weights-weights_syst_err, color = 'k', alpha = 0.3)#, label = r'$\mathrm{Syst.~Uncertainty}$')
+#       else:
+#           axs[t_binnum-1].errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
+#           pass
+#       # print(df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)].max())
+#   axs[t_binnum-1].set_yscale('log')
 
-  axs[t_binnum-1].set_xlim([0, 360])
-  axs[t_binnum-1].set_xticks(np.linspace(0, 360, 12+1), minor = True)
-  axs[t_binnum-1].set_xlabel("$\phi$ ($^{\circ}$)", fontsize = 60 )
-  if t_binnum - 1 == 4:
-      axs[t_binnum-1].set_xticks(np.linspace(0, 360, 4+1))
-  else:
-      axs[t_binnum-1].set_xticks(np.linspace(0, 360, 4+1), ['']*5)
+#   axs[t_binnum-1].set_xlim([0, 360])
+#   axs[t_binnum-1].set_xticks(np.linspace(0, 360, 12+1), minor = True)
+#   axs[t_binnum-1].set_xlabel("$\phi$ ($^{\circ}$)", fontsize = 60 )
+#   if t_binnum - 1 == 4:
+#       axs[t_binnum-1].set_xticks(np.linspace(0, 360, 4+1))
+#   else:
+#       axs[t_binnum-1].set_xticks(np.linspace(0, 360, 4+1), ['']*5)
 
   
-  axs[t_binnum-1].tick_params(left = True, right = True, axis = 'y', which = 'major', direction = 'in', width = 4, length = 20, labelsize = 40)
-  axs[t_binnum-1].tick_params(left = True, right = True, axis = 'y', which = 'minor', direction = 'in', width = 2, length = 10)
-  axs[t_binnum-1].tick_params(axis = 'x', which = 'major', direction = 'in', width = 1, length = 20, labelsize = 40)
-  axs[t_binnum-1].tick_params(axis = 'x', which = 'minor', direction = 'in', width = 1, length = 10)
+#   axs[t_binnum-1].tick_params(left = True, right = True, axis = 'y', which = 'major', direction = 'in', width = 4, length = 20, labelsize = 40)
+#   axs[t_binnum-1].tick_params(left = True, right = True, axis = 'y', which = 'minor', direction = 'in', width = 2, length = 10)
+#   axs[t_binnum-1].tick_params(axis = 'x', which = 'major', direction = 'in', width = 1, length = 20, labelsize = 40)
+#   axs[t_binnum-1].tick_params(axis = 'x', which = 'minor', direction = 'in', width = 1, length = 10)
 
-axs[0].set_ylim([4.8e-2, 9.2e-1])
-axs[1].set_ylim([1.4e-2, 7.2e-1])
-axs[2].set_ylim([4.8e-3, 5.2e-1])
-axs[3].set_ylim([1.8e-3, 1.2e-1])
-axs[4].set_ylim([7.8e-4, 6.2e-2])
+# axs[0].set_ylim([4.8e-2, 9.2e-1])
+# axs[1].set_ylim([1.4e-2, 7.2e-1])
+# axs[2].set_ylim([4.8e-3, 5.2e-1])
+# axs[3].set_ylim([1.8e-3, 1.2e-1])
+# axs[4].set_ylim([7.8e-4, 6.2e-2])
 
-handles, labels = axs[2].get_legend_handles_labels() 
-handles = [handles[-1], handles[0], handles[1], handles[2]]
-labels  = [labels [-1], labels [0], labels [1], labels [2]]
+# handles, labels = axs[2].get_legend_handles_labels() 
+# handles = [handles[-1], handles[0], handles[1], handles[2]]
+# labels  = [labels [-1], labels [0], labels [1], labels [2]]
 
-# axs[0].set_title(r"$\langle x_B \rangle={:.2f},~\langle Q^2 \rangle={:.2f}~\mathrm{{GeV}}^2/c^2$".format(np.mean(xB_avgs), np.mean(Q2_avg)), fontsize= 40)
-fig.text(-0.05, 0.5, r"$\frac{d\sigma_{ep\rightarrow e'p'\gamma}}{dx_B dQ^2 d|t| d\phi}~~\mathrm{[nb/GeV^4]}\\$", va='center', rotation = 'vertical', fontsize = 60)
+# # axs[0].set_title(r"$\langle x_B \rangle={:.2f},~\langle Q^2 \rangle={:.2f}~\mathrm{{GeV}}^2/c^2$".format(np.mean(xB_avgs), np.mean(Q2_avg)), fontsize= 40)
+# fig.text(-0.05, 0.5, r"$\frac{d\sigma_{ep\rightarrow e'p'\gamma}}{dx_B dQ^2 d|t| d\phi}~~\mathrm{[nb/GeV^4]}\\$", va='center', rotation = 'vertical', fontsize = 60)
  
-axs[0].legend(handles, labels, loc = 'lower left', bbox_to_anchor = (-.2, .85), title = r"$\langle x_B \rangle={:.2f},~\langle Q^2 \rangle={:.2f}~\mathrm{{GeV}}^2/c^2$".format(np.mean(xB_avgs), np.mean(Q2_avg)), title_fontsize = 40, fontsize = 40, alignment = 'center', ncol = 2, markerscale = 3, framealpha = 0, handlelength = 1, columnspacing = .5)
-# plt.tight_layout()
-plt.subplots_adjust(wspace = 0.2 , hspace = 0.0, left = .2 )
-plt.savefig("addendum_v3/xsec.pdf".format(t_binnum), bbox_inches = 'tight')
+# axs[0].legend(handles, labels, loc = 'lower left', bbox_to_anchor = (-.2, .85), title = r"$\langle x_B \rangle={:.2f},~\langle Q^2 \rangle={:.2f}~\mathrm{{GeV}}^2/c^2$".format(np.mean(xB_avgs), np.mean(Q2_avg)), title_fontsize = 40, fontsize = 40, alignment = 'center', ncol = 2, markerscale = 3, framealpha = 0, handlelength = 1, columnspacing = .5)
+# # plt.tight_layout()
+# plt.subplots_adjust(wspace = 0.2 , hspace = 0.0, left = .2 )
+# plt.savefig("addendum_v3/xsec.pdf".format(t_binnum), bbox_inches = 'tight')
 # plt.close()
+
+# df_display.loc[:, "weight_BH"] = weight_BH(df_display.xB_display, df_display.Q2_display, df_display.t_display, np.degrees(df_display.phi_display))
+
+# df_display.loc[:, "xsec_BH_display_w"]           = df_display.loc[:, "xsec_BH_display"]     *df_display.loc[:, "weight_BH"]
+# df_display.loc[:, "xsec_KM15_display_w"]         = df_display.loc[:, "xsec_KM15_display"]   *df_display.loc[:, "weight_BH"]
+# df_display.loc[:, "xsec_BH_KM15_display_w"]      = df_display.loc[:, "xsec_BH_KM15_display"]*df_display.loc[:, "weight_BH"]
+# df_display.loc[:, "xsec_VGG_display_w"]          = df_display.loc[:, "xsec_VGG_display"]    *df_display.loc[:, "weight_BH"]
+
+# model = 'pi0'
+
+# df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_w".format(model)]                       = df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err_w".format(model)]              = df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err".format(model)]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_syst_err_w".format(model)]              = df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_syst_err".format(model)]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_syst_err_bin_by_bin_w".format(model)]   = df_summary_table_rebinned.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_syst_err_bin_by_bin".format(model)]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging_w"]                                                      = df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging"]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging_stat_err_w"]                                             = df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging_stat_err"]*df_summary_table_rebinned.loc[:, "weight_BH"]
+# df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging_syst_err_w"]                                             = df_summary_table_rebinned.loc[:, "xsec_exp_bkg_merging_syst_err"]*df_summary_table_rebinned.loc[:, "weight_BH"]
+
+# n_sample    = 500
+# i           = 0
+# df_fittings = pd.DataFrame()
+# phi_dummy = np.linspace(0, 360, n_sample)
+# for integrated_binnum in np.sort(df_summary_table_rebinned.integrated_binnum.unique()):
+#   if integrated_binnum < 1:
+#     continue
+#   if integrated_binnum > 147:
+#     continue
+#   df_summary_table_rebinned_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.integrated_binnum == integrated_binnum) & (df_summary_table_rebinned.loc[:, "active_bin_nominal"] == 1), :]
+#   df_display_this_bin = df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)]
+
+#   if len(df_summary_table_rebinned_this_bin)<4:
+#     continue
+#   xBs = df_summary_table_rebinned_this_bin.xB_avg_this_point.unique()[0] * np.ones_like(phi_dummy)
+#   Q2s = df_summary_table_rebinned_this_bin.Q2_avg_this_point.unique()[0] * np.ones_like(phi_dummy)
+#   ts = df_summary_table_rebinned_this_bin.t_avg_this_point.unique()[0] * np.ones_like(phi_dummy)
+
+#   fig, ax = plt.subplots(1, 1, figsize = (10, 6))
+#   cosine_1_th_km15, cosine_1_th_km15_err, cosine_1_th_vgg, cosine_1_th_vgg_err, cosine_1_th_bh, cosine_1_th_bh_err, cosine_1_th_bh_km15, cosine_1_th_bh_km15_err, popt_1_th_km15, popt_1_th_vgg, popt_1_th_bh, popt_1_th_bh_km15 = cosine_1_fitting_one_bin_th(df_display_this_bin)
+#   cosine_2_th_km15, cosine_2_th_km15_err, cosine_2_th_vgg, cosine_2_th_vgg_err, cosine_2_th_bh, cosine_2_th_bh_err, cosine_2_th_bh_km15, cosine_2_th_bh_km15_err, popt_2_th_km15, popt_2_th_vgg, popt_2_th_bh, popt_2_th_bh_km15 = cosine_2_fitting_one_bin_th(df_display_this_bin)
+#   cosine_3_th_km15, cosine_3_th_km15_err, cosine_3_th_vgg, cosine_3_th_vgg_err, cosine_3_th_bh, cosine_3_th_bh_err, cosine_3_th_bh_km15, cosine_3_th_bh_km15_err, popt_3_th_km15, popt_3_th_vgg, popt_3_th_bh, popt_3_th_bh_km15 = cosine_3_fitting_one_bin_th(df_display_this_bin)
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_KM15_display_w, color = 'cyan', lw=3, label = r"$\mathrm{KM15}$")
+#   plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_km15), color = 'cyan', ls = '--')
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].phi_display), df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].xsec_VGG_display_w, color = 'tab:orange', lw=3, label = r"$\mathrm{VGG}$")
+#   plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_vgg), color = 'tab:orange', ls = '--')
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_BH_KM15_display_w, color = 'tab:red', lw=3, label = r"$\mathrm{BH}$")
+#   plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_bh_km15), color = 'tab:red', ls = '--')
+
+#   plt.errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_w".format(model)], yerr =df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err_w".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
+#   xB_avg, Q2_avg, t_avg, cosine_1_exp_pi0, cosine_1_exp_pi0_stat_err, cosine_1_exp_pi0_syst_err, cosine_1_exp_pi0_norm_err_up, cosine_1_exp_pi0_norm_err_down, cosine_1_exp_bkgmerging_only, popt_1_pi0, popt_1_pi0_min, popt_1_pi0_max, popt_1_bkgmerging_only = cosine_1_fitting_one_bin_exp(df_summary_table_rebinned_this_bin, p0 = popt_1_th_km15)
+#   xB_avg, Q2_avg, t_avg, cosine_2_exp_pi0, cosine_2_exp_pi0_stat_err, cosine_2_exp_pi0_syst_err, cosine_2_exp_pi0_norm_err_up, cosine_2_exp_pi0_norm_err_down, cosine_2_exp_bkgmerging_only, popt_2_pi0, popt_2_pi0_min, popt_2_pi0_max, popt_2_bkgmerging_only = cosine_2_fitting_one_bin_exp(df_summary_table_rebinned_this_bin, p0 = popt_2_th_km15)
+#   xB_avg, Q2_avg, t_avg, cosine_3_exp_pi0, cosine_3_exp_pi0_stat_err, cosine_3_exp_pi0_syst_err, cosine_3_exp_pi0_norm_err_up, cosine_3_exp_pi0_norm_err_down, cosine_3_exp_bkgmerging_only, popt_3_pi0, popt_3_pi0_min, popt_3_pi0_max, popt_3_bkgmerging_only = cosine_3_fitting_one_bin_exp(df_summary_table_rebinned_this_bin, p0 = popt_3_th_km15)
+#   plt.plot(phi_dummy, cosine_fitting_2(np.radians(phi_dummy), *popt_2_pi0), color = 'k')
+#   chi2fit = np.sum((df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - cosine_fitting_2(np.radians(df_summary_table_rebinned_this_bin.phi_avg_this_point), *popt_2_pi0))**2/(df_summary_table_rebinned_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w)**2)
+#   ndf = len(df_this_bin) - 3
+#   pvalue = (1-chi2.cdf(chi2fit, ndf))
+#   plt.savefig("addendum_v3/fitting/eachbin/modified_xsec_{}.pdf".format(integrated_binnum))
+#   plt.close()
+
+#   fig, ax = plt.subplots(1, 1, figsize = (10, 6))
+#   plt.errorbar(df_summary_table_rebinned_this_bin.phi_avg_this_point, df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging".format(model)], yerr =df_summary_table_rebinned_this_bin.loc[:, "xsec_exp_{}_eff_corrected_bkg_merging_stat_err".format(model)], ls = '', marker = 'o', label = label_scheme[i], color = color_scheme[i], zorder = 5)
+#   plt.plot(phi_dummy, cosine_fitting_1(np.radians(phi_dummy), *popt_1_pi0)/weight_BH(xBs, Q2s, ts, phi_dummy), color = 'k')
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_KM15_display, color = 'cyan', lw=3, label = r"$\mathrm{KM15}$")
+#   # plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_km15)/weight_BH(xBs, Q2s, ts, phi_dummy), color = 'tab:cyan')  
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].phi_display), df_display.loc[(df_display.integratedbin_display == integrated_binnum) & (df_display.phi_display >0.05) & (df_display.phi_display<2*np.pi-0.05)].xsec_VGG_display, color = 'tab:orange', lw=3, label = r"$\mathrm{VGG}$")
+#   # plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_vgg)/weight_BH(xBs, Q2s, ts, phi_dummy), color = 'tab:orange')  
+#   plt.plot(np.degrees(df_display.loc[(df_display.integratedbin_display == integrated_binnum)].phi_display), df_display.loc[df_display.integratedbin_display == integrated_binnum].xsec_BH_KM15_display, color = 'tab:red', lw=3, label = r"$\mathrm{BH}$")
+#   # plt.plot(phi_dummy, cosine_fitting_3(np.radians(phi_dummy), *popt_3_th_bh_km15)/weight_BH(xBs, Q2s, ts, phi_dummy), color = 'tab:brown')  
+
+#   plt.yscale('log')
+#   plt.savefig("addendum_v3/fitting/eachbin/xsec_{}.pdf".format(integrated_binnum))
+#   plt.close()
+
+#   df_fitting = pd.DataFrame([{"integrated_binnum": integrated_binnum,
+#                               "xB_avg": xB_avg,
+#                               "Q2_avg": Q2_avg,
+#                               "t_avg": t_avg,
+#                               "cosine_1_exp_pi0": cosine_1_exp_pi0,
+#                               "cosine_1_exp_pi0_stat_err": cosine_1_exp_pi0_stat_err,
+#                               "cosine_1_exp_pi0_syst_err": cosine_1_exp_pi0_syst_err,
+#                               "cosine_1_exp_pi0_norm_err_up": cosine_1_exp_pi0_norm_err_up,
+#                               "cosine_1_exp_pi0_norm_err_down": cosine_1_exp_pi0_norm_err_down,
+#                               "cosine_1_exp_bkgmerging_only": cosine_1_exp_bkgmerging_only,
+#                               "popt_1_pi0": popt_1_pi0,
+#                               "popt_1_pi0_min": popt_1_pi0_min,
+#                               "popt_1_pi0_max": popt_1_pi0_max,
+#                               "popt_1_bkgmerging_only": popt_1_bkgmerging_only,
+#                               "cosine_2_exp_pi0": cosine_2_exp_pi0,
+#                               "cosine_2_exp_pi0_stat_err": cosine_2_exp_pi0_stat_err,
+#                               "cosine_2_exp_pi0_syst_err": cosine_2_exp_pi0_syst_err,
+#                               "cosine_2_exp_pi0_norm_err_up": cosine_2_exp_pi0_norm_err_up,
+#                               "cosine_2_exp_pi0_norm_err_down": cosine_2_exp_pi0_norm_err_down,
+#                               "cosine_2_exp_bkgmerging_only": cosine_2_exp_bkgmerging_only,
+#                               "popt_2_pi0": popt_2_pi0,
+#                               "popt_2_pi0_min": popt_2_pi0_min,
+#                               "popt_2_pi0_max": popt_2_pi0_max,
+#                               "popt_2_bkgmerging_only": popt_2_bkgmerging_only,
+#                               "cosine_3_exp_pi0": cosine_3_exp_pi0,
+#                               "cosine_3_exp_pi0_stat_err": cosine_3_exp_pi0_stat_err,
+#                               "cosine_3_exp_pi0_syst_err": cosine_3_exp_pi0_syst_err,
+#                               "cosine_3_exp_pi0_norm_err_up": cosine_3_exp_pi0_norm_err_up,
+#                               "cosine_3_exp_pi0_norm_err_down": cosine_3_exp_pi0_norm_err_down,
+#                               "cosine_3_exp_bkgmerging_only": cosine_3_exp_bkgmerging_only,
+#                               "popt_3_pi0": popt_3_pi0,
+#                               "popt_3_pi0_min": popt_3_pi0_min,
+#                               "popt_3_pi0_max": popt_3_pi0_max,
+#                               "popt_3_bkgmerging_only": popt_3_bkgmerging_only,
+#                               "pvalue": pvalue}], index = [integrated_binnum])
+#   df_fittings = pd.concat([df_fittings, df_fitting])
+
+# df_fittings.to_pickle("addendum_v3/fitting/eachbin/df_fittings.pkl")
+
+n_display = 2
+n_sample  = 5
+phi_dummy = np.linspace(0, 360, n_sample)
+
+
+df_t_dependence                          = pd.DataFrame()
+df_display_this_bin = df_display.loc[(df_display.integratedbin_display == args.integrated_binnum) & (df_display.phi_display == 0), :]
+
+xBbin = int(df_display_this_bin.xBbin_display)
+Q2bin = int(df_display_this_bin.Q2bin_display)
+tbin = int(df_display_this_bin.tbin_display)
+
+assert len(df_display_this_bin) == 1
+
+xBs  = float(df_display_this_bin.xB_display) * np.ones_like(phi_dummy)
+Q2s  = float(df_display_this_bin.Q2_display)  * np.ones_like(phi_dummy)
+ts   = np.linspace(-tmin(float(df_display_this_bin.xB_display.mean()), float(df_display_this_bin.Q2_display.mean()), 0, 0), 1, n_display)
+for index, t_running in enumerate(ts):
+  print("t dep", xBbin, Q2bin, index)
+  yd = y(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
+  if t_running < -tmin(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0):
+    continue
+  if (yd<=0.1) or (yd>0.9):
+    continue
+  Wd = W(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
+  if (Wd < 2):
+    continue
+  df_t_dependence_this_bin =  pd.DataFrame(data = {"integrated_binnum": args.integrated_binnum, "xBbin": xBbin * np.ones_like(phi_dummy), "Q2bin": Q2bin * np.ones_like(phi_dummy), 
+    "tbin": tbin * np.ones_like(phi_dummy), "tindex": index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2s, "t_display": t_running * np.ones_like(phi_dummy), "phi_display": phi_dummy})
+  df_t_dependence_this_bin.loc[:, "xsec_KM15_display"]       = printKMarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), mode = 5)
+  df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]    = printKMarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), mode = 1)
+  df_t_dependence_this_bin.loc[:, "xsec_BH_display"]         = printBHarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), local=True)
+  df_t_dependence_this_bin.loc[:, "xsec_VGG_display"]        = printVGGarray(df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), local=True)
+  df_t_dependence_this_bin.loc[:, "weight_BH"]               = weight_BH(df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, df_t_dependence_this_bin.phi_display)
+  df_t_dependence_this_bin.loc[:, "xsec_BH_display_w"]       = df_t_dependence_this_bin.loc[:, "xsec_BH_display"]     *df_t_dependence_this_bin.loc[:, "weight_BH"]
+  df_t_dependence_this_bin.loc[:, "xsec_KM15_display_w"]     = df_t_dependence_this_bin.loc[:, "xsec_KM15_display"]   *df_t_dependence_this_bin.loc[:, "weight_BH"]
+  df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display_w"]  = df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]*df_t_dependence_this_bin.loc[:, "weight_BH"]
+  df_t_dependence_this_bin.loc[:, "xsec_VGG_display_w"]      = df_t_dependence_this_bin.loc[:, "xsec_VGG_display"]    *df_t_dependence_this_bin.loc[:, "weight_BH"]
+  df_t_dependence = pd.concat([df_t_dependence, df_t_dependence_this_bin])
+df_t_dependence.reset_index(inplace = True)
+df_t_dependence.rename(columns = {"index": "phiindex"}, inplace = True)
+df_t_dependence.to_pickle("addendum_v3/fitting/df_t_dependence_{}.pkl".format(args.integrated_binnum))
+
+df_Q2_dependence                          = pd.DataFrame()
+
+xBs   = float(df_display_this_bin.xB_display) * np.ones_like(phi_dummy)
+ts    = float(df_display_this_bin.t_display)  * np.ones_like(phi_dummy)
+Q2s   = np.linspace(1, 6, n_display)
+Q2index = []
+for index, Q2_running in enumerate(Q2s):
+  xBbin = int(df_display_this_bin.xBbin_display)
+  Q2bin = int(df_display_this_bin.Q2bin_display)
+  tbin  = int(df_display_this_bin.tbin_display)
+  print("Q2 dep", xBbin, tbin, index)
+  if float(df_display_this_bin.t_display) < -tmin(float(df_display_this_bin.xB_display), Q2_running, 0, 0):
+    continue
+  yd = y(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
+  if (yd<=0.1) or (yd>0.9):
+    continue
+  Wd = W(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
+  if (Wd < 2):
+    continue
+  df_Q2_dependence_this_bin =  pd.DataFrame(data = {"integrated_binnum": args.integrated_binnum, "xBbin": xBbin * np.ones_like(phi_dummy), "Q2bin": Q2bin * np.ones_like(phi_dummy),
+    "tbin": tbin * np.ones_like(phi_dummy), "Q2index": index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2_running * np.ones_like(phi_dummy), "t_display": ts, "phi_display": phi_dummy})
+  df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display"]    = printKMarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), mode = 5)
+  df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display"] = printKMarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), mode = 1)
+  df_Q2_dependence_this_bin.loc[:, "xsec_BH_display"]      = printBHarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), local=True)
+  df_Q2_dependence_this_bin.loc[:, "xsec_VGG_display"]     = printVGGarray(df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), local=True)
+  df_Q2_dependence_this_bin.loc[:, "weight_BH"] = weight_BH(df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, df_Q2_dependence_this_bin.phi_display)
+  df_Q2_dependence_this_bin.loc[:, "xsec_BH_display_w"]       = df_Q2_dependence_this_bin.loc[:, "xsec_BH_display"]     *df_Q2_dependence_this_bin.loc[:, "weight_BH"]
+  df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display_w"]     = df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display"]   *df_Q2_dependence_this_bin.loc[:, "weight_BH"]
+  df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display_w"]  = df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]*df_Q2_dependence_this_bin.loc[:, "weight_BH"]
+  df_Q2_dependence_this_bin.loc[:, "xsec_VGG_display_w"]      = df_Q2_dependence_this_bin.loc[:, "xsec_VGG_display"]    *df_Q2_dependence_this_bin.loc[:, "weight_BH"]
+  df_Q2_dependence = pd.concat([df_Q2_dependence, df_Q2_dependence_this_bin])
+df_Q2_dependence.reset_index(inplace = True)
+df_Q2_dependence.rename(columns = {"index": "phiindex"}, inplace = True)
+df_Q2_dependence.to_pickle("addendum_v3/fitting/df_Q2_dependence_{}.pkl".format(args.integrated_binnum))
+
+# df_Q2_dependence = pd.DataFrame()
+# n_sample    = 500
+
+# #Q2 dependence
+# for xBbin in df_summary_table_rebinned.xBbin.unique():
+#   for Q2bin in df_summary_table_rebinned.Q2bin.unique():
+#     df_summary_table_rebinned_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_sumary_table_rebinned.Q2bin == Q2bin), :]
+#     xB_avgs = np.unique(df_summary_table_rebinned_this_bin.xB_avg_this_point).mean() * np.ones(n_sample)
+#     xB_stds = np.unique(df_summary_table_rebinned_this_bin.xB_avg_this_point).std()  * np.ones(n_sample)
+#     Q2_avgs = np.unique(df_summary_table_rebinned_this_bin.Q2_avg_this_point).mean() * np.ones(n_sample)
+
+#   if len(np.unique(df_summary_table_rebinned_this_bin.t_avg_this_point)) > 1:
+#     continue
+#   ts = np.unique(df_summary_table_rebinned_this_bin.t_avg_this_point)[0] * np.ones(n_sample)
+#   phis = np.linspace(0, 2*np.pi, n_sample)
+#   weight_BHs_theory = weight_BH(xB_theory, Q2_theory, t_theory, np.degrees(phi_theory))
+#   xsec_KM15_theory = printKMarray(xB_theory, Q2_theory, t_theory, phi_theory, mode = 5)
+#   xsec_BH_theory   = printBHarray(xB_theory, Q2_theory, t_theory, phi_theory, local=True)
+#   xsec_VGG_theory  = printVGGarray(xB_theory, Q2_theory, t_theory, phi_theory, local=True)
 
 
 # xBs = df_summary_table_rebinned.xB_avg_this_point
@@ -2454,338 +2829,6 @@ plt.savefig("addendum_v3/xsec.pdf".format(t_binnum), bbox_inches = 'tight')
 # df_display.loc[:, "xsec_BH_KM15_display_w"]      = df_display.loc[:, "xsec_BH_KM15_display"]*df_display.loc[:, "weight_BH"]
 # df_display.loc[:, "xsec_VGG_display_w"]          = df_display.loc[:, "xsec_VGG_display"]    *df_display.loc[:, "weight_BH"]
 
-
-# def cosine_1_fitting_one_bin(xBbin, Q2bin, tbin, p0 = (1, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-
-#     integrated_binnum = df_this_bin.integrated_binnum.unique()[0]
-
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_1_pi0, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_1_exp_pi0 =  -popt_1_pi0[1]
-#     cosine_1_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_1_pi0s = []
-#     # for trial in range(10**3):
-#     popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_1_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_1_pi0s.append(popt)
-#     popt_1_pi0s = np.array(popt_1_pi0s)
-#     cosine_1_exp_pi0s = -popt_1_pi0s[:, 1]
-
-#     popt_1_pi0_min             = popt_1_pi0s[np.argmax(cosine_1_exp_pi0s)]
-#     popt_1_pi0_max             = popt_1_pi0s[np.argmin(cosine_1_exp_pi0s)]
-
-#     cosine_1_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0) + np.abs(np.min(cosine_1_exp_pi0s) - cosine_1_exp_pi0))
-
-#     # popt_1_km15, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_km15 =  -popt_1_km15[1]
-
-#     # popt_1_vgg, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_vgg =  -popt_1_vgg[1]
-
-#     # popt_1_bh, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_bh =  -popt_1_bh[1]
-
-#     # popt_1_global1, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_global1 =  -popt_1_global1[1]
-
-#     popt_1_bkgmerging_only, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_1_exp_bkgmerging_only =  -popt_1_bkgmerging_only[1]
-
-#     cosine_1_exp_pi0_norm_err_up       = np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0
-#     cosine_1_exp_pi0_norm_err_down     =-np.min(cosine_1_exp_pi0s) + cosine_1_exp_pi0
-
-#     df_display_this_bin = df_display.loc[df_display.integratedbin_display == integrated_binnum, :]
-
-#     popt_1_th_km15, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
-#     cosine_1_th_km15 =  -popt_1_th_km15[1]
-#     cosine_1_th_km15_err =  np.sqrt(np.diag(pcov))[1]
-
-#     popt_1_th_vgg, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
-#     cosine_1_th_vgg =  -popt_1_th_vgg[1]
-#     cosine_1_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
-    
-#     popt_1_th_bh, pcov = curve_fit(cosine_fitting_1, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
-#     cosine_1_th_bh =  -popt_1_th_bh[1]
-#     cosine_1_th_bh_err =  np.sqrt(np.diag(pcov))[1]
-
-#     return xB_avg, Q2_avg, t_avg, cosine_1_exp_pi0, cosine_1_exp_pi0_stat_err, cosine_1_exp_pi0_syst_err, cosine_1_exp_pi0_norm_err_up, cosine_1_exp_pi0_norm_err_down, cosine_1_exp_bkgmerging_only, cosine_1_th_km15, cosine_1_th_km15_err, cosine_1_th_vgg, cosine_1_th_vgg_err, cosine_1_th_bh, cosine_1_th_bh_err, popt_1_pi0, popt_1_pi0_min, popt_1_pi0_max, popt_1_bkgmerging_only, popt_1_th_km15, popt_1_th_vgg, popt_1_th_bh
-
-# def cosine_2_fitting_one_bin(xBbin, Q2bin, tbin, p0 = (1, 0, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-
-#     integrated_binnum = df_this_bin.integrated_binnum.unique()[0]
-
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_2_pi0, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_2_exp_pi0 =  -popt_2_pi0[1]
-#     cosine_2_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_2_pi0s = []
-#     # for trial in range(10**3):
-#     #     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + np.random.uniform(-df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w), absolute_sigma = True,  p0 = p0)
-#     #     popt_2_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_2_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_2_pi0s.append(popt)
-#     popt_2_pi0s = np.array(popt_2_pi0s)
-#     cosine_2_exp_pi0s = -popt_2_pi0s[:, 1]
-
-#     popt_2_pi0_min             = popt_2_pi0s[np.argmax(cosine_2_exp_pi0s)]
-#     popt_2_pi0_max             = popt_2_pi0s[np.argmin(cosine_2_exp_pi0s)]
-
-#     cosine_2_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0) + np.abs(np.min(cosine_2_exp_pi0s) - cosine_2_exp_pi0))
-
-#     # popt_2_km15, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_km15 =  -popt_2_km15[1]
-
-#     # popt_2_vgg, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_vgg =  -popt_2_vgg[1]
-
-#     # popt_2_bh, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_bh =  -popt_2_bh[1]
-
-#     # popt_2_global1, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_global1 =  -popt_2_global1[1]
-
-#     popt_2_bkgmerging_only, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_2_exp_bkgmerging_only =  -popt_2_bkgmerging_only[1]
-
-#     cosine_2_exp_pi0_norm_err_up  = np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0
-#     cosine_2_exp_pi0_norm_err_down=-np.min(cosine_2_exp_pi0s) + cosine_2_exp_pi0
-
-#     df_display_this_bin = df_display.loc[df_display.integratedbin_display == integrated_binnum, :]
-
-#     popt_2_th_km15, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
-#     cosine_2_th_km15 =  -popt_2_th_km15[1]
-#     cosine_2_th_km15_err =  np.sqrt(np.diag(pcov))[1]
-
-#     popt_2_th_vgg, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
-#     cosine_2_th_vgg =  -popt_2_th_vgg[1]
-#     cosine_2_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
-    
-#     popt_2_th_bh, pcov = curve_fit(cosine_fitting_2, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
-#     cosine_2_th_bh =  -popt_2_th_bh[1]
-#     cosine_2_th_bh_err =  np.sqrt(np.diag(pcov))[1]
-
-#     # return xB_avg, Q2_avg, t_avg, cosine_2_exp_pi0, cosine_2_exp_pi0_stat_err, cosine_2_exp_pi0_syst_err, cosine_2_exp_pi0_norm_err_up, cosine_2_exp_pi0_norm_err_down, cosine_2_exp_km15, cosine_2_exp_vgg, cosine_2_exp_bh, cosine_2_exp_global1, cosine_2_th_km15, cosine_2_th_km15_err, cosine_2_th_vgg, cosine_2_th_vgg_err, cosine_2_th_bh, cosine_2_th_bh_err, popt_2_pi0, popt_2_pi0_min, popt_2_pi0_max, popt_2_km15, popt_2_vgg, popt_2_bh, popt_2_global1, popt_2_th_km15, popt_2_th_vgg, popt_2_th_bh
-#     return xB_avg, Q2_avg, t_avg, cosine_2_exp_pi0, cosine_2_exp_pi0_stat_err, cosine_2_exp_pi0_syst_err, cosine_2_exp_pi0_norm_err_up, cosine_2_exp_pi0_norm_err_down, cosine_2_exp_bkgmerging_only, cosine_2_th_km15, cosine_2_th_km15_err, cosine_2_th_vgg, cosine_2_th_vgg_err, cosine_2_th_bh, cosine_2_th_bh_err, popt_2_pi0, popt_2_pi0_min, popt_2_pi0_max, popt_2_bkgmerging_only, popt_2_th_km15, popt_2_th_vgg, popt_2_th_bh
-
-# def cosine_3_fitting_one_bin(xBbin, Q2bin, tbin, p0 = (1, 0, 0, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-
-#     integrated_binnum = df_this_bin.integrated_binnum.unique()[0]
-    
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_3_pi0, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_3_exp_pi0 =  -popt_3_pi0[1]
-#     cosine_3_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_3_pi0s = []
-#     # for trial in range(10**3):
-#     #     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + np.random.uniform(-df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w), absolute_sigma = True,  p0 = p0)
-#     #     popt_3_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_3_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_3_pi0s.append(popt)
-#     popt_3_pi0s = np.array(popt_3_pi0s)
-#     cosine_3_exp_pi0s = -popt_3_pi0s[:, 1]
-
-#     popt_3_pi0_min             = popt_3_pi0s[np.argmax(cosine_3_exp_pi0s)]
-#     popt_3_pi0_max             = popt_3_pi0s[np.argmin(cosine_3_exp_pi0s)]
-
-#     cosine_3_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0) + np.abs(np.min(cosine_3_exp_pi0s) - cosine_3_exp_pi0))
-
-#     # popt_3_km15, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_km15 =  -popt_3_km15[1]
-
-#     # popt_3_vgg, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_vgg =  -popt_3_vgg[1]
-
-#     # popt_3_bh, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_bh =  -popt_3_bh[1]
-
-#     # popt_3_global1, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_global1 =  -popt_3_global1[1]
-
-#     popt_3_bkgmerging_only, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_3_exp_bkgmerging_only =  -popt_3_bkgmerging_only[1]
-
-#     cosine_3_exp_pi0_norm_err_up  = np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0
-#     cosine_3_exp_pi0_norm_err_down=-np.min(cosine_3_exp_pi0s) + cosine_3_exp_pi0
-
-#     df_display_this_bin = df_display.loc[df_display.integratedbin_display == integrated_binnum, :]
-    
-#     popt_3_th_km15, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_KM15_display_w, p0 = p0)
-#     cosine_3_th_km15 =  -popt_3_th_km15[1]
-#     cosine_3_th_km15_err =  np.sqrt(np.diag(pcov))[1]
-
-#     popt_3_th_vgg, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_VGG_display_w, p0 = p0)
-#     cosine_3_th_vgg =  -popt_3_th_vgg[1]
-#     cosine_3_th_vgg_err =  np.sqrt(np.diag(pcov))[1]
-    
-#     popt_3_th_bh, pcov = curve_fit(cosine_fitting_3, df_display_this_bin.phi_display, df_display_this_bin.xsec_BH_display_w, p0 = p0)
-#     cosine_3_th_bh =  -popt_3_th_bh[1]
-#     cosine_3_th_bh_err =  np.sqrt(np.diag(pcov))[1]
-
-#     return xB_avg, Q2_avg, t_avg, cosine_3_exp_pi0, cosine_3_exp_pi0_stat_err, cosine_3_exp_pi0_syst_err, cosine_3_exp_pi0_norm_err_up, cosine_3_exp_pi0_norm_err_down, cosine_3_exp_bkgmerging_only, cosine_3_th_km15, cosine_3_th_km15_err, cosine_3_th_vgg, cosine_3_th_vgg_err, cosine_3_th_bh, cosine_3_th_bh_err, popt_3_pi0, popt_3_pi0_min, popt_3_pi0_max, popt_3_bkgmerging_only, popt_3_th_km15, popt_3_th_vgg, popt_3_th_bh
-
-# def cosine_1_fitting_one_bin_exp(xBbin, Q2bin, tbin, p0 = (1, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-    
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_1_pi0, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_1_exp_pi0 =  -popt_1_pi0[1]
-#     cosine_1_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_1_pi0s = []
-#     # for trial in range(10**3):
-#     #     popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + np.random.uniform(-df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w), absolute_sigma = True,  p0 = p0)
-#     # popt_1_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_1_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_1_pi0s.append(popt)
-#     popt_1_pi0s = np.array(popt_1_pi0s)
-#     cosine_1_exp_pi0s = -popt_1_pi0s[:, 1]
-
-#     popt_1_pi0s = np.array(popt_1_pi0s)
-#     cosine_1_exp_pi0s = -popt_1_pi0s[:, 1]
-
-#     popt_1_pi0_min             = popt_1_pi0s[np.argmax(cosine_1_exp_pi0s)]
-#     popt_1_pi0_max             = popt_1_pi0s[np.argmin(cosine_1_exp_pi0s)]
-
-#     cosine_1_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0) + np.abs(np.min(cosine_1_exp_pi0s) - cosine_1_exp_pi0))
-
-#     popt_1_bkgmerging_only, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_1_exp_bkgmerging_only =  -popt_1_bkgmerging_only[1]
-
-#     # popt_1_km15, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_km15 =  -popt_1_km15[1]
-
-#     # popt_1_vgg, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_vgg =  -popt_1_vgg[1]
-
-#     # popt_1_bh, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_bh =  -popt_1_bh[1]
-
-#     # popt_1_global1, pcov = curve_fit(cosine_fitting_1, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_1_exp_global1 =  -popt_1_global1[1]
-
-#     cosine_1_exp_pi0_norm_err_up  = np.max(cosine_1_exp_pi0s) - cosine_1_exp_pi0
-#     cosine_1_exp_pi0_norm_err_down=-np.min(cosine_1_exp_pi0s) + cosine_1_exp_pi0
-
-#     return xB_avg, Q2_avg, t_avg, cosine_1_exp_pi0, cosine_1_exp_pi0_stat_err, cosine_1_exp_pi0_syst_err, cosine_1_exp_pi0_norm_err_up, cosine_1_exp_pi0_norm_err_down, cosine_1_exp_bkgmerging_only, popt_1_pi0, popt_1_pi0_min, popt_1_pi0_max, popt_1_bkgmerging_only
-
-# def cosine_2_fitting_one_bin_exp(xBbin, Q2bin, tbin, p0 = (1, 0, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_2_pi0, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_2_exp_pi0 =  -popt_2_pi0[1]
-#     cosine_2_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_2_pi0s = []
-#     # for trial in range(10**3):
-#     #     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + np.random.uniform(-df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w), absolute_sigma = True,  p0 = p0)
-#     #     popt_2_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_2_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_2_pi0s.append(popt)
-#     popt_2_pi0s = np.array(popt_2_pi0s)
-#     cosine_2_exp_pi0s = -popt_2_pi0s[:, 1]
-
-#     popt_2_pi0_min             = popt_2_pi0s[np.argmax(cosine_2_exp_pi0s)]
-#     popt_2_pi0_max             = popt_2_pi0s[np.argmin(cosine_2_exp_pi0s)]
-
-#     cosine_2_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0) + np.abs(np.min(cosine_2_exp_pi0s) - cosine_2_exp_pi0))
-
-#     popt_2_bkgmerging_only, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_2_exp_bkgmerging_only =  -popt_2_bkgmerging_only[1]
-
-#     # popt_2_km15, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_km15 =  -popt_2_km15[1]
-
-#     # popt_2_vgg, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_vgg =  -popt_2_vgg[1]
-
-#     # popt_2_bh, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_bh =  -popt_2_bh[1]
-
-#     # popt_2_global1, pcov = curve_fit(cosine_fitting_2, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_2_exp_global1 =  -popt_2_global1[1]
-
-#     cosine_2_exp_pi0_norm_err_up  = np.max(cosine_2_exp_pi0s) - cosine_2_exp_pi0
-#     cosine_2_exp_pi0_norm_err_down=-np.min(cosine_2_exp_pi0s) + cosine_2_exp_pi0
-
-#     return xB_avg, Q2_avg, t_avg, cosine_2_exp_pi0, cosine_2_exp_pi0_stat_err, cosine_2_exp_pi0_syst_err, cosine_2_exp_pi0_norm_err_up, cosine_2_exp_pi0_norm_err_down, cosine_2_exp_bkgmerging_only, popt_2_pi0, popt_2_pi0_min, popt_2_pi0_max, popt_2_bkgmerging_only
-
-# def cosine_3_fitting_one_bin_exp(xBbin, Q2bin, tbin, p0 = (1, 0, 0, 0)):
-
-#     df_this_bin = df_summary_table_rebinned.loc[(df_summary_table_rebinned.xBbin == xBbin) & (df_summary_table_rebinned.Q2bin == Q2bin) & (df_summary_table_rebinned.tbin == tbin) & (df_summary_table_rebinned.active_bin_nominal == 1), :]
-    
-#     xB_avg = df_this_bin.xB_avg_this_point.unique()[0]
-#     Q2_avg = df_this_bin.Q2_avg_this_point.unique()[0]
-#     t_avg = df_this_bin.t_avg_this_point.unique()[0]
-
-#     popt_3_pi0, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_3_exp_pi0 =  -popt_3_pi0[1]
-#     cosine_3_exp_pi0_stat_err =  np.sqrt(np.diag(pcov))[1]
-#     popt_3_pi0s = []
-#     # for trial in range(10**3):
-#     #     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + np.random.uniform(-df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w), absolute_sigma = True,  p0 = p0)
-#     #     popt_3_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w + df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_3_pi0s.append(popt)
-#     popt, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_w - df_this_bin.xsec_exp_pi0_eff_corrected_bkg_merging_syst_err_w, absolute_sigma = True,  p0 = p0)
-#     popt_3_pi0s.append(popt)
-#     popt_3_pi0s = np.array(popt_3_pi0s)
-#     cosine_3_exp_pi0s = -popt_3_pi0s[:, 1]
-
-#     popt_3_pi0_min             = popt_3_pi0s[np.argmax(cosine_3_exp_pi0s)]
-#     popt_3_pi0_max             = popt_3_pi0s[np.argmin(cosine_3_exp_pi0s)]
-
-#     cosine_3_exp_pi0_syst_err   = 0.5* (np.abs(np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0) + np.abs(np.min(cosine_3_exp_pi0s) - cosine_3_exp_pi0))
-
-#     popt_3_bkgmerging_only, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bkg_merging_w, sigma = df_this_bin.xsec_exp_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     cosine_3_exp_bkgmerging_only =  -popt_3_bkgmerging_only[1]
-
-#     # popt_3_km15, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_km15_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_km15 =  -popt_3_km15[1]
-
-#     # popt_3_vgg, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_vgg_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_vgg =  -popt_3_vgg[1]
-
-#     # popt_3_bh, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_bh_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_bh =  -popt_3_bh[1]
-
-#     # popt_3_global1, pcov = curve_fit(cosine_fitting_3, np.radians(df_this_bin.phi_avg_this_point), df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_w, sigma = df_this_bin.xsec_exp_global1_eff_corrected_bkg_merging_stat_err_w, absolute_sigma = True,  p0 = p0)
-#     # cosine_3_exp_global1 =  -popt_3_global1[1]
-
-#     cosine_3_exp_pi0_norm_err_up  = np.max(cosine_3_exp_pi0s) - cosine_3_exp_pi0
-#     cosine_3_exp_pi0_norm_err_down=-np.min(cosine_3_exp_pi0s) + cosine_3_exp_pi0
-
-#     return xB_avg, Q2_avg, t_avg, cosine_3_exp_pi0, cosine_3_exp_pi0_stat_err, cosine_3_exp_pi0_syst_err, cosine_3_exp_pi0_norm_err_up, cosine_3_exp_pi0_norm_err_down, cosine_3_exp_bkgmerging_only, popt_3_pi0, popt_3_pi0_min, popt_3_pi0_max, popt_3_bkgmerging_only
 
 # def get_tdependece_th(xB_avg, Q2_avg, t1_min, t1_max, p0 = (1, 0), n_theory = 100, n_sample = 100):
 #     cosine_1_ths_km15     = []
