@@ -13,7 +13,7 @@ from utils.const import *
 from utils.physics import *
 from matplotlib.ticker import ScalarFormatter, MaxNLocator
 import matplotlib
-cmap = matplotlib.colormaps["jet"]
+#cmap = matplotlib.colormaps["jet"]
 from scipy.optimize import curve_fit
 # matplotlib.use('Agg')
 import warnings
@@ -34,6 +34,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Get args",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--integrated_binnum", type = int)
+parser.add_argument("--index", type = int)
 args = parser.parse_args()
 
 cm_data = [[0.2081, 0.1663, 0.5292], [0.2116238095, 0.1897809524, 0.5776761905], 
@@ -2701,35 +2702,30 @@ for integrated_binnum in np.sort(df_summary_table_rebinned.integrated_binnum.uni
 
 # df_fittings.to_pickle("addendum_v3/fitting/eachbin/df_fittings.pkl")
 
-# n_display = 2
-# n_sample  = 5
+'''
+# save the raw cross section everywhere.
+# n_display = 500
+# n_sample  = 48
 # phi_dummy = np.linspace(0, 360, n_sample)
 
-
-# df_t_dependence                          = pd.DataFrame()
-# df_display_this_bin = df_display.loc[(df_display.integratedbin_display == args.integrated_binnum) & (df_display.phi_display == 0), :]
-
-# xBbin = int(df_display_this_bin.xBbin_display)
-# Q2bin = int(df_display_this_bin.Q2bin_display)
-# tbin = int(df_display_this_bin.tbin_display)
-
-# assert len(df_display_this_bin) == 1
 
 # xBs  = float(df_display_this_bin.xB_display) * np.ones_like(phi_dummy)
 # Q2s  = float(df_display_this_bin.Q2_display)  * np.ones_like(phi_dummy)
 # ts   = np.linspace(-tmin(float(df_display_this_bin.xB_display.mean()), float(df_display_this_bin.Q2_display.mean()), 0, 0), 1, n_display)
-# for index, t_running in enumerate(ts):
-#   print("t dep", xBbin, Q2bin, index)
-#   yd = y(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
-#   if t_running < -tmin(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0):
-#     continue
-#   if (yd<=0.1) or (yd>0.9):
-#     continue
-#   Wd = W(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
-#   if (Wd < 2):
-#     continue
+# t_running = ts[args.index]
+# print("t dep", args.integrated_binnum,  xBbin, Q2bin, tbin, args.index, flush = True)
+# yd = y(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
+# bad_phase_space = 0
+# if t_running < -tmin(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0):
+#   bad_phase_space = 1
+# if (yd<=0.1) or (yd>0.9):
+#   bad_phase_space = 1
+# Wd = W(float(df_display_this_bin.xB_display), float(df_display_this_bin.Q2_display), 0, 0)
+# if (Wd < 2):
+#   bad_phase_space = 1
+# if bad_phase_space == 0:
 #   df_t_dependence_this_bin =  pd.DataFrame(data = {"integrated_binnum": args.integrated_binnum, "xBbin": xBbin * np.ones_like(phi_dummy), "Q2bin": Q2bin * np.ones_like(phi_dummy), 
-#     "tbin": tbin * np.ones_like(phi_dummy), "tindex": index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2s, "t_display": t_running * np.ones_like(phi_dummy), "phi_display": phi_dummy})
+#     "tbin": tbin * np.ones_like(phi_dummy), "tindex": args.index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2s, "t_display": t_running * np.ones_like(phi_dummy), "phi_display": phi_dummy})
 #   df_t_dependence_this_bin.loc[:, "xsec_KM15_display"]       = printKMarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), mode = 5)
 #   df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]    = printKMarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), mode = 1)
 #   df_t_dependence_this_bin.loc[:, "xsec_BH_display"]         = printBHarray (df_t_dependence_this_bin.xB_display, df_t_dependence_this_bin.Q2_display, df_t_dependence_this_bin.t_display, np.radians(df_t_dependence_this_bin.phi_display), local=True)
@@ -2739,32 +2735,32 @@ for integrated_binnum in np.sort(df_summary_table_rebinned.integrated_binnum.uni
 #   df_t_dependence_this_bin.loc[:, "xsec_KM15_display_w"]     = df_t_dependence_this_bin.loc[:, "xsec_KM15_display"]   *df_t_dependence_this_bin.loc[:, "weight_BH"]
 #   df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display_w"]  = df_t_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]*df_t_dependence_this_bin.loc[:, "weight_BH"]
 #   df_t_dependence_this_bin.loc[:, "xsec_VGG_display_w"]      = df_t_dependence_this_bin.loc[:, "xsec_VGG_display"]    *df_t_dependence_this_bin.loc[:, "weight_BH"]
-#   df_t_dependence = pd.concat([df_t_dependence, df_t_dependence_this_bin])
-# df_t_dependence.reset_index(inplace = True)
-# df_t_dependence.rename(columns = {"index": "phiindex"}, inplace = True)
-# df_t_dependence.to_pickle("addendum_v3/fitting/df_t_dependence_{}.pkl".format(args.integrated_binnum))
+#   df_t_dependence_this_bin.reset_index(inplace = True)
+#   df_t_dependence_this_bin.rename(columns = {"index": "phiindex"}, inplace = True)
+#   df_t_dependence_this_bin.to_pickle("/lcrc/project/nanowire/sangbaek/clas12DVCS/addendum_v3/fitting/df_t_dependence_{}_{}.pkl".format(args.integrated_binnum, args.index))
 
-# df_Q2_dependence                          = pd.DataFrame()
 
 # xBs   = float(df_display_this_bin.xB_display) * np.ones_like(phi_dummy)
 # ts    = float(df_display_this_bin.t_display)  * np.ones_like(phi_dummy)
 # Q2s   = np.linspace(1, 6, n_display)
 # Q2index = []
-# for index, Q2_running in enumerate(Q2s):
-#   xBbin = int(df_display_this_bin.xBbin_display)
-#   Q2bin = int(df_display_this_bin.Q2bin_display)
-#   tbin  = int(df_display_this_bin.tbin_display)
-#   print("Q2 dep", xBbin, tbin, index)
-#   if float(df_display_this_bin.t_display) < -tmin(float(df_display_this_bin.xB_display), Q2_running, 0, 0):
-#     continue
-#   yd = y(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
-#   if (yd<=0.1) or (yd>0.9):
-#     continue
-#   Wd = W(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
-#   if (Wd < 2):
-#     continue
+# Q2_running = Q2s[args.index]
+# xBbin = int(df_display_this_bin.xBbin_display)
+# Q2bin = int(df_display_this_bin.Q2bin_display)
+# tbin  = int(df_display_this_bin.tbin_display)
+# print("Q2 dep", args.integrated_binnum, xBbin, Q2bin, tbin, args.index, flush = True)
+# bad_phase_space = 0
+# if float(df_display_this_bin.t_display) < -tmin(float(df_display_this_bin.xB_display), Q2_running, 0, 0):
+#   bad_phase_space = 1
+# yd = y(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
+# if (yd<=0.1) or (yd>0.9):
+#   bad_phase_space = 1
+# Wd = W(float(df_display_this_bin.xB_display), Q2_running, 0, 0)
+# if (Wd < 2):
+#   bad_phase_space = 1
+# if bad_phase_space == 0:
 #   df_Q2_dependence_this_bin =  pd.DataFrame(data = {"integrated_binnum": args.integrated_binnum, "xBbin": xBbin * np.ones_like(phi_dummy), "Q2bin": Q2bin * np.ones_like(phi_dummy),
-#     "tbin": tbin * np.ones_like(phi_dummy), "Q2index": index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2_running * np.ones_like(phi_dummy), "t_display": ts, "phi_display": phi_dummy})
+#     "tbin": tbin * np.ones_like(phi_dummy), "Q2index": args.index * np.ones_like(phi_dummy), "xB_display": xBs, "Q2_display": Q2_running * np.ones_like(phi_dummy), "t_display": ts, "phi_display": phi_dummy})
 #   df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display"]    = printKMarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), mode = 5)
 #   df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display"] = printKMarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), mode = 1)
 #   df_Q2_dependence_this_bin.loc[:, "xsec_BH_display"]      = printBHarray (df_Q2_dependence_this_bin.xB_display, df_Q2_dependence_this_bin.Q2_display, df_Q2_dependence_this_bin.t_display, np.radians(df_Q2_dependence_this_bin.phi_display), local=True)
@@ -2774,10 +2770,9 @@ for integrated_binnum in np.sort(df_summary_table_rebinned.integrated_binnum.uni
 #   df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display_w"]     = df_Q2_dependence_this_bin.loc[:, "xsec_KM15_display"]   *df_Q2_dependence_this_bin.loc[:, "weight_BH"]
 #   df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display_w"]  = df_Q2_dependence_this_bin.loc[:, "xsec_BH_KM15_display"]*df_Q2_dependence_this_bin.loc[:, "weight_BH"]
 #   df_Q2_dependence_this_bin.loc[:, "xsec_VGG_display_w"]      = df_Q2_dependence_this_bin.loc[:, "xsec_VGG_display"]    *df_Q2_dependence_this_bin.loc[:, "weight_BH"]
-#   df_Q2_dependence = pd.concat([df_Q2_dependence, df_Q2_dependence_this_bin])
-# df_Q2_dependence.reset_index(inplace = True)
-# df_Q2_dependence.rename(columns = {"index": "phiindex"}, inplace = True)
-# df_Q2_dependence.to_pickle("addendum_v3/fitting/df_Q2_dependence_{}.pkl".format(args.integrated_binnum))
+#   df_Q2_dependence_this_bin.reset_index(inplace = True)
+#   df_Q2_dependence_this_bin.rename(columns = {"index": "phiindex"}, inplace = True)
+#   df_Q2_dependence_this_bin.to_pickle("/lcrc/project/nanowire/sangbaek/clas12DVCS/addendum_v3/fitting/df_Q2_dependence_{}_{}.pkl".format(args.integrated_binnum, args.index))
 
 # df_Q2_dependence = pd.DataFrame()
 # n_sample    = 500
@@ -2798,7 +2793,7 @@ for integrated_binnum in np.sort(df_summary_table_rebinned.integrated_binnum.uni
 #   xsec_KM15_theory = printKMarray(xB_theory, Q2_theory, t_theory, phi_theory, mode = 5)
 #   xsec_BH_theory   = printBHarray(xB_theory, Q2_theory, t_theory, phi_theory, local=True)
 #   xsec_VGG_theory  = printVGGarray(xB_theory, Q2_theory, t_theory, phi_theory, local=True)
-
+'''
 
 # xBs = df_summary_table_rebinned.xB_avg_this_point
 # Q2s = df_summary_table_rebinned.Q2_avg_this_point
